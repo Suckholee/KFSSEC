@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import EventBannerSection from './components/EventBannerSection';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
+import YouTubeMediaSection from './components/YouTubeMediaSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
@@ -80,7 +81,12 @@ export default function App() {
               />
             </section>
 
-            {/* Section 4: Login & Payment Guide Banners */}
+            {/* Section 4: YouTube Media Section (자사 유튜브 콘텐츠 노출) */}
+            <section className="scroll-snap-section flex flex-col justify-center bg-[#08100d]">
+              <YouTubeMediaSection onScrollNext={handleScrollNext} />
+            </section>
+
+            {/* Section 5: Login & Payment Guide Banners */}
             <section className="scroll-snap-section flex flex-col justify-center py-6">
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
@@ -92,7 +98,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 5: Footer */}
+            {/* Section 6: Footer */}
             <section className="scroll-snap-section flex flex-col justify-end">
               <Footer
                 onViewChange={(view) => {
