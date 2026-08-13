@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { X, Mail, Lock, User, Phone } from 'lucide-react';
 
-export default function AuthModal({ initialMode = 'login', onClose }) {
+export default function AuthModal({ isOpen = false, initialMode = 'login', onClose }) {
   const [mode, setMode] = useState(initialMode);
   const [submitted, setSubmitted] = useState(false);
 
-  // Close modal when pressing ESC key
   useEffect(() => {
+    setMode(initialMode);
+    setSubmitted(false);
+  }, [initialMode, isOpen]);
+
+  // Handle ESC key press to close modal
+  useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+      }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,11 +44,12 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn cursor-pointer"
     >
+      {/* Modal Inner Box (Prevent closing when clicking inside) */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100 space-y-6"
+        className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100 space-y-6 cursor-default"
       >
         {/* Close Button */}
         <button

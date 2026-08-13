@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Clock, BookOpen, Star, User, CheckCircle2 } from 'lucide-react';
 
 export default function CourseModal({ course, onClose }) {
   const [applied, setApplied] = useState(false);
 
+  useEffect(() => {
+    if (!course) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [course, onClose]);
+
   if (!course) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl transition-all border border-gray-100 max-h-[90vh] flex flex-col">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn cursor-pointer"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl transition-all border border-gray-100 max-h-[90vh] flex flex-col cursor-default"
+      >
         
         {/* Header Image & Close Button */}
         <div className="relative h-56 sm:h-64 bg-gray-900 shrink-0">
@@ -22,6 +41,7 @@ export default function CourseModal({ course, onClose }) {
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-colors cursor-pointer"
+            title="닫기 (ESC)"
           >
             <X className="w-5 h-5" />
           </button>
