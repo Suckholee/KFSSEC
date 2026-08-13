@@ -16,14 +16,13 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
     if (id === 'catalog') {
       onViewChange('catalog');
     } else {
-      // For demo purposes, about/apply/community/mypage lead to catalog or landing smooth scroll
       onViewChange('catalog');
     }
   };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-8 lg:px-12 py-4 flex items-center justify-between">
         
         {/* Logo */}
         <button
@@ -44,7 +43,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         </button>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-10">
           {navItems.map((item) => {
             const isActive = item.id === 'catalog' && currentView === 'catalog';
 

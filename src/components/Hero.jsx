@@ -16,11 +16,11 @@ export default function Hero({ onExploreClick, onAboutClick }) {
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/30 lg:to-transparent" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="relative z-10 w-full px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Left Hero Text Content */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-6 max-w-2xl">
+          <div className="lg:col-span-7 xl:col-span-7 space-y-6 max-w-3xl">
             
             {/* Sub-label */}
             <div className="inline-block">
@@ -30,7 +30,7 @@ export default function Hero({ onExploreClick, onAboutClick }) {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-gray-900 leading-[1.25] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-gray-900 leading-[1.25] tracking-tight">
               당신의 <span className="text-brand-500 font-extrabold">외식 창업 성공</span>을 함께합니다
             </h1>
 
@@ -44,7 +44,7 @@ export default function Hero({ onExploreClick, onAboutClick }) {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
                 onClick={onExploreClick}
-                className="px-6 py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-bold text-base rounded-lg shadow-lg shadow-brand-500/25 transition-all flex items-center gap-2 group hover:-translate-y-0.5"
+                className="px-6 py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-bold text-base rounded-lg shadow-lg shadow-brand-500/25 transition-all flex items-center gap-2 group hover:-translate-y-0.5 cursor-pointer"
               >
                 <span>교육과정 둘러보기</span>
                 <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -52,7 +52,7 @@ export default function Hero({ onExploreClick, onAboutClick }) {
 
               <button
                 onClick={onAboutClick}
-                className="px-6 py-3.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-800 font-bold text-base rounded-lg shadow-sm transition-all flex items-center gap-2 group hover:border-gray-400"
+                className="px-6 py-3.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-800 font-bold text-base rounded-lg shadow-sm transition-all flex items-center gap-2 group hover:border-gray-400 cursor-pointer"
               >
                 <span>교육원 소개</span>
                 <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />

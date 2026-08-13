@@ -62,7 +62,7 @@ export default function CourseCatalogPage() {
         formats: selectedFormats,
         sort: sortOption,
         page: currentPage,
-        limit: 8,
+        limit: 12,
       });
       setCourses(res.data);
       setTotalCount(res.totalCount);
@@ -86,7 +86,7 @@ export default function CourseCatalogPage() {
     });
   }, [selectedIndustry, selectedStage, selectedFormats, sortOption, currentPage, activeSidebarCategory]);
 
-  // Handle Handlers
+  // Handlers
   const handleIndustryChange = (ind) => {
     setSelectedIndustry(ind);
     setCurrentPage(1);
@@ -122,7 +122,8 @@ export default function CourseCatalogPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Full width container without max-w-7xl constraint */}
+      <div className="w-full px-4 sm:px-8 lg:px-12">
         
         {/* Breadcrumb & Top Guide Button */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-gray-500 mb-6">
@@ -136,7 +137,7 @@ export default function CourseCatalogPage() {
 
           <button
             onClick={() => alert('교육과정 가이드북 PDF를 불러옵니다.')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 hover:bg-gray-50 text-xs font-bold shadow-sm transition-colors self-start sm:self-auto"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 hover:bg-gray-50 text-xs font-bold shadow-sm transition-colors self-start sm:self-auto cursor-pointer"
           >
             <BookOpenText className="w-4 h-4 text-blue-800" />
             <span>교육과정 가이드</span>
