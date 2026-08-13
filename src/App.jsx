@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import PopularCourses from './components/PopularCourses';
+import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
 import Footer from './components/Footer';
@@ -83,7 +84,19 @@ export default function App() {
               />
             </section>
 
-            {/* Section 4: Footer */}
+            {/* Section 4: Login & Payment Guide Banners */}
+            <section className="scroll-snap-section flex flex-col justify-center py-6">
+              <BannerSection
+                onOpenLogin={() => handleOpenAuth('login')}
+                onOpenCatalog={() => {
+                  setCurrentView('catalog');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onScrollNext={handleScrollNext}
+              />
+            </section>
+
+            {/* Section 5: Footer */}
             <section className="scroll-snap-section flex flex-col justify-end">
               <Footer
                 onViewChange={(view) => {
