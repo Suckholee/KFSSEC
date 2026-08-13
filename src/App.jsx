@@ -5,8 +5,7 @@ import EventBannerSection from './components/EventBannerSection';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
 import FullPackageCoursesSection from './components/FullPackageCoursesSection';
-import CategoryFocusSection from './components/CategoryFocusSection';
-import MasterClassSection from './components/MasterClassSection';
+import CategoryCourseSection from './components/CategoryCourseSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
@@ -97,9 +96,9 @@ export default function App() {
               />
             </section>
 
-            {/* Section 6: Category Focus Courses Section (외식 실무 특화) */}
+            {/* Section 6: Unified Category Course Section (4대 카테고리 연속 스택: 펫미용 + 쇼미용 + 펫푸드 + 창업전략) */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#0a1410]">
-              <CategoryFocusSection
+              <CategoryCourseSection
                 onViewMoreClick={() => {
                   setCurrentView('catalog');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -109,19 +108,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 7: Master Class Focus Section (명장·명인 마스터) */}
-            <section className="scroll-snap-section flex flex-col justify-center bg-[#0d0f0d]">
-              <MasterClassSection
-                onViewMoreClick={() => {
-                  setCurrentView('catalog');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                onSelectCourse={() => handleOpenAuth('login')}
-                onScrollNext={handleScrollNext}
-              />
-            </section>
-
-            {/* Section 8: Login & Payment Guide Banners */}
+            {/* Section 7: Login & Payment Guide Banners */}
             <section className="scroll-snap-section flex flex-col justify-center py-6">
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
@@ -133,7 +120,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 9: Footer */}
+            {/* Section 8: Footer */}
             <section className="scroll-snap-section flex flex-col justify-end">
               <Footer
                 onViewChange={(view) => {
