@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { ChefHat, Menu, X, User, LogIn } from 'lucide-react';
+import { ChefHat, Menu, X } from 'lucide-react';
 
-export default function Header({ onOpenAuth }) {
+export default function Header({ currentView = 'landing', onViewChange, onOpenAuth }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('교육과정');
 
   const navItems = [
-    { name: '교육과정', href: '#courses' },
-    { name: '교육원 소개', href: '#about' },
-    { name: '수강신청', href: '#apply' },
-    { name: '수강내역', href: '#history' },
-    { name: '커뮤니티', href: '#community' },
-    { name: '마이페이지', href: '#mypage' },
+    { id: 'catalog', name: '교육과정' },
+    { id: 'about', name: '교육원 소개' },
+    { id: 'apply', name: '창업지원' },
+    { id: 'community', name: '커뮤니티' },
+    { id: 'mypage', name: '마이페이지' },
   ];
 
   return (
@@ -19,7 +17,10 @@ export default function Header({ onOpenAuth }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group">
+        <button
+          onClick={() => onViewChange('landing')}
+          className="flex items-center gap-3 group text-left"
+        >
           <div className="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
             <ChefHat className="w-6 h-6 stroke-[2.2]" />
           </div>
@@ -28,30 +29,35 @@ export default function Header({ onOpenAuth }) {
               한국외식창업교육원
             </span>
             <span className="text-[10px] font-semibold tracking-wider text-gray-400 uppercase">
-              Korea Food Service Business Academy
+              Korea Food Service Entrepreneurship Institute
             </span>
           </div>
-        </a>
+        </button>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={() => setActiveTab(item.name)}
-              className={`text-base font-semibold transition-colors duration-150 relative py-1 ${
-                activeTab === item.name
-                  ? 'text-gray-900 font-bold'
-                  : 'text-gray-600 hover:text-brand-500'
-              }`}
-            >
-              {item.name}
-              {activeTab === item.name && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-500 rounded-full" />
-              )}
-            </a>
-          ))}
+          {navItems.map((item) => {
+            const isActive =
+              (item.id === 'catalog' && currentView === 'catalog') ||
+              (item.id === 'landing' && currentView === 'landing');
+
+            return (
+              <button
+                key={item.id}
+                onClick={() => onViewChange(item.id === 'catalog' ? 'catalog' : 'landing')}
+                className={`text-base font-semibold transition-colors duration-150 relative py-1 ${
+                  isActive
+                    ? 'text-[#1E2B4D] font-extrabold'
+                    : 'text-gray-600 hover:text-brand-500'
+                }`}
+              >
+                {item.name}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1E2B4D] rounded-full" />
+                )}
+              </button>
+            );
+          })}
         </nav>
 
         {/* Auth Buttons */}
@@ -87,21 +93,20 @@ export default function Header({ onOpenAuth }) {
         <div className="lg:hidden border-t border-gray-100 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl">
           <nav className="flex flex-col space-y-1">
             {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
+              <button
+                key={item.id}
                 onClick={() => {
-                  setActiveTab(item.name);
+                  onViewChange(item.id === 'catalog' ? 'catalog' : 'landing');
                   setMobileMenuOpen(false);
                 }}
-                className={`px-3 py-2.5 rounded-lg text-base font-semibold ${
-                  activeTab === item.name
-                    ? 'bg-brand-50 text-brand-500'
+                className={`text-left px-3 py-2.5 rounded-lg text-base font-semibold ${
+                  (item.id === 'catalog' && currentView === 'catalog')
+                    ? 'bg-blue-50 text-blue-900 font-bold'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 {item.name}
-              </a>
+              </button>
             ))}
           </nav>
           <div className="pt-3 border-t border-gray-100 flex gap-2">
