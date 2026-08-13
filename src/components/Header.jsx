@@ -12,6 +12,15 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
     { id: 'mypage', name: '마이페이지' },
   ];
 
+  const handleNavClick = (id) => {
+    if (id === 'catalog') {
+      onViewChange('catalog');
+    } else {
+      // For demo purposes, about/apply/community/mypage lead to catalog or landing smooth scroll
+      onViewChange('catalog');
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -19,7 +28,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         {/* Logo */}
         <button
           onClick={() => onViewChange('landing')}
-          className="flex items-center gap-3 group text-left"
+          className="flex items-center gap-3 group text-left cursor-pointer"
         >
           <div className="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
             <ChefHat className="w-6 h-6 stroke-[2.2]" />
@@ -37,23 +46,21 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
           {navItems.map((item) => {
-            const isActive =
-              (item.id === 'catalog' && currentView === 'catalog') ||
-              (item.id === 'landing' && currentView === 'landing');
+            const isActive = item.id === 'catalog' && currentView === 'catalog';
 
             return (
               <button
                 key={item.id}
-                onClick={() => onViewChange(item.id === 'catalog' ? 'catalog' : 'landing')}
-                className={`text-base font-semibold transition-colors duration-150 relative py-1 ${
+                onClick={() => handleNavClick(item.id)}
+                className={`text-base font-semibold transition-colors duration-150 relative py-1 cursor-pointer ${
                   isActive
-                    ? 'text-[#1E2B4D] font-extrabold'
-                    : 'text-gray-600 hover:text-brand-500'
+                    ? 'text-brand-600 font-extrabold'
+                    : 'text-gray-700 hover:text-brand-500'
                 }`}
               >
                 {item.name}
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1E2B4D] rounded-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-500 rounded-full" />
                 )}
               </button>
             );
@@ -64,13 +71,13 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         <div className="hidden lg:flex items-center gap-3">
           <button
             onClick={() => onOpenAuth('login')}
-            className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors"
+            className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
           >
             로그인
           </button>
           <button
             onClick={() => onOpenAuth('signup')}
-            className="px-4 py-2 text-sm font-semibold text-white bg-brand-500 rounded-lg hover:bg-brand-600 shadow-md shadow-brand-500/20 transition-all hover:shadow-lg"
+            className="px-4 py-2 text-sm font-semibold text-white bg-brand-500 rounded-lg hover:bg-brand-600 shadow-md shadow-brand-500/20 transition-all hover:shadow-lg cursor-pointer"
           >
             회원가입
           </button>
@@ -96,12 +103,12 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
               <button
                 key={item.id}
                 onClick={() => {
-                  onViewChange(item.id === 'catalog' ? 'catalog' : 'landing');
+                  handleNavClick(item.id);
                   setMobileMenuOpen(false);
                 }}
                 className={`text-left px-3 py-2.5 rounded-lg text-base font-semibold ${
-                  (item.id === 'catalog' && currentView === 'catalog')
-                    ? 'bg-blue-50 text-blue-900 font-bold'
+                  item.id === 'catalog' && currentView === 'catalog'
+                    ? 'bg-brand-50 text-brand-600 font-bold'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >

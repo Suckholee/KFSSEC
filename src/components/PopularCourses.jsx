@@ -1,7 +1,7 @@
 import React from 'react';
 import { Clock, BookOpen, ChevronRight } from 'lucide-react';
 
-export default function PopularCourses({ onSelectCourse }) {
+export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
   const courses = [
     {
       id: 1,
@@ -71,9 +71,12 @@ export default function PopularCourses({ onSelectCourse }) {
               실무에 바로 적용 가능한 인기 교육과정을 만나보세요.
             </p>
           </div>
-          <button className="inline-flex items-center gap-1.5 px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors self-start sm:self-auto">
+          <button
+            onClick={onViewAllClick}
+            className="inline-flex items-center gap-1.5 px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-700 rounded-lg hover:bg-brand-50 hover:text-brand-600 hover:border-brand-300 transition-all self-start sm:self-auto cursor-pointer"
+          >
             <span>전체 교육과정 보기</span>
-            <ChevronRight className="w-4 h-4 text-gray-400" />
+            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-brand-500" />
           </button>
         </div>
 

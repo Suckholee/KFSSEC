@@ -9,18 +9,32 @@ import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
 
 export default function App() {
-  // Determine initial view from URL hash or query params
+  // Sync view state from URL query or hash
   const getInitialView = () => {
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has('industry') || searchParams.has('stage') || searchParams.has('format') || window.location.hash === '#catalog') {
       return 'catalog';
     }
-    return 'catalog'; // Set default view to Catalog page per request, or toggleable
+    return 'landing'; // Default to landing page on initial load, toggleable on click
   };
 
   const [currentView, setCurrentView] = useState(getInitialView());
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [authMode, setAuthMode] = useState(null); // 'login' | 'signup' | null
+
+  // Listen to popstate (back/forward button)
+  useEffect(() => {
+    const handleHashOrPopState = () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.has('industry') || searchParams.has('stage') || searchParams.has('format') || window.location.hash === '#catalog') {
+        setCurrentView('catalog');
+      } else if (window.location.hash === '#landing' || (!window.location.hash && !window.location.search)) {
+        setCurrentView('landing');
+      }
+    };
+    window.addEventListener('popstate', handleHashOrPopState);
+    return () => window.removeEventListener('popstate', handleHashOrPopState);
+  }, []);
 
   const handleViewChange = (view) => {
     setCurrentView(view);
@@ -28,7 +42,9 @@ export default function App() {
       window.location.hash = '#catalog';
     } else {
       window.location.hash = '';
+      window.history.pushState(null, '', window.location.pathname);
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -54,6 +70,7 @@ export default function App() {
             <Features />
             <PopularCourses
               onSelectCourse={(course) => setSelectedCourse(course)}
+              onViewAllClick={() => handleViewChange('catalog')}
             />
           </>
         )}
