@@ -1,13 +1,20 @@
 import React from 'react';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import AcademyMasterBanner from './AcademyMasterBanner';
 
 export default function BannerSection({ onOpenLogin, onOpenCatalog, onScrollNext }) {
   return (
     <section className="relative py-12 lg:py-16 bg-gradient-to-b from-white via-emerald-50/30 to-white border-b border-emerald-100/60 h-full flex flex-col justify-center">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-8">
         
+        {/* Custom Food Service CSAT-Style Master Banner */}
+        <AcademyMasterBanner
+          onOpenCatalog={onOpenCatalog}
+          onOpenAbout={() => {}}
+        />
+
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-2">
+        <div className="text-center max-w-2xl mx-auto space-y-2 pt-2">
           <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
             SERVICE GUIDE
           </span>
