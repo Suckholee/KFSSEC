@@ -83,13 +83,13 @@ export default function YouTubeMediaSection({ onScrollNext }) {
 
                 <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-bold text-white drop-shadow-md">
                   <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md text-emerald-300 border border-white/20">
-                    HD 동영상 재생
+                    HD 동영상 시청하기
                   </span>
                 </div>
               </div>
 
               {/* Video Info Details */}
-              <div className="p-5 sm:p-6 space-y-3 flex-1 flex flex-col justify-between">
+              <div className="p-5 sm:p-6 space-y-2 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`px-2.5 py-0.5 rounded-full border text-[11px] font-black ${video.badgeColor}`}>
@@ -106,16 +106,6 @@ export default function YouTubeMediaSection({ onScrollNext }) {
                   <p className="text-xs sm:text-sm text-gray-400 font-medium mt-2 leading-relaxed line-clamp-2">
                     {video.subtitle}
                   </p>
-                </div>
-
-                <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-emerald-400/90">
-                    ID: {video.id}
-                  </span>
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-red-600 group-hover:bg-red-700 text-white text-xs rounded-lg transition-colors font-bold shrink-0 shadow-md">
-                    <Play className="w-3.5 h-3.5 fill-current shrink-0" />
-                    <span>영구 재생 시청하기</span>
-                  </div>
                 </div>
               </div>
 
