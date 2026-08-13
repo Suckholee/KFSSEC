@@ -5,6 +5,7 @@ import EventBannerSection from './components/EventBannerSection';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
 import FullPackageCoursesSection from './components/FullPackageCoursesSection';
+import CategoryFocusSection from './components/CategoryFocusSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
@@ -95,7 +96,19 @@ export default function App() {
               />
             </section>
 
-            {/* Section 6: Login & Payment Guide Banners */}
+            {/* Section 6: Category Focus Courses Section (외식 실무 특화 + 클래스 더 보러 가기) */}
+            <section className="scroll-snap-section flex flex-col justify-center bg-[#0a1410]">
+              <CategoryFocusSection
+                onViewMoreClick={() => {
+                  setCurrentView('catalog');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onSelectCourse={() => handleOpenAuth('login')}
+                onScrollNext={handleScrollNext}
+              />
+            </section>
+
+            {/* Section 7: Login & Payment Guide Banners */}
             <section className="scroll-snap-section flex flex-col justify-center py-6">
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
@@ -107,7 +120,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 7: Footer */}
+            {/* Section 8: Footer */}
             <section className="scroll-snap-section flex flex-col justify-end">
               <Footer
                 onViewChange={(view) => {
