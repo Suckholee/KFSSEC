@@ -39,10 +39,10 @@ export default function LocationSection() {
       {/* Main Location Container Card */}
       <div className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-md space-y-8">
         
-        {/* Kakao Map Frame matching User Screenshot */}
-        <div className="relative rounded-2xl overflow-hidden border border-gray-300 shadow-sm bg-[#E9EBE8] aspect-[16/9] max-h-[500px]">
+        {/* Full-Width Kakao Map Frame (Filling 100% Container Width) */}
+        <div className="relative w-full h-[440px] sm:h-[500px] rounded-2xl overflow-hidden border border-gray-300 shadow-sm bg-[#E9EBE8]">
           
-          {/* Map Image / Embedded Kakao Map View */}
+          {/* Map Image / Embedded Kakao Map View (Full 100% Width & Height) */}
           <iframe
             title="한국외식창업교육원 카카오맵"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.419076594246!2d127.0117!3d37.4981!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca16000000001%3A0x1!2z7ISc7Jq47Yq567OE7IucIOyEnOyogOq1rCDsgqTsnZTrp7nroZwgMTc0!5e0!3m2!1sko!2skr!4v1700000000000!5m2!1sko!2skr"
@@ -52,7 +52,7 @@ export default function LocationSection() {
           />
 
           {/* Kakao Map Custom Info Overlay Window */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-4 sm:p-5 shadow-2xl border border-gray-300 max-w-xs sm:max-w-sm w-full space-y-2 backdrop-blur-md pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-4 sm:p-5 shadow-2xl border border-gray-300 max-w-xs sm:max-w-sm w-full space-y-2 backdrop-blur-md pointer-events-none z-10">
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#0F5132] text-white flex items-center justify-center font-black shrink-0 shadow-sm">
@@ -255,7 +255,7 @@ export default function LocationSection() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-emerald-600 text-white text-[11px] font-bold">
+                <span className="px-[#0F5132] px-2 py-0.5 rounded bg-emerald-600 text-white text-[11px] font-bold">
                   지선
                 </span>
                 <span className="font-bold text-gray-800">3412, 3422, 4312</span>
