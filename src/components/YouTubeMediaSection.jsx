@@ -44,10 +44,10 @@ export default function YouTubeMediaSection({ onScrollNext }) {
           </div>
           
           <a
-            href="https://www.youtube.com/watch?v=ZDZFUpS0fFE"
+            href="https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-lg transition-all self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all self-start sm:self-auto cursor-pointer"
           >
             <Youtube className="w-4 h-4 fill-current" />
             <span>유튜브 채널 바로가기</span>
