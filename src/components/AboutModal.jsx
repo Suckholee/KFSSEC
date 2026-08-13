@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Building2, Calendar, UserCheck, Award, Globe } from 'lucide-react';
+import { X, Building2, Calendar, UserCheck, Award, Globe, Scale } from 'lucide-react';
 
 export default function AboutModal({ onClose }) {
   return (
@@ -19,11 +19,11 @@ export default function AboutModal({ onClose }) {
           <img
             src="/images/official_logo.png"
             alt="사단법인 한국외식창업교육원"
-            className="h-16 w-auto object-contain"
+            className="h-14 w-auto object-contain"
           />
         </div>
 
-        {/* Legal Corporate Profile Card */}
+        {/* Official Corporate Information Card */}
         <div className="bg-stone-100/80 rounded-2xl p-6 border border-stone-200/60 space-y-3.5 text-sm text-gray-800">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div className="flex items-center gap-2.5">
@@ -68,19 +68,29 @@ export default function AboutModal({ onClose }) {
           </div>
         </div>
 
-        {/* Mission Statement */}
-        <div className="space-y-2">
-          <h3 className="text-sm font-bold text-gray-900">기관 소개 및 비전</h3>
-          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-medium">
-            사단법인 한국외식창업교육원은 2022년 7월 12일 설립인가를 받은 국내 최고 권위의 외식 창업 실무 교육기관입니다. 외식 창업 준비부터 메뉴 개발, 상권 분석, 매장 운영 효율화까지 체계적인 컨설팅 및 자격증 교육으로 예비 및 기존 사업자의 성공을 도모합니다.
-          </p>
+        {/* Legal Establishment Purpose Section */}
+        <div className="space-y-3">
+          <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
+            <Scale className="w-4 h-4 text-emerald-700" />
+            <span>설립목적</span>
+          </h3>
+          <div className="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200/80 space-y-2 text-xs sm:text-sm text-gray-800 font-bold leading-relaxed">
+            <p className="flex items-start gap-2">
+              <span className="text-emerald-700 font-black">•</span>
+              <span>본원은 [민법] 제32조 (비영리법인의 설립과 허가) 및 농림축산식품부 장관 및 그 소속 청장소관 비영리법인의 설립 및 감독에 관한규칙 제 5조의 규정에 의하여 설립됨.</span>
+            </p>
+            <p className="flex items-start gap-2 pt-1 border-t border-emerald-100">
+              <span className="text-emerald-700 font-black">•</span>
+              <span>본원은 농수축산물을 활용한 외식산업 발전과 외식창업교육을 통해 외식산업 경쟁력에 기여함으로써, 국내 및 국외 외식산업을 발전시킴.</span>
+            </p>
+          </div>
         </div>
 
         {/* Footer Action */}
         <div className="pt-3 border-t border-gray-100 flex justify-end">
           <button
             onClick={onClose}
-            className="px-5 py-2.5 bg-[#1E2B4D] hover:bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm"
+            className="px-5 py-2.5 bg-[#0F5132] hover:bg-emerald-900 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm cursor-pointer"
           >
             확인 및 닫기
           </button>

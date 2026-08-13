@@ -20,6 +20,8 @@ import {
   ChevronUp,
   ArrowRight,
   CheckCircle2,
+  Scale,
+  Sprout,
 } from 'lucide-react';
 
 export default function AboutPage() {
@@ -244,24 +246,41 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* SECTION 1: MISSION (설립 목적) */}
+        {/* SECTION 1: ESTABLISHMENT PURPOSE (설립목적 - Official Legal Text Spec) */}
         <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm space-y-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-gray-100 pb-8">
-            <div className="space-y-2 max-w-md">
-              <span className="text-xs font-black text-emerald-600 tracking-widest uppercase">
+          <div className="border-b border-gray-100 pb-6 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#0F5132] text-white flex items-center justify-center font-black shadow-md">
+              <Scale className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div>
+              <span className="text-xs font-black text-emerald-600 tracking-widest uppercase block">
                 MISSION
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-                설립 목적
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                설립목적
               </h2>
             </div>
-            <p className="text-sm sm:text-base text-gray-600 font-medium max-w-2xl leading-relaxed">
-              한국외식창업교육원은 외식 산업의 지속 가능한 성장을 선도하고, 창업 희망자와 소상공인의 성공적인 미래를 함께 설계합니다.
-            </p>
+          </div>
+
+          {/* Legal Statements Card Container in Light Green & Deep Green */}
+          <div className="bg-gradient-to-r from-emerald-50 via-white to-emerald-50/60 p-6 sm:p-8 rounded-2xl border border-emerald-200/80 shadow-xs space-y-5">
+            <div className="flex items-start gap-3.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 mt-2 shadow-xs" />
+              <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed tracking-tight">
+                본원은 <span className="text-[#0F5132] font-black">[민법] 제32조 (비영리법인의 설립과 허가)</span> 및 농림축산식품부 장관 및 그 소속 청장소관 비영리법인의 설립 및 감독에 관한규칙 제 5조의 규정에 의하여 설립됨.
+              </p>
+            </div>
+
+            <div className="flex items-start gap-3.5 pt-2 border-t border-emerald-100">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#0F5132] shrink-0 mt-2 shadow-xs" />
+              <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed tracking-tight">
+                본원은 <span className="text-emerald-700 font-black">농수축산물을 활용한 외식산업 발전</span>과 <span className="text-[#0F5132] font-black">외식창업교육</span>을 통해 외식산업 경쟁력에 기여함으로써, 국내 및 국외 외식산업을 발전시킴.
+              </p>
+            </div>
           </div>
 
           {/* 4 Pillars Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
             {missionPillars.map((item) => {
               const IconComponent = item.icon;
               return (
@@ -269,7 +288,7 @@ export default function AboutPage() {
                   key={item.id}
                   className="bg-emerald-50/40 rounded-2xl p-6 border border-emerald-100/70 hover:bg-white hover:shadow-md hover:border-emerald-300 transition-all group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mb-4 shadow-md shadow-emerald-600/20 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-2xl bg-[#0F5132] text-white flex items-center justify-center mb-4 shadow-md shadow-emerald-900/20 group-hover:scale-110 transition-transform">
                     <IconComponent className="w-6 h-6 stroke-[2]" />
                   </div>
                   <h3 className="text-base font-bold text-gray-900 group-hover:text-emerald-800 transition-colors">
