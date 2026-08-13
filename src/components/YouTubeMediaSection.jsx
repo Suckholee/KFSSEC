@@ -10,16 +10,14 @@ export default function YouTubeMediaSection({ onScrollNext }) {
       id: 'ZDZFUpS0fFE',
       title: '한국외식창업교육원 2024년 정기총회',
       subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 요약 동영상',
-      channel: '한국외식창업교육원',
-      views: '조회수 10회 • 6개월 전',
+      channel: '한국외식창업교육원 공식 채널',
       thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/maxresdefault.jpg',
     },
     {
       id: 'E_WgebIP_SY',
       title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
       subtitle: '아시아창의방송 정기총회 현장 취재 보도 동영상',
-      channel: '아시아창의방송',
-      views: '조회수 366회 • 정기총회 보도',
+      channel: '아시아창의방송 취재 보도',
       thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/maxresdefault.jpg',
     },
   ];
@@ -47,7 +45,7 @@ export default function YouTubeMediaSection({ onScrollNext }) {
             href="https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-2 px-4.5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all self-start sm:self-auto cursor-pointer"
           >
             <Youtube className="w-4 h-4 fill-current" />
             <span>유튜브 채널 바로가기</span>
@@ -74,9 +72,9 @@ export default function YouTubeMediaSection({ onScrollNext }) {
               </div>
 
               {/* Video Info Details */}
-              <div className="p-5 sm:p-6 space-y-2 flex-1 flex flex-col justify-between">
+              <div className="p-5 sm:p-6 space-y-3 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-emerald-400 mb-1">
+                  <div className="flex items-center gap-2 text-xs font-extrabold text-emerald-400 mb-1.5">
                     <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                     <span>{video.channel}</span>
                   </div>
@@ -88,11 +86,10 @@ export default function YouTubeMediaSection({ onScrollNext }) {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-between text-xs text-gray-400 font-semibold">
-                  <span>{video.views}</span>
+                <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-end">
                   <button
                     onClick={() => setSelectedVideo(video)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white rounded-lg transition-colors cursor-pointer font-bold"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white text-xs rounded-lg transition-colors cursor-pointer font-bold"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
                     <span>큰 화면으로 시청</span>
