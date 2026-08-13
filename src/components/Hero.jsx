@@ -36,15 +36,16 @@ export default function Hero({ onExploreClick, onAboutClick }) {
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-3xl sm:text-4xl lg:text-[48px] font-black text-white leading-[1.22] tracking-tight drop-shadow-lg">
-                당신의 <span className="text-emerald-400 font-extrabold">외식 창업 성공</span>을 함께합니다
+              <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-white leading-[1.25] tracking-tight drop-shadow-lg">
+                꿈꾸는 외식창업 <br />
+                <span className="text-emerald-400 font-extrabold">아무에게나 맡기시겠습니까?</span>
               </h1>
 
               {/* Subtext */}
-              <p className="text-base sm:text-lg text-emerald-100/95 font-semibold leading-relaxed max-w-xl drop-shadow-md">
-                실무 중심의 교육과 창업 컨설팅으로<br className="hidden sm:inline" />
-                외식 창업의 모든 순간을 지원합니다.
-              </p>
+              <div className="text-base sm:text-lg text-emerald-100/95 font-semibold leading-relaxed max-w-xl space-y-1 drop-shadow-md">
+                <p>오랜 현장실무경험과 실력을 갖춘 명인, 명장님께 맡겨주세요!</p>
+                <p className="text-white font-bold">성공적인 창업은 저희가 책임지겠습니다</p>
+              </div>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3.5 pt-2">
@@ -66,7 +67,7 @@ export default function Hero({ onExploreClick, onAboutClick }) {
               </div>
             </div>
 
-            {/* Stats Card Moved Below the Main Buttons (Does Not Obstruct the Photo) */}
+            {/* Stats Card Below the Main Buttons */}
             <div className="pt-2">
               <div className="w-full max-w-xl bg-[#042013]/90 border border-emerald-400/35 rounded-2xl p-5 sm:p-6 shadow-2xl text-white backdrop-blur-xl">
                 <div className="grid grid-cols-3 gap-2 sm:gap-4 divide-x divide-emerald-500/30">
