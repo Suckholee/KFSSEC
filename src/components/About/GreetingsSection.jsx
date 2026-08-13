@@ -7,9 +7,8 @@ import {
   Presentation,
   CheckCircle2,
   Scale,
-  Sparkles,
   Medal,
-  Calendar,
+  Star,
   Building2,
   BookmarkCheck,
 } from 'lucide-react';
@@ -38,11 +37,12 @@ export default function GreetingsSection() {
     },
   ];
 
-  const profileSections = [
+  const profileCards = [
     {
+      id: '01',
       title: '학력',
+      subtitle: 'Academic Background',
       icon: GraduationCap,
-      badgeColor: 'bg-emerald-100 text-emerald-900',
       items: [
         '캐롤라인대학교 경영학박사',
         '동의대학교 대학원 박사수료 (호텔,외식,관광)',
@@ -50,9 +50,10 @@ export default function GreetingsSection() {
       ],
     },
     {
+      id: '02',
       title: '경력 (40년)',
+      subtitle: '40 Years Career Journey',
       icon: Briefcase,
-      badgeColor: 'bg-emerald-100 text-emerald-900',
       items: [
         '웨스틴 조선호텔',
         '리츠칼튼호텔',
@@ -62,9 +63,10 @@ export default function GreetingsSection() {
       ],
     },
     {
+      id: '03',
       title: '국가 및 기관 심사위원',
       icon: Scale,
-      badgeColor: 'bg-emerald-100 text-emerald-900',
+      subtitle: 'Official Committee Judge',
       items: [
         '조리기능장, 기능사, 산업기사 2005~2007년 실기심사위원',
         '전국 기능올림픽위원회 실기 심사위원',
@@ -74,13 +76,11 @@ export default function GreetingsSection() {
         '대한민국 전통주 조주사 국가대표선발전 실기 심사위원',
       ],
     },
-  ];
-
-  const profileSectionsRight = [
     {
+      id: '04',
       title: '저서 및 학술연구',
       icon: BookOpen,
-      badgeColor: 'bg-emerald-100 text-emerald-900',
+      subtitle: 'Publications & Research',
       items: [
         'NCS에 의한 양식조리기능사 Westen Cuisine',
         '고급서양조리 The Professional Western Cuisine',
@@ -89,25 +89,25 @@ export default function GreetingsSection() {
       ],
     },
     {
+      id: '05',
       title: '교수 및 전문 강의',
       icon: Presentation,
-      badgeColor: 'bg-emerald-100 text-emerald-900',
+      subtitle: 'Lectures & Professorship',
       items: [
         '현) 한국외식창업교육원 교수',
         '현) 청년상인 육성재단 청년상인 지원단',
         '중소벤처기업부 소상공인지원단 전담교수',
         '산업인력관리공단 취업교육 강사(기초기능서비스업)',
-        '동의대학교 외식조리와 겸임교수',
-        '한중대학교 외식산업학과 겸임교수',
-        '창신대학교 호텔 조리과 겸임교수',
+        '동의대학교 / 한중대학교 외식산업학과 겸임교수',
+        '창신대학교 / 창원문성대학교 겸임교수',
         '창원시 청소년 직업상담 진로교육 상담위',
-        '창원문성대학교 식품조리와 겸임교수',
       ],
     },
     {
+      id: '06',
       title: '정부 표창 및 주요 수상',
       icon: Award,
-      badgeColor: 'bg-emerald-100 text-emerald-900',
+      subtitle: 'Honors & Government Awards',
       items: [
         '문화체육부 장관상(대상) 2015년 전통음식부분',
         '문화체육부 장관상(대상) 2014년 건강음식부분',
@@ -115,8 +115,7 @@ export default function GreetingsSection() {
         '서울특별시장상(대상) 2013년 라이브 요리 부분',
         '중국 남경시 약선요리대회 백금상(2등) 2011년 개인부분',
         '한국국제요리경영대회 금상 2010년 향토음식',
-        '경상남도 도지사상 우수상 2008년 향토음식 개인요리 부분',
-        '한국산업인력공단 경남지사장상 금상 2006년 개인요리 부분',
+        '경상남도 도지사상 우수상 / 한국산업인력공단 금상',
         '2005산청한방 웰빙요리대회 대상 2005년 개인 종합 최우수 부분',
       ],
     },
@@ -262,134 +261,121 @@ export default function GreetingsSection() {
         </div>
       </div>
 
-      {/* BOTTOM SECTION: PREMIUM EXECUTIVE DASHBOARD & PROFILES */}
-      <div className="bg-white rounded-3xl p-6 sm:p-12 border border-emerald-100 shadow-lg space-y-10">
+      {/* PINTEREST-INSPIRED BALANCED PROFILE SECTION */}
+      <div className="space-y-8">
         
-        {/* Profile Card Executive Header */}
-        <div className="bg-gradient-to-r from-[#0F5132] via-[#14532d] to-[#064e3b] rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden">
-          
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
-            <div className="w-28 sm:w-36 aspect-[3/4] rounded-2xl overflow-hidden border-2 border-emerald-400/40 bg-stone-100 shrink-0 shadow-xl">
-              <img
-                src="/images/chairman_ahn_real.jpg?v=2"
-                alt="안형상 이사장"
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-
-            <div className="space-y-3 text-center sm:text-left">
-              <div>
-                <span className="text-xs font-bold text-emerald-300 tracking-widest uppercase block">
-                  EXECUTIVE PROFILE
-                </span>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight">
-                  안형상 이사장님 프로필
-                </h3>
+        {/* Balanced Executive Identity Header Card */}
+        <div className="bg-white rounded-3xl p-6 sm:p-10 border-t-4 border-t-[#0F5132] border-x border-b border-gray-200/90 shadow-md">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            
+            {/* Left: Photo & Titles */}
+            <div className="md:col-span-7 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              <div className="w-32 sm:w-36 aspect-[3/4] rounded-2xl overflow-hidden border border-emerald-200 bg-stone-100 shrink-0 shadow-md">
+                <img
+                  src="/images/chairman_ahn_real.jpg?v=2"
+                  alt="안형상 이사장"
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
 
-              {/* Title Badges */}
-              <div className="flex flex-wrap gap-2 justify-center sm:justify-start pt-1">
-                <span className="px-3 py-1 bg-white/15 border border-white/20 rounded-full text-xs font-bold text-emerald-100 backdrop-blur-sm">
-                  🏅 대한민국 외식명장
-                </span>
-                <span className="px-3 py-1 bg-white/15 border border-white/20 rounded-full text-xs font-bold text-emerald-100 backdrop-blur-sm">
-                  🏛️ (사)한국외식창업교육원 원장
-                </span>
-                <span className="px-3 py-1 bg-white/15 border border-white/20 rounded-full text-xs font-bold text-emerald-100 backdrop-blur-sm">
-                  👑 대한민국 조리 명인
-                </span>
-                <span className="px-3 py-1 bg-white/15 border border-white/20 rounded-full text-xs font-bold text-emerald-100 backdrop-blur-sm">
-                  📜 국가공인 대한민국 조리기능장 (2003년)
-                </span>
+              <div className="space-y-3 text-center sm:text-left">
+                <div>
+                  <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
+                    CHAIRMAN & FOUNDER
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mt-2">
+                    안형상 이사장님 프로필
+                  </h3>
+                </div>
+
+                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
+                    🏅 대한민국 외식명장
+                  </span>
+                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
+                    🏛️ (사)한국외식창업교육원 원장
+                  </span>
+                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
+                    👑 대한민국 조리 명인
+                  </span>
+                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
+                    📜 국가공인 조리기능장 (2003년)
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Quick Stat Chips */}
-          <div className="grid grid-cols-2 gap-3 shrink-0 w-full sm:w-auto relative z-10">
-            <div className="bg-white/10 border border-white/15 p-4 rounded-2xl text-center backdrop-blur-md">
-              <span className="text-xl sm:text-2xl font-black text-emerald-300 block">40년+</span>
-              <span className="text-xs text-emerald-100 font-medium">외식 실무 & 프랜차이즈</span>
+            {/* Right: Balanced 2x2 Metric Grid */}
+            <div className="md:col-span-5 grid grid-cols-2 gap-3.5 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-stone-200 md:pl-8">
+              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
+                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">40년+</span>
+                <span className="text-xs text-gray-600 font-bold">외식 실무 & 프랜차이즈</span>
+              </div>
+              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
+                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">2003년</span>
+                <span className="text-xs text-gray-600 font-bold">국가공인 조리기능장</span>
+              </div>
+              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
+                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">9회+</span>
+                <span className="text-xs text-gray-600 font-bold">장관상 및 주요 수상</span>
+              </div>
+              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
+                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">100+</span>
+                <span className="text-xs text-gray-600 font-bold">가맹점 브랜딩 개발</span>
+              </div>
             </div>
-            <div className="bg-white/10 border border-white/15 p-4 rounded-2xl text-center backdrop-blur-md">
-              <span className="text-xl sm:text-2xl font-black text-emerald-300 block">9회+</span>
-              <span className="text-xs text-emerald-100 font-medium">장관상 및 주요 수상</span>
-            </div>
-          </div>
 
+          </div>
         </div>
 
-        {/* 2-Column Structured Card Grid System */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Left Column: 학력, 경력, 심사 이력 */}
-          <div className="space-y-6">
-            {profileSections.map((sec, idx) => {
-              const IconComp = sec.icon;
-              return (
-                <div
-                  key={idx}
-                  className="bg-stone-50/90 rounded-2xl p-6 sm:p-7 border border-stone-200/80 hover:bg-white hover:border-emerald-400 hover:shadow-md transition-all space-y-4"
-                >
-                  <div className="flex items-center justify-between border-b border-stone-200/80 pb-3">
-                    <div className="flex items-center gap-3 text-gray-900 font-black text-lg sm:text-xl">
-                      <div className="w-9 h-9 rounded-xl bg-[#0F5132] text-white flex items-center justify-center shrink-0 shadow-sm">
-                        <IconComp className="w-5 h-5 stroke-[2]" />
+        {/* Pinterest Symmetric 3-Column Equal-Balanced Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {profileCards.map((card) => {
+            const IconComp = card.icon;
+            return (
+              <div
+                key={card.id}
+                className="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/90 hover:border-emerald-500 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div>
+                  {/* Card Top Pill & Icon */}
+                  <div className="flex items-center justify-between mb-4 border-b border-stone-100 pb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#0F5132] group-hover:bg-[#0F5132] group-hover:text-white flex items-center justify-center transition-colors shadow-xs">
+                        <IconComp className="w-5 h-5 stroke-[2.2]" />
                       </div>
-                      <span>{sec.title}</span>
+                      <div>
+                        <h4 className="text-base sm:text-lg font-black text-gray-900 group-hover:text-[#0F5132] transition-colors">
+                          {card.title}
+                        </h4>
+                        <span className="text-[11px] font-bold text-gray-400 block tracking-tight">
+                          {card.subtitle}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
-                      {sec.items.length}개 항목
+                    <span className="text-xs font-black text-[#0F5132] bg-emerald-50 px-2.5 py-1 rounded-md">
+                      {card.id}
                     </span>
                   </div>
 
-                  <div className="space-y-2 text-sm sm:text-base text-gray-800 font-medium pt-1">
-                    {sec.items.map((item, itemIdx) => (
-                      <div key={itemIdx} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-1" />
-                        <span className="leading-relaxed">{item}</span>
+                  {/* List Items */}
+                  <div className="space-y-2 text-xs sm:text-sm text-gray-700 font-medium pt-1">
+                    {card.items.map((item, itemIdx) => (
+                      <div key={itemIdx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span className="leading-snug">{item}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Right Column: 저서, 강의, 상장 이력 */}
-          <div className="space-y-6">
-            {profileSectionsRight.map((sec, idx) => {
-              const IconComp = sec.icon;
-              return (
-                <div
-                  key={idx}
-                  className="bg-stone-50/90 rounded-2xl p-6 sm:p-7 border border-stone-200/80 hover:bg-white hover:border-emerald-400 hover:shadow-md transition-all space-y-4"
-                >
-                  <div className="flex items-center justify-between border-b border-stone-200/80 pb-3">
-                    <div className="flex items-center gap-3 text-gray-900 font-black text-lg sm:text-xl">
-                      <div className="w-9 h-9 rounded-xl bg-[#0F5132] text-white flex items-center justify-center shrink-0 shadow-sm">
-                        <IconComp className="w-5 h-5 stroke-[2]" />
-                      </div>
-                      <span>{sec.title}</span>
-                    </div>
-                    <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
-                      {sec.items.length}개 항목
-                    </span>
-                  </div>
-
-                  <div className="space-y-2 text-sm sm:text-base text-gray-800 font-medium pt-1">
-                    {sec.items.map((item, itemIdx) => (
-                      <div key={itemIdx} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-1" />
-                        <span className="leading-relaxed">{item}</span>
-                      </div>
-                    ))}
-                  </div>
+                <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between text-[11px] font-bold text-gray-400">
+                  <span>한국외식창업교육원</span>
+                  <span className="text-emerald-700 font-bold">{card.items.length}개 이력</span>
                 </div>
-              );
-            })}
-          </div>
-
+              </div>
+            );
+          })}
         </div>
 
       </div>
