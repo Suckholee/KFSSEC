@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import GreetingsSection from './GreetingsSection';
 import {
   Target,
   Users,
@@ -25,9 +26,11 @@ import {
   Calendar,
   UserCheck,
   Globe,
+  User,
 } from 'lucide-react';
 
 export default function AboutPage() {
+  const [activeTab, setActiveTab] = useState('greetings'); // 'overview' | 'greetings' | 'directions'
   const [selectedDirection, setSelectedDirection] = useState(1);
 
   // Section 1: 4 Mission Pillars
@@ -232,247 +235,281 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="bg-gray-50 min-h-screen py-12">
-      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-12">
+    <div className="bg-gray-50 min-h-screen py-10">
+      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-10">
         
-        {/* TOP SECTION: CORPORATE LEGAL PROFILE CARD (Match User Image) */}
-        <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left: Official Logo */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center p-4">
-              <img
-                src="/images/official_logo.png"
-                alt="사단법인 한국외식창업교육원"
-                className="w-full max-w-sm h-auto object-contain hover:scale-102 transition-transform"
-              />
-            </div>
+        {/* Navigation Tabs Header */}
+        <div className="bg-white rounded-2xl p-2 border border-emerald-100 shadow-sm flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
+          <button
+            onClick={() => setActiveTab('greetings')}
+            className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === 'greetings'
+                ? 'bg-[#0F5132] text-white shadow-md'
+                : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'
+            }`}
+          >
+            <User className="w-4 h-4" />
+            <span>원장 인사말 및 프로필</span>
+          </button>
 
-            {/* Right: Legal Organization Card (Exact Spec) */}
-            <div className="lg:col-span-7 bg-stone-100/90 rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-4">
-              <div className="border-b border-stone-200 pb-3">
-                <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
-                  공식 지정 비영리법인
-                </span>
-                <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
-                  사단법인 한국외식창업교육원
-                </h2>
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === 'overview'
+                ? 'bg-[#0F5132] text-white shadow-md'
+                : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'
+            }`}
+          >
+            <Building2 className="w-4 h-4" />
+            <span>기관 개요 및 설립목적</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('directions')}
+            className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === 'directions'
+                ? 'bg-[#0F5132] text-white shadow-md'
+                : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'
+            }`}
+          >
+            <Award className="w-4 h-4" />
+            <span>미래지향적 12대 사업 방향</span>
+          </button>
+        </div>
+
+        {/* TAB 1: GREETINGS & PROFILE */}
+        {activeTab === 'greetings' && (
+          <GreetingsSection />
+        )}
+
+        {/* TAB 2: OVERVIEW & MISSION */}
+        {activeTab === 'overview' && (
+          <div className="space-y-12 animate-fadeIn">
+            {/* CORPORATE LEGAL PROFILE CARD */}
+            <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div className="lg:col-span-5 flex flex-col items-center justify-center p-4">
+                  <img
+                    src="/images/official_logo.png"
+                    alt="사단법인 한국외식창업교육원"
+                    className="w-full max-w-sm h-auto object-contain hover:scale-102 transition-transform"
+                  />
+                </div>
+
+                <div className="lg:col-span-7 bg-stone-100/90 rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-4">
+                  <div className="border-b border-stone-200 pb-3">
+                    <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
+                      공식 지정 비영리법인
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
+                      사단법인 한국외식창업교육원
+                    </h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-800 pt-1">
+                    <div className="flex items-start gap-3">
+                      <Building2 className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-xs text-gray-500 font-semibold block">법인명</span>
+                        <span className="font-extrabold text-gray-900">사단법인 한국외식창업교육원</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <Globe className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-xs text-gray-500 font-semibold block">영문명</span>
+                        <span className="font-extrabold text-gray-900">Korea Food Service Startup Education Center</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <UserCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-xs text-gray-500 font-semibold block">대표자</span>
+                        <span className="font-extrabold text-[#0F5132] text-base">안형상 이사장</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <Award className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-xs text-gray-500 font-semibold block">분야</span>
+                        <span className="font-extrabold text-gray-900">창업 외식 교육</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3 sm:col-span-2 pt-1 border-t border-stone-200/60">
+                      <Calendar className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                      <div>
+                        <span className="text-xs text-gray-500 font-semibold block">설립 및 허가일자</span>
+                        <span className="font-extrabold text-[#0F5132] text-base">2022년 7월 12일</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ESTABLISHMENT PURPOSE (설립목적) */}
+            <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm space-y-8">
+              <div className="border-b border-gray-100 pb-6 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#0F5132] text-white flex items-center justify-center font-black shadow-md">
+                  <Scale className="w-5 h-5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <span className="text-xs font-black text-emerald-600 tracking-widest uppercase block">
+                    MISSION
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                    설립목적
+                  </h2>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-800 pt-1">
-                <div className="flex items-start gap-3">
-                  <Building2 className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-gray-500 font-semibold block">법인명</span>
-                    <span className="font-extrabold text-gray-900">사단법인 한국외식창업교육원</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Globe className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-gray-500 font-semibold block">영문명</span>
-                    <span className="font-extrabold text-gray-900">Korea Food Service Startup Education Center</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <UserCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-gray-500 font-semibold block">대표자</span>
-                    <span className="font-extrabold text-[#0F5132] text-base">안형상 이사장</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Award className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-gray-500 font-semibold block">분야</span>
-                    <span className="font-extrabold text-gray-900">창업 외식 교육</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 sm:col-span-2 pt-1 border-t border-stone-200/60">
-                  <Calendar className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-gray-500 font-semibold block">설립 및 허가일자</span>
-                    <span className="font-extrabold text-[#0F5132] text-base">2022년 7월 12일</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* SECTION 1: ESTABLISHMENT PURPOSE (설립목적) */}
-        <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm space-y-8">
-          <div className="border-b border-gray-100 pb-6 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0F5132] text-white flex items-center justify-center font-black shadow-md">
-              <Scale className="w-5 h-5 stroke-[2.2]" />
-            </div>
-            <div>
-              <span className="text-xs font-black text-emerald-600 tracking-widest uppercase block">
-                MISSION
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                설립목적
-              </h2>
-            </div>
-          </div>
-
-          {/* Legal Statements Card Container in Light Green & Deep Green */}
-          <div className="bg-gradient-to-r from-emerald-50 via-white to-emerald-50/60 p-6 sm:p-8 rounded-2xl border border-emerald-200/80 shadow-xs space-y-5">
-            <div className="flex items-start gap-3.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 mt-2 shadow-xs" />
-              <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed tracking-tight">
-                본원은 <span className="text-[#0F5132] font-black">[민법] 제32조 (비영리법인의 설립과 허가)</span> 및 농림축산식품부 장관 및 그 소속 청장소관 비영리법인의 설립 및 감독에 관한규칙 제 5조의 규정에 의하여 설립됨.
-              </p>
-            </div>
-
-            <div className="flex items-start gap-3.5 pt-2 border-t border-emerald-100">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#0F5132] shrink-0 mt-2 shadow-xs" />
-              <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed tracking-tight">
-                본원은 <span className="text-emerald-700 font-black">농수축산물을 활용한 외식산업 발전</span>과 <span className="text-[#0F5132] font-black">외식창업교육</span>을 통해 외식산업 경쟁력에 기여함으로써, 국내 및 국외 외식산업을 발전시킴.
-              </p>
-            </div>
-          </div>
-
-          {/* 4 Pillars Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
-            {missionPillars.map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <div
-                  key={item.id}
-                  className="bg-emerald-50/40 rounded-2xl p-6 border border-emerald-100/70 hover:bg-white hover:shadow-md hover:border-emerald-300 transition-all group"
-                >
-                  <div className="w-12 h-12 rounded-2xl bg-[#0F5132] text-white flex items-center justify-center mb-4 shadow-md shadow-emerald-900/20 group-hover:scale-110 transition-transform">
-                    <IconComponent className="w-6 h-6 stroke-[2]" />
-                  </div>
-                  <h3 className="text-base font-bold text-gray-900 group-hover:text-emerald-800 transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-500 font-medium mt-2 leading-relaxed">
-                    {item.description}
+              <div className="bg-gradient-to-r from-emerald-50 via-white to-emerald-50/60 p-6 sm:p-8 rounded-2xl border border-emerald-200/80 shadow-xs space-y-5">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 mt-2 shadow-xs" />
+                  <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed tracking-tight">
+                    본원은 <span className="text-[#0F5132] font-black">[민법] 제32조 (비영리법인의 설립과 허가)</span> 및 농림축산식품부 장관 및 그 소속 청장소관 비영리법인의 설립 및 감독에 관한규칙 제 5조의 규정에 의하여 설립됨.
                   </p>
                 </div>
-              );
-            })}
+
+                <div className="flex items-start gap-3.5 pt-2 border-t border-emerald-100">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#0F5132] shrink-0 mt-2 shadow-xs" />
+                  <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed tracking-tight">
+                    본원은 <span className="text-emerald-700 font-black">농수축산물을 활용한 외식산업 발전</span>과 <span className="text-[#0F5132] font-black">외식창업교육</span>을 통해 외식산업 경쟁력에 기여함으로써, 국내 및 국외 외식산업을 발전시킴.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
+                {missionPillars.map((item) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <div
+                      key={item.id}
+                      className="bg-emerald-50/40 rounded-2xl p-6 border border-emerald-100/70 hover:bg-white hover:shadow-md hover:border-emerald-300 transition-all group"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-[#0F5132] text-white flex items-center justify-center mb-4 shadow-md shadow-emerald-900/20 group-hover:scale-110 transition-transform">
+                        <IconComponent className="w-6 h-6 stroke-[2]" />
+                      </div>
+                      <h3 className="text-base font-bold text-gray-900 group-hover:text-emerald-800 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-500 font-medium mt-2 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
           </div>
-        </section>
+        )}
 
-        {/* SECTION 2: DIRECTION (12대 사업 방향 Header Banner & Grid) */}
-        <section className="space-y-8">
-          <div className="text-center max-w-4xl mx-auto space-y-4">
-            <span className="text-xs sm:text-sm font-extrabold text-emerald-700 bg-emerald-100/70 px-4 py-1.5 rounded-full inline-block tracking-wider uppercase">
-              DIRECTION
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight">
-              외식산업 혁신과 글로벌 성장을 선도하는 <br className="hidden sm:inline" />
-              <span className="text-emerald-700">미래지향적 12대 사업 방향</span>
-            </h2>
-            <p className="text-base sm:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
-              외식 창업의 시작부터 성공까지, 체계적인 지원과 끊임없는 R&D 교육으로 대한민국 외식산업의 든든한 파트너가 되겠습니다.
-            </p>
-          </div>
+        {/* TAB 3: 12 DIRECTIONS */}
+        {activeTab === 'directions' && (
+          <section className="space-y-8 animate-fadeIn">
+            <div className="text-center max-w-4xl mx-auto space-y-4">
+              <span className="text-xs sm:text-sm font-extrabold text-emerald-700 bg-emerald-100/70 px-4 py-1.5 rounded-full inline-block tracking-wider uppercase">
+                DIRECTION
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+                외식산업 혁신과 글로벌 성장을 선도하는 <br className="hidden sm:inline" />
+                <span className="text-emerald-700">미래지향적 12대 사업 방향</span>
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
+                외식 창업의 시작부터 성공까지, 체계적인 지원과 끊임없는 R&D 교육으로 대한민국 외식산업의 든든한 파트너가 되겠습니다.
+              </p>
+            </div>
 
-          {/* 12 Rich Cards with Visible Photos Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {directions.map((dir) => {
-              const IconComponent = dir.icon;
-              const isSelected = selectedDirection === dir.id;
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+              {directions.map((dir) => {
+                const IconComponent = dir.icon;
+                const isSelected = selectedDirection === dir.id;
 
-              return (
-                <div
-                  key={dir.id}
-                  onClick={() => setSelectedDirection(dir.id)}
-                  className={`group bg-white rounded-3xl border overflow-hidden transition-all duration-300 flex flex-col justify-between cursor-pointer ${
-                    isSelected
-                      ? 'border-emerald-600 ring-2 ring-emerald-500/30 shadow-2xl scale-[1.02] z-20'
-                      : 'border-gray-200/90 hover:border-emerald-400 hover:shadow-xl'
-                  }`}
-                >
-                  {/* Top Crisp Concept Photo Container */}
-                  <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-gray-100 shrink-0">
-                    <img
-                      src={dir.bgImage}
-                      alt={dir.title}
-                      className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30" />
-                    
-                    {/* Top Pill Badges */}
-                    <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                      <span className="text-xs font-black px-3 py-1 rounded-full bg-[#0F5132] text-white shadow-md tracking-wider">
-                        {dir.num}
-                      </span>
-                      <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-sm">
-                        <IconComponent className="w-4 h-4 stroke-[2.2]" />
+                return (
+                  <div
+                    key={dir.id}
+                    onClick={() => setSelectedDirection(dir.id)}
+                    className={`group bg-white rounded-3xl border overflow-hidden transition-all duration-300 flex flex-col justify-between cursor-pointer ${
+                      isSelected
+                        ? 'border-emerald-600 ring-2 ring-emerald-500/30 shadow-2xl scale-[1.02] z-20'
+                        : 'border-gray-200/90 hover:border-emerald-400 hover:shadow-xl'
+                    }`}
+                  >
+                    <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-gray-100 shrink-0">
+                      <img
+                        src={dir.bgImage}
+                        alt={dir.title}
+                        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30" />
+                      
+                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                        <span className="text-xs font-black px-3 py-1 rounded-full bg-[#0F5132] text-white shadow-md tracking-wider">
+                          {dir.num}
+                        </span>
+                        <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-sm">
+                          <IconComponent className="w-4 h-4 stroke-[2.2]" />
+                        </div>
+                      </div>
+
+                      <div className="absolute bottom-3 left-4 right-4 text-white">
+                        <h3 className="text-base sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm">
+                          {dir.title}
+                        </h3>
                       </div>
                     </div>
 
-                    {/* Photo Title Overlay */}
-                    <div className="absolute bottom-3 left-4 right-4 text-white">
-                      <h3 className="text-base sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm">
-                        {dir.title}
-                      </h3>
-                    </div>
-                  </div>
+                    <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                      <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
+                        {dir.shortDesc}
+                      </p>
 
-                  {/* Bottom Content Body */}
-                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                    <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
-                      {dir.shortDesc}
-                    </p>
+                      <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-700">
+                        <span>{isSelected ? '상세 실행과제 접기' : '상세 실행과제 보기'}</span>
+                        {isSelected ? (
+                          <ChevronUp className="w-4 h-4 text-emerald-700" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-emerald-600" />
+                        )}
+                      </div>
 
-                    {/* Bottom Action Line */}
-                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-700">
-                      <span>{isSelected ? '상세 실행과제 접기' : '상세 실행과제 보기'}</span>
-                      {isSelected ? (
-                        <ChevronUp className="w-4 h-4 text-emerald-700" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-emerald-600" />
+                      {isSelected && (
+                        <div className="pt-4 border-t border-emerald-100 bg-emerald-50/70 -mx-5 -mb-5 p-4 space-y-2.5 animate-fadeIn rounded-b-3xl">
+                          {dir.details.map((detail, dIdx) => (
+                            <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-950 font-semibold leading-relaxed">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                              <span>{detail}</span>
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </div>
-
-                    {/* Expanded Detail View */}
-                    {isSelected && (
-                      <div className="pt-4 border-t border-emerald-100 bg-emerald-50/70 -mx-5 -mb-5 p-4 space-y-2.5 animate-fadeIn rounded-b-3xl">
-                        {dir.details.map((detail, dIdx) => (
-                          <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-950 font-semibold leading-relaxed">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                            <span>{detail}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
                   </div>
-
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Call-to-action Banner */}
-          <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-emerald-300">사단법인 한국외식창업교육원과 함께하는 창업 비전</span>
-              <h3 className="text-xl sm:text-2xl font-black tracking-tight">
-                체계적인 12대 전략으로 성공적인 외식 창업을 가꾸어 드립니다.
-              </h3>
+                );
+              })}
             </div>
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="px-6 py-3 bg-white text-[#0F5132] font-black text-sm rounded-xl hover:bg-emerald-50 transition-colors shrink-0 shadow-md flex items-center gap-2 cursor-pointer"
-            >
-              <span>상단으로 돌아가기</span>
-              <ArrowRight className="w-4 h-4 text-emerald-700" />
-            </button>
-          </div>
 
-        </section>
+            <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+              <div className="space-y-2">
+                <span className="text-xs font-bold text-emerald-300">사단법인 한국외식창업교육원과 함께하는 창업 비전</span>
+                <h3 className="text-xl sm:text-2xl font-black tracking-tight">
+                  체계적인 12대 전략으로 성공적인 외식 창업을 가꾸어 드립니다.
+                </h3>
+              </div>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="px-6 py-3 bg-white text-[#0F5132] font-black text-sm rounded-xl hover:bg-emerald-50 transition-colors shrink-0 shadow-md flex items-center gap-2 cursor-pointer"
+              >
+                <span>상단으로 돌아가기</span>
+                <ArrowRight className="w-4 h-4 text-emerald-700" />
+              </button>
+            </div>
+          </section>
+        )}
 
       </div>
     </div>
