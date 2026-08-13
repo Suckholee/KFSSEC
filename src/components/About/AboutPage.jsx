@@ -21,7 +21,10 @@ import {
   ArrowRight,
   CheckCircle2,
   Scale,
-  Sprout,
+  Building2,
+  Calendar,
+  UserCheck,
+  Globe,
 } from 'lucide-react';
 
 export default function AboutPage() {
@@ -230,23 +233,79 @@ export default function AboutPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen py-12">
-      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-16">
+      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-12">
         
-        {/* Banner Title */}
-        <div className="text-center max-w-4xl mx-auto space-y-4">
-          <span className="text-xs sm:text-sm font-extrabold text-emerald-700 bg-emerald-100/70 px-4 py-1.5 rounded-full inline-block tracking-wider uppercase">
-            사단법인 한국외식창업교육원
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight">
-            외식산업 혁신과 글로벌 성장을 선도하는 <br className="hidden sm:inline" />
-            <span className="text-emerald-700">미래지향적 12대 사업 방향</span>
-          </h1>
-          <p className="text-base sm:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
-            외식 창업의 시작부터 성공까지, 체계적인 지원과 끊임없는 R&D 교육으로 대한민국 외식산업의 든든한 파트너가 되겠습니다.
-          </p>
-        </div>
+        {/* TOP SECTION: CORPORATE LEGAL PROFILE CARD (Match User Image) */}
+        <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            {/* Left: Official Logo */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center p-4">
+              <img
+                src="/images/official_logo.png"
+                alt="사단법인 한국외식창업교육원"
+                className="w-full max-w-sm h-auto object-contain hover:scale-102 transition-transform"
+              />
+            </div>
 
-        {/* SECTION 1: ESTABLISHMENT PURPOSE (설립목적 - Official Legal Text Spec) */}
+            {/* Right: Legal Organization Card (Exact Spec) */}
+            <div className="lg:col-span-7 bg-stone-100/90 rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-4">
+              <div className="border-b border-stone-200 pb-3">
+                <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
+                  공식 지정 비영리법인
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
+                  사단법인 한국외식창업교육원
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-800 pt-1">
+                <div className="flex items-start gap-3">
+                  <Building2 className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs text-gray-500 font-semibold block">법인명</span>
+                    <span className="font-extrabold text-gray-900">사단법인 한국외식창업교육원</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Globe className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs text-gray-500 font-semibold block">영문명</span>
+                    <span className="font-extrabold text-gray-900">Korea Food Service Startup Education Center</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <UserCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs text-gray-500 font-semibold block">대표자</span>
+                    <span className="font-extrabold text-[#0F5132] text-base">안형상 이사장</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Award className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs text-gray-500 font-semibold block">분야</span>
+                    <span className="font-extrabold text-gray-900">창업 외식 교육</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 sm:col-span-2 pt-1 border-t border-stone-200/60">
+                  <Calendar className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-xs text-gray-500 font-semibold block">설립 및 허가일자</span>
+                    <span className="font-extrabold text-[#0F5132] text-base">2022년 7월 12일</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* SECTION 1: ESTABLISHMENT PURPOSE (설립목적) */}
         <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm space-y-8">
           <div className="border-b border-gray-100 pb-6 flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#0F5132] text-white flex items-center justify-center font-black shadow-md">
@@ -303,17 +362,18 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* SECTION 2: DIRECTION (12대 사업 방향 - Clear Visual Cards with Photos) */}
+        {/* SECTION 2: DIRECTION (12대 사업 방향 Header Banner & Grid) */}
         <section className="space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-black text-emerald-600 tracking-widest uppercase">
+          <div className="text-center max-w-4xl mx-auto space-y-4">
+            <span className="text-xs sm:text-sm font-extrabold text-emerald-700 bg-emerald-100/70 px-4 py-1.5 rounded-full inline-block tracking-wider uppercase">
               DIRECTION
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-              12대 사업 방향
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+              외식산업 혁신과 글로벌 성장을 선도하는 <br className="hidden sm:inline" />
+              <span className="text-emerald-700">미래지향적 12대 사업 방향</span>
             </h2>
-            <p className="text-sm text-gray-500 font-medium">
-              각 사업 카드를 클릭하시면 세부 추진 실행 과제가 펼쳐집니다.
+            <p className="text-base sm:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
+              외식 창업의 시작부터 성공까지, 체계적인 지원과 끊임없는 R&D 교육으로 대한민국 외식산업의 든든한 파트너가 되겠습니다.
             </p>
           </div>
 
