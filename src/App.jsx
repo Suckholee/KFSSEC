@@ -43,11 +43,11 @@ export default function App() {
         {currentView === 'landing' && (
           <>
             <Hero
-              onViewCatalog={() => {
+              onExploreClick={() => {
                 setCurrentView('catalog');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              onOpenAbout={() => handleOpenAboutTab('greetings')}
+              onAboutClick={() => handleOpenAboutTab('greetings')}
             />
             <Features />
             <PopularCourses
