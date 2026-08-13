@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
-import PopularCourses from './components/PopularCourses';
+import NetflixCoursesSection from './components/NetflixCoursesSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
@@ -69,17 +69,10 @@ export default function App() {
               <Features onScrollNext={handleScrollNext} />
             </section>
 
-            {/* Section 3: Popular Courses */}
-            <section className="scroll-snap-section flex flex-col justify-center py-6">
-              <PopularCourses
-                onSelectCourse={() => {
-                  setCurrentView('catalog');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                onViewAllClick={() => {
-                  setCurrentView('catalog');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+            {/* Section 3: Netflix-Style Course Catalog & Promo Banner */}
+            <section className="scroll-snap-section flex flex-col justify-center bg-[#091510]">
+              <NetflixCoursesSection
+                onSelectCourse={() => handleOpenAuth('login')}
                 onScrollNext={handleScrollNext}
               />
             </section>
