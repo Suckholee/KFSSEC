@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import Features from './components/Features';
+import EventBannerSection from './components/EventBannerSection';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
@@ -64,9 +64,12 @@ export default function App() {
               />
             </section>
 
-            {/* Section 2: Features & Why Us */}
-            <section className="scroll-snap-section flex flex-col justify-center bg-white py-6">
-              <Features onScrollNext={handleScrollNext} />
+            {/* Section 2: Event Strip Banner (지금 진행 중인 외식창업 이벤트 50% 할인) */}
+            <section className="scroll-snap-section flex flex-col justify-center bg-[#0c1015]">
+              <EventBannerSection
+                onEventClick={() => handleOpenAuth('login')}
+                onScrollNext={handleScrollNext}
+              />
             </section>
 
             {/* Section 3: Netflix-Style Course Catalog & Promo Banner */}
