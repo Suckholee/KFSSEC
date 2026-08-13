@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, ChevronDown, UtensilsCrossed, Award, ChefHat, Sparkles } from 'lucide-react';
+import { ChevronRight, ChevronDown, Award, Sparkles, Scissors } from 'lucide-react';
 
 export default function CategoryFocusSection({ onViewMoreClick, onSelectCourse, onScrollNext }) {
   
@@ -7,7 +7,7 @@ export default function CategoryFocusSection({ onViewMoreClick, onSelectCourse, 
     {
       id: 'cat-1',
       instructor: '김서연',
-      title: '외식 실전 조리 실무 입문',
+      title: '반려견 기초미용 입문',
       discount: '최대 20%',
       price: '100,000원',
       image: '/images/category_focus_1.jpg',
@@ -15,7 +15,7 @@ export default function CategoryFocusSection({ onViewMoreClick, onSelectCourse, 
     {
       id: 'cat-2',
       instructor: '박지훈',
-      title: '메뉴별 스페셜 조리법 실전',
+      title: '견종별 스타일링 실전',
       discount: '',
       price: '50,000원',
       image: '/images/category_focus_2.jpg',
@@ -23,7 +23,7 @@ export default function CategoryFocusSection({ onViewMoreClick, onSelectCourse, 
     {
       id: 'cat-3',
       instructor: '이수민',
-      title: '외식 매장 창업·고객관리',
+      title: '펫살롱 창업·고객관리',
       discount: '최대 16%',
       price: '100,000원',
       image: '/images/category_focus_3.jpg',
@@ -38,29 +38,23 @@ export default function CategoryFocusSection({ onViewMoreClick, onSelectCourse, 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
           {/* Left Category Focus Card (1/4 Width on Large Screens) */}
-          <div className="lg:col-span-3 bg-[#16221c] rounded-3xl p-6 border border-emerald-500/30 flex flex-col justify-between relative overflow-hidden shadow-xl min-h-[300px]">
+          <div className="lg:col-span-3 bg-[#1e1e1e] rounded-3xl p-6 border border-emerald-500/30 flex flex-col justify-between relative overflow-hidden shadow-xl min-h-[300px]">
             <div className="space-y-3 z-10">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-black">
-                <ChefHat className="w-3.5 h-3.5" />
-                <span>RECOMMENDED</span>
-              </div>
-
               <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                외식 실무 특화
+                펫미용
               </h3>
               
-              <p className="text-xs sm:text-sm text-gray-400 font-semibold leading-relaxed border-t border-emerald-800/40 pt-3">
-                가장 빠르게 실전 경력을 쌓는 방법
+              <p className="text-xs sm:text-sm text-gray-400 font-semibold leading-relaxed border-t border-gray-700/50 pt-3">
+                가장 빠르게 경력 쌓는 방법
               </p>
             </div>
 
-            {/* Decorative Vector Graphic Background Icon */}
-            <div className="mt-8 pt-6 border-t border-emerald-800/40 flex items-center justify-between z-10">
+            {/* Decorative Vector Graphic Icon */}
+            <div className="mt-8 pt-6 border-t border-gray-700/50 flex items-center justify-between z-10">
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
-                <Award className="w-4 h-4" />
-                <span>현장 실무 중심 100%</span>
+                <Scissors className="w-4 h-4" />
+                <span>체계적인 1:1 실무 교육</span>
               </div>
-              <UtensilsCrossed className="w-8 h-8 text-emerald-500/40" />
             </div>
 
             <div className="absolute -bottom-8 -right-8 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
