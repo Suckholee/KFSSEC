@@ -6,23 +6,23 @@ import PopularCourses from './components/PopularCourses';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import CourseModal from './components/CourseModal';
 import AuthModal from './components/AuthModal';
+import AboutModal from './components/AboutModal';
 import Footer from './components/Footer';
 
 export default function App() {
-  // Sync view state from URL query or hash
   const getInitialView = () => {
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has('industry') || searchParams.has('stage') || searchParams.has('format') || window.location.hash === '#catalog') {
       return 'catalog';
     }
-    return 'landing'; // Default to landing page on initial load, toggleable on click
+    return 'landing';
   };
 
   const [currentView, setCurrentView] = useState(getInitialView());
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [authMode, setAuthMode] = useState(null); // 'login' | 'signup' | null
+  const [aboutOpen, setAboutOpen] = useState(false);
 
-  // Listen to popstate (back/forward button)
   useEffect(() => {
     const handleHashOrPopState = () => {
       const searchParams = new URLSearchParams(window.location.search);
@@ -55,6 +55,7 @@ export default function App() {
         currentView={currentView}
         onViewChange={handleViewChange}
         onOpenAuth={(mode) => setAuthMode(mode)}
+        onOpenAbout={() => setAboutOpen(true)}
       />
 
       {/* Main Page Content */}
@@ -65,7 +66,7 @@ export default function App() {
           <>
             <Hero
               onExploreClick={() => handleViewChange('catalog')}
-              onAboutClick={() => alert('한국외식창업교육원은 외식업계 실무 전문가들이 만든 외식 창업 전담 교육 기관입니다.')}
+              onAboutClick={() => setAboutOpen(true)}
             />
             <Features />
             <PopularCourses
@@ -77,7 +78,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenAbout={() => setAboutOpen(true)} />
 
       {/* Modals */}
       {selectedCourse && (
@@ -91,6 +92,12 @@ export default function App() {
         <AuthModal
           initialMode={authMode}
           onClose={() => setAuthMode(null)}
+        />
+      )}
+
+      {aboutOpen && (
+        <AboutModal
+          onClose={() => setAboutOpen(false)}
         />
       )}
 

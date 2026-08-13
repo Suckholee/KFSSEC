@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Search, User, ChevronDown, Menu, X, BookOpen, Layers } from 'lucide-react';
+import { Search, User, ChevronDown, Menu, X, BookOpen, Sprout } from 'lucide-react';
 
-export default function Header({ currentView = 'landing', onViewChange, onOpenAuth }) {
+export default function Header({ currentView = 'landing', onViewChange, onOpenAuth, onOpenAbout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -12,7 +12,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
     {
       id: 'about',
       name: '교육원 소개',
-      subItems: ['원장 인사말', '교육원 연혁', '조직도', '오시는 길'],
+      subItems: ['개요 및 연혁', '원장 인사말', '조직도', '오시는 길'],
     },
     {
       id: 'catalog',
@@ -46,8 +46,10 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
     },
   ];
 
-  const handleNavClick = (id) => {
-    if (id === 'catalog' || id === 'partners' || id === 'about') {
+  const handleNavClick = (id, subItem = null) => {
+    if (id === 'about' || subItem === '개요 및 연혁') {
+      onOpenAbout();
+    } else if (id === 'catalog' || id === 'partners') {
       onViewChange('catalog');
     } else {
       onViewChange('catalog');
@@ -59,19 +61,31 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
     <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-gray-200/80 shadow-xs transition-all">
       <div className="w-full px-4 sm:px-8 lg:px-10 py-3.5 flex items-center justify-between">
         
-        {/* Logo (Colorful Leaf Book Emblem) */}
+        {/* Logo (Exact Official Emblem: 사단법인 한국외식창업교육원) */}
         <button
           onClick={() => onViewChange('landing')}
           className="flex items-center gap-3 group text-left cursor-pointer shrink-0"
         >
-          {/* Logo Icon with colorful stack */}
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-amber-500 to-brand-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
-            <Layers className="w-6 h-6 stroke-[2.2]" />
+          {/* Logo Emblem Symbol */}
+          <div className="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm group-hover:scale-105 transition-transform relative overflow-hidden">
+            <svg viewBox="0 0 100 100" className="w-9 h-9">
+              {/* Green Base Bowl */}
+              <path d="M 15,55 A 35,35 0 0,0 85,55 Z" fill="#10B981" />
+              {/* Leaves */}
+              <path d="M 50,45 C 40,25 30,30 35,48 Z" fill="#22C55E" />
+              <path d="M 50,45 C 50,20 60,20 58,45 Z" fill="#F97316" />
+              <path d="M 50,45 C 65,25 75,32 68,48 Z" fill="#0EA5E9" />
+            </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs font-bold text-gray-400 leading-none">사단법인</span>
-            <span className="font-black text-lg sm:text-xl tracking-tight text-gray-900 leading-tight">
+            <span className="text-[11px] font-extrabold text-[#1E2B4D] leading-none tracking-tight">
+              사단법인
+            </span>
+            <span className="font-black text-lg sm:text-xl tracking-tight text-[#1E2B4D] leading-tight">
               한국외식창업교육원
+            </span>
+            <span className="text-[9px] font-semibold tracking-wide text-stone-400">
+              Korea Food Service Startup Education Center
             </span>
           </div>
         </button>
@@ -110,8 +124,8 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                     {item.subItems.map((sub, sIdx) => (
                       <button
                         key={sIdx}
-                        onClick={() => handleNavClick(item.id)}
-                        className="w-full text-left px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 hover:bg-brand-50 hover:text-brand-600 transition-colors"
+                        onClick={() => handleNavClick(item.id, sub)}
+                        className="w-full text-left px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 hover:bg-brand-50 hover:text-brand-600 transition-colors cursor-pointer"
                       >
                         {sub}
                       </button>
@@ -123,7 +137,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
           })}
         </nav>
 
-        {/* Right Header Utilities: Search / 수강목록 / User Profile */}
+        {/* Right Header Utilities */}
         <div className="hidden sm:flex items-center gap-5 shrink-0">
           
           {/* Search Button */}
@@ -135,7 +149,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
             <Search className="w-5 h-5 stroke-[2.2]" />
           </button>
 
-          {/* 수강목록 (My Courses Link) */}
+          {/* 수강목록 */}
           <button
             onClick={() => handleNavClick('catalog')}
             className="text-sm font-bold text-gray-700 hover:text-brand-500 transition-colors cursor-pointer flex items-center gap-1.5"
@@ -144,7 +158,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
             <span>수강목록</span>
           </button>
 
-          {/* User Profile Circle Icon */}
+          {/* User Profile Icon */}
           <button
             onClick={() => onOpenAuth('login')}
             className="w-9 h-9 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 flex items-center justify-center transition-colors cursor-pointer"
@@ -173,7 +187,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         </div>
       </div>
 
-      {/* Expandable Search Input Bar */}
+      {/* Expandable Search Bar */}
       {searchOpen && (
         <div className="bg-gray-50 border-t border-b border-gray-200 px-4 sm:px-8 py-3 animate-fadeIn">
           <div className="max-w-3xl mx-auto flex items-center gap-3">
@@ -226,7 +240,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                       <button
                         key={sIdx}
                         onClick={() => {
-                          handleNavClick(item.id);
+                          handleNavClick(item.id, sub);
                           setMobileMenuOpen(false);
                         }}
                         className="w-full text-left py-1 text-xs font-medium text-gray-500 hover:text-brand-500"
