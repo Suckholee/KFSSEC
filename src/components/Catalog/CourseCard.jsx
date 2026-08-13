@@ -10,8 +10,8 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
   };
 
   const getFormatIcon = (fmt) => {
-    if (fmt === '온라인') return <Video className="w-3.5 h-3.5 text-gray-400" />;
-    return <MapPin className="w-3.5 h-3.5 text-gray-400" />;
+    if (fmt === '온라인') return <Video className="w-3.5 h-3.5 text-gray-400 shrink-0" />;
+    return <MapPin className="w-3.5 h-3.5 text-gray-400 shrink-0" />;
   };
 
   if (viewMode === 'list') {
@@ -36,7 +36,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
         <div className="flex-1 flex flex-col justify-between py-1">
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md">
+              <span className="text-xs font-extrabold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md whitespace-nowrap">
                 {course.industry}
               </span>
               <button
@@ -46,7 +46,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
                 <Bookmark className={`w-5 h-5 ${bookmarked ? 'fill-brand-500 text-brand-500' : ''}`} />
               </button>
             </div>
-            <h3 className="text-lg font-extrabold text-gray-900 mt-2 group-hover:text-brand-500 transition-colors">
+            <h3 className="text-lg font-extrabold text-gray-900 mt-2 group-hover:text-brand-500 transition-colors tracking-tight">
               {course.title}
             </h3>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 font-medium leading-relaxed">
@@ -55,17 +55,17 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
           </div>
 
           <div className="flex items-center justify-between pt-4 mt-2 border-t border-gray-100">
-            <div className="flex items-center gap-4 text-xs font-semibold text-gray-500">
+            <div className="flex items-center gap-3 text-xs font-semibold text-gray-500 whitespace-nowrap">
               <div className="flex items-center gap-1">
                 {getFormatIcon(course.format)}
-                <span>{course.format}</span>
+                <span className="whitespace-nowrap">{course.format}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-gray-400" />
-                <span>{course.duration}</span>
+                <Clock className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                <span className="whitespace-nowrap">{course.duration}</span>
               </div>
             </div>
-            <span className="text-base sm:text-lg font-black text-gray-900">
+            <span className="text-base sm:text-lg font-black text-gray-900 whitespace-nowrap shrink-0">
               {course.priceFormatted}
             </span>
           </div>
@@ -104,32 +104,32 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
       </div>
 
       {/* Card Content */}
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
         <div>
-          <span className="text-xs font-extrabold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md inline-block mb-2">
+          <span className="text-xs font-extrabold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md inline-block mb-2 whitespace-nowrap">
             {course.industry}
           </span>
-          <h3 className="text-base font-bold text-gray-900 group-hover:text-brand-500 transition-colors line-clamp-1">
+          <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-brand-500 transition-colors line-clamp-1 tracking-tight">
             {course.title}
           </h3>
-          <p className="text-xs text-gray-500 font-medium mt-1 line-clamp-2 leading-snug">
+          <p className="text-xs text-gray-500 font-medium mt-1.5 line-clamp-2 leading-relaxed tracking-tight">
             {course.description}
           </p>
         </div>
 
-        {/* Footer specs */}
-        <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-gray-500">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1">
+        {/* Footer specs with strict whitespace-nowrap */}
+        <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-gray-500 gap-1.5">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1 shrink-0">
               {getFormatIcon(course.format)}
-              <span>{course.format}</span>
+              <span className="whitespace-nowrap">{course.format}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-gray-400" />
-              <span>{course.duration}</span>
+            <div className="flex items-center gap-1 shrink-0">
+              <Clock className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+              <span className="whitespace-nowrap">{course.duration}</span>
             </div>
           </div>
-          <span className="text-sm font-black text-gray-900">
+          <span className="text-xs sm:text-sm font-black text-gray-900 whitespace-nowrap shrink-0">
             {course.priceFormatted}
           </span>
         </div>
