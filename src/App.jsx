@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -14,6 +14,8 @@ export default function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
 
+  const snapContainerRef = useRef(null);
+
   const handleOpenAuth = (mode = 'login') => {
     setAuthInitialMode(mode);
     setAuthModalOpen(true);
@@ -23,6 +25,13 @@ export default function App() {
     setAboutTab(tab);
     setCurrentView('about');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleScrollNext = () => {
+    if (snapContainerRef.current) {
+      const vh = snapContainerRef.current.clientHeight;
+      snapContainerRef.current.scrollBy({ top: vh, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -41,7 +50,7 @@ export default function App() {
       {/* Main Content Body with One-Scroll Fullpage Snap */}
       <main className="flex-1 overflow-hidden">
         {currentView === 'landing' ? (
-          <div className="scroll-snap-container no-scrollbar">
+          <div ref={snapContainerRef} className="scroll-snap-container no-scrollbar">
             {/* Section 1: Hero */}
             <section className="scroll-snap-section flex flex-col justify-center">
               <Hero
@@ -50,6 +59,7 @@ export default function App() {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 onAboutClick={() => handleOpenAboutTab('greetings')}
+                onScrollNext={handleScrollNext}
               />
             </section>
 

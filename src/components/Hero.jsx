@@ -1,9 +1,9 @@
 import React from 'react';
-import { ChevronRight, GraduationCap, Award, Building2 } from 'lucide-react';
+import { ChevronRight, GraduationCap, Award, Building2, ChevronDown } from 'lucide-react';
 
-export default function Hero({ onExploreClick, onAboutClick }) {
+export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
   return (
-    <section className="relative overflow-hidden bg-[#062d1b] min-h-[620px] flex items-center py-12 lg:py-16">
+    <section className="relative overflow-hidden bg-[#062d1b] min-h-[620px] h-full flex items-center py-12 lg:py-16">
       
       {/* 100% Full Opacity Raw Awards Photo Positioned on the Right (Completely Unobstructed) */}
       <div className="absolute inset-0 z-0 overflow-hidden flex justify-end">
@@ -121,6 +121,21 @@ export default function Hero({ onExploreClick, onAboutClick }) {
 
         </div>
       </div>
+
+      {/* Subtle Scroll Down Indicator Bar */}
+      <button
+        onClick={onScrollNext}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 group cursor-pointer"
+        aria-label="아래로 스크롤"
+      >
+        <span className="text-[10px] sm:text-[11px] font-black tracking-[0.25em] uppercase text-emerald-300/80 group-hover:text-emerald-300 transition-colors drop-shadow-sm">
+          SCROLL DOWN
+        </span>
+        <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 group-hover:bg-emerald-500/30 group-hover:text-white transition-all shadow-md animate-bounce">
+          <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+        </div>
+      </button>
+
     </section>
   );
 }
