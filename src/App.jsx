@@ -1,116 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import PopularCourses from './components/PopularCourses';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
-import CourseModal from './components/CourseModal';
-import AuthModal from './components/AuthModal';
-import AboutModal from './components/AboutModal';
 import Footer from './components/Footer';
+import AuthModal from './components/AuthModal';
 
 export default function App() {
-  const getInitialView = () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.has('industry') || searchParams.has('stage') || searchParams.has('format') || window.location.hash === '#catalog') {
-      return 'catalog';
-    }
-    if (window.location.hash === '#about') {
-      return 'about';
-    }
-    return 'landing';
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'catalog' | 'about'
+  const [aboutTab, setAboutTab] = useState('greetings'); // 'greetings' | 'overview' | 'directions'
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authInitialMode, setAuthInitialMode] = useState('login');
+
+  const handleOpenAuth = (mode = 'login') => {
+    setAuthInitialMode(mode);
+    setAuthModalOpen(true);
   };
 
-  const [currentView, setCurrentView] = useState(getInitialView());
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [authMode, setAuthMode] = useState(null);
-  const [aboutModalOpen, setAboutModalOpen] = useState(false);
-
-  useEffect(() => {
-    const handleHashOrPopState = () => {
-      const searchParams = new URLSearchParams(window.location.search);
-      if (searchParams.has('industry') || searchParams.has('stage') || searchParams.has('format') || window.location.hash === '#catalog') {
-        setCurrentView('catalog');
-      } else if (window.location.hash === '#about') {
-        setCurrentView('about');
-      } else if (window.location.hash === '#landing' || (!window.location.hash && !window.location.search)) {
-        setCurrentView('landing');
-      }
-    };
-    window.addEventListener('popstate', handleHashOrPopState);
-    return () => window.removeEventListener('popstate', handleHashOrPopState);
-  }, []);
-
-  const handleViewChange = (view) => {
-    setCurrentView(view);
-    if (view === 'catalog') {
-      window.location.hash = '#catalog';
-    } else if (view === 'about') {
-      window.location.hash = '#about';
-    } else {
-      window.location.hash = '';
-      window.history.pushState(null, '', window.location.pathname);
-    }
+  const handleOpenAboutTab = (tab = 'greetings') => {
+    setAboutTab(tab);
+    setCurrentView('about');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
-      
-      {/* Navigation Header */}
+    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-200 selection:text-emerald-900">
+      {/* Header */}
       <Header
         currentView={currentView}
-        onViewChange={handleViewChange}
-        onOpenAuth={(mode) => setAuthMode(mode)}
-        onOpenAbout={() => handleViewChange('about')}
+        onViewChange={(view) => {
+          setCurrentView(view);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenAuth={handleOpenAuth}
+        onOpenAboutTab={handleOpenAboutTab}
       />
 
-      {/* Main Page Content */}
-      <main className="flex-grow">
-        {currentView === 'catalog' ? (
-          <CourseCatalogPage />
-        ) : currentView === 'about' ? (
-          <AboutPage />
-        ) : (
+      {/* Main Content Body */}
+      <main className="flex-1">
+        {currentView === 'landing' && (
           <>
             <Hero
-              onExploreClick={() => handleViewChange('catalog')}
-              onAboutClick={() => handleViewChange('about')}
+              onViewCatalog={() => {
+                setCurrentView('catalog');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onOpenAbout={() => handleOpenAboutTab('greetings')}
             />
             <Features />
             <PopularCourses
-              onSelectCourse={(course) => setSelectedCourse(course)}
-              onViewAllClick={() => handleViewChange('catalog')}
+              onSelectCourse={() => {
+                setCurrentView('catalog');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
           </>
+        )}
+
+        {currentView === 'catalog' && (
+          <CourseCatalogPage
+            onSelectCourse={() => handleOpenAuth('login')}
+          />
+        )}
+
+        {currentView === 'about' && (
+          <AboutPage initialTab={aboutTab} />
         )}
       </main>
 
       {/* Footer */}
-      <Footer onOpenAbout={() => setAboutModalOpen(true)} />
+      <Footer
+        onViewChange={(view) => {
+          setCurrentView(view);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenAboutTab={handleOpenAboutTab}
+      />
 
-      {/* Modals */}
-      {selectedCourse && (
-        <CourseModal
-          course={selectedCourse}
-          onClose={() => setSelectedCourse(null)}
-        />
-      )}
-
-      {authMode && (
-        <AuthModal
-          initialMode={authMode}
-          onClose={() => setAuthMode(null)}
-        />
-      )}
-
-      {aboutModalOpen && (
-        <AboutModal
-          onClose={() => setAboutModalOpen(false)}
-        />
-      )}
-
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        initialMode={authInitialMode}
+      />
     </div>
   );
 }

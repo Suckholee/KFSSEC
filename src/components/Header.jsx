@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Search, User, ChevronDown, Menu, X, BookOpen } from 'lucide-react';
 
-export default function Header({ currentView = 'landing', onViewChange, onOpenAuth, onOpenAbout }) {
+export default function Header({ currentView = 'landing', onViewChange, onOpenAuth, onOpenAboutTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Top Header Menu Items from exact Client Spec
+  // Top Header Menu Items with Exact Matching Order
   const navItems = [
     {
       id: 'about',
       name: '교육원 소개',
-      subItems: ['설립 목적 및 12대 사업', '원장 인사말', '조직도', '오시는 길'],
+      subItems: ['원장 인사말', '기관 개요 및 설립목적', '12대 사업 방향', '조직도', '오시는 길'],
     },
     {
       id: 'catalog',
@@ -47,8 +47,14 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
   ];
 
   const handleNavClick = (id, subItem = null) => {
-    if (id === 'about' || subItem === '설립 목적 및 12대 사업') {
-      onViewChange('about');
+    if (id === 'about') {
+      if (subItem === '기관 개요 및 설립목적') {
+        onOpenAboutTab('overview');
+      } else if (subItem === '12대 사업 방향') {
+        onOpenAboutTab('directions');
+      } else {
+        onOpenAboutTab('greetings');
+      }
     } else if (id === 'catalog' || id === 'partners') {
       onViewChange('catalog');
     } else {

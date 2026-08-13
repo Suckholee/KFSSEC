@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GreetingsSection from './GreetingsSection';
 import {
   Target,
@@ -29,9 +29,15 @@ import {
   User,
 } from 'lucide-react';
 
-export default function AboutPage() {
-  const [activeTab, setActiveTab] = useState('greetings'); // 'overview' | 'greetings' | 'directions'
+export default function AboutPage({ initialTab = 'greetings' }) {
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedDirection, setSelectedDirection] = useState(1);
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
 
   // Section 1: 4 Mission Pillars
   const missionPillars = [
@@ -238,7 +244,7 @@ export default function AboutPage() {
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-10">
         
-        {/* Navigation Tabs Header */}
+        {/* Navigation Tabs Header (Matching Header Order Exactly) */}
         <div className="bg-white rounded-2xl p-2 border border-emerald-100 shadow-sm flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
           <button
             onClick={() => setActiveTab('greetings')}
@@ -273,7 +279,7 @@ export default function AboutPage() {
             }`}
           >
             <Award className="w-4 h-4" />
-            <span>미래지향적 12대 사업 방향</span>
+            <span>12대 사업 방향</span>
           </button>
         </div>
 
