@@ -1,98 +1,78 @@
 import React from 'react';
-import { CheckCircle2, GraduationCap, Award, BookOpen, Presentation, Briefcase, Utensils } from 'lucide-react';
+import { Award, GraduationCap, Briefcase, BookOpen, Presentation, CheckCircle, Scale } from 'lucide-react';
 
 export default function GreetingsSection() {
-  const highlightPoints = [
+  const profileSections = [
     {
-      num: '1',
-      title: '실무중심의 전문 교육',
-      desc: '이론에 그치지 않고 현장에 즉시 적용할 수 있는 실전 노하우를 교육합니다.',
-    },
-    {
-      num: '2',
-      title: '맞춤형 컨설팅',
-      desc: '예비 창업자의 입지, 예산, 브랜드 콘셉트에 맞춘 1:1 밀착 솔루션을 제공합니다.',
-    },
-    {
-      num: '3',
-      title: '품질 및 위생관리 시스템',
-      desc: '신뢰할 수 있는 매장 운영을 위해 최고 수준의 품질 및 위생 관리 기준을 전수합니다.',
-    },
-    {
-      num: '4',
-      title: '지속적인 사후관리 지원',
-      desc: '단순 교육에 그치지 않고 창업 후 지속적인 경영 개선과 모니터링을 함께합니다.',
-    },
-  ];
-
-  const profileData = [
-    {
-      category: '학력',
+      title: '학력',
       icon: GraduationCap,
       items: [
-        '세종대학교 외식경영학 석사',
-        '경기대학교 외식조리경영학 경영학 박사 수료',
-        '세종대학교 외식창업 최고위과정 수료',
+        '캐롤라인대학교 경영학박사',
+        '동의대학교 대학원 박사수료 (호텔,외식,관광)',
+        '강릉원주대학교 박사 수료 (관광,외식)',
       ],
     },
     {
-      category: '외식브랜드',
-      icon: Utensils,
-      items: [
-        '㈜외식창업 대표이사',
-        '㈜프랜차이즈 대표이사',
-        '다수의 외식 브랜드 대표 및 전담 브랜딩 개발',
-        '한식·일식·카페 시그니처 메뉴 개발 총괄',
-        '프랜차이즈 가맹점 100여 개소 운영 및 관리',
-      ],
-    },
-    {
-      category: '경력',
+      title: '경력(40년)',
       icon: Briefcase,
       items: [
-        '사단법인 한국외식창업교육원 이사장/원장 (2022~현재)',
-        '소상공인시장진흥공단 외식 전문 컨설턴트',
-        '농림축산식품부 외식산업 자문위원',
-        '경기대학교 외식조리경영학과 겸임교수',
-        '전국외식업경영자연합회 이사',
-        '국내 주요 외식 프랜차이즈 총괄대표 및 경영고문',
+        '웨스틴 조선호텔',
+        '리츠칼튼호텔',
+        '산피아 후쿠오카 리조트',
+        '풀만 앰버서더 호텔',
+        '쥬레스 가든 컨벤션 & 웨딩',
       ],
     },
     {
-      category: '저서',
+      title: '심사',
+      icon: Scale,
+      items: [
+        '조리기능장, 기능사, 산업기사 2005~2007년 실기심사위원',
+        '전국 기능올림픽위원회 실기 심사위원',
+        '지방 기능올림픽위원회 실기 심사위원',
+        '중국약선협회 약선요리 실기 심사위원',
+        '세계 음식 박람회 각 단체별 실기 심사위원',
+        '대한민국 전통주 조주사 국가대표선발전 실기 심사위원',
+      ],
+    },
+    {
+      title: '저서',
       icon: BookOpen,
       items: [
-        '외식창업 성공방정식 (Fast Track to Success)',
-        '프랜차이즈 시스템 구축 실무 (Franchise System)',
-        '소상공인 외식창업 가이드북 (Small Business Guide)',
-        '외식업 메뉴 개발과 마케팅 전략 (Menu & Marketing Strategy)',
+        'NCS에 의한 양식조리기능사 Westen Cuisine',
+        '고급서양조리 The Professional Western Cuisine',
+        '소비자가 선호하는 외식업체의 고객만족도 요인에 관한 연구',
+        '호텔레스토랑의 식공간 연출이 고객감정반응과 행동의도에 미치는 영향에 관한 연구',
       ],
     },
     {
-      category: '강의',
+      title: '강의',
       icon: Presentation,
       items: [
-        '외식창업 실무 및 상권분석 전담 강의',
-        '프랜차이즈 가맹사업 성공 노하우 특강',
-        '소상공인 외식업 매출 증대 마케팅 특강',
-        '외식업 메뉴 개발 및 원가 관리 강의',
-        '외식업 수강생 대상 1:1 맞춤 창업 멘토링',
-        '국비지원 외식 창업자 교육 실무 강의',
-        '지자체 외식업 활성화 프로젝트 전담 강사',
+        '현) 한국외식창업교육원 교수',
+        '현) 청년상인 육성재단 청년상인 지원단',
+        '중소벤처기업부 소상공인지원단 전담교수',
+        '산업인력관리공단 취업교육 강사(기초기능서비스업)',
+        '동의대학교 외식조리와 겸임교수',
+        '한중대학교 외식산업학과 겸임교수',
+        '창신대학교 호텔 조리과 겸임교수',
+        '창원시 청소년 직업상담 진로교육 상담위',
+        '창원문성대학교 식품조리와 겸임교수',
       ],
     },
     {
-      category: '수상',
+      title: '상장',
       icon: Award,
       items: [
-        '농림축산식품부 장관 표창 (외식산업 발전 공로)',
-        '소상공인연합회 대한민국 소상공인 대상 수상',
-        '서울특별시 시장 표창 (외식 창업 활성화 기여)',
-        '대한민국 외식산업대상 외식경영대상 수상',
-        '경기도지사 표창 (지역 외식산업 발전 공로)',
-        '한국외식경영학회 외식경영대상 수상',
-        '외식산업발전 우수 유공자 정부 표창',
-        '소상공인 자문 공로상 및 감사패 다수 수상',
+        '문화체육부 장관상(대상) 2015년 전통음식부분',
+        '문화체육부 장관상(대상) 2014년 건강음식부분',
+        '서울특별시장상(우수상) 2014년 일반부 단체부분',
+        '서울특별시장상(대상) 2013년 라이브 요리 부분',
+        '중국 남경시 약선요리대회 백금상(2등) 2011년 개인부분',
+        '한국국제요리경영대회 금상 2010년 향토음식',
+        '경상남도 도지사상 우수상 2008년 향토음식 개인요리 부분',
+        '한국산업인력공단 경남지사장상 금상 2006년 개인요리 부분',
+        '2005산청한방 웰빙요리대회 대상 2005년 개인 종합 최우수 부분',
       ],
     },
   ];
@@ -107,8 +87,8 @@ export default function GreetingsSection() {
             GREETINGS & VISION
           </span>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight">
-            "미래를 선도하는 외식창업의 동반자,<br className="hidden sm:inline" />
-            <span className="text-emerald-300"> 한국외식창업교육원</span>"
+            " 미래를 선도하는<br className="hidden sm:inline" />
+            <span className="text-emerald-300"> 외식산업의 동반자, 한국외식창업교육원 </span>"
           </h2>
         </div>
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-emerald-500/10 rounded-r-3xl pointer-events-none" />
@@ -118,99 +98,117 @@ export default function GreetingsSection() {
       <div className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* Left Column: Portrait & Title Box */}
+          {/* Left Column: Portrait Photo & Title Box */}
           <div className="lg:col-span-4 space-y-4">
             <div className="relative rounded-2xl overflow-hidden shadow-lg border border-emerald-100 bg-stone-100 aspect-[3/4]">
               <img
                 src="/images/chairman_ahn_real.jpg?v=2"
-                alt="안형상 이사장/원장"
+                alt="안형상 이사장"
                 className="w-full h-full object-cover object-top hover:scale-103 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <span className="text-xs font-bold text-emerald-300 block">이사장 / 원장</span>
-                <span className="text-xl font-black tracking-tight">안형상</span>
-              </div>
             </div>
 
-            <div className="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200/80 text-xs sm:text-sm space-y-1">
-              <span className="font-bold text-emerald-900 block">사단법인 한국외식창업교육원</span>
-              <p className="text-gray-600 font-medium">
-                이사장/원장 <strong className="text-gray-900">안형상</strong>
-              </p>
+            <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200/80 text-sm space-y-1">
+              <span className="font-extrabold text-gray-900 text-base block">안녕하십니까?</span>
+              <span className="text-gray-700 font-bold block">사단법인</span>
+              <span className="text-gray-900 font-black text-lg block">한국외식창업교육원</span>
+              <span className="text-[#0F5132] font-black text-lg block">
+                이사장 안형상<span className="text-gray-800 font-semibold text-sm">입니다.</span>
+              </span>
             </div>
           </div>
 
-          {/* Right Column: Full Greeting Text */}
+          {/* Right Column: Full Original Greeting Speech Text */}
           <div className="lg:col-span-8 space-y-6 text-gray-700 font-medium text-sm sm:text-base leading-relaxed">
             
-            <div className="space-y-4">
-              <p className="text-lg font-bold text-gray-900">
-                안녕하십니까! 사단법인 한국외식창업교육원 이사장/원장 안형상입니다.
+            {/* Opening Paragraphs */}
+            <div className="space-y-4 border-b border-gray-100 pb-6">
+              <h3 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                안녕하십니까? 사단법인 한국외식창업교육원 이사장 안형상입니다.
+              </h3>
+              <p className="text-gray-800 font-medium">
+                먼저 저희 한국외식창업교육원 홈페이지를 방문해 주신 여러분께 깊은 감사의 말씀을 전합니다.
               </p>
               <p>
-                우리 한국외식창업교육원을 찾아주신 예비 창업자 및 외식업계 종사자 여러분께 진심으로 감사드립니다.
+                외식산업은 단순히 먹거리를 제공하는 것을 넘어, 사람들의 삶에 풍요와 행복을 더하며, 문화와 가치를 창출하는 중요한 산업으로 자리 잡았습니다. 급변하는 시대 속에서 외식산업은 창의성과 혁신, 그리고 진정성을 요구받고 있으며, 이러한 변화는 무한한 가능성과 도전의 기회를 열어주고 있습니다.
               </p>
               <p>
-                외식산업은 단순한 먹거리를 제공하는 창업을 넘어, 세련된 시각과 창의적인 서비스를 접목하는 창조적 산업으로 발전하고 있습니다. 그러나 체계적인 준비와 전문 지식 없이 시작하는 외식 창업은 수많은 위험을 내포하고 있습니다.
+                사단법인 한국외식창업교육원은 "미래를 선도하는 외식산업의 동반자"라는 사명을 바탕으로, 창업을 준비하시는 분들과 현업에서 활동하고 계신 분들께 실질적이고 미래 지향적인 교육을 제공하기 위해 최선을 다하고 있습니다.
               </p>
               <p>
-                이에 사단법인 한국외식창업교육원은 예비 창업자와 기존 외식업 경영주들이 성공적인 창업과 지속 가능한 성장을 이룰 수 있도록, 실무 중심의 전문 교육과 맞춤형 컨설팅을 제공하고 있습니다. 다양한 업종별·단계별 교육 커리큘럼을 비롯하여, 현장 실습 및 R&D, 경영 노하우 전수까지 포함된 통합 시스템을 통해 성공 창업의 길을 열어드리고 있습니다.
+                우리는 여러분의 꿈과 비전을 실현할 수 있도록 든든한 동반자로 함께하며, 지속 가능한 외식산업 생태계를 구축하기 위해 노력하고 있습니다.
               </p>
             </div>
 
-            {/* 4 Highlight Points */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-3">
-              {highlightPoints.map((pt) => (
-                <div
-                  key={pt.num}
-                  className="bg-stone-50 p-4 rounded-2xl border border-stone-200/80 space-y-1.5 hover:border-emerald-300 hover:bg-emerald-50/40 transition-colors"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-[#0F5132] text-white text-xs font-black flex items-center justify-center shrink-0">
-                      {pt.num}
-                    </span>
-                    <h4 className="text-sm font-bold text-gray-900 underline decoration-emerald-400 decoration-2 underline-offset-4">
-                      {pt.title}
-                    </h4>
-                  </div>
-                  <p className="text-xs text-gray-600 font-medium leading-normal pl-8">
-                    {pt.desc}
+            {/* I. 교육원의 운영 목표 */}
+            <div className="space-y-3 pt-2">
+              <h4 className="text-lg font-black text-gray-900 inline-block bg-emerald-100/80 text-emerald-950 px-3 py-1 rounded-md">
+                I. 교육원의 운영 목표
+              </h4>
+              <p className="text-xs sm:text-sm text-gray-600 font-semibold">
+                다음과 같은 세 가지 핵심 목표를 중심으로 운영되고 있습니다.
+              </p>
+
+              <div className="space-y-3 pt-1">
+                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/80 space-y-1">
+                  <h5 className="font-bold text-gray-900 text-sm sm:text-base text-[#0F5132]">
+                    1. 미래지향적 교육
+                  </h5>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">
+                    빠르게 변화하는 외식 트렌드와 최신 기술을 반영한 교육 프로그램을 통해 시대를 앞서가는 전문가를 양성합니다.
                   </p>
                 </div>
-              ))}
+
+                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/80 space-y-1">
+                  <h5 className="font-bold text-gray-900 text-sm sm:text-base text-[#0F5132]">
+                    2. 창업의 희망과 비전 제시
+                  </h5>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">
+                    단순히 성공을 넘어 지속 가능한 성장을 이루는 창업 모델과 전략을 제안합니다.
+                  </p>
+                </div>
+
+                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/80 space-y-1">
+                  <h5 className="font-bold text-gray-900 text-sm sm:text-base text-[#0F5132]">
+                    3. 진취적이고 혁신적인 지원
+                  </h5>
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">
+                    창업자와 현업 종사자들이 새로운 도전을 두려움 없이 이어갈 수 있도록 실질적인 도움과 네트워크를 제공합니다.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Sub Section 1: 지속 가능한 성장과 상생의 가치 */}
-            <div className="space-y-2 pt-2">
-              <h4 className="text-base font-black text-[#0F5132] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>지속 가능한 성장과 상생의 가치</span>
+            {/* II. 외식산업 발전과 세계화 */}
+            <div className="space-y-3 pt-3 border-t border-gray-100">
+              <h4 className="text-lg font-black text-gray-900 inline-block bg-emerald-100/80 text-emerald-950 px-3 py-1 rounded-md">
+                II. 외식산업 발전과 세계화
               </h4>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                우리 교육원은 단순히 외식업체를 늘리는 데 그치지 않고, 소상공인과 함께 성장하며 상생하는 외식 생태계를 만드는 데 기여하고자 합니다. 지역 사회와의 상생, 로컬 식자재 활용, 지속 가능한 경영 모델 개발을 통해 외식산업의 선순환 구조를 만들어 가고 있습니다.
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+                특히, 저희는 농수축산물을 활용한 외식산업 발전과 우리 음식을 세계화하는 데에 큰 비전을 두고 있습니다. 국내 농축산물을 기반으로 한 혁신적인 음식 개발과 해외 홍보를 통해, 한국 음식이 세계 속에서 조화를 이루며 성장할 수 있도록 최선을 다하고 있습니다.
+              </p>
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+                또한, 퇴직자 및 실버 세대를 위한 웰빙 요리 교육, 식문화 개선을 위한 연구, 우수 회원사 및 명인 발굴과 같은 다양한 활동도 적극적으로 전개하고 있습니다.
               </p>
             </div>
 
-            {/* Sub Section 2: 혁신을 선도하는 파트너 */}
-            <div className="space-y-2">
-              <h4 className="text-base font-black text-[#0F5132] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>혁신을 선도하는 파트너</span>
+            {/* III. 함께 성장하는 동반자 */}
+            <div className="space-y-3 pt-3 border-t border-gray-100">
+              <h4 className="text-lg font-black text-gray-900 inline-block bg-emerald-100/80 text-emerald-950 px-3 py-1 rounded-md">
+                III. 함께 성장하는 동반자
               </h4>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                사단법인 한국외식창업교육원은 시대의 변화를 읽고, AI·푸드테크 등 차세대 외식 트렌드를 빠르게 선도해 나가고 있습니다. 도전과 혁신을 멈추지 않는 여러분의 든든한 페이스메이커로서 언제나 곁에서 함께하겠습니다.
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+                저희 한국외식창업교육원은 여러분과 함께 고민하고 성장하며, 대한민국 외식산업의 밝은 미래를 열어가는 데 헌신할 것입니다. 외식 창업을 꿈꾸는 모든 분들이 새로운 도전을 통해 희망과 성공의 결실을 맺을 수 있도록 저희의 모든 역량을 아낌없이 지원하겠습니다.
+              </p>
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+                앞으로도 저희 교육원이 제시하는 길이 여러분의 꿈과 열정에 힘을 실어드리기를 진심으로 바랍니다. 지속적인 관심과 성원을 부탁드리며, 여러분과 함께 더 나은 내일을 만들어가겠습니다. 감사합니다.
               </p>
             </div>
 
-            <p className="pt-2 text-gray-800 font-medium">
-              여러분의 성공 창업과 외식산업의 발전을 위해 최선을 다할 것을 약속드립니다. 감사합니다.
-            </p>
-
-            <div className="pt-4 text-right">
-              <span className="text-sm font-bold text-gray-500 block">사단법인 한국외식창업교육원</span>
-              <span className="text-lg font-black text-gray-900 tracking-tight">
-                이사장/원장 <span className="text-[#0F5132] text-xl font-extrabold ml-1">안 형 상</span>
+            {/* Signature */}
+            <div className="pt-6 text-right border-t border-gray-100">
+              <span className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight font-serif italic">
+                이사장 <span className="text-[#0F5132] not-italic ml-1">안형상</span>
               </span>
             </div>
 
@@ -219,48 +217,61 @@ export default function GreetingsSection() {
         </div>
       </div>
 
-      {/* BOTTOM SECTION: AN HYEONG-SANG CHAIRMAN FULL PROFILE */}
+      {/* BOTTOM SECTION: EXACT AN HYEONG-SANG PROFILE (Matching User Screenshot) */}
       <div className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm space-y-8">
         
         {/* Profile Card Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-6">
-          <div>
-            <span className="text-xs font-black text-emerald-600 tracking-widest uppercase block">
-              CHAIRMAN PROFILE
-            </span>
+        <div className="flex flex-col sm:flex-row sm:items-start gap-6 border-b border-gray-200 pb-8">
+          <div className="w-28 sm:w-36 aspect-[3/4] rounded-2xl overflow-hidden border border-emerald-100 bg-stone-100 shrink-0 shadow-sm">
+            <img
+              src="/images/chairman_ahn_real.jpg?v=2"
+              alt="안형상 이사장"
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+
+          <div className="space-y-3">
             <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
               안형상 이사장님 프로필
             </h3>
-          </div>
-          <div className="bg-emerald-50 px-4 py-2 rounded-2xl border border-emerald-200/80 text-xs font-bold text-emerald-900 self-start sm:self-auto">
-            국내 외식 경영·컨설팅 전문가 20여 년
+            <div className="space-y-1 text-sm sm:text-base font-bold text-gray-800">
+              <p className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>대한민국 외식명장</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>사)한국외식 창업교육원 원장</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>대한민국 조리 명인 (사)한국외식창업교육원</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>국가 공인 대한민국 조리기능장 2003년</span>
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Profile Sections Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {profileData.map((sec, idx) => {
+        {/* Profile Section Rows */}
+        <div className="space-y-6 divide-y divide-gray-100">
+          {profileSections.map((sec, idx) => {
             const IconComp = sec.icon;
             return (
-              <div
-                key={idx}
-                className="bg-stone-50/80 rounded-2xl p-6 border border-stone-200/80 hover:bg-white hover:border-emerald-300 hover:shadow-md transition-all space-y-3"
-              >
-                <div className="flex items-center gap-2.5 text-[#0F5132]">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100/80 flex items-center justify-center shrink-0">
-                    <IconComp className="w-4 h-4 stroke-[2.2]" />
-                  </div>
-                  <h4 className="text-base font-black tracking-tight">{sec.category}</h4>
+              <div key={idx} className="pt-6 first:pt-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+                <div className="md:col-span-3 flex items-center gap-2 text-gray-900 font-black text-base sm:text-lg">
+                  <IconComp className="w-5 h-5 text-[#0F5132] shrink-0" />
+                  <span>{sec.title}</span>
                 </div>
-
-                <ul className="space-y-1.5 text-xs sm:text-sm text-gray-700 font-medium pt-1">
+                <div className="md:col-span-9 space-y-1.5 text-xs sm:text-sm text-gray-700 font-medium">
                   {sec.items.map((item, itemIdx) => (
-                    <li key={itemIdx} className="flex items-start gap-2">
-                      <span className="text-emerald-600 font-bold shrink-0 mt-0.5">•</span>
-                      <span className="leading-snug">{item}</span>
-                    </li>
+                    <p key={itemIdx} className="leading-relaxed">
+                      {item}
+                    </p>
                   ))}
-                </ul>
+                </div>
               </div>
             );
           })}
