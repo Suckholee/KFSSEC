@@ -122,7 +122,7 @@ export default function GreetingsSection() {
           <div className="lg:col-span-4 space-y-4">
             <div className="relative rounded-2xl overflow-hidden shadow-lg border border-emerald-100 bg-stone-100 aspect-[3/4]">
               <img
-                src="/images/chairman_ahn.jpg"
+                src="/images/chairman_ahn_real.jpg?v=2"
                 alt="안형상 이사장/원장"
                 className="w-full h-full object-cover object-top hover:scale-103 transition-transform duration-500"
               />
