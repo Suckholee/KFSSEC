@@ -65,7 +65,7 @@ export default function App() {
 
             {/* Section 2: Features & Why Us */}
             <section className="scroll-snap-section flex flex-col justify-center bg-white py-6">
-              <Features />
+              <Features onScrollNext={handleScrollNext} />
             </section>
 
             {/* Section 3: Popular Courses */}
@@ -75,6 +75,11 @@ export default function App() {
                   setCurrentView('catalog');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
+                onViewAllClick={() => {
+                  setCurrentView('catalog');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onScrollNext={handleScrollNext}
               />
             </section>
 

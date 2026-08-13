@@ -1,7 +1,7 @@
 import React from 'react';
-import { Clock, BookOpen, ChevronRight } from 'lucide-react';
+import { Clock, BookOpen, ChevronRight, ChevronDown } from 'lucide-react';
 
-export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
+export default function PopularCourses({ onSelectCourse, onViewAllClick, onScrollNext }) {
   const courses = [
     {
       id: 1,
@@ -58,7 +58,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
   ];
 
   return (
-    <section id="courses" className="py-16 bg-white">
+    <section id="courses" className="relative py-16 bg-white h-full flex flex-col justify-center">
       <div className="w-full px-4 sm:px-8 lg:px-12">
         
         {/* Section Header */}
@@ -130,6 +130,22 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
         </div>
 
       </div>
+
+      {/* Subtle Scroll Down Indicator Bar */}
+      {onScrollNext && (
+        <button
+          onClick={onScrollNext}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 group cursor-pointer"
+          aria-label="아래로 스크롤"
+        >
+          <span className="text-[10px] sm:text-[11px] font-black tracking-[0.25em] uppercase text-gray-400 group-hover:text-emerald-700 transition-colors">
+            SCROLL DOWN
+          </span>
+          <div className="w-7 h-7 rounded-full bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-600 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-xs animate-bounce">
+            <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+          </div>
+        </button>
+      )}
     </section>
   );
 }
