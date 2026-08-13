@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Youtube, Play, ExternalLink, ChevronDown, Radio, Award } from 'lucide-react';
+import { Youtube, Play, ExternalLink, ChevronDown } from 'lucide-react';
 import YouTubeModal from './YouTubeModal';
 
 export default function YouTubeMediaSection({ onScrollNext }) {
@@ -13,7 +13,7 @@ export default function YouTubeMediaSection({ onScrollNext }) {
       channel: '한국외식창업교육원 공식 채널',
       categoryBadge: '공식 채널 영상',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-      embedUrl: 'https://www.youtube.com/embed/ZDZFUpS0fFE',
+      thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/hqdefault.jpg',
     },
     {
       id: 'E_WgebIP_SY',
@@ -22,7 +22,7 @@ export default function YouTubeMediaSection({ onScrollNext }) {
       channel: '아시아창의방송 (actv) 언론 보도',
       categoryBadge: '언론 보도 영상',
       badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30',
-      embedUrl: 'https://www.youtube.com/embed/E_WgebIP_SY',
+      thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/hqdefault.jpg',
     },
   ];
 
@@ -57,22 +57,35 @@ export default function YouTubeMediaSection({ onScrollNext }) {
           </a>
         </div>
 
-        {/* 2-Column Responsive YouTube Videos Player Grid */}
+        {/* 2-Column Responsive YouTube Video Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {videos.map((video) => (
             <div
               key={video.id}
-              className="bg-[#0f1f18] rounded-3xl border border-emerald-500/20 overflow-hidden shadow-xl hover:shadow-2xl hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between group"
+              onClick={() => setSelectedVideo(video)}
+              className="bg-[#0f1f18] rounded-3xl border border-emerald-500/20 overflow-hidden shadow-xl hover:shadow-2xl hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
             >
-              {/* YouTube Embedded Video Player Box */}
+              {/* YouTube Thumbnail Box with Large Red Play Button */}
               <div className="relative aspect-video w-full bg-black overflow-hidden">
-                <iframe
-                  src={video.embedUrl}
-                  title={video.title}
-                  className="w-full h-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
+                <img
+                  src={video.thumbnail}
+                  alt={video.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 brightness-95"
                 />
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
+
+                {/* Prominent YouTube Red Play Icon */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-12 rounded-2xl bg-red-600 group-hover:bg-red-500 text-white flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform">
+                    <Play className="w-7 h-7 fill-current ml-1" />
+                  </div>
+                </div>
+
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-bold text-white drop-shadow-md">
+                  <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md text-emerald-300 border border-white/20">
+                    HD 동영상 재생
+                  </span>
+                </div>
               </div>
 
               {/* Video Info Details */}
@@ -99,13 +112,10 @@ export default function YouTubeMediaSection({ onScrollNext }) {
                   <span className="text-xs font-semibold text-emerald-400/90">
                     ID: {video.id}
                   </span>
-                  <button
-                    onClick={() => setSelectedVideo(video)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white text-xs rounded-lg transition-colors cursor-pointer font-bold shrink-0"
-                  >
+                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-red-600 group-hover:bg-red-700 text-white text-xs rounded-lg transition-colors font-bold shrink-0 shadow-md">
                     <Play className="w-3.5 h-3.5 fill-current shrink-0" />
-                    <span>큰 화면으로 시청</span>
-                  </button>
+                    <span>영구 재생 시청하기</span>
+                  </div>
                 </div>
               </div>
 
