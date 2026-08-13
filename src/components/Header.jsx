@@ -58,10 +58,10 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-gray-200/80 shadow-xs transition-all">
+    <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-emerald-100 shadow-xs transition-all">
       <div className="w-full px-4 sm:px-8 lg:px-10 py-3 flex items-center justify-between">
         
-        {/* Official Direct Image Logo */}
+        {/* Official Logo */}
         <button
           onClick={() => onViewChange('landing')}
           className="flex items-center group text-left cursor-pointer shrink-0"
@@ -91,24 +91,24 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                   onClick={() => handleNavClick(item.id)}
                   className={`text-base font-bold transition-colors duration-150 flex items-center gap-1 cursor-pointer py-1 ${
                     isActive || activeDropdown === item.id
-                      ? 'text-brand-600 font-extrabold'
-                      : 'text-gray-800 hover:text-brand-500'
+                      ? 'text-emerald-700 font-extrabold'
+                      : 'text-gray-800 hover:text-emerald-600'
                   }`}
                 >
                   <span>{item.name}</span>
                   {item.subItems && (
-                    <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${activeDropdown === item.id ? 'rotate-180 text-brand-500' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${activeDropdown === item.id ? 'rotate-180 text-emerald-600' : ''}`} />
                   )}
                 </button>
 
                 {/* Dropdown Menu Overlay */}
                 {activeDropdown === item.id && item.subItems && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white rounded-2xl border border-gray-200 shadow-xl p-2.5 space-y-1 animate-fadeIn z-50">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white rounded-2xl border border-emerald-100 shadow-xl p-2.5 space-y-1 animate-fadeIn z-50">
                     {item.subItems.map((sub, sIdx) => (
                       <button
                         key={sIdx}
                         onClick={() => handleNavClick(item.id, sub)}
-                        className="w-full text-left px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 hover:bg-brand-50 hover:text-brand-600 transition-colors cursor-pointer"
+                        className="w-full text-left px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-800 transition-colors cursor-pointer"
                       >
                         {sub}
                       </button>
@@ -126,7 +126,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
           {/* Search Button */}
           <button
             onClick={() => setSearchOpen(!searchOpen)}
-            className="p-2 text-gray-600 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+            className="p-2 text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-full transition-colors cursor-pointer"
             title="교육 검색"
           >
             <Search className="w-5 h-5 stroke-[2.2]" />
@@ -135,16 +135,16 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
           {/* 수강목록 */}
           <button
             onClick={() => handleNavClick('catalog')}
-            className="text-sm font-bold text-gray-700 hover:text-brand-500 transition-colors cursor-pointer flex items-center gap-1.5"
+            className="text-sm font-bold text-gray-700 hover:text-emerald-700 transition-colors cursor-pointer flex items-center gap-1.5"
           >
-            <BookOpen className="w-4 h-4 text-gray-400" />
+            <BookOpen className="w-4 h-4 text-emerald-600" />
             <span>수강목록</span>
           </button>
 
           {/* User Profile Icon */}
           <button
             onClick={() => onOpenAuth('login')}
-            className="w-9 h-9 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 flex items-center justify-center transition-colors cursor-pointer"
+            className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-800 flex items-center justify-center transition-colors cursor-pointer"
             title="마이페이지 / 로그인"
           >
             <User className="w-5 h-5" />
@@ -172,15 +172,15 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
 
       {/* Expandable Search Bar */}
       {searchOpen && (
-        <div className="bg-gray-50 border-t border-b border-gray-200 px-4 sm:px-8 py-3 animate-fadeIn">
+        <div className="bg-emerald-50/60 border-t border-b border-emerald-100 px-4 sm:px-8 py-3 animate-fadeIn">
           <div className="max-w-3xl mx-auto flex items-center gap-3">
-            <Search className="w-5 h-5 text-gray-400" />
+            <Search className="w-5 h-5 text-emerald-600" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="원하시는 교육과정, 업종, 자격증을 검색해보세요 (예: 카페, 한식, 비건)"
-              className="flex-1 bg-transparent border-none text-sm font-semibold text-gray-900 focus:outline-none placeholder-gray-400"
+              className="flex-1 bg-transparent border-none text-sm font-semibold text-gray-900 focus:outline-none placeholder-emerald-800/50"
               autoFocus
             />
             <button
@@ -190,7 +190,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                   setSearchOpen(false);
                 }
               }}
-              className="px-4 py-1.5 bg-brand-500 text-white rounded-lg text-xs font-bold hover:bg-brand-600 transition-colors"
+              className="px-4 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors"
             >
               검색
             </button>
@@ -211,7 +211,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                   }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-bold flex items-center justify-between ${
                     item.id === 'catalog' && currentView === 'catalog'
-                      ? 'bg-brand-50 text-brand-600 font-extrabold'
+                      ? 'bg-emerald-50 text-emerald-800 font-extrabold'
                       : 'text-gray-800 hover:bg-gray-50'
                   }`}
                 >
@@ -226,7 +226,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                           handleNavClick(item.id, sub);
                           setMobileMenuOpen(false);
                         }}
-                        className="w-full text-left py-1 text-xs font-medium text-gray-500 hover:text-brand-500"
+                        className="w-full text-left py-1 text-xs font-medium text-gray-500 hover:text-emerald-700"
                       >
                         • {sub}
                       </button>
@@ -252,7 +252,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                 onOpenAuth('login');
                 setMobileMenuOpen(false);
               }}
-              className="flex-1 py-2 text-center text-xs font-bold text-white bg-brand-500 rounded-lg hover:bg-brand-600"
+              className="flex-1 py-2 text-center text-xs font-bold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700"
             >
               로그인 / 회원가입
             </button>

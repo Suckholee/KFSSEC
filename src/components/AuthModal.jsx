@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Mail, Lock, User, Phone, ChefHat } from 'lucide-react';
+import { X, Mail, Lock, User, Phone } from 'lucide-react';
 
 export default function AuthModal({ initialMode = 'login', onClose }) {
   const [mode, setMode] = useState(initialMode);
@@ -20,21 +20,23 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-brand-500 text-white flex items-center justify-center mx-auto mb-3 shadow-md shadow-brand-500/20">
-            <ChefHat className="w-7 h-7 stroke-[2.2]" />
-          </div>
+          <img
+            src="/images/official_logo.png"
+            alt="사단법인 한국외식창업교육원"
+            className="h-12 w-auto object-contain mx-auto mb-3"
+          />
           <h2 className="text-2xl font-black text-gray-900 tracking-tight">
             {mode === 'login' ? '로그인' : '회원가입'}
           </h2>
-          <p className="text-xs text-gray-500 mt-1">
-            한국외식창업교육원의 맞춤 외식 솔루션을 경험해 보세요.
+          <p className="text-xs text-gray-500 mt-1 font-medium">
+            사단법인 한국외식창업교육원의 맞춤 솔루션을 경험해 보세요.
           </p>
         </div>
 
@@ -42,9 +44,9 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
         <div className="flex bg-gray-100 p-1 rounded-xl mb-6 text-sm font-bold">
           <button
             onClick={() => { setMode('login'); setSubmitted(false); }}
-            className={`flex-1 py-2 rounded-lg transition-all ${
+            className={`flex-1 py-2 rounded-lg transition-all cursor-pointer ${
               mode === 'login'
-                ? 'bg-white text-brand-600 shadow-sm'
+                ? 'bg-white text-emerald-800 shadow-sm'
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
@@ -52,9 +54,9 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
           </button>
           <button
             onClick={() => { setMode('signup'); setSubmitted(false); }}
-            className={`flex-1 py-2 rounded-lg transition-all ${
+            className={`flex-1 py-2 rounded-lg transition-all cursor-pointer ${
               mode === 'signup'
-                ? 'bg-white text-brand-600 shadow-sm'
+                ? 'bg-white text-emerald-800 shadow-sm'
                 : 'text-gray-500 hover:text-gray-800'
             }`}
           >
@@ -70,7 +72,7 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
             <h3 className="text-lg font-bold text-gray-900">
               {mode === 'login' ? '성공적으로 로그인되었습니다.' : '가입을 환영합니다!'}
             </h3>
-            <p className="text-xs text-gray-500">창업 교육 과정 페이지로 이동합니다.</p>
+            <p className="text-xs text-gray-500">교육 과정 페이지로 이동합니다.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -83,7 +85,7 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
                     type="text"
                     required
                     placeholder="홍길동"
-                    className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -97,7 +99,7 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
                   type="email"
                   required
                   placeholder="user@example.com"
-                  className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:bg-white transition-all"
+                  className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -110,7 +112,7 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
                   type="password"
                   required
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:bg-white transition-all"
+                  className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -124,7 +126,7 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
                     type="tel"
                     required
                     placeholder="010-1234-5678"
-                    className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:bg-white transition-all"
+                    className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -132,7 +134,7 @@ export default function AuthModal({ initialMode = 'login', onClose }) {
 
             <button
               type="submit"
-              className="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm rounded-xl shadow-md shadow-brand-500/20 transition-all mt-2"
+              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow-md shadow-emerald-600/20 transition-all mt-2 cursor-pointer"
             >
               {mode === 'login' ? '로그인하기' : '회원가입 신청'}
             </button>

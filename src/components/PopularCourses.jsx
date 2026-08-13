@@ -6,7 +6,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
     {
       id: 1,
       badge: 'BEST',
-      badgeColor: 'bg-brand-500 text-white',
+      badgeColor: 'bg-[#0F5132] text-white',
       title: '카페 창업 마스터 과정',
       description: '카페 창업에 필요한 모든 것을 배우는 실전 과정',
       image: '/images/course_cafe.jpg',
@@ -19,7 +19,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
     {
       id: 2,
       badge: 'BEST',
-      badgeColor: 'bg-brand-500 text-white',
+      badgeColor: 'bg-[#0F5132] text-white',
       title: '외식 창업 실무 과정',
       description: '외식 창업 준비부터 운영까지 실무 중심 교육',
       image: '/images/course_restaurant.jpg',
@@ -32,7 +32,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
     {
       id: 3,
       badge: 'NEW',
-      badgeColor: 'bg-emerald-500 text-white',
+      badgeColor: 'bg-emerald-600 text-white',
       title: '메뉴 개발 전문가 과정',
       description: '차별화된 메뉴 개발과 원가 관리 노하우',
       image: '/images/course_menu_dev.jpg',
@@ -45,7 +45,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
     {
       id: 4,
       badge: 'NEW',
-      badgeColor: 'bg-emerald-500 text-white',
+      badgeColor: 'bg-emerald-600 text-white',
       title: '배달 창업 특화 과정',
       description: '배달 전문점 창업과 운영에 최적화된 과정',
       image: '/images/course_delivery.jpg',
@@ -73,10 +73,10 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
           </div>
           <button
             onClick={onViewAllClick}
-            className="inline-flex items-center gap-1.5 px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-700 rounded-lg hover:bg-brand-50 hover:text-brand-600 hover:border-brand-300 transition-all self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 border border-emerald-200 text-sm font-bold text-emerald-900 rounded-xl hover:bg-emerald-50 hover:border-emerald-300 transition-all self-start sm:self-auto cursor-pointer"
           >
             <span>전체 교육과정 보기</span>
-            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-brand-500" />
+            <ChevronRight className="w-4 h-4 text-emerald-600" />
           </button>
         </div>
 
@@ -86,7 +86,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
             <div
               key={course.id}
               onClick={() => onSelectCourse(course)}
-              className="group bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer"
+              className="group bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer"
             >
               {/* Image & Badge Container */}
               <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
@@ -105,7 +105,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
               {/* Card Body */}
               <div className="p-5 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-brand-500 transition-colors line-clamp-1">
+                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-1">
                     {course.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-500 mt-2 font-medium leading-relaxed line-clamp-2">
@@ -114,13 +114,13 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick }) {
                 </div>
 
                 {/* Course Metadata Meta Chips */}
-                <div className="flex items-center gap-4 mt-6 pt-4 border-t border-gray-100 text-xs font-semibold text-gray-500">
+                <div className="flex items-center gap-4 mt-6 pt-4 border-t border-emerald-100/60 text-xs font-semibold text-gray-500">
                   <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-gray-400" />
+                    <Clock className="w-4 h-4 text-emerald-600" />
                     <span>{course.duration}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <BookOpen className="w-4 h-4 text-gray-400" />
+                    <BookOpen className="w-4 h-4 text-emerald-600" />
                     <span>{course.lessons}</span>
                   </div>
                 </div>

@@ -8,20 +8,26 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#fff5f2',
-          100: '#ffe8e1',
-          200: '#ffd0c4',
-          300: '#ffa896',
-          400: '#ff745c',
-          500: '#f95721', // Primary orange from mockup
-          600: '#e53e09',
-          700: '#c12e03',
-          800: '#9d280a',
-          900: '#7e260f',
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#16a34a', // Fresh Sprout Green (연두/초록)
+          600: '#15803d', // Deep Green
+          700: '#166534',
+          800: '#14532d',
+          900: '#0f5132', // Deep Forest Green (찐초록)
+          950: '#062d1b',
         },
-        darkcard: {
-          bg: '#252930', // Dark overlay card from hero
-          border: '#373D47',
+        forest: {
+          DEFAULT: '#0f5132',
+          dark: '#064e3b',
+          deep: '#0b2b22',
+        },
+        sprout: {
+          DEFAULT: '#22c55e',
+          light: '#86efac',
         }
       },
       fontFamily: {
@@ -29,7 +35,7 @@ export default {
       },
       boxShadow: {
         card: '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03)',
-        floating: '0 20px 30px -10px rgba(0, 0, 0, 0.25)',
+        floating: '0 20px 30px -10px rgba(15, 81, 50, 0.3)',
       }
     },
   },

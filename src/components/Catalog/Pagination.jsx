@@ -6,7 +6,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
 
   const renderPageNumbers = () => {
     const pages = [];
-    const maxVisible = 5;
 
     if (totalPages <= 7) {
       for (let i = 1; i <= totalPages; i++) {
@@ -35,7 +34,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+        className="w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
       >
         <ChevronLeft className="w-4 h-4" />
       </button>
@@ -54,10 +53,10 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           <button
             key={num}
             onClick={() => onPageChange(num)}
-            className={`w-9 h-9 rounded-lg text-xs sm:text-sm font-bold transition-all ${
+            className={`w-9 h-9 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               isActive
-                ? 'bg-[#1E2B4D] text-white shadow-sm'
-                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                ? 'bg-[#0F5132] text-white shadow-sm'
+                : 'bg-white text-gray-700 border border-gray-200 hover:bg-emerald-50 hover:text-emerald-800'
             }`}
           >
             {num}
@@ -68,7 +67,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
+        className="w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
       >
         <ChevronRight className="w-4 h-4" />
       </button>

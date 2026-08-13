@@ -35,7 +35,7 @@ export default function FilterPanel({
   const formats = ['전체', '오프라인', '온라인', '혼합형'];
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm space-y-6">
+    <div className="bg-white rounded-2xl border border-emerald-100 p-6 shadow-sm space-y-6">
       
       {/* 1. 업종별 필터 */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -52,10 +52,10 @@ export default function FilterPanel({
               <button
                 key={item}
                 onClick={() => onSelectIndustry(item)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-[#1E2B4D] text-white shadow-sm'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                    ? 'bg-[#0F5132] text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-800'
                 }`}
               >
                 {item}
@@ -66,7 +66,7 @@ export default function FilterPanel({
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-100" />
+      <div className="border-t border-emerald-100/60" />
 
       {/* 2. 창업 단계별 필터 */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -83,10 +83,10 @@ export default function FilterPanel({
               <button
                 key={item}
                 onClick={() => onSelectStage(item)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-[#1E2B4D] text-white shadow-sm'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                    ? 'bg-[#0F5132] text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-800'
                 }`}
               >
                 {item}
@@ -97,7 +97,7 @@ export default function FilterPanel({
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-100" />
+      <div className="border-t border-emerald-100/60" />
 
       {/* 3. 교육 형태 필터 (Checkboxes) */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -114,13 +114,13 @@ export default function FilterPanel({
             return (
               <label
                 key={fmt}
-                className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-700 cursor-pointer select-none hover:text-gray-900"
+                className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-700 cursor-pointer select-none hover:text-emerald-800"
               >
                 <input
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => onToggleFormat(fmt)}
-                  className="w-4 h-4 rounded text-brand-500 border-gray-300 focus:ring-brand-500 cursor-pointer"
+                  className="w-4 h-4 rounded text-emerald-600 border-gray-300 focus:ring-emerald-500 cursor-pointer"
                 />
                 <span>{fmt}</span>
               </label>

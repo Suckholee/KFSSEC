@@ -8,7 +8,6 @@ import { fetchCourses } from '../../services/courseApi';
 import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight } from 'lucide-react';
 
 export default function CourseCatalogPage() {
-  // Deep Linking Sync from URL Query Parameters
   const getInitialParams = () => {
     const searchParams = new URLSearchParams(window.location.search);
     return {
@@ -29,7 +28,7 @@ export default function CourseCatalogPage() {
   const [selectedFormats, setSelectedFormats] = useState(initialParams.formats);
   const [sortOption, setSortOption] = useState(initialParams.sort);
   const [currentPage, setCurrentPage] = useState(initialParams.page);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
+  const [viewMode, setViewMode] = useState('grid');
 
   const [courses, setCourses] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -37,7 +36,6 @@ export default function CourseCatalogPage() {
   const [loading, setLoading] = useState(true);
   const [modalCourse, setModalCourse] = useState(null);
 
-  // Sync state to URL Query Parameters for Deep Linking
   const updateUrlParams = (newParams) => {
     const searchParams = new URLSearchParams();
     if (newParams.industry && newParams.industry !== '전체보기') searchParams.set('industry', newParams.industry);
@@ -52,7 +50,6 @@ export default function CourseCatalogPage() {
     window.history.pushState(null, '', newUrl);
   };
 
-  // Fetch Courses Data
   const loadData = async () => {
     setLoading(true);
     try {
@@ -86,7 +83,6 @@ export default function CourseCatalogPage() {
     });
   }, [selectedIndustry, selectedStage, selectedFormats, sortOption, currentPage, activeSidebarCategory]);
 
-  // Handlers
   const handleIndustryChange = (ind) => {
     setSelectedIndustry(ind);
     setCurrentPage(1);
@@ -121,30 +117,29 @@ export default function CourseCatalogPage() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8">
-      {/* Full width container without max-w-7xl constraint */}
+    <div className="bg-emerald-50/20 min-h-screen py-8">
       <div className="w-full px-4 sm:px-8 lg:px-12">
         
         {/* Breadcrumb & Top Guide Button */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-gray-500 mb-6">
           <div className="flex items-center gap-1.5 font-medium">
-            <Home className="w-3.5 h-3.5 text-gray-400" />
+            <Home className="w-3.5 h-3.5 text-emerald-600" />
             <ChevronRight className="w-3 h-3 text-gray-300" />
             <span>교육과정</span>
             <ChevronRight className="w-3 h-3 text-gray-300" />
-            <span className="font-bold text-gray-900">전체 교육과정</span>
+            <span className="font-bold text-emerald-900">전체 교육과정</span>
           </div>
 
           <button
             onClick={() => alert('교육과정 가이드북 PDF를 불러옵니다.')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 hover:bg-gray-50 text-xs font-bold shadow-sm transition-colors self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-emerald-200 rounded-lg bg-white text-emerald-900 hover:bg-emerald-50 text-xs font-bold shadow-sm transition-colors self-start sm:self-auto cursor-pointer"
           >
-            <BookOpenText className="w-4 h-4 text-blue-800" />
+            <BookOpenText className="w-4 h-4 text-emerald-700" />
             <span>교육과정 가이드</span>
           </button>
         </div>
 
-        {/* Catalog Main Layout (Sidebar + Main Content) */}
+        {/* Catalog Main Layout */}
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Left Sidebar */}
@@ -159,7 +154,7 @@ export default function CourseCatalogPage() {
           {/* Right Main Catalog Content */}
           <div className="flex-1 w-full space-y-6">
             
-            {/* Catalog Title Section */}
+            {/* Title */}
             <div>
               <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
                 전체 교육과정
@@ -169,7 +164,7 @@ export default function CourseCatalogPage() {
               </p>
             </div>
 
-            {/* Filter Panel (Industry / Stage / Format) */}
+            {/* Filter Panel */}
             <FilterPanel
               selectedIndustry={selectedIndustry}
               onSelectIndustry={handleIndustryChange}
@@ -179,21 +174,20 @@ export default function CourseCatalogPage() {
               onToggleFormat={handleToggleFormat}
             />
 
-            {/* Results Toolbar Header */}
+            {/* Toolbar Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
               <span className="text-sm font-bold text-gray-700">
-                총 <strong className="text-blue-900 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
+                총 <strong className="text-emerald-800 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
               </span>
 
               <div className="flex items-center gap-3 self-end sm:self-auto">
-                {/* Sort Select */}
                 <select
                   value={sortOption}
                   onChange={(e) => {
                     setSortOption(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs sm:text-sm font-bold text-gray-700 focus:outline-none focus:border-blue-900 shadow-sm cursor-pointer"
+                  className="px-3 py-2 bg-white border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold text-emerald-900 focus:outline-none focus:border-emerald-600 shadow-sm cursor-pointer"
                 >
                   <option value="latest">최신순</option>
                   <option value="popular">인기순</option>
@@ -201,14 +195,13 @@ export default function CourseCatalogPage() {
                   <option value="price_high">수강료 높은순</option>
                 </select>
 
-                {/* View Mode Toggle Buttons */}
-                <div className="flex items-center bg-white border border-gray-200 rounded-xl p-1 shadow-sm">
+                <div className="flex items-center bg-white border border-emerald-200 rounded-xl p-1 shadow-sm">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`p-1.5 rounded-lg transition-colors ${
+                    className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                       viewMode === 'grid'
-                        ? 'bg-[#1E2B4D] text-white shadow-sm'
-                        : 'text-gray-400 hover:text-gray-700'
+                        ? 'bg-[#0F5132] text-white shadow-sm'
+                        : 'text-gray-400 hover:text-emerald-700'
                     }`}
                     title="그리드 뷰"
                   >
@@ -216,10 +209,10 @@ export default function CourseCatalogPage() {
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`p-1.5 rounded-lg transition-colors ${
+                    className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                       viewMode === 'list'
-                        ? 'bg-[#1E2B4D] text-white shadow-sm'
-                        : 'text-gray-400 hover:text-gray-700'
+                        ? 'bg-[#0F5132] text-white shadow-sm'
+                        : 'text-gray-400 hover:text-emerald-700'
                     }`}
                     title="리스트 뷰"
                   >

@@ -30,7 +30,7 @@ export default function Features() {
   ];
 
   return (
-    <section className="py-12 bg-gray-50 border-b border-gray-100">
+    <section className="py-12 bg-emerald-50/40 border-b border-emerald-100/60">
       <div className="w-full px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {features.map((item) => {
@@ -38,13 +38,13 @@ export default function Features() {
             return (
               <div
                 key={item.id}
-                className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md hover:border-brand-200 transition-all group flex items-start gap-4"
+                className="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all group flex items-start gap-4"
               >
-                <div className="w-12 h-12 rounded-xl bg-orange-50 text-brand-500 flex items-center justify-center shrink-0 group-hover:bg-brand-500 group-hover:text-white transition-colors">
+                <div className="w-12 h-12 rounded-xl bg-emerald-100/60 text-emerald-700 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                   <IconComponent className="w-6 h-6 stroke-[2]" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 group-hover:text-brand-600 transition-colors">
+                  <h3 className="text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
                     {item.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1 leading-snug">

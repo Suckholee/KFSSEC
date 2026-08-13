@@ -13,9 +13,9 @@ export default function Sidebar({ activeCategory, onSelectCategory }) {
   return (
     <aside className="w-full lg:w-64 shrink-0 space-y-6">
       {/* Sidebar Navigation Box */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-        {/* Dark Navy Header */}
-        <div className="bg-[#1E2B4D] px-6 py-7 text-center">
+      <div className="bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm">
+        {/* Deep Forest Green Header */}
+        <div className="bg-[#0F5132] px-6 py-7 text-center">
           <h2 className="text-xl font-extrabold text-white tracking-tight">
             교육과정
           </h2>
@@ -29,14 +29,14 @@ export default function Sidebar({ activeCategory, onSelectCategory }) {
               <button
                 key={item.id}
                 onClick={() => onSelectCategory(item.id)}
-                className={`w-full text-left px-4 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-between relative ${
+                className={`w-full text-left px-4 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-between relative cursor-pointer ${
                   isActive
-                    ? 'bg-blue-50/80 text-blue-900 font-extrabold'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-emerald-50 text-emerald-900 font-extrabold'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-emerald-700'
                 }`}
               >
                 {isActive && (
-                  <span className="absolute left-0 top-2 bottom-2 w-1 bg-blue-700 rounded-r-full" />
+                  <span className="absolute left-0 top-2 bottom-2 w-1 bg-emerald-600 rounded-r-full" />
                 )}
                 <span className={isActive ? 'ml-1' : ''}>{item.label}</span>
               </button>
@@ -46,9 +46,9 @@ export default function Sidebar({ activeCategory, onSelectCategory }) {
       </div>
 
       {/* Customer Support Callout Widget */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4">
+      <div className="bg-white rounded-2xl border border-emerald-100 p-5 shadow-sm space-y-4">
         <div className="flex items-center gap-2 text-gray-800">
-          <Headphones className="w-5 h-5 text-gray-500" />
+          <Headphones className="w-5 h-5 text-emerald-600" />
           <span className="text-sm font-extrabold">교육 상담센터</span>
         </div>
 
@@ -64,16 +64,16 @@ export default function Sidebar({ activeCategory, onSelectCategory }) {
         <div className="space-y-2 pt-1">
           <button
             onClick={() => alert('1:1 문의하기 페이지로 이동합니다.')}
-            className="w-full py-2.5 px-3 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-3 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-900 hover:bg-emerald-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <MessageSquare className="w-3.5 h-3.5 text-gray-500" />
+            <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
             <span>1:1 문의하기</span>
           </button>
           <button
             onClick={() => alert('자주 묻는 질문 FAQ로 이동합니다.')}
-            className="w-full py-2.5 px-3 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-3 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-900 hover:bg-emerald-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <HelpCircle className="w-3.5 h-3.5 text-gray-500" />
+            <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
             <span>자주 묻는 질문</span>
           </button>
         </div>
