@@ -1,89 +1,168 @@
 import React, { useState } from 'react';
-import { ChefHat, Menu, X } from 'lucide-react';
+import { Search, User, ChevronDown, Menu, X, BookOpen, Layers } from 'lucide-react';
 
 export default function Header({ currentView = 'landing', onViewChange, onOpenAuth }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  // Top Header Menu Items from exact Client Spec
   const navItems = [
-    { id: 'catalog', name: '교육과정' },
-    { id: 'about', name: '교육원 소개' },
-    { id: 'apply', name: '창업지원' },
-    { id: 'community', name: '커뮤니티' },
-    { id: 'mypage', name: '마이페이지' },
+    {
+      id: 'about',
+      name: '교육원 소개',
+      subItems: ['원장 인사말', '교육원 연혁', '조직도', '오시는 길'],
+    },
+    {
+      id: 'catalog',
+      name: '자격증 과정',
+      subItems: ['전체 교육과정', '자격증 과정 안내', '자격시험 일정', '기출문제 자료실'],
+    },
+    {
+      id: 'knowledge',
+      name: '지식 살롱',
+      subItems: ['창업 노하우', '외식 트렌드 리포트', '시그니처 레시피'],
+    },
+    {
+      id: 'consulting',
+      name: '창업 컨설팅',
+      subItems: ['1:1 맞춤 컨설팅', '연구용역 실적', '상권 분석'],
+    },
+    {
+      id: 'masters',
+      name: '명장·명인',
+      subItems: ['외식 요리명인', '명인 사업단 소개', '명인 칼럼'],
+    },
+    {
+      id: 'partners',
+      name: '협력 업체',
+      subItems: ['렌탈서비스', '출장서비스', 'POS & KIOSK 지원'],
+    },
+    {
+      id: 'community',
+      name: '게시판/이벤트',
+      subItems: ['공지사항', '외식 요리대회', '이벤트 안내', '1:1 문의하기'],
+    },
   ];
 
   const handleNavClick = (id) => {
-    if (id === 'catalog') {
+    if (id === 'catalog' || id === 'partners' || id === 'about') {
       onViewChange('catalog');
     } else {
       onViewChange('catalog');
     }
+    setActiveDropdown(null);
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
-      <div className="w-full px-4 sm:px-8 lg:px-12 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-gray-200/80 shadow-xs transition-all">
+      <div className="w-full px-4 sm:px-8 lg:px-10 py-3.5 flex items-center justify-between">
         
-        {/* Logo */}
+        {/* Logo (Colorful Leaf Book Emblem) */}
         <button
           onClick={() => onViewChange('landing')}
-          className="flex items-center gap-3 group text-left cursor-pointer"
+          className="flex items-center gap-3 group text-left cursor-pointer shrink-0"
         >
-          <div className="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
-            <ChefHat className="w-6 h-6 stroke-[2.2]" />
+          {/* Logo Icon with colorful stack */}
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-amber-500 to-brand-500 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+            <Layers className="w-6 h-6 stroke-[2.2]" />
           </div>
           <div className="flex flex-col">
-            <span className="font-extrabold text-xl tracking-tight text-gray-900 leading-tight">
+            <span className="text-xs font-bold text-gray-400 leading-none">사단법인</span>
+            <span className="font-black text-lg sm:text-xl tracking-tight text-gray-900 leading-tight">
               한국외식창업교육원
-            </span>
-            <span className="text-[10px] font-semibold tracking-wider text-gray-400 uppercase">
-              Korea Food Service Entrepreneurship Institute
             </span>
           </div>
         </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-10">
+        {/* Center Desktop Navigation Menu */}
+        <nav className="hidden xl:flex items-center gap-7">
           {navItems.map((item) => {
-            const isActive = item.id === 'catalog' && currentView === 'catalog';
+            const isActive =
+              (item.id === 'catalog' && currentView === 'catalog') ||
+              (item.id === 'about' && currentView === 'landing');
 
             return (
-              <button
+              <div
                 key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`text-base font-semibold transition-colors duration-150 relative py-1 cursor-pointer ${
-                  isActive
-                    ? 'text-brand-600 font-extrabold'
-                    : 'text-gray-700 hover:text-brand-500'
-                }`}
+                className="relative py-2"
+                onMouseEnter={() => setActiveDropdown(item.id)}
+                onMouseLeave={() => setActiveDropdown(null)}
               >
-                {item.name}
-                {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-500 rounded-full" />
+                <button
+                  onClick={() => handleNavClick(item.id)}
+                  className={`text-base font-bold transition-colors duration-150 flex items-center gap-1 cursor-pointer py-1 ${
+                    isActive || activeDropdown === item.id
+                      ? 'text-brand-600 font-extrabold'
+                      : 'text-gray-800 hover:text-brand-500'
+                  }`}
+                >
+                  <span>{item.name}</span>
+                  {item.subItems && (
+                    <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${activeDropdown === item.id ? 'rotate-180 text-brand-500' : ''}`} />
+                  )}
+                </button>
+
+                {/* Dropdown Menu Overlay */}
+                {activeDropdown === item.id && item.subItems && (
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white rounded-2xl border border-gray-200 shadow-xl p-2.5 space-y-1 animate-fadeIn z-50">
+                    {item.subItems.map((sub, sIdx) => (
+                      <button
+                        key={sIdx}
+                        onClick={() => handleNavClick(item.id)}
+                        className="w-full text-left px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 hover:bg-brand-50 hover:text-brand-600 transition-colors"
+                      >
+                        {sub}
+                      </button>
+                    ))}
+                  </div>
                 )}
-              </button>
+              </div>
             );
           })}
         </nav>
 
-        {/* Auth Buttons */}
-        <div className="hidden lg:flex items-center gap-3">
+        {/* Right Header Utilities: Search / 수강목록 / User Profile */}
+        <div className="hidden sm:flex items-center gap-5 shrink-0">
+          
+          {/* Search Button */}
+          <button
+            onClick={() => setSearchOpen(!searchOpen)}
+            className="p-2 text-gray-600 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+            title="교육 검색"
+          >
+            <Search className="w-5 h-5 stroke-[2.2]" />
+          </button>
+
+          {/* 수강목록 (My Courses Link) */}
+          <button
+            onClick={() => handleNavClick('catalog')}
+            className="text-sm font-bold text-gray-700 hover:text-brand-500 transition-colors cursor-pointer flex items-center gap-1.5"
+          >
+            <BookOpen className="w-4 h-4 text-gray-400" />
+            <span>수강목록</span>
+          </button>
+
+          {/* User Profile Circle Icon */}
           <button
             onClick={() => onOpenAuth('login')}
-            className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
+            className="w-9 h-9 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 flex items-center justify-center transition-colors cursor-pointer"
+            title="마이페이지 / 로그인"
           >
-            로그인
+            <User className="w-5 h-5" />
           </button>
-          <button
-            onClick={() => onOpenAuth('signup')}
-            className="px-4 py-2 text-sm font-semibold text-white bg-brand-500 rounded-lg hover:bg-brand-600 shadow-md shadow-brand-500/20 transition-all hover:shadow-lg cursor-pointer"
-          >
-            회원가입
-          </button>
+
         </div>
 
         {/* Mobile Menu Toggle Button */}
-        <div className="lg:hidden flex items-center gap-2">
+        <div className="xl:hidden flex items-center gap-2">
+          <button
+            onClick={() => setSearchOpen(!searchOpen)}
+            className="p-2 text-gray-600 hover:text-gray-900"
+          >
+            <Search className="w-5 h-5" />
+          </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100"
@@ -94,45 +173,91 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Expandable Search Input Bar */}
+      {searchOpen && (
+        <div className="bg-gray-50 border-t border-b border-gray-200 px-4 sm:px-8 py-3 animate-fadeIn">
+          <div className="max-w-3xl mx-auto flex items-center gap-3">
+            <Search className="w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="원하시는 교육과정, 업종, 자격증을 검색해보세요 (예: 카페, 한식, 비건)"
+              className="flex-1 bg-transparent border-none text-sm font-semibold text-gray-900 focus:outline-none placeholder-gray-400"
+              autoFocus
+            />
+            <button
+              onClick={() => {
+                if (searchQuery.trim()) {
+                  onViewChange('catalog');
+                  setSearchOpen(false);
+                }
+              }}
+              className="px-4 py-1.5 bg-brand-500 text-white rounded-lg text-xs font-bold hover:bg-brand-600 transition-colors"
+            >
+              검색
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-gray-100 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl">
+        <div className="xl:hidden border-t border-gray-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl">
           <nav className="flex flex-col space-y-1">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  handleNavClick(item.id);
-                  setMobileMenuOpen(false);
-                }}
-                className={`text-left px-3 py-2.5 rounded-lg text-base font-semibold ${
-                  item.id === 'catalog' && currentView === 'catalog'
-                    ? 'bg-brand-50 text-brand-600 font-bold'
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                {item.name}
-              </button>
+              <div key={item.id} className="space-y-1">
+                <button
+                  onClick={() => {
+                    handleNavClick(item.id);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-bold flex items-center justify-between ${
+                    item.id === 'catalog' && currentView === 'catalog'
+                      ? 'bg-brand-50 text-brand-600 font-extrabold'
+                      : 'text-gray-800 hover:bg-gray-50'
+                  }`}
+                >
+                  <span>{item.name}</span>
+                </button>
+                {item.subItems && (
+                  <div className="pl-6 space-y-1">
+                    {item.subItems.map((sub, sIdx) => (
+                      <button
+                        key={sIdx}
+                        onClick={() => {
+                          handleNavClick(item.id);
+                          setMobileMenuOpen(false);
+                        }}
+                        className="w-full text-left py-1 text-xs font-medium text-gray-500 hover:text-brand-500"
+                      >
+                        • {sub}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
-          <div className="pt-3 border-t border-gray-100 flex gap-2">
+          
+          <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
+            <button
+              onClick={() => {
+                handleNavClick('catalog');
+                setMobileMenuOpen(false);
+              }}
+              className="flex-1 py-2 text-center text-xs font-bold text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50"
+            >
+              수강목록
+            </button>
             <button
               onClick={() => {
                 onOpenAuth('login');
                 setMobileMenuOpen(false);
               }}
-              className="flex-1 py-2.5 text-center text-sm font-semibold text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50"
+              className="flex-1 py-2 text-center text-xs font-bold text-white bg-brand-500 rounded-lg hover:bg-brand-600"
             >
-              로그인
-            </button>
-            <button
-              onClick={() => {
-                onOpenAuth('signup');
-                setMobileMenuOpen(false);
-              }}
-              className="flex-1 py-2.5 text-center text-sm font-semibold text-white bg-brand-500 rounded-lg hover:bg-brand-600 shadow-sm"
-            >
-              회원가입
+              로그인 / 회원가입
             </button>
           </div>
         </div>
