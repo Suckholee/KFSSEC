@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Youtube, Play, ExternalLink, ChevronDown } from 'lucide-react';
+import { Youtube, Play, ExternalLink, ChevronDown, Radio, Award } from 'lucide-react';
 import YouTubeModal from './YouTubeModal';
 
 export default function YouTubeMediaSection({ onScrollNext }) {
@@ -8,17 +8,21 @@ export default function YouTubeMediaSection({ onScrollNext }) {
   const videos = [
     {
       id: 'ZDZFUpS0fFE',
-      title: '한국외식창업교육원 2024년 정기총회',
-      subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 요약 동영상',
+      title: '240203 한국외식창업교육원 정기총회',
+      subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
       channel: '한국외식창업교육원 공식 채널',
-      thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/maxresdefault.jpg',
+      categoryBadge: '공식 채널 영상',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+      embedUrl: 'https://www.youtube.com/embed/ZDZFUpS0fFE',
     },
     {
       id: 'E_WgebIP_SY',
       title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
-      subtitle: '아시아창의방송 정기총회 현장 취재 보도 동영상',
-      channel: '아시아창의방송 취재 보도',
-      thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/maxresdefault.jpg',
+      subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
+      channel: '아시아창의방송 (actv) 언론 보도',
+      categoryBadge: '언론 보도 영상',
+      badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30',
+      embedUrl: 'https://www.youtube.com/embed/E_WgebIP_SY',
     },
   ];
 
@@ -63,7 +67,7 @@ export default function YouTubeMediaSection({ onScrollNext }) {
               {/* YouTube Embedded Video Player Box */}
               <div className="relative aspect-video w-full bg-black overflow-hidden">
                 <iframe
-                  src={`https://www.youtube.com/embed/${video.id}`}
+                  src={video.embedUrl}
                   title={video.title}
                   className="w-full h-full border-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -74,10 +78,15 @@ export default function YouTubeMediaSection({ onScrollNext }) {
               {/* Video Info Details */}
               <div className="p-5 sm:p-6 space-y-3 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-emerald-400 mb-1.5">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" />
-                    <span>{video.channel}</span>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`px-2.5 py-0.5 rounded-full border text-[11px] font-black ${video.badgeColor}`}>
+                      {video.categoryBadge}
+                    </span>
+                    <span className="text-xs font-bold text-gray-400">
+                      {video.channel}
+                    </span>
                   </div>
+                  
                   <h3 className="text-base sm:text-lg font-black text-white leading-snug group-hover:text-emerald-300 transition-colors line-clamp-2">
                     {video.title}
                   </h3>
@@ -86,7 +95,10 @@ export default function YouTubeMediaSection({ onScrollNext }) {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-end">
+                <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-emerald-400/90">
+                    ID: {video.id}
+                  </span>
                   <button
                     onClick={() => setSelectedVideo(video)}
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white text-xs rounded-lg transition-colors cursor-pointer font-bold shrink-0"
