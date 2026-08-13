@@ -3,16 +3,31 @@
 @tailwind utilities;
 
 @layer base {
-  body {
+  html, body {
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     letter-spacing: -0.025em;
     word-break: keep-all;
+    scroll-behavior: smooth;
   }
 
   h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.03em;
     word-break: keep-all;
   }
+}
+
+/* Full-Page One-Scroll Snap Utilities */
+.scroll-snap-container {
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.scroll-snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: calc(100vh - 65px);
 }
 
 .gradient-hero-overlay {

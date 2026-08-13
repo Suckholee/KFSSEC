@@ -26,7 +26,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-200 selection:text-emerald-900">
+    <div className="h-screen overflow-hidden bg-gray-50 flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-200 selection:text-emerald-900">
       {/* Header */}
       <Header
         currentView={currentView}
@@ -38,46 +38,69 @@ export default function App() {
         onOpenAboutTab={handleOpenAboutTab}
       />
 
-      {/* Main Content Body */}
-      <main className="flex-1">
-        {currentView === 'landing' && (
-          <>
-            <Hero
-              onExploreClick={() => {
-                setCurrentView('catalog');
+      {/* Main Content Body with One-Scroll Fullpage Snap */}
+      <main className="flex-1 overflow-hidden">
+        {currentView === 'landing' ? (
+          <div className="scroll-snap-container no-scrollbar">
+            {/* Section 1: Hero */}
+            <section className="scroll-snap-section flex flex-col justify-center">
+              <Hero
+                onExploreClick={() => {
+                  setCurrentView('catalog');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onAboutClick={() => handleOpenAboutTab('greetings')}
+              />
+            </section>
+
+            {/* Section 2: Features & Why Us */}
+            <section className="scroll-snap-section flex flex-col justify-center bg-white py-6">
+              <Features />
+            </section>
+
+            {/* Section 3: Popular Courses */}
+            <section className="scroll-snap-section flex flex-col justify-center py-6">
+              <PopularCourses
+                onSelectCourse={() => {
+                  setCurrentView('catalog');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              />
+            </section>
+
+            {/* Section 4: Footer */}
+            <section className="scroll-snap-section flex flex-col justify-end">
+              <Footer
+                onViewChange={(view) => {
+                  setCurrentView(view);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onOpenAboutTab={handleOpenAboutTab}
+              />
+            </section>
+          </div>
+        ) : (
+          <div className="h-[calc(100vh-65px)] overflow-y-auto">
+            {currentView === 'catalog' && (
+              <CourseCatalogPage
+                onSelectCourse={() => handleOpenAuth('login')}
+              />
+            )}
+
+            {currentView === 'about' && (
+              <AboutPage initialTab={aboutTab} />
+            )}
+
+            <Footer
+              onViewChange={(view) => {
+                setCurrentView(view);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              onAboutClick={() => handleOpenAboutTab('greetings')}
+              onOpenAboutTab={handleOpenAboutTab}
             />
-            <Features />
-            <PopularCourses
-              onSelectCourse={() => {
-                setCurrentView('catalog');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            />
-          </>
-        )}
-
-        {currentView === 'catalog' && (
-          <CourseCatalogPage
-            onSelectCourse={() => handleOpenAuth('login')}
-          />
-        )}
-
-        {currentView === 'about' && (
-          <AboutPage initialTab={aboutTab} />
+          </div>
         )}
       </main>
-
-      {/* Footer */}
-      <Footer
-        onViewChange={(view) => {
-          setCurrentView(view);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onOpenAboutTab={handleOpenAboutTab}
-      />
 
       {/* Auth Modal */}
       <AuthModal
