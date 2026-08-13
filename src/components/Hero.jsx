@@ -35,14 +35,16 @@ export default function Hero({ onExploreClick, onAboutClick }) {
                 </span>
               </div>
 
-              {/* Main Headline */}
-              <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-white leading-[1.25] tracking-tight drop-shadow-lg">
-                꿈꾸는 외식창업 <br />
-                <span className="text-emerald-400 font-extrabold">아무에게나 맡기시겠습니까?</span>
+              {/* Main Headline (Line height & Spacing Fixed) */}
+              <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-white leading-[1.4] tracking-tight drop-shadow-lg">
+                <span>꿈꾸는 외식창업</span>
+                <span className="block mt-2 text-emerald-400 font-extrabold">
+                  아무에게나 맡기시겠습니까?
+                </span>
               </h1>
 
               {/* Subtext */}
-              <div className="text-base sm:text-lg text-emerald-100/95 font-semibold leading-relaxed max-w-xl space-y-1 drop-shadow-md">
+              <div className="text-base sm:text-lg text-emerald-100/95 font-semibold leading-relaxed max-w-xl space-y-1.5 drop-shadow-md pt-1">
                 <p>오랜 현장실무경험과 실력을 갖춘 명인, 명장님께 맡겨주세요!</p>
                 <p className="text-white font-bold">성공적인 창업은 저희가 책임지겠습니다</p>
               </div>
