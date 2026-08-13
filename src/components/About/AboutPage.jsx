@@ -53,7 +53,7 @@ export default function AboutPage() {
     },
   ];
 
-  // Section 2: 12 Major Strategic Directions
+  // Section 2: 12 Major Strategic Directions with Background Images
   const directions = [
     {
       id: 1,
@@ -61,6 +61,7 @@ export default function AboutPage() {
       title: '미래형 외식창업 컨설팅 & 스마트 창업 지원',
       shortDesc: 'AI·빅데이터 상권분석 및 공유주방·테스트매장 맞춤 컨설팅',
       icon: Bot,
+      bgImage: '/images/dir_1.jpg',
       details: [
         'AI·빅데이터 기반 창업 컨설팅: 상권 분석, 고객 트렌드 예측, 맞춤형 창업 지원',
         '외식 브랜드 기획 & 마케팅 전략 수립: 브랜딩, SNS 홍보, 고객 유입 전략',
@@ -74,6 +75,7 @@ export default function AboutPage() {
       title: '차세대 외식 인재 양성을 위한 교육 혁신',
       shortDesc: '조리, 경영, 위생 전문교육 및 명인 특강·자격증 연계',
       icon: GraduationCap,
+      bgImage: '/images/dir_2.jpg',
       details: [
         '외식업 창업자 및 종사자 대상 전문 교육 운영: 조리, 경영, 서비스, 위생관리 등',
         '명장·명인 초청 특강 & 최신 트렌드 세미나: 세계적 전문가와 함께하는 실전 강의',
@@ -87,6 +89,7 @@ export default function AboutPage() {
       title: '푸드테크 & 미래형 메뉴 개발 R&D',
       shortDesc: 'HMR/RMR 신제품, AI 스마트 키친 & 로컬 지속가능 메뉴',
       icon: UtensilsCrossed,
+      bgImage: '/images/dir_3.jpg',
       details: [
         'HMR/RMR(가정간편식·외식간편식) 신제품 개발: 편리성과 건강을 고려한 혁신 제품 연구',
         'AI 기반 스마트 키친 & 메뉴 추천 시스템 개발: 데이터 분석을 통한 고객 맞춤형 메뉴 추천',
@@ -100,6 +103,7 @@ export default function AboutPage() {
       title: 'K-푸드 글로벌 진출 & 해외 시장 개척',
       shortDesc: '해외 진출 브랜딩, 식자재 무역 유통 & 글로벌 박람회',
       icon: Globe2,
+      bgImage: '/images/dir_4.jpg',
       details: [
         '한식 및 한국 외식 브랜드의 해외 진출 컨설팅: 글로벌 시장 맞춤형 브랜드 전략',
         '국내외 식자재·주방기기·외식 관련 제품 유통 및 무역 사업 확대',
@@ -113,6 +117,7 @@ export default function AboutPage() {
       title: '외식업 프랜차이즈 시스템 구축',
       shortDesc: '프랜차이즈 시스템 구축, 가맹 표준화 & 해외 시장 개척',
       icon: Store,
+      bgImage: '/images/dir_5.jpg',
       details: [
         '프랜차이즈 브랜드 개발 및 가맹점 운영 컨설팅: 성공적인 프랜차이즈 모델 구축',
         '가맹사업 표준화 시스템 개발: 메뉴, 서비스, 운영 전반의 효율적 관리 시스템 마련',
@@ -126,6 +131,7 @@ export default function AboutPage() {
       title: '외식업 디지털 플랫폼 & 네트워크 활성화',
       shortDesc: '구인구직·식자재 직거래 플랫폼 & AI 경영 솔루션',
       icon: Share2,
+      bgImage: '/images/dir_6.jpg',
       details: [
         '구인·구직, 매장 매매, 식자재 직거래 플랫폼 운영',
         '외식업 홍보 & 브랜드 컨설팅: SNS, 온라인 마케팅, 고객 데이터 기반 맞춤 홍보 전략',
@@ -139,6 +145,7 @@ export default function AboutPage() {
       title: '외식 문화 행사 & 글로벌 푸드 페스티벌',
       shortDesc: '외식 박람회, 요리경연대회, 쿠킹클래스 & 한식 세계화',
       icon: Sparkles,
+      bgImage: '/images/dir_7.jpg',
       details: [
         '국내외 외식산업 박람회 & 전시회 기획 및 운영',
         '음식 경연대회, 쿠킹 클래스, 마스터 셰프 초청 이벤트',
@@ -152,6 +159,7 @@ export default function AboutPage() {
       title: '외식업 인테리어 & 공간 브랜딩 컨설팅',
       shortDesc: '점포 설계, 공간 브랜딩 & AI·IoT 스마트 레스토랑',
       icon: Palette,
+      bgImage: '/images/dir_8.jpg',
       details: [
         '외식업 점포 설계 및 브랜드 디자인 개발: 차별화된 공간 브랜딩 지원',
         '스마트 외식공간 도입 & 트렌드 디자인 연구: AI·IoT 기반 스마트 레스토랑 구축',
@@ -165,6 +173,7 @@ export default function AboutPage() {
       title: '친환경·웰빙 외식산업 구축',
       shortDesc: '로컬·비건·웰빙 메뉴 개발, ESG 외식 모델 & 패키징',
       icon: Leaf,
+      bgImage: '/images/dir_9.jpg',
       details: [
         '로컬 식재료 활용 및 지속 가능한 식문화 연구',
         '친환경·비건·웰빙 메뉴 개발 및 건강식 프로젝트 운영',
@@ -178,6 +187,7 @@ export default function AboutPage() {
       title: '사회적 가치 창출 & 복지 서비스 확대',
       shortDesc: '무료급식, 취약계층 직업훈련 & 일자리 창출 지원',
       icon: Heart,
+      bgImage: '/images/dir_10.jpg',
       details: [
         '취약계층 및 노인을 위한 무료 급식 및 배식 서비스 운영',
         '장애인·노인·다문화 가정 대상 외식업 직업훈련 및 취업 지원',
@@ -191,6 +201,7 @@ export default function AboutPage() {
       title: '외식업 창업 지원센터 & 비즈니스 허브',
       shortDesc: '창업 공간 지원, B2B 비즈니스 매칭 & 글로벌 콘퍼런스',
       icon: Building,
+      bgImage: '/images/dir_11.jpg',
       details: [
         '외식업 창업자 대상 공간 제공 & 맞춤형 지원 프로그램 운영',
         '외식업 전문가·기업 간 네트워킹 & 비즈니스 매칭 플랫폼 운영',
@@ -204,6 +215,7 @@ export default function AboutPage() {
       title: '명인·장인·명장 발굴 및 육성 사업',
       shortDesc: '분야별 명인·명장 발굴, 기술전수 멘토링 & 시상제도',
       icon: Award,
+      bgImage: '/images/dir_12.jpg',
       details: [
         '한식, 중식, 일식, 양식, 베이커리, 커피, 와인, 김치, 발효 등 각 분야 명인·명장 발굴',
         '전통 음식문화 계승을 위한 연구 및 교육 지원',
@@ -272,7 +284,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* SECTION 2: DIRECTION (12대 사업 방향) */}
+        {/* SECTION 2: DIRECTION (12대 사업 방향 - Custom Background Images) */}
         <section className="space-y-8">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-black text-emerald-600 tracking-widest uppercase">
@@ -282,11 +294,11 @@ export default function AboutPage() {
               12대 사업 방향
             </h2>
             <p className="text-sm text-gray-500 font-medium">
-              각 사업 항목을 클릭하시면 상세 추진 전략을 확인하실 수 있습니다.
+              각 사업 항목을 클릭하시면 카드가 넓어지며 상세 추진 전략이 펼쳐집니다.
             </p>
           </div>
 
-          {/* 12 Grid Cards */}
+          {/* 12 Image-backed Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {directions.map((dir) => {
               const IconComponent = dir.icon;
@@ -296,55 +308,93 @@ export default function AboutPage() {
                 <div
                   key={dir.id}
                   onClick={() => setSelectedDirection(dir.id)}
-                  className={`bg-white rounded-2xl p-6 border transition-all duration-300 flex flex-col justify-between cursor-pointer relative ${
+                  className={`group relative rounded-2xl border transition-all duration-500 overflow-hidden cursor-pointer flex flex-col justify-between min-h-[300px] ${
                     isSelected
-                      ? 'border-emerald-600 ring-2 ring-emerald-500/20 shadow-xl -translate-y-1 bg-emerald-50/10'
-                      : 'border-gray-200/80 hover:border-emerald-300 hover:shadow-md'
+                      ? 'border-emerald-500 ring-2 ring-emerald-500/30 shadow-2xl scale-[1.02] z-20'
+                      : 'border-stone-200/80 hover:border-emerald-300 hover:shadow-lg'
                   }`}
                 >
-                  <div>
+                  {/* Card Background Image & Dark Gradient Overlay */}
+                  <div className="absolute inset-0 z-0 overflow-hidden">
+                    <img
+                      src={dir.bgImage}
+                      alt={dir.title}
+                      className={`w-full h-full object-cover transition-transform duration-700 ${
+                        isSelected ? 'scale-110 opacity-30' : 'scale-100 opacity-20 group-hover:scale-105 group-hover:opacity-30'
+                      }`}
+                    />
+                    {/* Gradient Overlay for Pristine Readability */}
+                    <div className={`absolute inset-0 transition-colors duration-500 ${
+                      isSelected
+                        ? 'bg-gradient-to-b from-[#062d1b]/90 via-[#0b2b22]/95 to-[#062d1b]/95'
+                        : 'bg-gradient-to-b from-white/95 via-white/90 to-white/95 group-hover:from-white/90 group-hover:to-white/95'
+                    }`} />
+                  </div>
+
+                  {/* Card Content Overlay */}
+                  <div className="relative z-10 p-6 flex-1 flex flex-col justify-between space-y-4">
+                    
                     {/* Top Row: Number & Icon */}
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-black text-emerald-800 bg-emerald-100/70 px-2.5 py-1 rounded-md tracking-wider">
-                        {dir.num}
-                      </span>
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-                        isSelected ? 'bg-[#0F5132] text-white' : 'bg-gray-100 text-gray-600'
-                      }`}>
-                        <IconComponent className="w-5 h-5 stroke-[2]" />
-                      </div>
-                    </div>
-
-                    {/* Title & Short Description */}
-                    <h3 className="text-base font-bold text-gray-900 leading-snug tracking-tight mb-2">
-                      {dir.title}
-                    </h3>
-                    <p className="text-xs text-gray-500 font-medium leading-relaxed">
-                      {dir.shortDesc}
-                    </p>
-                  </div>
-
-                  {/* Expand Toggle */}
-                  <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-700">
-                    <span>{isSelected ? '상세내용 접기' : '상세내용 보기'}</span>
-                    {isSelected ? (
-                      <ChevronUp className="w-4 h-4" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4 text-gray-400" />
-                    )}
-                  </div>
-
-                  {/* Expanded Callout Detail View */}
-                  {isSelected && (
-                    <div className="mt-4 pt-4 border-t border-emerald-200/60 bg-emerald-50/50 -mx-6 -mb-6 p-5 rounded-b-2xl animate-fadeIn space-y-2.5">
-                      {dir.details.map((detail, dIdx) => (
-                        <div key={dIdx} className="flex items-start gap-2 text-xs text-gray-700 font-medium leading-relaxed">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{detail}</span>
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className={`text-xs font-black px-2.5 py-1 rounded-md tracking-wider transition-colors ${
+                          isSelected
+                            ? 'bg-emerald-500 text-white shadow-sm'
+                            : 'bg-emerald-100/80 text-emerald-900'
+                        }`}>
+                          {dir.num}
+                        </span>
+                        
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
+                          isSelected
+                            ? 'bg-white/20 text-emerald-300 backdrop-blur-sm'
+                            : 'bg-emerald-50 text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white'
+                        }`}>
+                          <IconComponent className="w-5 h-5 stroke-[2]" />
                         </div>
-                      ))}
+                      </div>
+
+                      {/* Title & Short Description */}
+                      <h3 className={`text-base sm:text-lg font-black tracking-tight leading-snug mb-2 transition-colors ${
+                        isSelected ? 'text-white' : 'text-gray-900 group-hover:text-emerald-800'
+                      }`}>
+                        {dir.title}
+                      </h3>
+                      
+                      <p className={`text-xs font-medium leading-relaxed transition-colors ${
+                        isSelected ? 'text-emerald-100/90' : 'text-gray-500'
+                      }`}>
+                        {dir.shortDesc}
+                      </p>
                     </div>
-                  )}
+
+                    {/* Bottom Action Line */}
+                    <div className={`pt-4 border-t flex items-center justify-between text-xs font-bold transition-colors ${
+                      isSelected
+                        ? 'border-emerald-500/40 text-emerald-300'
+                        : 'border-stone-200/60 text-emerald-700 group-hover:text-emerald-800'
+                    }`}>
+                      <span>{isSelected ? '상세내용 접기' : '상세내용 보기'}</span>
+                      {isSelected ? (
+                        <ChevronUp className="w-4 h-4" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-emerald-600" />
+                      )}
+                    </div>
+
+                    {/* Expanded Detail View overlay inside card */}
+                    {isSelected && (
+                      <div className="pt-4 border-t border-emerald-500/40 space-y-2.5 animate-fadeIn">
+                        {dir.details.map((detail, dIdx) => (
+                          <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-50 font-medium leading-relaxed">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                            <span>{detail}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                  </div>
 
                 </div>
               );
@@ -352,8 +402,8 @@ export default function AboutPage() {
           </div>
 
           {/* Call-to-action Banner */}
-          <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-            <div className="space-y-2">
+          <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+            <div className="relative z-10 space-y-2">
               <span className="text-xs font-bold text-emerald-300">사단법인 한국외식창업교육원과 함께하는 창업 비전</span>
               <h3 className="text-xl sm:text-2xl font-black tracking-tight">
                 체계적인 12대 전략으로 성공적인 외식 창업을 가꾸어 드립니다.
@@ -361,7 +411,7 @@ export default function AboutPage() {
             </div>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="px-6 py-3 bg-white text-[#0F5132] font-black text-sm rounded-xl hover:bg-emerald-50 transition-colors shrink-0 shadow-md flex items-center gap-2 cursor-pointer"
+              className="relative z-10 px-6 py-3 bg-white text-[#0F5132] font-black text-sm rounded-xl hover:bg-emerald-50 transition-colors shrink-0 shadow-md flex items-center gap-2 cursor-pointer"
             >
               <span>상단으로 돌아가기</span>
               <ArrowRight className="w-4 h-4 text-emerald-700" />
