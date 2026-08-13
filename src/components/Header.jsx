@@ -12,7 +12,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
     {
       id: 'about',
       name: '교육원 소개',
-      subItems: ['개요 및 연혁', '원장 인사말', '조직도', '오시는 길'],
+      subItems: ['설립 목적 및 12대 사업', '원장 인사말', '조직도', '오시는 길'],
     },
     {
       id: 'catalog',
@@ -47,8 +47,8 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
   ];
 
   const handleNavClick = (id, subItem = null) => {
-    if (id === 'about' || subItem === '개요 및 연혁') {
-      onOpenAbout();
+    if (id === 'about' || subItem === '설립 목적 및 12대 사업') {
+      onViewChange('about');
     } else if (id === 'catalog' || id === 'partners') {
       onViewChange('catalog');
     } else {
@@ -78,7 +78,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
           {navItems.map((item) => {
             const isActive =
               (item.id === 'catalog' && currentView === 'catalog') ||
-              (item.id === 'about' && currentView === 'landing');
+              (item.id === 'about' && currentView === 'about');
 
             return (
               <div
@@ -103,7 +103,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
 
                 {/* Dropdown Menu Overlay */}
                 {activeDropdown === item.id && item.subItems && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white rounded-2xl border border-emerald-100 shadow-xl p-2.5 space-y-1 animate-fadeIn z-50">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-52 bg-white rounded-2xl border border-emerald-100 shadow-xl p-2.5 space-y-1 animate-fadeIn z-50">
                     {item.subItems.map((sub, sIdx) => (
                       <button
                         key={sIdx}
@@ -210,7 +210,7 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
                     setMobileMenuOpen(false);
                   }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-bold flex items-center justify-between ${
-                    item.id === 'catalog' && currentView === 'catalog'
+                    ((item.id === 'catalog' && currentView === 'catalog') || (item.id === 'about' && currentView === 'about'))
                       ? 'bg-emerald-50 text-emerald-800 font-extrabold'
                       : 'text-gray-800 hover:bg-gray-50'
                   }`}

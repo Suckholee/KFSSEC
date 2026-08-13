@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import Features from './components/Features';
 import PopularCourses from './components/PopularCourses';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
+import AboutPage from './components/About/AboutPage';
 import CourseModal from './components/CourseModal';
 import AuthModal from './components/AuthModal';
 import AboutModal from './components/AboutModal';
@@ -15,19 +16,24 @@ export default function App() {
     if (searchParams.has('industry') || searchParams.has('stage') || searchParams.has('format') || window.location.hash === '#catalog') {
       return 'catalog';
     }
+    if (window.location.hash === '#about') {
+      return 'about';
+    }
     return 'landing';
   };
 
   const [currentView, setCurrentView] = useState(getInitialView());
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [authMode, setAuthMode] = useState(null); // 'login' | 'signup' | null
-  const [aboutOpen, setAboutOpen] = useState(false);
+  const [authMode, setAuthMode] = useState(null);
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
 
   useEffect(() => {
     const handleHashOrPopState = () => {
       const searchParams = new URLSearchParams(window.location.search);
       if (searchParams.has('industry') || searchParams.has('stage') || searchParams.has('format') || window.location.hash === '#catalog') {
         setCurrentView('catalog');
+      } else if (window.location.hash === '#about') {
+        setCurrentView('about');
       } else if (window.location.hash === '#landing' || (!window.location.hash && !window.location.search)) {
         setCurrentView('landing');
       }
@@ -40,6 +46,8 @@ export default function App() {
     setCurrentView(view);
     if (view === 'catalog') {
       window.location.hash = '#catalog';
+    } else if (view === 'about') {
+      window.location.hash = '#about';
     } else {
       window.location.hash = '';
       window.history.pushState(null, '', window.location.pathname);
@@ -48,25 +56,27 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-gray-50 text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
       
       {/* Navigation Header */}
       <Header
         currentView={currentView}
         onViewChange={handleViewChange}
         onOpenAuth={(mode) => setAuthMode(mode)}
-        onOpenAbout={() => setAboutOpen(true)}
+        onOpenAbout={() => handleViewChange('about')}
       />
 
       {/* Main Page Content */}
       <main className="flex-grow">
         {currentView === 'catalog' ? (
           <CourseCatalogPage />
+        ) : currentView === 'about' ? (
+          <AboutPage />
         ) : (
           <>
             <Hero
               onExploreClick={() => handleViewChange('catalog')}
-              onAboutClick={() => setAboutOpen(true)}
+              onAboutClick={() => handleViewChange('about')}
             />
             <Features />
             <PopularCourses
@@ -78,7 +88,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer onOpenAbout={() => setAboutOpen(true)} />
+      <Footer onOpenAbout={() => setAboutModalOpen(true)} />
 
       {/* Modals */}
       {selectedCourse && (
@@ -95,9 +105,9 @@ export default function App() {
         />
       )}
 
-      {aboutOpen && (
+      {aboutModalOpen && (
         <AboutModal
-          onClose={() => setAboutOpen(false)}
+          onClose={() => setAboutModalOpen(false)}
         />
       )}
 
