@@ -5,18 +5,17 @@ export default function Hero({ onExploreClick, onAboutClick }) {
   return (
     <section className="relative overflow-hidden bg-[#062d1b] min-h-[580px] flex items-center py-12 lg:py-16">
       
-      {/* High-Visibility 2024 Awards Photo Positioned on the Right */}
+      {/* 100% Full Opacity Raw Crisp 2024 Awards Photo Positioned on the Right */}
       <div className="absolute inset-0 z-0 overflow-hidden flex justify-end">
         {/* Right Photo Container */}
-        <div className="relative w-full lg:w-9/12 h-full ml-auto">
+        <div className="relative w-full lg:w-[65%] h-full ml-auto">
           <img
-            src="/images/hero_bg.jpg?v=2"
+            src="/images/hero_bg.jpg?v=3"
             alt="2024 대한민국 자랑스러운 명인·장인·명장 인물대상 시상식"
-            className="w-full h-full object-cover object-center lg:object-right opacity-95 contrast-[105%] brightness-[102%]"
+            className="w-full h-full object-cover object-center lg:object-right opacity-100"
           />
-          {/* Subtle Left-to-Right Horizontal Gradient Overlay (Keeps text readable while making people photos bright & visible) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#062d1b] via-[#062d1b]/60 via-35% to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#062d1b]/40 via-transparent to-transparent" />
+          {/* Subtle Left Edge Gradient to Ensure Title Legibility on the Far Left */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#062d1b] via-[#062d1b]/50 via-20% to-transparent" />
         </div>
       </div>
 
@@ -34,12 +33,12 @@ export default function Hero({ onExploreClick, onAboutClick }) {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[48px] font-black text-white leading-[1.22] tracking-tight drop-shadow-md">
+            <h1 className="text-3xl sm:text-4xl lg:text-[48px] font-black text-white leading-[1.22] tracking-tight drop-shadow-lg">
               당신의 <span className="text-emerald-400 font-extrabold">외식 창업 성공</span>을 함께합니다
             </h1>
 
             {/* Subtext */}
-            <p className="text-base sm:text-lg text-emerald-100/95 font-semibold leading-relaxed max-w-xl drop-shadow-sm">
+            <p className="text-base sm:text-lg text-emerald-100/95 font-semibold leading-relaxed max-w-xl drop-shadow-md">
               실무 중심의 교육과 창업 컨설팅으로<br className="hidden sm:inline" />
               외식 창업의 모든 순간을 지원합니다.
             </p>
@@ -56,7 +55,7 @@ export default function Hero({ onExploreClick, onAboutClick }) {
 
               <button
                 onClick={onAboutClick}
-                className="px-7 py-3.5 bg-white/15 hover:bg-white/25 border border-white/40 text-white font-bold text-base rounded-2xl backdrop-blur-md transition-all flex items-center gap-2 group hover:border-white/60 cursor-pointer shadow-lg"
+                className="px-7 py-3.5 bg-[#062d1b]/80 hover:bg-[#062d1b] border border-white/40 text-white font-bold text-base rounded-2xl backdrop-blur-md transition-all flex items-center gap-2 group hover:border-white/60 cursor-pointer shadow-lg"
               >
                 <span>교육원 소개</span>
                 <ChevronRight className="w-5 h-5 text-emerald-300 group-hover:translate-x-1 transition-transform" />
