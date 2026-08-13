@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, User, ChevronDown, Menu, X, BookOpen, Sprout } from 'lucide-react';
+import { Search, User, ChevronDown, Menu, X, BookOpen } from 'lucide-react';
 
 export default function Header({ currentView = 'landing', onViewChange, onOpenAuth, onOpenAbout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -59,35 +59,18 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
 
   return (
     <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-gray-200/80 shadow-xs transition-all">
-      <div className="w-full px-4 sm:px-8 lg:px-10 py-3.5 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-8 lg:px-10 py-3 flex items-center justify-between">
         
-        {/* Logo (Exact Official Emblem: 사단법인 한국외식창업교육원) */}
+        {/* Official Direct Image Logo */}
         <button
           onClick={() => onViewChange('landing')}
-          className="flex items-center gap-3 group text-left cursor-pointer shrink-0"
+          className="flex items-center group text-left cursor-pointer shrink-0"
         >
-          {/* Logo Emblem Symbol */}
-          <div className="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm group-hover:scale-105 transition-transform relative overflow-hidden">
-            <svg viewBox="0 0 100 100" className="w-9 h-9">
-              {/* Green Base Bowl */}
-              <path d="M 15,55 A 35,35 0 0,0 85,55 Z" fill="#10B981" />
-              {/* Leaves */}
-              <path d="M 50,45 C 40,25 30,30 35,48 Z" fill="#22C55E" />
-              <path d="M 50,45 C 50,20 60,20 58,45 Z" fill="#F97316" />
-              <path d="M 50,45 C 65,25 75,32 68,48 Z" fill="#0EA5E9" />
-            </svg>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[11px] font-extrabold text-[#1E2B4D] leading-none tracking-tight">
-              사단법인
-            </span>
-            <span className="font-black text-lg sm:text-xl tracking-tight text-[#1E2B4D] leading-tight">
-              한국외식창업교육원
-            </span>
-            <span className="text-[9px] font-semibold tracking-wide text-stone-400">
-              Korea Food Service Startup Education Center
-            </span>
-          </div>
+          <img
+            src="/images/official_logo.png"
+            alt="사단법인 한국외식창업교육원"
+            className="h-11 sm:h-12 w-auto object-contain group-hover:scale-102 transition-transform"
+          />
         </button>
 
         {/* Center Desktop Navigation Menu */}

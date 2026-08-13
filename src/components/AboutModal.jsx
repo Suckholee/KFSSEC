@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Building2, Calendar, UserCheck, Award, Globe, CheckCircle2 } from 'lucide-react';
+import { X, Building2, Calendar, UserCheck, Award, Globe } from 'lucide-react';
 
 export default function AboutModal({ onClose }) {
   return (
@@ -16,28 +16,14 @@ export default function AboutModal({ onClose }) {
 
         {/* Modal Header */}
         <div className="flex items-center gap-4 border-b border-gray-100 pb-5">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
-            <svg viewBox="0 0 100 100" className="w-11 h-11">
-              <path d="M 15,55 A 35,35 0 0,0 85,55 Z" fill="#10B981" />
-              <path d="M 50,45 C 40,25 30,30 35,48 Z" fill="#22C55E" />
-              <path d="M 50,45 C 50,20 60,20 58,45 Z" fill="#F97316" />
-              <path d="M 50,45 C 65,25 75,32 68,48 Z" fill="#0EA5E9" />
-            </svg>
-          </div>
-          <div>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md">
-              공식 지정 단체
-            </span>
-            <h2 className="text-2xl font-black text-gray-900 tracking-tight mt-1">
-              사단법인 한국외식창업교육원
-            </h2>
-            <p className="text-xs text-gray-400 font-medium">
-              Korea Food Service Startup Education Center
-            </p>
-          </div>
+          <img
+            src="/images/official_logo.png"
+            alt="사단법인 한국외식창업교육원"
+            className="h-16 w-auto object-contain"
+          />
         </div>
 
-        {/* Legal Corporate Profile Card (Image Spec Match) */}
+        {/* Legal Corporate Profile Card */}
         <div className="bg-stone-100/80 rounded-2xl p-6 border border-stone-200/60 space-y-3.5 text-sm text-gray-800">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div className="flex items-center gap-2.5">

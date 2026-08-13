@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, Building2 } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 
 export default function Footer({ onOpenAbout }) {
   return (
@@ -9,18 +9,12 @@ export default function Footer({ onOpenAbout }) {
           
           {/* Col 1: Official Brand Info */}
           <div className="space-y-3.5 md:col-span-1">
-            <div className="flex items-center gap-2.5 text-white">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shrink-0">
-                <svg viewBox="0 0 100 100" className="w-6 h-6">
-                  <path d="M 15,55 A 35,35 0 0,0 85,55 Z" fill="#FFFFFF" />
-                  <path d="M 50,45 C 40,25 30,30 35,48 Z" fill="#22C55E" />
-                  <path d="M 50,45 C 50,20 60,20 58,45 Z" fill="#F97316" />
-                </svg>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] text-emerald-400 font-bold leading-none">사단법인</span>
-                <span className="font-extrabold text-base tracking-tight text-white">한국외식창업교육원</span>
-              </div>
+            <div className="bg-white/95 p-3 rounded-2xl inline-block shadow-sm">
+              <img
+                src="/images/official_logo.png"
+                alt="사단법인 한국외식창업교육원"
+                className="h-10 w-auto object-contain"
+              />
             </div>
             <p className="text-xs leading-relaxed text-gray-400">
               법인명: 사단법인 한국외식창업교육원<br />
@@ -77,7 +71,7 @@ export default function Footer({ onOpenAbout }) {
         <div className="pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <p>© 2026 사단법인 한국외식창업교육원. All Rights Reserved.</p>
           <div className="flex gap-4">
-            <button onClick={onOpenAbout} className="hover:text-gray-300">기관 정보</button>
+            <button onClick={onOpenAbout} className="hover:text-gray-300 cursor-pointer">기관 정보</button>
             <a href="#" className="hover:text-gray-300">개인정보처리방침</a>
             <a href="#" className="hover:text-gray-300">이용약관</a>
           </div>
