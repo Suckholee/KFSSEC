@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import GreetingsSection from './GreetingsSection';
+import LocationSection from './LocationSection';
 import {
   Target,
   Users,
@@ -27,6 +28,7 @@ import {
   UserCheck,
   Globe,
   User,
+  MapPin,
 } from 'lucide-react';
 
 export default function AboutPage({ initialTab = 'greetings' }) {
@@ -244,8 +246,8 @@ export default function AboutPage({ initialTab = 'greetings' }) {
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-10">
         
-        {/* Navigation Tabs Header (Matching Header Order Exactly) */}
-        <div className="bg-white rounded-2xl p-2 border border-emerald-100 shadow-sm flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
+        {/* Navigation Tabs Header */}
+        <div className="bg-white rounded-2xl p-2 border border-emerald-100 shadow-sm flex flex-wrap items-center justify-center gap-2 max-w-5xl mx-auto">
           <button
             onClick={() => setActiveTab('greetings')}
             className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
@@ -280,6 +282,18 @@ export default function AboutPage({ initialTab = 'greetings' }) {
           >
             <Award className="w-4 h-4" />
             <span>12대 사업 방향</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('location')}
+            className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === 'location'
+                ? 'bg-[#0F5132] text-white shadow-md'
+                : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'
+            }`}
+          >
+            <MapPin className="w-4 h-4" />
+            <span>오시는 길</span>
           </button>
         </div>
 
@@ -515,6 +529,11 @@ export default function AboutPage({ initialTab = 'greetings' }) {
               </button>
             </div>
           </section>
+        )}
+
+        {/* TAB 4: LOCATION */}
+        {activeTab === 'location' && (
+          <LocationSection />
         )}
 
       </div>

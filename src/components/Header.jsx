@@ -52,6 +52,8 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         onOpenAboutTab('overview');
       } else if (subItem === '12대 사업 방향') {
         onOpenAboutTab('directions');
+      } else if (subItem === '오시는 길') {
+        onOpenAboutTab('location');
       } else {
         onOpenAboutTab('greetings');
       }
