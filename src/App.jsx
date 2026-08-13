@@ -6,6 +6,7 @@ import NetflixCoursesSection from './components/NetflixCoursesSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
 import FullPackageCoursesSection from './components/FullPackageCoursesSection';
 import CategoryFocusSection from './components/CategoryFocusSection';
+import MasterClassSection from './components/MasterClassSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
@@ -96,7 +97,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 6: Category Focus Courses Section (외식 실무 특화 + 클래스 더 보러 가기) */}
+            {/* Section 6: Category Focus Courses Section (외식 실무 특화) */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#0a1410]">
               <CategoryFocusSection
                 onViewMoreClick={() => {
@@ -108,7 +109,19 @@ export default function App() {
               />
             </section>
 
-            {/* Section 7: Login & Payment Guide Banners */}
+            {/* Section 7: Master Class Focus Section (명장·명인 마스터) */}
+            <section className="scroll-snap-section flex flex-col justify-center bg-[#0d0f0d]">
+              <MasterClassSection
+                onViewMoreClick={() => {
+                  setCurrentView('catalog');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onSelectCourse={() => handleOpenAuth('login')}
+                onScrollNext={handleScrollNext}
+              />
+            </section>
+
+            {/* Section 8: Login & Payment Guide Banners */}
             <section className="scroll-snap-section flex flex-col justify-center py-6">
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
@@ -120,7 +133,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 8: Footer */}
+            {/* Section 9: Footer */}
             <section className="scroll-snap-section flex flex-col justify-end">
               <Footer
                 onViewChange={(view) => {
