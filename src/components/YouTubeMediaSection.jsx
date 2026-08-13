@@ -52,8 +52,8 @@ export default function YouTubeMediaSection({ onScrollNext }) {
             className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all shrink-0 whitespace-nowrap self-start sm:self-auto cursor-pointer"
           >
             <Youtube className="w-4 h-4 fill-current shrink-0" />
-            <span>유튜브 채널 바로가기</span>
-            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+            <span>한국외식창업교육원 채널</span>
+            <ExternalLink className="w-4 h-4 shrink-0 stroke-[2.2]" />
           </a>
         </div>
 
