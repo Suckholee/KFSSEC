@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import EventBannerSection from './components/EventBannerSection';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
+import FullPackageCoursesSection from './components/FullPackageCoursesSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
@@ -86,7 +87,15 @@ export default function App() {
               <YouTubeMediaSection onScrollNext={handleScrollNext} />
             </section>
 
-            {/* Section 5: Login & Payment Guide Banners */}
+            {/* Section 5: Full Package Courses Section (외식창업 풀 패키지 추천) */}
+            <section className="scroll-snap-section flex flex-col justify-center bg-[#061811]">
+              <FullPackageCoursesSection
+                onSelectPackage={() => handleOpenAuth('login')}
+                onScrollNext={handleScrollNext}
+              />
+            </section>
+
+            {/* Section 6: Login & Payment Guide Banners */}
             <section className="scroll-snap-section flex flex-col justify-center py-6">
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
@@ -98,7 +107,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 6: Footer */}
+            {/* Section 7: Footer */}
             <section className="scroll-snap-section flex flex-col justify-end">
               <Footer
                 onViewChange={(view) => {
