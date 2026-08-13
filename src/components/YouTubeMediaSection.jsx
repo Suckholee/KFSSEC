@@ -30,7 +30,7 @@ export default function YouTubeMediaSection({ onScrollNext }) {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-black mb-3">
-              <Youtube className="w-4 h-4 fill-current" />
+              <Youtube className="w-4 h-4 fill-current shrink-0" />
               <span>YOUTUBE OFFICIAL</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -45,11 +45,11 @@ export default function YouTubeMediaSection({ onScrollNext }) {
             href="https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4.5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all shrink-0 whitespace-nowrap self-start sm:self-auto cursor-pointer"
           >
-            <Youtube className="w-4 h-4 fill-current" />
+            <Youtube className="w-4 h-4 fill-current shrink-0" />
             <span>유튜브 채널 바로가기</span>
-            <ExternalLink className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
           </a>
         </div>
 
@@ -75,7 +75,7 @@ export default function YouTubeMediaSection({ onScrollNext }) {
               <div className="p-5 sm:p-6 space-y-3 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 text-xs font-extrabold text-emerald-400 mb-1.5">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" />
                     <span>{video.channel}</span>
                   </div>
                   <h3 className="text-base sm:text-lg font-black text-white leading-snug group-hover:text-emerald-300 transition-colors line-clamp-2">
@@ -89,9 +89,9 @@ export default function YouTubeMediaSection({ onScrollNext }) {
                 <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-end">
                   <button
                     onClick={() => setSelectedVideo(video)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white text-xs rounded-lg transition-colors cursor-pointer font-bold"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white text-xs rounded-lg transition-colors cursor-pointer font-bold shrink-0"
                   >
-                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <Play className="w-3.5 h-3.5 fill-current shrink-0" />
                     <span>큰 화면으로 시청</span>
                   </button>
                 </div>
