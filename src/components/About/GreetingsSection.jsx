@@ -124,20 +124,25 @@ export default function GreetingsSection() {
   return (
     <section className="space-y-12">
       
-      {/* Top Green Vision Banner with Rich Background Photo & Gradient Fade Overlay */}
-      <div className="relative rounded-3xl p-8 sm:p-12 text-white shadow-xl overflow-hidden bg-[#062416] border border-emerald-500/30">
-        <img
-          src="/images/hero_bg.jpg"
-          alt="한국외식창업교육원 시상식 현장 비전 배경"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-45 mix-blend-overlay scale-105 filter brightness-110 contrast-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0F5132] via-[#0F5132]/90 to-[#0F5132]/30" />
+      {/* Top Green Vision Banner with Crisp Right Photo & Left Dark Gradient Fade */}
+      <div className="relative rounded-3xl p-8 sm:p-12 text-white shadow-xl overflow-hidden bg-[#073822] border border-emerald-500/30 min-h-[220px] flex items-center">
+        {/* Crisp Right Photo with Full Visibility */}
+        <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] h-full overflow-hidden">
+          <img
+            src="/images/hero_bg.jpg"
+            alt="한국외식창업교육원 시상식 현장 비전 배경"
+            className="w-full h-full object-cover object-right opacity-90 filter contrast-105"
+          />
+          {/* Smooth Left-to-Right Dark Green Gradient Overlay for Text Readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#073822] via-[#073822]/85 sm:via-[#073822]/70 to-transparent" />
+        </div>
 
-        <div className="relative z-10 max-w-4xl space-y-3">
+        {/* Text Content */}
+        <div className="relative z-10 max-w-2xl space-y-3">
           <span className="text-xs sm:text-sm font-black text-emerald-300 uppercase tracking-widest block drop-shadow-md">
             GREETINGS & VISION
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight drop-shadow-lg">
+          <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-black tracking-tight leading-tight text-white drop-shadow-lg">
             " 미래를 선도하는<br className="hidden sm:inline" />
             <span className="text-emerald-300"> 외식산업의 동반자, 한국외식창업교육원 </span>"
           </h2>
