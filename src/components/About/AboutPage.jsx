@@ -242,6 +242,109 @@ export default function AboutPage({ initialTab = 'greetings' }) {
     },
   ];
 
+  // Helper render component for 12 Strategic Directions
+  const renderDirectionsContent = () => (
+    <section className="space-y-8 animate-fadeIn pt-4">
+      <div className="text-center max-w-4xl mx-auto space-y-3">
+        <span className="text-xs sm:text-sm font-extrabold text-emerald-700 bg-emerald-100/70 px-4 py-1.5 rounded-full inline-block tracking-wider uppercase">
+          DIRECTION
+        </span>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight leading-tight">
+          외식산업 혁신과 글로벌 성장을 선도하는 <br className="hidden sm:inline" />
+          <span className="text-emerald-700">미래지향적 12대 사업 방향</span>
+        </h2>
+        <p className="text-sm sm:text-base text-gray-600 font-medium max-w-2xl mx-auto">
+          외식 창업의 시작부터 성공까지, 체계적인 지원과 끊임없는 R&D 교육으로 대한민국 외식산업의 든든한 파트너가 되겠습니다.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        {directions.map((dir) => {
+          const IconComponent = dir.icon;
+          const isSelected = selectedDirection === dir.id;
+
+          return (
+            <div
+              key={dir.id}
+              onClick={() => setSelectedDirection(dir.id)}
+              className={`group bg-white rounded-3xl border overflow-hidden transition-all duration-300 flex flex-col justify-between cursor-pointer ${
+                isSelected
+                  ? 'border-emerald-600 ring-2 ring-emerald-500/30 shadow-2xl scale-[1.02] z-20'
+                  : 'border-gray-200/90 hover:border-emerald-400 hover:shadow-xl'
+              }`}
+            >
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-gray-100 shrink-0">
+                <img
+                  src={dir.bgImage}
+                  alt={dir.title}
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30" />
+                
+                <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                  <span className="text-xs font-black px-3 py-1 rounded-full bg-[#0F5132] text-white shadow-md tracking-wider">
+                    {dir.num}
+                  </span>
+                  <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-sm">
+                    <IconComponent className="w-4 h-4 stroke-[2.2]" />
+                  </div>
+                </div>
+
+                <div className="absolute bottom-3 left-4 right-4 text-white">
+                  <h3 className="text-base sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm">
+                    {dir.title}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
+                  {dir.shortDesc}
+                </p>
+
+                <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-700">
+                  <span>{isSelected ? '상세 실행과제 접기' : '상세 실행과제 보기'}</span>
+                  {isSelected ? (
+                    <ChevronUp className="w-4 h-4 text-emerald-700" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-emerald-600" />
+                  )}
+                </div>
+
+                {isSelected && (
+                  <div className="pt-4 border-t border-emerald-100 bg-emerald-50/70 -mx-5 -mb-5 p-4 space-y-2.5 animate-fadeIn rounded-b-3xl">
+                    {dir.details.map((detail, dIdx) => (
+                      <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-950 font-semibold leading-relaxed">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{detail}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="space-y-2">
+          <span className="text-xs font-bold text-emerald-300">사단법인 한국외식창업교육원과 함께하는 창업 비전</span>
+          <h3 className="text-xl sm:text-2xl font-black tracking-tight">
+            체계적인 12대 전략으로 성공적인 외식 창업을 가꾸어 드립니다.
+          </h3>
+        </div>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="px-6 py-3 bg-white text-[#0F5132] font-black text-sm rounded-xl hover:bg-emerald-50 transition-colors shrink-0 shadow-md flex items-center gap-2 cursor-pointer"
+        >
+          <span>상단으로 돌아가기</span>
+          <ArrowRight className="w-4 h-4 text-emerald-700" />
+        </button>
+      </div>
+    </section>
+  );
+
   return (
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-10">
@@ -263,25 +366,13 @@ export default function AboutPage({ initialTab = 'greetings' }) {
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === 'overview'
+              activeTab === 'overview' || activeTab === 'directions'
                 ? 'bg-[#0F5132] text-white shadow-md'
                 : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'
             }`}
           >
             <Building2 className="w-4 h-4" />
-            <span>기관 개요 및 설립목적</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('directions')}
-            className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              activeTab === 'directions'
-                ? 'bg-[#0F5132] text-white shadow-md'
-                : 'text-gray-600 hover:bg-emerald-50 hover:text-emerald-800'
-            }`}
-          >
-            <Award className="w-4 h-4" />
-            <span>12대 사업 방향</span>
+            <span>기관 개요 & 설립목적 (12대 사업방향)</span>
           </button>
 
           <button
@@ -302,8 +393,8 @@ export default function AboutPage({ initialTab = 'greetings' }) {
           <GreetingsSection />
         )}
 
-        {/* TAB 2: OVERVIEW & MISSION */}
-        {activeTab === 'overview' && (
+        {/* TAB 2: OVERVIEW, ESTABLISHMENT PURPOSE & 12 DIRECTIONS (설립목적 바로 아래 12대 사업방향 배치!) */}
+        {(activeTab === 'overview' || activeTab === 'directions') && (
           <div className="space-y-12 animate-fadeIn">
             {/* CORPORATE LEGAL PROFILE CARD */}
             <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm">
@@ -425,113 +516,13 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                 })}
               </div>
             </section>
+
+            {/* 12 MAJOR DIRECTIONS (설립목적 바로 아래에 위치!) */}
+            {renderDirectionsContent()}
           </div>
         )}
 
-        {/* TAB 3: 12 DIRECTIONS */}
-        {activeTab === 'directions' && (
-          <section className="space-y-8 animate-fadeIn">
-            <div className="text-center max-w-4xl mx-auto space-y-4">
-              <span className="text-xs sm:text-sm font-extrabold text-emerald-700 bg-emerald-100/70 px-4 py-1.5 rounded-full inline-block tracking-wider uppercase">
-                DIRECTION
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight">
-                외식산업 혁신과 글로벌 성장을 선도하는 <br className="hidden sm:inline" />
-                <span className="text-emerald-700">미래지향적 12대 사업 방향</span>
-              </h2>
-              <p className="text-base sm:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
-                외식 창업의 시작부터 성공까지, 체계적인 지원과 끊임없는 R&D 교육으로 대한민국 외식산업의 든든한 파트너가 되겠습니다.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-              {directions.map((dir) => {
-                const IconComponent = dir.icon;
-                const isSelected = selectedDirection === dir.id;
-
-                return (
-                  <div
-                    key={dir.id}
-                    onClick={() => setSelectedDirection(dir.id)}
-                    className={`group bg-white rounded-3xl border overflow-hidden transition-all duration-300 flex flex-col justify-between cursor-pointer ${
-                      isSelected
-                        ? 'border-emerald-600 ring-2 ring-emerald-500/30 shadow-2xl scale-[1.02] z-20'
-                        : 'border-gray-200/90 hover:border-emerald-400 hover:shadow-xl'
-                    }`}
-                  >
-                    <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-gray-100 shrink-0">
-                      <img
-                        src={dir.bgImage}
-                        alt={dir.title}
-                        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30" />
-                      
-                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                        <span className="text-xs font-black px-3 py-1 rounded-full bg-[#0F5132] text-white shadow-md tracking-wider">
-                          {dir.num}
-                        </span>
-                        <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center shadow-sm">
-                          <IconComponent className="w-4 h-4 stroke-[2.2]" />
-                        </div>
-                      </div>
-
-                      <div className="absolute bottom-3 left-4 right-4 text-white">
-                        <h3 className="text-base sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm">
-                          {dir.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                      <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
-                        {dir.shortDesc}
-                      </p>
-
-                      <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-700">
-                        <span>{isSelected ? '상세 실행과제 접기' : '상세 실행과제 보기'}</span>
-                        {isSelected ? (
-                          <ChevronUp className="w-4 h-4 text-emerald-700" />
-                        ) : (
-                          <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-emerald-600" />
-                        )}
-                      </div>
-
-                      {isSelected && (
-                        <div className="pt-4 border-t border-emerald-100 bg-emerald-50/70 -mx-5 -mb-5 p-4 space-y-2.5 animate-fadeIn rounded-b-3xl">
-                          {dir.details.map((detail, dIdx) => (
-                            <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-950 font-semibold leading-relaxed">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                              <span>{detail}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-emerald-300">사단법인 한국외식창업교육원과 함께하는 창업 비전</span>
-                <h3 className="text-xl sm:text-2xl font-black tracking-tight">
-                  체계적인 12대 전략으로 성공적인 외식 창업을 가꾸어 드립니다.
-                </h3>
-              </div>
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="px-6 py-3 bg-white text-[#0F5132] font-black text-sm rounded-xl hover:bg-emerald-50 transition-colors shrink-0 shadow-md flex items-center gap-2 cursor-pointer"
-              >
-                <span>상단으로 돌아가기</span>
-                <ArrowRight className="w-4 h-4 text-emerald-700" />
-              </button>
-            </div>
-          </section>
-        )}
-
-        {/* TAB 4: LOCATION */}
+        {/* TAB 3: LOCATION */}
         {activeTab === 'location' && (
           <LocationSection />
         )}
