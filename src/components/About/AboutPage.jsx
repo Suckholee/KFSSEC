@@ -311,7 +311,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                   )}
                 </div>
 
-                {/* Smooth Accordion Expansion Container without clipping issues */}
+                {/* Smooth Accordion Expansion Container */}
                 <div className={`accordion-grid ${isSelected ? 'open' : ''}`}>
                   <div className="accordion-content">
                     <div className="pt-3 border-t border-emerald-100/80 accordion-body">
@@ -341,10 +341,10 @@ export default function AboutPage({ initialTab = 'greetings' }) {
         </div>
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="px-6 py-3 bg-white text-[#0F5132] font-black text-sm rounded-xl hover:bg-emerald-50 transition-colors shrink-0 shadow-md flex items-center gap-2 cursor-pointer"
+          className="px-6 py-3 bg-[#0F5132] hover:bg-emerald-900 text-white font-black text-sm rounded-xl transition-colors shrink-0 shadow-md flex items-center gap-2 border border-emerald-400/40 cursor-pointer"
         >
           <span>상단으로 돌아가기</span>
-          <ArrowRight className="w-4 h-4 text-emerald-700" />
+          <ArrowRight className="w-4 h-4 text-emerald-300" />
         </button>
       </div>
     </section>
@@ -401,7 +401,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
         {/* TAB 2: OVERVIEW, ESTABLISHMENT PURPOSE & 12 DIRECTIONS */}
         {(activeTab === 'overview' || activeTab === 'directions') && (
           <div className="space-y-12 animate-fadeIn">
-            {/* CORPORATE LEGAL PROFILE CARD */}
+            {/* CORPORATE LEGAL PROFILE CARD WITH ELEGANT SUBTLE BACKGROUND PHOTO */}
             <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-5 flex flex-col items-center justify-center p-4">
@@ -412,54 +412,64 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                   />
                 </div>
 
-                <div className="lg:col-span-7 bg-stone-100/90 rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-4">
-                  <div className="border-b border-stone-200 pb-3">
-                    <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
-                      공식 지정 비영리법인
-                    </span>
-                    <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
-                      사단법인 한국외식창업교육원
-                    </h2>
-                  </div>
+                {/* Subtly Inserted Background Photo Card */}
+                <div className="lg:col-span-7 relative overflow-hidden bg-stone-100/90 rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-sm space-y-4">
+                  <img
+                    src="/images/dir_11.jpg"
+                    alt="외식창업 교육원 배경"
+                    className="absolute inset-0 w-full h-full object-cover object-center opacity-18 mix-blend-multiply pointer-events-none filter saturate-120"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-stone-100/95 via-stone-100/90 to-stone-100/70 pointer-events-none" />
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-800 pt-1">
-                    <div className="flex items-start gap-3">
-                      <Building2 className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-xs text-gray-500 font-semibold block">법인명</span>
-                        <span className="font-extrabold text-gray-900">사단법인 한국외식창업교육원</span>
-                      </div>
+                  <div className="relative z-10 space-y-4">
+                    <div className="border-b border-stone-300/80 pb-3">
+                      <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
+                        공식 지정 비영리법인
+                      </span>
+                      <h2 className="text-xl sm:text-2xl font-black text-gray-900 mt-2">
+                        사단법인 한국외식창업교육원
+                      </h2>
                     </div>
 
-                    <div className="flex items-start gap-3">
-                      <Globe className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-xs text-gray-500 font-semibold block">영문명</span>
-                        <span className="font-extrabold text-gray-900">Korea Food Service Startup Education Center</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-800 pt-1">
+                      <div className="flex items-start gap-3">
+                        <Building2 className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-xs text-gray-500 font-semibold block">법인명</span>
+                          <span className="font-extrabold text-gray-900">사단법인 한국외식창업교육원</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-start gap-3">
-                      <UserCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-xs text-gray-500 font-semibold block">대표자</span>
-                        <span className="font-extrabold text-[#0F5132] text-base">안형상 이사장</span>
+                      <div className="flex items-start gap-3">
+                        <Globe className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-xs text-gray-500 font-semibold block">영문명</span>
+                          <span className="font-extrabold text-gray-900">Korea Food Service Startup Education Center</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-start gap-3">
-                      <Award className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-xs text-gray-500 font-semibold block">분야</span>
-                        <span className="font-extrabold text-gray-900">창업 외식 교육</span>
+                      <div className="flex items-start gap-3">
+                        <UserCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-xs text-gray-500 font-semibold block">대표자</span>
+                          <span className="font-extrabold text-[#0F5132] text-base">안형상 이사장</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-start gap-3 sm:col-span-2 pt-1 border-t border-stone-200/60">
-                      <Calendar className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-xs text-gray-500 font-semibold block">설립 및 허가일자</span>
-                        <span className="font-extrabold text-[#0F5132] text-base">2022년 7월 12일</span>
+                      <div className="flex items-start gap-3">
+                        <Award className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-xs text-gray-500 font-semibold block">분야</span>
+                          <span className="font-extrabold text-gray-900">창업 외식 교육</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 sm:col-span-2 pt-1 border-t border-stone-300/80">
+                        <Calendar className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-xs text-gray-500 font-semibold block">설립 및 허가일자</span>
+                          <span className="font-extrabold text-[#0F5132] text-base">2022년 7월 12일</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -467,9 +477,15 @@ export default function AboutPage({ initialTab = 'greetings' }) {
               </div>
             </section>
 
-            {/* ESTABLISHMENT PURPOSE (설립목적) */}
-            <section className="bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm space-y-8">
-              <div className="border-b border-gray-100 pb-6 flex items-center gap-3">
+            {/* ESTABLISHMENT PURPOSE (설립목적) WITH SUBTLE BACKGROUND IMAGE */}
+            <section className="relative overflow-hidden bg-white rounded-3xl p-6 sm:p-10 border border-emerald-100 shadow-sm space-y-8">
+              <img
+                src="/images/course_restaurant.jpg"
+                alt="외식 전경 배경"
+                className="absolute inset-0 w-full h-full object-cover object-center opacity-8 mix-blend-multiply pointer-events-none"
+              />
+              
+              <div className="relative z-10 border-b border-gray-100 pb-6 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#0F5132] text-white flex items-center justify-center font-black shadow-md">
                   <Scale className="w-5 h-5 stroke-[2.2]" />
                 </div>
@@ -483,7 +499,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-emerald-50 via-white to-emerald-50/60 p-6 sm:p-8 rounded-2xl border border-emerald-200/80 shadow-xs space-y-5">
+              <div className="relative z-10 bg-gradient-to-r from-emerald-50/90 via-white/95 to-emerald-50/80 p-6 sm:p-8 rounded-2xl border border-emerald-200/80 shadow-xs space-y-5">
                 <div className="flex items-start gap-3.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0 mt-2 shadow-xs" />
                   <p className="text-sm sm:text-base font-bold text-gray-800 leading-relaxed tracking-tight">
@@ -499,13 +515,13 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
+              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
                 {missionPillars.map((item) => {
                   const IconComponent = item.icon;
                   return (
                     <div
                       key={item.id}
-                      className="bg-emerald-50/40 rounded-2xl p-6 border border-emerald-100/70 hover:bg-white hover:shadow-md hover:border-emerald-300 transition-all group"
+                      className="bg-emerald-50/60 backdrop-blur-xs rounded-2xl p-6 border border-emerald-100/70 hover:bg-white hover:shadow-md hover:border-emerald-300 transition-all group"
                     >
                       <div className="w-12 h-12 rounded-2xl bg-[#0F5132] text-white flex items-center justify-center mb-4 shadow-md shadow-emerald-900/20 group-hover:scale-110 transition-transform">
                         <IconComponent className="w-6 h-6 stroke-[2]" />
