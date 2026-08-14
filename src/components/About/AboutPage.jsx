@@ -311,16 +311,18 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                   )}
                 </div>
 
-                {/* Smooth Accordion Expansion Container */}
+                {/* Smooth Accordion Expansion Container without clipping issues */}
                 <div className={`accordion-grid ${isSelected ? 'open' : ''}`}>
                   <div className="accordion-content">
-                    <div className="pt-4 border-t border-emerald-100 bg-emerald-50/70 -mx-5 -mb-5 p-4 space-y-2.5 rounded-b-3xl accordion-body">
-                      {dir.details.map((detail, dIdx) => (
-                        <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-950 font-semibold leading-relaxed">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{detail}</span>
-                        </div>
-                      ))}
+                    <div className="pt-3 border-t border-emerald-100/80 accordion-body">
+                      <div className="bg-emerald-50/90 rounded-2xl p-4 space-y-2.5 border border-emerald-100/60">
+                        {dir.details.map((detail, dIdx) => (
+                          <div key={dIdx} className="flex items-start gap-2.5 text-xs text-emerald-950 font-semibold leading-relaxed">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                            <span>{detail}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -520,7 +522,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
               </div>
             </section>
 
-            {/* 12 MAJOR DIRECTIONS (설립목적 바로 아래 부드러운 아코디언 애니메이션 적용!) */}
+            {/* 12 MAJOR DIRECTIONS */}
             {renderDirectionsContent()}
           </div>
         )}

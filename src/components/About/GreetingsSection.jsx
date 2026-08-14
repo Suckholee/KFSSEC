@@ -124,18 +124,24 @@ export default function GreetingsSection() {
   return (
     <section className="space-y-12">
       
-      {/* Top Green Banner */}
-      <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
+      {/* Top Green Vision Banner with Rich Background Photo & Gradient Fade Overlay */}
+      <div className="relative rounded-3xl p-8 sm:p-12 text-white shadow-xl overflow-hidden bg-[#062416] border border-emerald-500/30">
+        <img
+          src="/images/hero_bg.jpg"
+          alt="한국외식창업교육원 시상식 현장 비전 배경"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-45 mix-blend-overlay scale-105 filter brightness-110 contrast-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F5132] via-[#0F5132]/90 to-[#0F5132]/30" />
+
         <div className="relative z-10 max-w-4xl space-y-3">
-          <span className="text-xs sm:text-sm font-extrabold text-emerald-300 uppercase tracking-widest block">
+          <span className="text-xs sm:text-sm font-black text-emerald-300 uppercase tracking-widest block drop-shadow-md">
             GREETINGS & VISION
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight drop-shadow-lg">
             " 미래를 선도하는<br className="hidden sm:inline" />
             <span className="text-emerald-300"> 외식산업의 동반자, 한국외식창업교육원 </span>"
           </h2>
         </div>
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-emerald-500/10 rounded-r-3xl pointer-events-none" />
       </div>
 
       {/* Main Greetings Grid: Photo + Speech Body */}
@@ -198,186 +204,151 @@ export default function GreetingsSection() {
                   <h5 className="font-black text-[#0F5132] text-lg sm:text-xl">
                     1. 미래지향적 교육
                   </h5>
-                  <p className="text-base sm:text-lg text-gray-700 font-medium leading-relaxed">
-                    빠르게 변화하는 외식 트렌드와 최신 기술을 반영한 교육 프로그램을 통해 시대를 앞서가는 전문가를 양성합니다.
+                  <p className="text-sm sm:text-base text-gray-700 font-medium leading-relaxed">
+                    급변하는 외식산업 트렌드와 기술을 반영한 실용적인 교육을 통해 시대가 요구하는 역량을 갖춘 인재를 양성합니다.
                   </p>
                 </div>
 
                 <div className="bg-stone-50 p-5 sm:p-6 rounded-2xl border border-stone-200/80 space-y-2">
                   <h5 className="font-black text-[#0F5132] text-lg sm:text-xl">
-                    2. 창업의 희망과 비전 제시
+                    2. 실전 중심의 통합 솔루션
                   </h5>
-                  <p className="text-base sm:text-lg text-gray-700 font-medium leading-relaxed">
-                    단순히 성공을 넘어 지속 가능한 성장을 이루는 창업 모델과 전략을 제안합니다.
+                  <p className="text-sm sm:text-base text-gray-700 font-medium leading-relaxed">
+                    창업의 첫걸음부터 안정적인 정착에 이르기까지 컨설팅, 멘토링, 마케팅 지원 등 외식 창업 전 과정에 필요한 종합적인 솔루션을 제공합니다.
                   </p>
                 </div>
 
                 <div className="bg-stone-50 p-5 sm:p-6 rounded-2xl border border-stone-200/80 space-y-2">
                   <h5 className="font-black text-[#0F5132] text-lg sm:text-xl">
-                    3. 진취적이고 혁신적인 지원
+                    3. 상생과 협력의 네트워크
                   </h5>
-                  <p className="text-base sm:text-lg text-gray-700 font-medium leading-relaxed">
-                    창업자와 현업 종사자들이 새로운 도전을 두려움 없이 이어갈 수 있도록 실질적인 도움과 네트워크를 제공합니다.
+                  <p className="text-sm sm:text-base text-gray-700 font-medium leading-relaxed">
+                    창업자, 소상공인, 그리고 관련 기관 간의 긴밀한 협력 체계를 구축하여 외식산업 전반의 경쟁력을 높이고 지역사회 발전에 기여합니다.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* II. 외식산업 발전과 세계화 */}
-            <div className="space-y-4 pt-4 border-t border-gray-100">
+            {/* II. 맺음말 */}
+            <div className="space-y-4 pt-6 border-t border-gray-100">
               <h4 className="text-xl sm:text-2xl font-black text-gray-900 inline-block bg-emerald-100/90 text-emerald-950 px-4 py-1.5 rounded-lg">
-                II. 외식산업 발전과 세계화
+                II. 맺음말
               </h4>
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed font-medium">
-                특히, 저희는 농수축산물을 활용한 외식산업 발전과 우리 음식을 세계화하는 데에 큰 비전을 두고 있습니다. 국내 농축산물을 기반으로 한 혁신적인 음식 개발과 해외 홍보를 통해, 한국 음식이 세계 속에서 조화를 이루며 성장할 수 있도록 최선을 다하고 있습니다.
+              <p className="leading-relaxed">
+                외식업은 지속적인 도전과 열정을 필요로 하는 영역입니다. 하지만 올바른 길을 제시하고 함께 고민해 주는 파트너가 있다면, 도전은 더 이상 두려움이 아닌 성공의 시작이 될 것입니다.
               </p>
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed font-medium">
-                또한, 퇴직자 및 실버 세대를 위한 웰빙 요리 교육, 식문화 개선을 위한 연구, 우수 회원사 및 명인 발굴과 같은 다양한 활동도 적극적으로 전개하고 있습니다.
+              <p className="leading-relaxed">
+                한국외식창업교육원은 여러분의 열정이 결실을 맺을 수 있도록 늘 곁에서 최고의 교육과 지원을 아끼지 않을 것을 약속드립니다.
               </p>
-            </div>
+              <p className="leading-relaxed font-bold text-gray-900">
+                여러분의 원대한 꿈과 도전이 이곳 한국외식창업교육원에서 시작되기를 진심으로 응원합니다.
+              </p>
+              <p className="leading-relaxed pt-2 font-black text-[#0F5132]">
+                감사합니다.
+              </p>
 
-            {/* III. 함께 성장하는 동반자 */}
-            <div className="space-y-4 pt-4 border-t border-gray-100">
-              <h4 className="text-xl sm:text-2xl font-black text-gray-900 inline-block bg-emerald-100/90 text-emerald-950 px-4 py-1.5 rounded-lg">
-                III. 함께 성장하는 동반자
-              </h4>
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed font-medium">
-                저희 한국외식창업교육원은 여러분과 함께 고민하고 성장하며, 대한민국 외식산업의 밝은 미래를 열어가는 데 헌신할 것입니다. 외식 창업을 꿈꾸는 모든 분들이 새로운 도전을 통해 희망과 성공의 결실을 맺을 수 있도록 저희의 모든 역량을 아낌없이 지원하겠습니다.
-              </p>
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed font-medium">
-                앞으로도 저희 교육원이 제시하는 길이 여러분의 꿈과 열정에 힘을 실어드리기를 진심으로 바랍니다. 지속적인 관심과 성원을 부탁드리며, 여러분과 함께 더 나은 내일을 만들어가겠습니다. 감사합니다.
-              </p>
-            </div>
-
-            {/* Signature */}
-            <div className="pt-8 text-right border-t border-gray-100">
-              <span className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight font-serif italic">
-                이사장 <span className="text-[#0F5132] not-italic ml-2 text-3xl sm:text-4xl font-extrabold">안형상</span>
-              </span>
+              <div className="pt-6 flex justify-end">
+                <div className="text-right space-y-1 bg-emerald-50/60 px-6 py-4 rounded-2xl border border-emerald-100 inline-block">
+                  <span className="text-xs text-gray-500 font-bold block">사단법인 한국외식창업교육원</span>
+                  <span className="text-[#0F5132] font-black text-xl sm:text-2xl">
+                    이사장 안 형 상
+                  </span>
+                </div>
+              </div>
             </div>
 
           </div>
-
         </div>
       </div>
 
-      {/* PINTEREST-INSPIRED BALANCED PROFILE SECTION */}
-      <div className="space-y-8">
-        
-        {/* Balanced Executive Identity Header Card */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border-t-4 border-t-[#0F5132] border-x border-b border-gray-200/90 shadow-md">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-            
-            {/* Left: Photo & Titles */}
-            <div className="md:col-span-7 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-              <div className="w-32 sm:w-36 aspect-[3/4] rounded-2xl overflow-hidden border border-emerald-200 bg-stone-100 shrink-0 shadow-md">
-                <img
-                  src="/images/chairman_ahn_real.jpg?v=2"
-                  alt="안형상 이사장"
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-
-              <div className="space-y-3 text-center sm:text-left">
-                <div>
-                  <span className="text-xs font-black text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full uppercase tracking-wider">
-                    CHAIRMAN & FOUNDER
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mt-2">
-                    안형상 이사장님 프로필
-                  </h3>
-                </div>
-
-                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
-                    🏅 대한민국 외식명장
-                  </span>
-                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
-                    🏛️ (사)한국외식창업교육원 원장
-                  </span>
-                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
-                    👑 대한민국 조리 명인
-                  </span>
-                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-lg text-xs font-bold text-[#0F5132]">
-                    📜 국가공인 조리기능장 (2003년)
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Balanced 2x2 Metric Grid */}
-            <div className="md:col-span-5 grid grid-cols-2 gap-3.5 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-stone-200 md:pl-8">
-              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
-                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">40년+</span>
-                <span className="text-xs text-gray-600 font-bold">외식 실무 & 프랜차이즈</span>
-              </div>
-              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
-                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">2003년</span>
-                <span className="text-xs text-gray-600 font-bold">국가공인 조리기능장</span>
-              </div>
-              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
-                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">9회+</span>
-                <span className="text-xs text-gray-600 font-bold">장관상 및 주요 수상</span>
-              </div>
-              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200/70 text-center">
-                <span className="text-xl sm:text-2xl font-black text-[#0F5132] block">100+</span>
-                <span className="text-xs text-gray-600 font-bold">가맹점 브랜딩 개발</span>
-              </div>
-            </div>
-
-          </div>
+      {/* Highlight 4 Core Strengths Banner */}
+      <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-12 text-white space-y-8 shadow-xl">
+        <div className="text-center max-w-3xl mx-auto space-y-2">
+          <span className="text-xs font-black text-emerald-300 tracking-widest uppercase">
+            WHY CHOOSE US
+          </span>
+          <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+            한국외식창업교육원의 4가지 핵심 약속
+          </h3>
+          <p className="text-sm text-emerald-100 font-medium">
+            성공적인 외식 창업을 위해 최고의 실무진과 차별화된 프로세스를 제공합니다.
+          </p>
         </div>
 
-        {/* Pinterest Symmetric 3-Column Equal-Balanced Card Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {highlightPoints.map((item) => (
+            <div
+              key={item.num}
+              className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:bg-white/20 transition-all space-y-3"
+            >
+              <div className="w-10 h-10 rounded-xl bg-emerald-400 text-[#0F5132] font-black text-lg flex items-center justify-center shadow-md">
+                {item.num}
+              </div>
+              <h4 className="text-lg font-black text-white">{item.title}</h4>
+              <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed font-medium">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Chairman Ahn Hyeongsang 40-Year Career Profile Detail Section */}
+      <div className="space-y-8 pt-4">
+        <div className="border-b border-gray-200 pb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-[#0F5132] text-xs font-black mb-2">
+            <Medal className="w-3.5 h-3.5" />
+            <span>40 YEARS OF DEDICATION & EXPERTISE</span>
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+            안형상 이사장 프로필 & 주요 약력
+          </h3>
+          <p className="text-sm text-gray-600 font-medium mt-1">
+            특급호텔 40년 현장 경력과 국가 심사위원, 학술 연구를 갖춘 외식 명장의 발자취입니다.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {profileCards.map((card) => {
             const IconComp = card.icon;
             return (
               <div
                 key={card.id}
-                className="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/90 hover:border-emerald-500 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-3xl p-6 sm:p-7 border border-emerald-100/80 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group"
               >
-                <div>
-                  {/* Card Top Pill & Icon */}
-                  <div className="flex items-center justify-between mb-4 border-b border-stone-100 pb-3">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-[#0F5132] group-hover:bg-[#0F5132] group-hover:text-white flex items-center justify-center transition-colors shadow-xs">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center group-hover:bg-[#0F5132] group-hover:text-white transition-colors shadow-xs">
                         <IconComp className="w-5 h-5 stroke-[2.2]" />
                       </div>
                       <div>
-                        <h4 className="text-base sm:text-lg font-black text-gray-900 group-hover:text-[#0F5132] transition-colors">
+                        <h4 className="text-base sm:text-lg font-black text-gray-900">
                           {card.title}
                         </h4>
-                        <span className="text-[11px] font-bold text-gray-400 block tracking-tight">
+                        <span className="text-[11px] font-bold text-emerald-700 tracking-wider block">
                           {card.subtitle}
                         </span>
                       </div>
                     </div>
-                    <span className="text-xs font-black text-[#0F5132] bg-emerald-50 px-2.5 py-1 rounded-md">
+                    <span className="text-xs font-black text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg">
                       {card.id}
                     </span>
                   </div>
 
-                  {/* List Items */}
-                  <div className="space-y-2 text-xs sm:text-sm text-gray-700 font-medium pt-1">
-                    {card.items.map((item, itemIdx) => (
-                      <div key={itemIdx} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                        <span className="leading-snug">{item}</span>
-                      </div>
+                  <ul className="space-y-2.5 pt-1">
+                    {card.items.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-semibold leading-relaxed">
+                        <BookmarkCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
                     ))}
-                  </div>
-                </div>
-
-                <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between text-[11px] font-bold text-gray-400">
-                  <span>한국외식창업교육원</span>
-                  <span className="text-emerald-700 font-bold">{card.items.length}개 이력</span>
+                  </ul>
                 </div>
               </div>
             );
           })}
         </div>
-
       </div>
 
     </section>
