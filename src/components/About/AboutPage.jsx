@@ -379,8 +379,8 @@ export default function AboutPage({ initialTab = 'greetings' }) {
     <div className="bg-gray-50 min-h-screen py-10 relative">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-10">
         
-        {/* Navigation Tabs Header */}
-        <div className="bg-white rounded-2xl p-2 border border-emerald-100 shadow-sm flex flex-wrap items-center justify-center gap-2 max-w-5xl mx-auto sticky top-20 z-30 backdrop-blur-md bg-white/90">
+        {/* Clean Navigation Tabs Header without sticky overlap collision */}
+        <div className="bg-white rounded-2xl p-2 border border-emerald-100/80 shadow-sm flex flex-wrap items-center justify-center gap-2 max-w-5xl mx-auto mb-8">
           <button
             onClick={() => setActiveTab('greetings')}
             className={`px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
