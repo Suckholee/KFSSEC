@@ -242,7 +242,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
     },
   ];
 
-  // Helper render component for 12 Strategic Directions
+  // Helper render component for 12 Strategic Directions with Smooth Accordion Animation
   const renderDirectionsContent = () => (
     <section className="space-y-8 animate-fadeIn pt-4">
       <div className="text-center max-w-4xl mx-auto space-y-3">
@@ -266,7 +266,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
           return (
             <div
               key={dir.id}
-              onClick={() => setSelectedDirection(dir.id)}
+              onClick={() => setSelectedDirection(isSelected ? null : dir.id)}
               className={`group bg-white rounded-3xl border overflow-hidden transition-all duration-300 flex flex-col justify-between cursor-pointer ${
                 isSelected
                   ? 'border-emerald-600 ring-2 ring-emerald-500/30 shadow-2xl scale-[1.02] z-20'
@@ -305,22 +305,25 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                 <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-700">
                   <span>{isSelected ? '상세 실행과제 접기' : '상세 실행과제 보기'}</span>
                   {isSelected ? (
-                    <ChevronUp className="w-4 h-4 text-emerald-700" />
+                    <ChevronUp className="w-4 h-4 text-emerald-700 transition-transform duration-300" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-emerald-600" />
+                    <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-transform duration-300" />
                   )}
                 </div>
 
-                {isSelected && (
-                  <div className="pt-4 border-t border-emerald-100 bg-emerald-50/70 -mx-5 -mb-5 p-4 space-y-2.5 animate-fadeIn rounded-b-3xl">
-                    {dir.details.map((detail, dIdx) => (
-                      <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-950 font-semibold leading-relaxed">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                        <span>{detail}</span>
-                      </div>
-                    ))}
+                {/* Smooth Accordion Expansion Container */}
+                <div className={`accordion-grid ${isSelected ? 'open' : ''}`}>
+                  <div className="accordion-content">
+                    <div className="pt-4 border-t border-emerald-100 bg-emerald-50/70 -mx-5 -mb-5 p-4 space-y-2.5 rounded-b-3xl accordion-body">
+                      {dir.details.map((detail, dIdx) => (
+                        <div key={dIdx} className="flex items-start gap-2 text-xs text-emerald-950 font-semibold leading-relaxed">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                          <span>{detail}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           );
@@ -393,7 +396,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
           <GreetingsSection />
         )}
 
-        {/* TAB 2: OVERVIEW, ESTABLISHMENT PURPOSE & 12 DIRECTIONS (설립목적 바로 아래 12대 사업방향 배치!) */}
+        {/* TAB 2: OVERVIEW, ESTABLISHMENT PURPOSE & 12 DIRECTIONS */}
         {(activeTab === 'overview' || activeTab === 'directions') && (
           <div className="space-y-12 animate-fadeIn">
             {/* CORPORATE LEGAL PROFILE CARD */}
@@ -517,7 +520,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
               </div>
             </section>
 
-            {/* 12 MAJOR DIRECTIONS (설립목적 바로 아래에 위치!) */}
+            {/* 12 MAJOR DIRECTIONS (설립목적 바로 아래 부드러운 아코디언 애니메이션 적용!) */}
             {renderDirectionsContent()}
           </div>
         )}
