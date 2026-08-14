@@ -38,7 +38,7 @@ export default function YouTubeMediaSection({ onScrollNext }) {
               <span>YOUTUBE OFFICIAL</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              자사 유튜브 콘텐츠 노출
+              한국외식창업교육원 미디어
             </h2>
             <p className="text-sm text-emerald-200/70 font-medium mt-1">
               사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.
