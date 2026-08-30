@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { X, Image, Save, Sparkles, Tag, DollarSign, UserCheck, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Image as ImageIcon, Save, Upload, Sparkles, Tag, DollarSign, UserCheck, CheckCircle2, RefreshCw } from 'lucide-react';
 
 export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse }) {
+  const fileInputRef = useRef(null);
+
   const [formData, setFormData] = useState({
     id: '',
     category: 'full-package',
@@ -13,6 +15,7 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
     studentsCount: 0,
     thumbnail: '/images/package_card_1.png',
     desc: '',
+    fitMode: 'contain', // 'contain' | 'cover'
   });
 
   const presetThumbnails = [
@@ -39,6 +42,7 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
         studentsCount: course.studentsCount || 0,
         thumbnail: course.thumbnail || '/images/package_card_1.png',
         desc: course.desc || '',
+        fitMode: course.fitMode || 'contain',
       });
     } else {
       setFormData({
@@ -52,11 +56,34 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
         studentsCount: 0,
         thumbnail: '/images/package_card_1.png',
         desc: '',
+        fitMode: 'contain',
       });
     }
   }, [course, isOpen]);
 
   if (!isOpen) return null;
+
+  // Handle Direct File Upload from PC (Base64 Reader)
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (event.target?.result) {
+        setFormData((prev) => ({
+          ...prev,
+          thumbnail: event.target.result,
+        }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleCategoryChange = (e) => {
     const val = e.target.value;
@@ -94,53 +121,108 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
         {/* Header Title */}
         <div className="border-b border-emerald-900/60 pb-4 space-y-1">
           <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black">
-            COURSE CONTENT & MEDIA EDITOR
+            COURSE MEDIA & FILE UPLOADER
           </span>
           <h2 className="text-2xl font-black text-white">
-            {course ? '교육과정 썸네일 사진 및 문구 수정' : '신규 교육과정 등록'}
+            {course ? '교육과정 사진 업로드 및 문구 수정' : '신규 교육과정 등록'}
           </h2>
           <p className="text-xs text-emerald-300/80 font-medium">
-            홈페이지 갤러리에 실제 노출될 썸네일 이미지, 대표 문구, 수강료 및 강사 정보를 수정합니다.
+            PC에서 실제 사진을 직접 업로드하거나 URL을 지정하여 100% 잘림 없이 선명하게 노출시킵니다.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           
-          {/* Thumbnail Image Section */}
-          <div className="space-y-3 bg-[#111c16] p-4 rounded-2xl border border-emerald-500/20">
-            <label className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
-              <Image className="w-4 h-4 text-emerald-400" />
-              <span>대표 썸네일 이미지 설정 및 프리뷰</span>
-            </label>
+          {/* Thumbnail Photo Upload & Fit Mode Section */}
+          <div className="space-y-4 bg-[#111c16] p-5 rounded-2xl border border-emerald-500/20">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
+                <ImageIcon className="w-4 h-4 text-emerald-400" />
+                <span>대표 썸네일 이미지 업로드 & 비율 (잘림 방지)</span>
+              </label>
+
+              {/* Fit Mode Switcher */}
+              <div className="flex items-center gap-1 bg-[#16241c] p-1 rounded-xl border border-emerald-500/30">
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, fitMode: 'contain' })}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                    formData.fitMode === 'contain'
+                      ? 'bg-emerald-500 text-white shadow-xs'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  title="사진 전체 원본 비율 보존 (잘림 없음)"
+                >
+                  원본 비율 보존 (권장)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, fitMode: 'cover' })}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                    formData.fitMode === 'cover'
+                      ? 'bg-emerald-500 text-white shadow-xs'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  title="꽉 찬 채우기"
+                >
+                  꽉 채우기
+                </button>
+              </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              {/* Image Preview Box */}
-              <div className="w-full sm:w-40 h-28 rounded-xl overflow-hidden bg-emerald-950 border border-emerald-500/40 shrink-0 relative shadow-md">
+              {/* Image Preview Box - Unclipped 100% Full View */}
+              <div className="w-full sm:w-48 h-36 rounded-xl overflow-hidden bg-black border border-emerald-500/40 shrink-0 relative shadow-md flex items-center justify-center p-1">
                 <img
                   src={formData.thumbnail}
                   alt="썸네일 프리뷰"
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full ${
+                    formData.fitMode === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
+                  }`}
                   onError={(e) => {
                     e.target.src = '/images/package_card_1.png';
                   }}
                 />
-                <span className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/70 rounded text-[10px] font-mono text-emerald-300">
+                <span className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/80 rounded text-[10px] font-mono text-emerald-300 border border-emerald-500/30">
                   PREVIEW
                 </span>
               </div>
 
-              {/* Image Input & Presets */}
-              <div className="flex-1 space-y-2 w-full">
+              {/* Direct PC File Upload Button & URL Input */}
+              <div className="flex-1 space-y-3 w-full">
+                {/* File Upload Button */}
+                <div className="flex items-center gap-2">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center gap-2"
+                  >
+                    <Upload className="w-4 h-4" />
+                    <span>📁 내 PC에서 사진 업로드</span>
+                  </button>
+
+                  <span className="text-[11px] text-gray-400 font-medium">
+                    (JPG, PNG, WEBP 지원)
+                  </span>
+                </div>
+
                 <input
                   type="text"
                   value={formData.thumbnail}
                   onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
-                  placeholder="이미지 파일 경로 또는 URL 입력 (예: /images/package_card_1.png)"
+                  placeholder="또는 이미지 경로/URL 입력"
                   className="w-full bg-[#16241c] border border-emerald-500/30 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-400"
                 />
 
                 <div className="space-y-1">
-                  <span className="text-[11px] text-gray-400 font-bold block">빠른 프리셋 사진 선택:</span>
+                  <span className="text-[11px] text-gray-400 font-bold block">기본 샘플 사진 선택:</span>
                   <div className="flex flex-wrap gap-1.5">
                     {presetThumbnails.map((pt, pIdx) => (
                       <button

@@ -21,6 +21,7 @@ export default function AdminCourses() {
       status: '운영중',
       studentsCount: 142,
       thumbnail: '/images/package_card_1.png',
+      fitMode: 'contain',
       desc: '상권분석부터 레시피, 마케팅, 매장 운영까지 외식 창업의 모든 단계를 집약한 최고급 풀패키지입니다.',
     },
     {
@@ -34,6 +35,7 @@ export default function AdminCourses() {
       status: '운영중',
       studentsCount: 98,
       thumbnail: '/images/package_card_2.png',
+      fitMode: 'contain',
       desc: '시그니처 메뉴 개발과 식자재 원가 비율 최적화로 마진율을 극대화하는 정밀 솔루션 과정입니다.',
     },
     {
@@ -47,6 +49,7 @@ export default function AdminCourses() {
       status: '운영중',
       studentsCount: 110,
       thumbnail: '/images/package_card_3.png',
+      fitMode: 'contain',
       desc: '고객 응대, QSC 품질 관리, 컴플레인 해결 및 단골 고객 유치 전술을 전수합니다.',
     },
     {
@@ -60,6 +63,7 @@ export default function AdminCourses() {
       status: '운영중',
       studentsCount: 89,
       thumbnail: '/images/package_card_4.png',
+      fitMode: 'contain',
       desc: 'SNS 마케팅, 구글/네이버 상권 노출 및 프랜차이즈 가맹 표준화 시스템 구축 과정입니다.',
     },
     {
@@ -73,6 +77,7 @@ export default function AdminCourses() {
       status: '운영중',
       studentsCount: 64,
       thumbnail: '/images/behavior_card_1.jpg',
+      fitMode: 'contain',
       desc: '반려견의 심리와 행동 시그널을 정확히 판독하고 맞춤 솔루션을 제시하는 전문 과정입니다.',
     },
     {
@@ -86,6 +91,7 @@ export default function AdminCourses() {
       status: '운영중',
       studentsCount: 81,
       thumbnail: '/images/petfood_card_1.jpg',
+      fitMode: 'contain',
       desc: '반려동물의 생애주기별 영양 요구량과 안전한 식자재 가공 기술을 체계적으로 교육합니다.',
     },
     {
@@ -99,6 +105,7 @@ export default function AdminCourses() {
       status: '운영중',
       studentsCount: 67,
       thumbnail: '/images/startup_card_1.jpg',
+      fitMode: 'contain',
       desc: '손익분기점 계산, 초기 투자금 산정 및 성공적인 외식 사업계획서를 작성하는 핵심 특강입니다.',
     },
     {
@@ -112,6 +119,7 @@ export default function AdminCourses() {
       status: '모집중',
       studentsCount: 45,
       thumbnail: '/images/dir_1.jpg',
+      fitMode: 'cover',
       desc: '스페셜티 커피, 시그니처 음료 세팅부터 고수익 카페 동선 설계 노하우를 집중 강의합니다.',
     },
   ]);
@@ -157,7 +165,7 @@ export default function AdminCourses() {
             교육과정 & 풀 패키지 상품 관리
           </h2>
           <p className="text-xs sm:text-sm text-emerald-200/70 font-medium mt-1">
-            메인 페이지 및 카탈로그에 노출되는 수강 상품의 실제 사진, 과정명, 문구 및 가격을 실시간 편집합니다.
+            PC에서 실제 사진을 직접 업로드하고 100% 잘림 없이 선명하게 노출시킬 수 있습니다.
           </p>
         </div>
 
@@ -241,7 +249,7 @@ export default function AdminCourses() {
 
       </div>
 
-      {/* VIEW MODE 1: GALLERY CARD GRID VIEW */}
+      {/* VIEW MODE 1: GALLERY CARD GRID VIEW WITH UNCLIPPED IMAGES */}
       {viewMode === 'gallery' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCourses.map((c) => (
@@ -249,14 +257,16 @@ export default function AdminCourses() {
               key={c.id}
               className="bg-[#111c16] rounded-3xl border border-emerald-500/20 hover:border-emerald-400/60 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
             >
-              {/* Thumbnail Cover Header */}
-              <div className="relative h-48 w-full overflow-hidden bg-emerald-950">
+              {/* Thumbnail Cover Header with Unclipped Fit Support */}
+              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-black/90 p-1 flex items-center justify-center">
                 <img
                   src={c.thumbnail}
                   alt={c.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-500"
+                  className={`w-full h-full ${
+                    c.fitMode === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
+                  } group-hover:scale-105 transition-transform duration-500`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111c16] via-transparent to-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111c16] via-transparent to-black/30 pointer-events-none" />
 
                 <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
                   <span className="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-black shadow-md tracking-wider">
@@ -298,7 +308,7 @@ export default function AdminCourses() {
                       <button
                         onClick={() => handleOpenEditModal(c)}
                         className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1"
-                        title="사진 및 문구 수정"
+                        title="사진 업로드 및 문구 수정"
                       >
                         <Edit className="w-3.5 h-3.5" />
                         <span>수정</span>
@@ -339,8 +349,14 @@ export default function AdminCourses() {
                 {filteredCourses.map((c) => (
                   <tr key={c.id} className="hover:bg-emerald-950/40 transition-colors">
                     <td className="py-3 px-3">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-emerald-950 border border-emerald-500/30 shrink-0">
-                        <img src={c.thumbnail} alt={c.title} className="w-full h-full object-cover" />
+                      <div className="w-14 h-14 rounded-xl overflow-hidden bg-black border border-emerald-500/30 shrink-0 p-0.5 flex items-center justify-center">
+                        <img
+                          src={c.thumbnail}
+                          alt={c.title}
+                          className={`w-full h-full ${
+                            c.fitMode === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
+                          }`}
+                        />
                       </div>
                     </td>
                     <td className="py-3 px-3 font-mono text-xs text-gray-400">{c.id}</td>
@@ -363,7 +379,7 @@ export default function AdminCourses() {
                         <button
                           onClick={() => handleOpenEditModal(c)}
                           className="p-1.5 rounded-lg bg-emerald-900/40 hover:bg-emerald-800 text-emerald-300 transition-colors cursor-pointer"
-                          title="사진 및 문구 수정"
+                          title="사진 업로드 및 문구 수정"
                         >
                           <Edit className="w-3.5 h-3.5" />
                         </button>
