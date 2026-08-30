@@ -44,6 +44,11 @@ import {
   Check,
   Upload,
   FolderOpen,
+  Code,
+  Terminal,
+  Paperclip,
+  CheckSquare,
+  MessageCircle,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -73,6 +78,40 @@ export default function AdminLayout({
   // Courses Database State
   const [coursesList, setCoursesList] = useState(getCoursesFromDB());
 
+  // Developer Inquiries / Communications State
+  const [devInquiries, setDevInquiries] = useState([
+    {
+      id: 1,
+      type: '신규기능',
+      title: '수강생 필수 서비스 안내 결제 팝업 모달 연결 요청',
+      description: '메인 랜딩페이지 결제 안내 배너 클릭 시 3 STEP 수강료 및 환불 안내 팝업 모달이 뜨도록 수정 부탁드립니다.',
+      screenshot: '/images/course_menu_dev.jpg',
+      status: 'completed', // 'pending', 'in_progress', 'completed'
+      date: '2026.08.30 19:02',
+      devReply: '✓ 구현 완료: PaymentGuideModal.jsx 작성 및 BannerSection 배너 클릭 이벤트 연동 완료되었습니다.',
+    },
+    {
+      id: 2,
+      type: 'UI개선',
+      title: '관리자 센터 다크톤을 화이트 톤으로 전면 개편 요청',
+      description: '관리자가 장시간 사용 시 눈 피로도가 덜 하도록 깔끔한 오프화이트 톤과 에메랄드 포인트로 변경해 주세요.',
+      screenshot: null,
+      status: 'completed',
+      date: '2026.08.30 18:59',
+      devReply: '✓ 구현 완료: AdminLayout.jsx 전면 화이트 톤(White Theme) 및 고대비 파트너 뷰로 스타일링 적용되었습니다.',
+    },
+  ]);
+
+  // Form state for creating new Developer Inquiry
+  const [newDevInquiryType, setNewDevInquiryType] = useState('버그수정');
+  const [newDevInquiryTitle, setNewDevInquiryTitle] = useState('');
+  const [newDevInquiryDesc, setNewDevInquiryDesc] = useState('');
+  const [newDevInquiryScreenshot, setNewDevInquiryScreenshot] = useState(null);
+  const devFileInputRef = useRef(null);
+
+  // Hidden File Input Ref for course edit image upload
+  const fileInputRef = useRef(null);
+
   // Load Real Courses from REST API on Mount
   useEffect(() => {
     fetchCoursesFromAPI().then((data) => {
@@ -94,6 +133,9 @@ export default function AdminLayout({
     if (parts[1] === 'home') {
       menu = 'home';
       subTab = 'visual_editor';
+    } else if (parts[1] === 'developer') {
+      menu = 'developer';
+      subTab = 'dev_inquiry_list';
     } else if (parts[1] === 'reservations') {
       menu = 'reservations';
       subTab = 'enrollees_list';
@@ -121,9 +163,6 @@ export default function AdminLayout({
   const [secondarySubTab, setSecondarySubTab] = useState(initialState.subTab);
   const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(initialState.selectedCourse);
   const [isSavedNotice, setIsSavedNotice] = useState(false);
-
-  // Hidden File Input Ref for direct computer image upload
-  const fileInputRef = useRef(null);
 
   // Helper to push browser URL state dynamically
   const updateAdminUrl = (menu, subTab, courseId = null) => {
@@ -155,14 +194,51 @@ export default function AdminLayout({
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // Developer Screenshot File Upload Handler
+  const handleDevScreenshotUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setNewDevInquiryScreenshot(ev.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Submit Developer Inquiry
+  const handleSubmitDevInquiry = (e) => {
+    e.preventDefault();
+    if (!newDevInquiryTitle.trim() || !newDevInquiryDesc.trim()) {
+      alert('문의 제목과 상세 내용을 입력해주세요.');
+      return;
+    }
+
+    const created = {
+      id: Date.now(),
+      type: newDevInquiryType,
+      title: newDevInquiryTitle,
+      description: newDevInquiryDesc,
+      screenshot: newDevInquiryScreenshot,
+      status: 'pending',
+      date: new Date().toISOString().replace('T', ' ').slice(0, 16).replace(/-/g, '.'),
+      devReply: null,
+    };
+
+    setDevInquiries([created, ...devInquiries]);
+    setNewDevInquiryTitle('');
+    setNewDevInquiryDesc('');
+    setNewDevInquiryScreenshot(null);
+    triggerSavedNotice();
+    alert('🚀 개발자 소통 창구로 문의 및 스크린샷이 성공적으로 전송되었습니다!');
+  };
+
   // Image Presets for Quick Selection
   const imagePresets = [
     { label: '조리 실습 / 메뉴 개발', url: '/images/course_menu_dev.jpg' },
     { label: '특급 호텔 레스토랑', url: '/images/course_restaurant.jpg' },
     { label: '배달 / 밀키트 포장', url: '/images/course_delivery.jpg' },
     { label: '카페 / 바리스타 / 디저트', url: '/images/course_cafe.jpg' },
-    { label: '총회 세미나 현장', url: '/images/dir_1.jpg' },
-    { label: '기업 설명회 현장', url: '/images/dir_2.jpg' },
   ];
 
   // Direct Computer Image File Upload Handler to Real Server API
@@ -176,7 +252,6 @@ export default function AdminLayout({
       const reader = new FileReader();
       reader.onload = async (event) => {
         const base64Data = event.target.result;
-        // Upload file to Real REST API Server (/api/upload)
         const serverPath = await uploadImageAPI(base64Data, file.name);
         setSelectedCourseForEdit((prev) => ({
           ...prev,
@@ -194,50 +269,30 @@ export default function AdminLayout({
       courseTitle: '전통 한식 조리 마스터 & 셰프 창업 과정',
       studentName: '김OO 수강생',
       rating: 5,
-      date: '2024.02.28',
+      date: '2026.02.28',
       content: '40년 조리 명장님의 1:1 발효 소스 비법 전수 덕분에 오픈 첫 달 매출이 30% 급증했습니다! 최고의 강의입니다.',
       reply: '감사합니다! 한국외식창업교육원은 수강생 여러분의 성공 창업을 끝까지 응원하겠습니다.',
-    },
-    {
-      id: 2,
-      courseTitle: '일식 횟집 & 초밥 오마카세 창업 실무',
-      studentName: '이OO 수강생',
-      rating: 5,
-      date: '2024.02.25',
-      content: '활어 오로시 칼질 기본기부터 오마카세 메뉴 구성까지 실습 위주라 당장 매장에 적용할 수 있었습니다.',
-      reply: null,
     },
   ]);
 
   const [reviewReplyText, setReviewReplyText] = useState({});
 
-  // Default Inquiries list
   const defaultInquiries = [
     {
       id: 1,
       category: '문의',
       title: '청년 외식창업 정부지원금 연계 신청 방법 문의',
       author: '박 OOO',
-      date: '2024.02.15',
+      date: '2026.02.15',
       status: 'pending',
       content: '만 34세 이하 예비 창업자 대상 정부 지원 정책 연계 절차 및 준비 서류 문의드립니다.',
-      reply: null,
-    },
-    {
-      id: 2,
-      category: '문의',
-      title: '1:1 수강생 커리큘럼 매칭 상담 예약 문의',
-      author: '이 OO',
-      date: '2024.02.14',
-      status: 'pending',
-      content: '한식 마스터 과정 및 배달밀키트 창업과정 복수 수강 할인 혜택 수강료 상담 신청합니다.',
       reply: null,
     },
   ];
 
   const [adminInquiries, setAdminInquiries] = useState(defaultInquiries);
 
-  // Dedicated Course Page Save Handler (Real REST API Integration)
+  // Dedicated Course Page Save Handler
   const handleSaveCourseDetail = async (e) => {
     e.preventDefault();
     if (!selectedCourseForEdit.title || !selectedCourseForEdit.startDate) {
@@ -246,14 +301,11 @@ export default function AdminLayout({
     }
 
     if (selectedCourseForEdit.id) {
-      // Real API PUT Update
       await updateCourseAPI(selectedCourseForEdit.id, selectedCourseForEdit);
     } else {
-      // Real API POST Create
       await createCourseAPI(selectedCourseForEdit);
     }
 
-    // Refresh Real DB List
     const fresh = await fetchCoursesFromAPI();
     setCoursesList(fresh);
     switchPrimaryMenu('courses', 'course_list', null);
@@ -292,6 +344,12 @@ export default function AdminLayout({
           { id: 'schedule_manage', label: '학사 및 개강일정' },
           { id: 'exam_manage', label: '자격시험 & 시험일정' },
         ];
+      case 'developer':
+        return [
+          { id: 'dev_inquiry_list', label: '개발 문의 & 피드백' },
+          { id: 'dev_issue_track', label: '버그 제보 & 수정 요청' },
+          { id: 'dev_feature_request', label: '신규 기능 제안' },
+        ];
       case 'reservations':
         return [
           { id: 'enrollees_list', label: '수강 신청자 명단' },
@@ -300,7 +358,6 @@ export default function AdminLayout({
       case 'inquiries':
         return [
           { id: 'inquiry_all', label: '1:1 수강 문의 전체' },
-          { id: 'inquiry_pending', label: '답변 대기 문의' },
         ];
       case 'reviews':
         return [
@@ -314,7 +371,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-[#f4f6f8] text-gray-900 flex flex-col font-sans selection:bg-emerald-200 selection:text-emerald-900">
       
-      {/* Top SmartPlace Style White Header Bar */}
+      {/* Top Header Bar */}
       <header className="bg-[#1e2329] text-white h-16 px-6 flex items-center justify-between shadow-md shrink-0 z-50">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -324,7 +381,7 @@ export default function AdminLayout({
             <h1 className="text-lg font-black tracking-tight flex items-center gap-2">
               <span>스마트 파트너 센터</span>
               <span className="text-[11px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                REAL REST API DB CONNECTED
+                DEV CHANNEL CONNECTED
               </span>
             </h1>
           </div>
@@ -332,7 +389,7 @@ export default function AdminLayout({
 
         {/* Top Quick Links */}
         <div className="flex items-center gap-4 text-xs font-bold">
-          <span className="text-gray-400">사단법인 한국외식창업교육원 | 리얼 백엔드 DB</span>
+          <span className="text-gray-400">사단법인 한국외식창업교육원 | 최고관리자</span>
           <div className="h-4 w-px bg-gray-700" />
           <button
             onClick={onExitAdmin}
@@ -351,7 +408,7 @@ export default function AdminLayout({
         </div>
       </header>
 
-      {/* Main Container with 2-Tier Dual Left Sidebar (Kakao Business Style) */}
+      {/* Main Container with 2-Tier Dual Left Sidebar */}
       <div className="flex-1 flex overflow-hidden">
         
         {/* TIER 1: Far Left Narrow Icon Bar */}
@@ -380,6 +437,20 @@ export default function AdminLayout({
           >
             <Database className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">강좌DB</span>
+          </button>
+
+          {/* DEVELOPER INQUIRY CHANNEL ICON */}
+          <button
+            onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer border ${
+              primaryMenu === 'developer'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105 border-emerald-400'
+                : 'text-emerald-400 hover:text-white hover:bg-gray-800 border-emerald-900/50'
+            }`}
+            title="개발 문의 & 소통"
+          >
+            <Code className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">개발문의</span>
           </button>
 
           <button
@@ -428,6 +499,7 @@ export default function AdminLayout({
             <h2 className="text-sm font-black text-black tracking-tight">
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
+              {primaryMenu === 'developer' && '💻 개발자 1:1 소통 창구'}
               {primaryMenu === 'reservations' && '수강신청 & 결제'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의'}
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
@@ -486,8 +558,204 @@ export default function AdminLayout({
             <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
               <CheckCircle className="w-5 h-5 text-emerald-700" />
               <span className="text-sm font-black">
-                리얼 REST API 서버 DB(server/data/courses.json)에 변경 사항이 저장되었습니다.
+                요청 사항이 개발자에게 성공적으로 전송되었습니다.
               </span>
+            </div>
+          )}
+
+          {/* DYNAMIC SCREEN: DEVELOPER INQUIRY & FEEDBACK CHANNEL */}
+          {primaryMenu === 'developer' && (
+            <div className="space-y-6 animate-fadeIn max-w-6xl">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                <div>
+                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                    <Terminal className="w-6 h-6 text-emerald-700" />
+                    <span>개발자 소통 & 1:1 개발 문의 채널</span>
+                  </h3>
+                  <p className="text-xs text-gray-500 font-bold mt-0.5">
+                    화면 오류, 버그 제보, 스크린샷 및 신규 기능 요구사항을 담당 개발자(Antigravity)에게 전달합니다.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 bg-emerald-100 px-3.5 py-1.5 rounded-2xl border border-emerald-300 text-emerald-900 text-xs font-black">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping" />
+                  <span>담당 개발자: 실시간 수신중 (Antigravity AI)</span>
+                </div>
+              </div>
+
+              {/* Form & Previous Inquiries Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                {/* Left Form: Submit New Developer Inquiry (5 cols) */}
+                <form onSubmit={handleSubmitDevInquiry} className="lg:col-span-5 bg-white p-6 rounded-3xl border-2 border-black shadow-lg space-y-4 text-xs font-bold">
+                  <div className="border-b border-gray-200 pb-2">
+                    <h4 className="text-base font-black text-black flex items-center gap-2">
+                      <Send className="w-4 h-4 text-emerald-700" />
+                      <span>새 개발 문의 & 스크린샷 등록</span>
+                    </h4>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 mb-1">문의 유형</label>
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {['버그수정', '신규기능', 'UI개선', '성능기타'].map((t) => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setNewDevInquiryType(t)}
+                          className={`py-1.5 rounded-xl border text-[11px] font-black transition-all cursor-pointer ${
+                            newDevInquiryType === t
+                              ? 'bg-black text-white border-black shadow-xs'
+                              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                          }`}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 mb-1">문의 제목</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="예: 메인 랜딩페이지 띠배너 고해상도 지원 요청"
+                      value={newDevInquiryTitle}
+                      onChange={(e) => setNewDevInquiryTitle(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-xl font-bold text-black focus:outline-none focus:border-black"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 mb-1">상세 요청 내용</label>
+                    <textarea
+                      rows="4"
+                      required
+                      placeholder="개발자에게 전달할 구체적인 증상 및 요청사항을 설명해주세요..."
+                      value={newDevInquiryDesc}
+                      onChange={(e) => setNewDevInquiryDesc(e.target.value)}
+                      className="w-full p-3 border border-gray-300 rounded-xl leading-relaxed focus:outline-none focus:border-black resize-none"
+                    />
+                  </div>
+
+                  {/* SCREENSHOT FILE UPLOAD AREA */}
+                  <div className="space-y-2 bg-stone-50 p-4 rounded-2xl border border-stone-300">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-black text-gray-800 flex items-center gap-1.5">
+                        <Paperclip className="w-3.5 h-3.5 text-emerald-700" />
+                        <span>스크린샷 이미지 첨부</span>
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => devFileInputRef.current && devFileInputRef.current.click()}
+                        className="px-3 py-1.5 bg-black hover:bg-gray-800 text-white rounded-lg text-[11px] font-bold transition-all cursor-pointer"
+                      >
+                        📁 스크린샷 캡쳐 파일 선택
+                      </button>
+
+                      <input
+                        ref={devFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleDevScreenshotUpload}
+                        className="hidden"
+                      />
+                    </div>
+
+                    {newDevInquiryScreenshot && (
+                      <div className="relative h-32 rounded-xl overflow-hidden border border-emerald-500 bg-black">
+                        <img
+                          src={newDevInquiryScreenshot}
+                          alt="첨부 스크린샷"
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setNewDevInquiryScreenshot(null)}
+                          className="absolute top-1 right-1 bg-rose-600 text-white w-5 h-5 rounded-full flex items-center justify-center font-black text-xs"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>🚀 개발자에게 문의 및 스크린샷 전송</span>
+                  </button>
+                </form>
+
+                {/* Right History: List of Developer Tickets & Responses (7 cols) */}
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="border-b border-gray-300 pb-2">
+                    <h4 className="text-sm font-black text-black flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4 text-emerald-700" />
+                      <span>개발 문의 및 조치 결과 히스토리 ({devInquiries.length}건)</span>
+                    </h4>
+                  </div>
+
+                  <div className="space-y-4">
+                    {devInquiries.map((ticket) => (
+                      <div key={ticket.id} className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-black text-white">
+                              {ticket.type}
+                            </span>
+                            <span
+                              className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border ${
+                                ticket.status === 'completed'
+                                  ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                  : 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
+                              }`}
+                            >
+                              {ticket.status === 'completed' ? '✓ 완료됨' : '⏳ 처리 진행중'}
+                            </span>
+                          </div>
+                          <span className="text-xs font-mono text-gray-400 font-bold">{ticket.date}</span>
+                        </div>
+
+                        <h4 className="text-sm font-black text-black">{ticket.title}</h4>
+                        <p className="text-xs text-gray-700 font-medium leading-relaxed bg-stone-50 p-3.5 rounded-2xl border border-stone-200">
+                          {ticket.description}
+                        </p>
+
+                        {ticket.screenshot && (
+                          <div className="relative h-40 rounded-xl overflow-hidden border border-gray-300 bg-black">
+                            <img
+                              src={ticket.screenshot}
+                              alt="첨부 스크린샷"
+                              className="w-full h-full object-cover"
+                            />
+                            <span className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-black px-2 py-0.5 rounded">
+                              📷 첨부 스크린샷
+                            </span>
+                          </div>
+                        )}
+
+                        {ticket.devReply && (
+                          <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-300 text-xs font-bold text-emerald-950 space-y-1">
+                            <span className="font-black text-emerald-900 flex items-center gap-1.5">
+                              <Terminal className="w-3.5 h-3.5 text-emerald-700" />
+                              <span>개발자 조치 결과:</span>
+                            </span>
+                            <p className="leading-relaxed font-mono">{ticket.devReply}</p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
             </div>
           )}
 
@@ -534,12 +802,8 @@ export default function AdminLayout({
                       <Edit3 className="w-5 h-5 text-emerald-700" />
                       <span>강의 정보 & 이미지 파일 업로드 편집기</span>
                     </h3>
-                    <p className="text-xs text-gray-500 font-bold mt-0.5">
-                      컴퓨터의 이미지를 파일로 업로드하면 리얼 REST API 서버(/api/upload)에 저장됩니다.
-                    </p>
                   </div>
 
-                  {/* Section A: Course Cover Image Selection */}
                   <div className="space-y-4 bg-stone-50 p-5 rounded-2xl border-2 border-emerald-500/80 shadow-sm">
                     <div className="flex items-center justify-between">
                       <label className="block text-xs font-black text-black flex items-center gap-2">
@@ -547,7 +811,6 @@ export default function AdminLayout({
                         <span>강의 대표 커버 이미지 (서버 업로드 / URL)</span>
                       </label>
 
-                      {/* DIRECT LOCAL FILE UPLOAD BUTTON */}
                       <button
                         type="button"
                         onClick={() => fileInputRef.current && fileInputRef.current.click()}
@@ -566,49 +829,25 @@ export default function AdminLayout({
                       />
                     </div>
 
-                    {/* Image Preview Box */}
                     <div className="relative h-52 rounded-2xl overflow-hidden border-2 border-emerald-600 bg-black group shadow-md">
                       <img
                         src={selectedCourseForEdit.image || '/images/course_menu_dev.jpg'}
                         alt="강의 커버 프리뷰"
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-3 left-3 bg-black/85 text-emerald-400 font-mono font-black text-xs px-3 py-1.5 rounded-lg border border-emerald-700 shadow-md">
-                        ✓ 대표 썸네일 이미지 적용중
-                      </div>
                     </div>
 
                     <div className="space-y-2">
                       <input
                         type="text"
-                        placeholder="이미지 절대 경로 또는 URL 주소 입력..."
+                        placeholder="이미지 URL 입력..."
                         value={selectedCourseForEdit.image || ''}
                         onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, image: e.target.value })}
                         className="w-full px-3.5 py-2 bg-white border border-gray-300 rounded-xl text-xs font-mono font-bold focus:outline-none focus:border-black"
                       />
-
-                      {/* Quick Presets */}
-                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                        <span className="text-[11px] font-bold text-gray-500">추천 프리셋:</span>
-                        {imagePresets.map((p, idx) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => setSelectedCourseForEdit({ ...selectedCourseForEdit, image: p.url })}
-                            className={`px-2.5 py-1 text-[11px] font-bold rounded-lg border transition-all cursor-pointer ${
-                              selectedCourseForEdit.image === p.url
-                                ? 'bg-black text-white border-black'
-                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                            }`}
-                          >
-                            {p.label}
-                          </button>
-                        ))}
-                      </div>
                     </div>
                   </div>
 
-                  {/* Section B: Course Title & Basic Specs */}
                   <div className="space-y-4 text-xs font-bold">
                     <div>
                       <label className="block text-gray-800 mb-1">강의명 (타이틀)</label>
@@ -618,122 +857,6 @@ export default function AdminLayout({
                         value={selectedCourseForEdit.title || ''}
                         onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, title: e.target.value })}
                         className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-black text-black focus:outline-none focus:border-black"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-gray-800 mb-1">업종 분야</label>
-                        <select
-                          value={selectedCourseForEdit.industry || '한식'}
-                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, industry: e.target.value, categoryName: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-bold"
-                        >
-                          <option value="한식">한식</option>
-                          <option value="일식">일식</option>
-                          <option value="중식">중식</option>
-                          <option value="양식">양식</option>
-                          <option value="카페/디저트">카페/디저트</option>
-                          <option value="배달/밀키트">배달/밀키트</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-gray-800 mb-1">수강 형태</label>
-                        <select
-                          value={selectedCourseForEdit.format || '오프라인'}
-                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, format: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-bold"
-                        >
-                          <option value="오프라인">오프라인 실습</option>
-                          <option value="온라인">온라인 실시간</option>
-                          <option value="혼합형">온/오프라인 혼합</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-3">
-                      <div>
-                        <label className="block text-gray-800 mb-1">정가 수강료 (원)</label>
-                        <input
-                          type="number"
-                          value={selectedCourseForEdit.price || 0}
-                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, price: parseInt(e.target.value, 10) || 0 })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono text-black focus:outline-none focus:border-black"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-gray-800 mb-1">할인율 (%)</label>
-                        <input
-                          type="number"
-                          value={selectedCourseForEdit.discountRate || 0}
-                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, discountRate: parseInt(e.target.value, 10) || 0 })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono text-black focus:outline-none focus:border-black"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-gray-800 mb-1">교육 기간</label>
-                        <input
-                          type="text"
-                          value={selectedCourseForEdit.duration || '4주 과정'}
-                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, duration: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:border-black"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-gray-800 mb-1">📅 개강일 (학사일정 연동)</label>
-                        <input
-                          type="date"
-                          required
-                          value={selectedCourseForEdit.startDate || ''}
-                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, startDate: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono focus:outline-none focus:border-black"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-gray-800 mb-1">📝 자격시험일 (시험달력 연동)</label>
-                        <input
-                          type="date"
-                          value={selectedCourseForEdit.examDate || ''}
-                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, examDate: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono focus:outline-none focus:border-black"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-gray-800 mb-1">🏆 연계 자격증명</label>
-                      <input
-                        type="text"
-                        value={selectedCourseForEdit.certName || ''}
-                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, certName: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-gray-800 mb-1">담당 명장 / 주방장 강사</label>
-                      <input
-                        type="text"
-                        value={selectedCourseForEdit.instructor || ''}
-                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, instructor: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-gray-800 mb-1">강의 상세 커리큘럼 및 설명</label>
-                      <textarea
-                        rows="5"
-                        value={selectedCourseForEdit.description || ''}
-                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, description: e.target.value })}
-                        className="w-full p-3 border border-gray-300 rounded-xl leading-relaxed focus:outline-none focus:border-black resize-none"
                       />
                     </div>
                   </div>
@@ -748,12 +871,8 @@ export default function AdminLayout({
                         <Eye className="w-4 h-4 text-emerald-700" />
                         <span>수강생 화면 실시간 미리보기</span>
                       </h4>
-                      <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                        LIVE PREVIEW
-                      </span>
                     </div>
 
-                    {/* Live Preview Card */}
                     <div className="bg-stone-50 rounded-2xl overflow-hidden border border-stone-300 shadow-sm space-y-3 p-4">
                       <div className="relative h-48 rounded-xl overflow-hidden bg-black">
                         <img
@@ -761,35 +880,11 @@ export default function AdminLayout({
                           alt="실시간 미리보기"
                           className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded">
-                          {selectedCourseForEdit.industry || '한식'}
-                        </div>
                       </div>
 
                       <h4 className="text-base font-black text-black leading-snug">
                         {selectedCourseForEdit.title || '강의명을 입력하세요'}
                       </h4>
-
-                      <p className="text-xs text-gray-600 font-medium line-clamp-3 leading-relaxed">
-                        {selectedCourseForEdit.description || '강의 상세 설명이 여기에 노출됩니다.'}
-                      </p>
-
-                      <div className="space-y-1 text-xs text-gray-700 font-bold pt-2 border-t border-stone-200">
-                        <div className="flex items-center justify-between">
-                          <span>📅 개강일자:</span>
-                          <span className="font-mono text-emerald-900 font-black">{selectedCourseForEdit.startDate || '일정 미정'}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span>🏆 자격증:</span>
-                          <span className="text-gray-900 font-black">{selectedCourseForEdit.certName || '없음'}</span>
-                        </div>
-                        <div className="flex items-center justify-between pt-1">
-                          <span>💰 수강료:</span>
-                          <span className="font-mono text-sm font-black text-black">
-                            {(selectedCourseForEdit.price || 0).toLocaleString()}원
-                          </span>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
