@@ -29,6 +29,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState(getInitialView);
   const [aboutTab, setAboutTab] = useState('greetings');
   const [masterTab, setMasterTab] = useState('masters');
+  const [catalogTab, setCatalogTab] = useState('courses');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
 
@@ -170,6 +171,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenCatalogTab = (tab = 'courses') => {
+    setCatalogTab(tab);
+    changeView('catalog', '/catalog');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleScrollNext = () => {
     if (snapContainerRef.current) {
       const vh = snapContainerRef.current.clientHeight;
@@ -201,6 +208,7 @@ export default function App() {
         onOpenAuth={handleOpenAuth}
         onOpenAboutTab={handleOpenAboutTab}
         onOpenMasterTab={handleOpenMasterTab}
+        onOpenCatalogTab={handleOpenCatalogTab}
       />
 
       {/* Main Content Body */}
@@ -210,10 +218,7 @@ export default function App() {
             {/* Section 1: Hero Banner */}
             <section className="scroll-snap-section flex flex-col justify-center">
               <Hero
-                onExploreClick={() => {
-                  changeView('catalog', '/catalog');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onExploreClick={() => handleOpenCatalogTab('courses')}
                 onAboutClick={() => handleOpenAboutTab('greetings')}
                 onScrollNext={handleScrollNext}
               />
@@ -255,10 +260,7 @@ export default function App() {
             {/* Section 6: Unified Category Course Section */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#0a1410]">
               <CategoryCourseSection
-                onViewMoreClick={() => {
-                  changeView('catalog', '/catalog');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onViewMoreClick={() => handleOpenCatalogTab('courses')}
                 onSelectCourse={() => handleOpenAuth('login')}
                 onScrollNext={handleScrollNext}
               />
@@ -268,10 +270,7 @@ export default function App() {
             <section className="scroll-snap-section flex flex-col justify-center py-6">
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
-                onOpenCatalog={() => {
-                  changeView('catalog', '/catalog');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onOpenCatalog={() => handleOpenCatalogTab('courses')}
                 onScrollNext={handleScrollNext}
               />
             </section>
@@ -291,7 +290,7 @@ export default function App() {
           <div className="h-[calc(100vh-65px)] overflow-y-auto">
             {currentView === 'catalog' && (
               <CourseCatalogPage
-                onSelectCourse={() => handleOpenAuth('login')}
+                initialSubTab={catalogTab}
               />
             )}
 

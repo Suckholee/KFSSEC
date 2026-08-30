@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ShieldCheck, ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
 
-export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab }) {
+export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab, onOpenCatalogTab }) {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState('KOR');
@@ -32,10 +32,10 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       title: '교육·자격증',
       key: 'education',
       subLinks: [
-        { label: '교육 과정', action: 'catalog' },
-        { label: '교육 일정', action: 'schedule' },
-        { label: '자격 시험', action: 'certification' },
-        { label: '시험 일정', action: 'exam_schedule' },
+        { label: '교육 과정', catalogTab: 'courses' },
+        { label: '교육 일정', catalogTab: 'schedule' },
+        { label: '자격 시험', catalogTab: 'cert_exam' },
+        { label: '시험 일정', catalogTab: 'exam_schedule' },
       ],
     },
     {
@@ -81,14 +81,14 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       onOpenAboutTab(item.tab);
     } else if (item.masterTab) {
       onOpenMasterTab(item.masterTab);
-    } else if (item.action === 'catalog' || item.action === 'catalog_masters') {
-      onViewChange('catalog');
+    } else if (item.catalogTab) {
+      onOpenCatalogTab(item.catalogTab);
     } else if (item.action === 'consulting_modal' || item.action === 'inquiry_modal') {
       onOpenAuth('consulting');
     } else if (item.action === 'notice' || item.action === 'gallery') {
       onViewChange('landing');
     } else {
-      onViewChange('catalog');
+      onOpenCatalogTab('courses');
     }
   };
 
@@ -128,7 +128,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
                   onClick={() => {
                     if (menu.key === 'about') onOpenAboutTab('greetings');
                     else if (menu.key === 'masters') onOpenMasterTab('masters');
-                    else onViewChange('catalog');
+                    else onOpenCatalogTab('courses');
                   }}
                   className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 ${
                     isMenuActive
