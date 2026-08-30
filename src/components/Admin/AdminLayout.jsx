@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LogOut,
   LayoutDashboard,
@@ -27,6 +27,10 @@ import {
   Layers,
   Edit3,
   Home,
+  BookOpen,
+  Calendar,
+  Award,
+  Database,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -35,6 +39,7 @@ import NetflixCoursesSection from '../NetflixCoursesSection';
 import FullPackageCoursesSection from '../FullPackageCoursesSection';
 import CategoryCourseSection from '../CategoryCourseSection';
 import BannerSection from '../BannerSection';
+import { getCoursesFromDB, saveCoursesToDB } from '../../services/courseDatabase';
 
 export default function AdminLayout({
   siteData,
@@ -44,9 +49,14 @@ export default function AdminLayout({
   postsList = [],
   setPostsList,
 }) {
-  const [activeTab, setActiveTab] = useState('visual_editor'); // 'visual_editor', 'inquiries', 'youtube', 'banner'
+  const [activeTab, setActiveTab] = useState('visual_editor'); // 'visual_editor', 'courses_db', 'inquiries', 'youtube', 'banner'
   const [isSavedNotice, setIsSavedNotice] = useState(false);
   const [editingSection, setEditingSection] = useState(null); // 'youtube', 'banner'
+
+  // Courses Database State
+  const [coursesList, setCoursesList] = useState(getCoursesFromDB());
+  const [editingCourse, setEditingCourse] = useState(null); // Course currently being created or edited
+  const [showCourseFormModal, setShowCourseFormModal] = useState(false);
 
   // Default Inquiries list if postsList not provided
   const defaultInquiries = [
@@ -99,6 +109,42 @@ export default function AdminLayout({
   // Banner State
   const [bannerActive, setBannerActive] = useState(siteData.banner.active);
   const [bannerTitle, setBannerTitle] = useState(siteData.banner.title);
+
+  // Save Courses DB to LocalStorage and trigger update
+  const handleSaveCourseForm = (e) => {
+    e.preventDefault();
+    if (!editingCourse.title || !editingCourse.startDate) {
+      alert('교육과정명과 개강일을 입력해주세요.');
+      return;
+    }
+
+    let updated;
+    if (editingCourse.id) {
+      updated = coursesList.map((c) => (c.id === editingCourse.id ? editingCourse : c));
+    } else {
+      const newCourse = {
+        ...editingCourse,
+        id: `c_${Date.now()}`,
+      };
+      updated = [newCourse, ...coursesList];
+    }
+
+    setCoursesList(updated);
+    saveCoursesToDB(updated);
+    setShowCourseFormModal(false);
+    setEditingCourse(null);
+    triggerSavedNotice();
+    alert('🎉 교육과정 DB가 저장되었습니다. 교육 일정 및 시험 일정에 즉시 반영됩니다.');
+  };
+
+  const handleDeleteCourse = (id) => {
+    if (window.confirm('정말 이 교육과정을 DB에서 삭제하시겠습니까? 관련 일정도 함께 제거됩니다.')) {
+      const updated = coursesList.filter((c) => c.id !== id);
+      setCoursesList(updated);
+      saveCoursesToDB(updated);
+      triggerSavedNotice();
+    }
+  };
 
   // Save YouTube Settings
   const handleSaveYouTube = () => {
@@ -239,11 +285,11 @@ export default function AdminLayout({
                 한국외식창업교육원 관리자 센터
               </h1>
               <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-emerald-700" /> 홈화면 실시간 편집
+                <Sparkles className="w-3 h-3 text-emerald-700" /> DYNAMIC DB CONSOLE
               </span>
             </div>
             <p className="text-xs text-gray-500 font-medium">
-              홈페이지 실제 화면을 직접 보면서 클릭하여 수정하는 관리자 페이지
+              홈페이지 실제 화면 및 교육과정·일정·자격시험 DB 실시간 동락 시스템
             </p>
           </div>
         </div>
@@ -282,6 +328,18 @@ export default function AdminLayout({
           >
             <Home className="w-4 h-4 text-emerald-400" />
             <span>🏠 홈화면 관리</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('courses_db')}
+            className={`w-full text-left py-3.5 px-4 rounded-2xl text-xs sm:text-sm font-black transition-all flex items-center gap-3 cursor-pointer ${
+              activeTab === 'courses_db'
+                ? 'bg-black text-white shadow-lg shadow-gray-400/40'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Database className="w-4 h-4 text-emerald-400" />
+            <span>📚 교육과정 & 일정/시험 DB</span>
           </button>
 
           <button
@@ -339,12 +397,12 @@ export default function AdminLayout({
             <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
               <CheckCircle className="w-5 h-5 text-emerald-700" />
               <span className="text-sm font-black">
-                사이트 변경 사항이 실시간으로 홈페이지에 반영되었습니다.
+                교육과정 및 학사/시험일정 DB가 실시간으로 사이트에 연동되었습니다.
               </span>
             </div>
           )}
 
-          {/* MODE 1: HOME PAGE MANAGEMENT (REAL SITE COPIED FOR EDITING) */}
+          {/* MODE 1: HOME PAGE MANAGEMENT */}
           {activeTab === 'visual_editor' && (
             <div className="space-y-6 animate-fadeIn w-full">
               
@@ -400,22 +458,15 @@ export default function AdminLayout({
                 <div className="relative border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden group shadow-md">
                   <div className="absolute top-4 right-4 z-40">
                     <button
-                      onClick={() => alert('교육과정 마스터 카탈로그 편집 화면으로 이동합니다.')}
+                      onClick={() => setActiveTab('courses_db')}
                       className="px-4 py-2 bg-black text-white text-xs font-black rounded-xl shadow-xl flex items-center gap-1.5 cursor-pointer hover:scale-105 transition-all"
                     >
                       <Edit3 className="w-4 h-4 text-emerald-400" />
-                      <span>✏️ 교육과정 카탈로그 관리</span>
+                      <span>✏️ 교육과정 DB 관리로 이동</span>
                     </button>
                   </div>
                   <NetflixCoursesSection
                     onSelectCourse={() => {}}
-                  />
-                </div>
-
-                {/* 4. Full Package Courses Section Frame */}
-                <div className="relative border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden group shadow-md">
-                  <FullPackageCoursesSection
-                    onSelectPackage={() => {}}
                   />
                 </div>
 
@@ -424,7 +475,119 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* MODE 2: INQUIRIES & BOARD MANAGEMENT */}
+          {/* MODE 2: COURSES & SCHEDULES DYNAMIC DATABASE MANAGEMENT */}
+          {activeTab === 'courses_db' && (
+            <div className="space-y-6 animate-fadeIn max-w-6xl">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-4">
+                <div>
+                  <h2 className="text-2xl font-black text-black tracking-tight">
+                    교육과정 & 학사/시험일정 통합 DB 콘솔
+                  </h2>
+                  <p className="text-xs text-gray-500 font-bold mt-1">
+                    여기서 등록/수정된 교육과정은 개강일/종강일/자격시험 일자가 [교육 일정], [자격 시험], [시험 일정]에 자동 연동됩니다.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setEditingCourse({
+                      title: '',
+                      category: 'hansik',
+                      categoryName: '한식',
+                      industry: '한식',
+                      stage: '창업 준비',
+                      format: '오프라인',
+                      price: 4500000,
+                      discountRate: 30,
+                      duration: '4주 과정',
+                      startDate: new Date().toISOString().split('T')[0],
+                      endDate: '',
+                      examDate: '',
+                      certName: '한식 조리기능장 및 지도사 1급',
+                      instructor: '안형상 이사장 / 40년 명장',
+                      image: '/images/course_menu_dev.jpg',
+                      description: '',
+                    });
+                    setShowCourseFormModal(true);
+                  }}
+                  className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer shrink-0"
+                >
+                  <Plus className="w-4 h-4 text-emerald-400" />
+                  <span>➕ 새 교육과정 DB 등록</span>
+                </button>
+              </div>
+
+              {/* Courses DB Table */}
+              <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4">
+                <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-xs">
+                  <table className="w-full text-left border-collapse text-xs sm:text-sm font-sans">
+                    <thead>
+                      <tr className="bg-gray-100 text-black font-black border-b-2 border-black text-center">
+                        <th className="py-3.5 px-3 w-14 border-r border-gray-300">ID</th>
+                        <th className="py-3.5 px-4 w-24 border-r border-gray-300">분야</th>
+                        <th className="py-3.5 px-6 border-r border-gray-300 text-left">교육과정명</th>
+                        <th className="py-3.5 px-4 w-28 border-r border-gray-300">개강일 (교육일정)</th>
+                        <th className="py-3.5 px-4 w-28 border-r border-gray-300">시험일 (시험일정)</th>
+                        <th className="py-3.5 px-32 border-r border-gray-300">연계 자격증</th>
+                        <th className="py-3.5 px-24">관리</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-300 text-gray-800 font-medium">
+                      {coursesList.map((c, idx) => (
+                        <tr key={c.id} className="hover:bg-emerald-50/50 text-center transition-colors">
+                          <td className="py-3.5 px-3 border-r border-gray-200 font-mono text-gray-500 font-bold">
+                            #{idx + 1}
+                          </td>
+                          <td className="py-3.5 px-4 border-r border-gray-200">
+                            <span className="bg-emerald-100 text-emerald-900 font-black text-xs px-2.5 py-1 rounded-full border border-emerald-300">
+                              {c.categoryName || c.industry}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-6 border-r border-gray-200 text-left font-black text-black">
+                            {c.title}
+                          </td>
+                          <td className="py-3.5 px-4 border-r border-gray-200 text-emerald-800 font-black text-xs">
+                            📅 {c.startDate || '일정미정'}
+                          </td>
+                          <td className="py-3.5 px-4 border-r border-gray-200 text-rose-700 font-black text-xs">
+                            📝 {c.examDate || '일정미정'}
+                          </td>
+                          <td className="py-3.5 px-4 border-r border-gray-200 text-left text-xs font-bold text-gray-700">
+                            🏆 {c.certName}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <div className="flex items-center justify-center gap-2">
+                              <button
+                                onClick={() => {
+                                  setEditingCourse(c);
+                                  setShowCourseFormModal(true);
+                                }}
+                                className="p-1.5 bg-gray-100 hover:bg-black hover:text-white rounded-lg transition-colors cursor-pointer"
+                                title="수정"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteCourse(c.id)}
+                                className="p-1.5 bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white rounded-lg transition-colors cursor-pointer"
+                                title="삭제"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* MODE 3: INQUIRIES & BOARD MANAGEMENT */}
           {activeTab === 'inquiries' && (
             <div className="space-y-8 animate-fadeIn max-w-6xl">
               
@@ -633,6 +796,151 @@ export default function AdminLayout({
         </main>
 
       </div>
+
+      {/* COURSE FORM MODAL (CREATE / EDIT COURSE DB) */}
+      {showCourseFormModal && editingCourse && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <form
+            onSubmit={handleSaveCourseForm}
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-4 animate-fadeIn max-h-[90vh] overflow-y-auto text-gray-900"
+          >
+            <div className="flex items-center justify-between border-b-2 border-black pb-3">
+              <h3 className="text-lg font-black text-black flex items-center gap-2">
+                <Database className="w-5 h-5 text-emerald-700" />
+                <span>교육과정 & 학사/시험일정 DB 등록/수정</span>
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowCourseFormModal(false)}
+                className="text-gray-400 hover:text-black font-black text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold">
+              <div className="sm:col-span-2">
+                <label className="block text-gray-700 mb-1">교육과정명</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="예: 전통 한식 조리 마스터 & 셰프 창업 과정"
+                  value={editingCourse.title}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, title: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-black text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">업종 분야</label>
+                <select
+                  value={editingCourse.industry}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, industry: e.target.value, categoryName: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
+                >
+                  <option value="한식">한식</option>
+                  <option value="일식">일식</option>
+                  <option value="중식">중식</option>
+                  <option value="양식">양식</option>
+                  <option value="카페/디저트">카페/디저트</option>
+                  <option value="배달/밀키트">배달/밀키트</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">수강 형태</label>
+                <select
+                  value={editingCourse.format}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, format: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
+                >
+                  <option value="오프라인">오프라인</option>
+                  <option value="온라인">온라인</option>
+                  <option value="혼합형">혼합형</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">개강일 (📅 [교육 일정] 달력 자동 반영)</label>
+                <input
+                  type="date"
+                  required
+                  value={editingCourse.startDate}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, startDate: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">종강일 (학사일정 자동 반영)</label>
+                <input
+                  type="date"
+                  value={editingCourse.endDate}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, endDate: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">자격시험 검정일 (📝 [시험 일정] 달력 자동 반영)</label>
+                <input
+                  type="date"
+                  value={editingCourse.examDate}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, examDate: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">연계 자격증 명칭 (🏆 [자격 시험] 반영)</label>
+                <input
+                  type="text"
+                  placeholder="예: 한식 조리기능장 및 지도사 1급"
+                  value={editingCourse.certName}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, certName: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">정가 수강료 (원)</label>
+                <input
+                  type="number"
+                  value={editingCourse.price}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, price: parseInt(e.target.value, 10) || 0 })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">담당 명장 / 강사</label>
+                <input
+                  type="text"
+                  value={editingCourse.instructor}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, instructor: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
+                />
+              </div>
+            </div>
+
+            <div className="pt-3 flex items-center justify-end gap-2 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setShowCourseFormModal(false)}
+                className="px-5 py-2 bg-gray-200 text-gray-800 font-bold text-xs rounded-xl hover:bg-gray-300"
+              >
+                취소
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-2.5 bg-black text-white font-black text-xs rounded-xl shadow-md hover:bg-gray-800 transition-colors"
+              >
+                DB 저장 및 사이트 실시간 반영
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* EDITING DRAWER / MODAL FOR YOUTUBE */}
       {editingSection === 'youtube' && (

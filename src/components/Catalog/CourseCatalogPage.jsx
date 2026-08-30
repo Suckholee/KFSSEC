@@ -6,6 +6,7 @@ import CourseGrid from './CourseGrid';
 import Pagination from './Pagination';
 import CourseModal from '../CourseModal';
 import { fetchCourses } from '../../services/courseApi';
+import { getCoursesFromDB, getAcademicSchedulesFromDB, getExamSchedulesFromDB } from '../../services/courseDatabase';
 import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight, Calendar, Award, GraduationCap, CheckCircle2, Clock } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
@@ -46,6 +47,11 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   const [loading, setLoading] = useState(true);
   const [modalCourse, setModalCourse] = useState(null);
 
+  // Dynamic DB Live Sync Data
+  const [dbCourses, setDbCourses] = useState(getCoursesFromDB());
+  const [academicSchedules, setAcademicSchedules] = useState(getAcademicSchedulesFromDB());
+  const [examSchedules, setExamSchedules] = useState(getExamSchedulesFromDB());
+
   const updateUrlParams = (newParams) => {
     const searchParams = new URLSearchParams();
     if (newParams.industry && newParams.industry !== '전체보기') searchParams.set('industry', newParams.industry);
@@ -82,6 +88,11 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   };
 
   useEffect(() => {
+    // Reload dynamic DB whenever subTab changes
+    setDbCourses(getCoursesFromDB());
+    setAcademicSchedules(getAcademicSchedulesFromDB());
+    setExamSchedules(getExamSchedulesFromDB());
+
     if (subTab === 'courses') {
       loadData();
       updateUrlParams({
@@ -296,12 +307,17 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               </div>
             )}
 
-            {/* SUB-TAB 2: 교육 일정 */}
+            {/* SUB-TAB 2: 교육 일정 (DYNAMIC DB REAL-TIME BINDING) */}
             {subTab === 'schedule' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
-                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                    교육 일정
+                  <div className="flex items-center justify-between border-b-2 border-black pb-3">
+                    <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
+                      2024년 3월 학사 & 개강 일정 (DB 실시간 연동)
+                    </div>
+                    <span className="text-xs font-bold text-gray-500">
+                      관리자 DB에서 수정된 개강/종강 일자가 달력에 즉시 표시됩니다.
+                    </span>
                   </div>
 
                   <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100 w-full">
@@ -321,32 +337,22 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                         const isValidDay = dayNum > 0 && dayNum <= 31;
                         const isToday = dayNum === 15;
 
+                        // Match dynamic schedules from DB
+                        const matchedEvents = academicSchedules.filter((s) => s.day === dayNum);
+
                         return (
-                          <div key={idx} className="min-h-[90px] p-2 flex flex-col justify-between hover:bg-emerald-50/50 transition-colors">
+                          <div key={idx} className="min-h-[100px] p-2 flex flex-col justify-between hover:bg-emerald-50/50 transition-colors">
                             <span className={`font-black ${isToday ? 'bg-emerald-700 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
                               {isValidDay ? dayNum : ''}
                             </span>
 
-                            {dayNum === 5 && (
-                              <span className="bg-emerald-100 text-emerald-900 p-1 rounded text-[10px] font-black leading-tight border border-emerald-300">
-                                한식 마스터 개강
-                              </span>
-                            )}
-                            {dayNum === 12 && (
-                              <span className="bg-amber-100 text-amber-900 p-1 rounded text-[10px] font-black leading-tight border border-amber-300">
-                                일식 횟집 창업 개강
-                              </span>
-                            )}
-                            {dayNum === 20 && (
-                              <span className="bg-rose-100 text-rose-900 p-1 rounded text-[10px] font-black leading-tight border border-rose-300">
-                                메뉴 개발 특강
-                              </span>
-                            )}
-                            {dayNum === 28 && (
-                              <span className="bg-sky-100 text-sky-900 p-1 rounded text-[10px] font-black leading-tight border border-sky-300">
-                                수강생 종강 발표회
-                              </span>
-                            )}
+                            <div className="space-y-1 mt-1">
+                              {matchedEvents.map((ev, i) => (
+                                <div key={i} className={`p-1 rounded text-[10px] font-black leading-tight border ${ev.color}`}>
+                                  {ev.title}
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         );
                       })}
@@ -356,29 +362,41 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               </div>
             )}
 
-            {/* SUB-TAB 3: 자격 시험 */}
+            {/* SUB-TAB 3: 자격 시험 (DYNAMIC DB REAL-TIME BINDING) */}
             {subTab === 'cert_exam' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
-                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                    자격 시험
+                  <div className="flex items-center justify-between border-b-2 border-black pb-3">
+                    <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
+                      사단법인 민간 자격 시험 안내 (DB 연동)
+                    </div>
+                    <span className="text-xs font-bold text-gray-500">
+                      교육과정과 연계된 자격 시험 요강 및 검정 목록입니다.
+                    </span>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 w-full">
-                    {[
-                      { title: '외식창업 지도사 1급/2급', desc: '상권분석 및 매장운영 실무 역량을 인증하는 비영리 민간 자격증' },
-                      { title: '메뉴개발 전문가 자격증', desc: 'HMR/RMR 레시피 개발 및 식자재 원가 산정 전문가 인증' },
-                      { title: '조리기능장 자격 검정', desc: '외식업 40년 경력 명장진의 실기 검정 및 기술 심사' },
-                      { title: '외식경영 관리사', desc: '외식 프랜차이즈 가맹 표준화 및 경영 컨설팅 자격' },
-                    ].map((cert, idx) => (
-                      <div key={idx} className="bg-stone-50 p-6 rounded-2xl border border-stone-300 space-y-3 hover:border-emerald-500 hover:bg-emerald-50/40 transition-all">
-                        <h3 className="text-lg font-black text-black">{cert.title}</h3>
-                        <p className="text-xs text-gray-600 font-medium leading-relaxed">{cert.desc}</p>
+                    {dbCourses.map((c, idx) => (
+                      <div key={c.id || idx} className="bg-stone-50 p-6 rounded-2xl border border-stone-300 space-y-3 hover:border-emerald-600 hover:bg-emerald-50/40 transition-all shadow-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+                            {c.categoryName || c.industry} 과정 연계
+                          </span>
+                          <span className="text-xs font-mono font-bold text-rose-700">
+                            검정일: {c.examDate || '일정미정'}
+                          </span>
+                        </div>
+
+                        <h3 className="text-lg font-black text-black">{c.certName}</h3>
+                        <p className="text-xs text-gray-600 font-medium leading-relaxed">
+                          {c.title} 수강생 대상 특급 명장 실기 심사 및 전문 자격증 검정 과정
+                        </p>
+
                         <button
-                          onClick={() => alert(`"${cert.title}" 자격시험 응시 요강을 확인합니다.`)}
+                          onClick={() => alert(`"${c.certName}" 자격시험 응시 요강을 확인합니다.`)}
                           className="px-4 py-2 bg-black text-white text-xs font-black rounded-xl hover:bg-gray-800 transition-colors cursor-pointer"
                         >
-                          응시 요강 보기
+                          응시 요강 보기 ➔
                         </button>
                       </div>
                     ))}
@@ -387,12 +405,17 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               </div>
             )}
 
-            {/* SUB-TAB 4: 시험 일정 */}
+            {/* SUB-TAB 4: 시험 일정 (DYNAMIC DB REAL-TIME BINDING) */}
             {subTab === 'exam_schedule' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
-                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                    시험 일정
+                  <div className="flex items-center justify-between border-b-2 border-black pb-3">
+                    <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
+                      2024년 자격증 시험 및 검정 달력 (DB 실시간 연동)
+                    </div>
+                    <span className="text-xs font-bold text-gray-500">
+                      관리자 DB의 자격증 시험 일자가 실시간 달력으로 자동 배치됩니다.
+                    </span>
                   </div>
 
                   <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100 w-full">
@@ -410,24 +433,23 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                       {Array.from({ length: 35 }).map((_, idx) => {
                         const dayNum = idx - 2;
                         const isValidDay = dayNum > 0 && dayNum <= 31;
-                        const isExamDay = dayNum === 10 || dayNum === 24;
+
+                        // Match dynamic exam schedules from DB
+                        const matchedExams = examSchedules.filter((e) => e.day === dayNum);
 
                         return (
-                          <div key={idx} className="min-h-[90px] p-2 flex flex-col justify-between hover:bg-rose-50/50 transition-colors">
-                            <span className={`font-black ${isExamDay ? 'bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
+                          <div key={idx} className="min-h-[100px] p-2 flex flex-col justify-between hover:bg-rose-50/50 transition-colors">
+                            <span className={`font-black ${matchedExams.length > 0 ? 'bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
                               {isValidDay ? dayNum : ''}
                             </span>
 
-                            {dayNum === 10 && (
-                              <span className="bg-rose-100 text-rose-900 p-1 rounded text-[10px] font-black leading-tight border border-rose-300">
-                                제24회 필기 시험
-                              </span>
-                            )}
-                            {dayNum === 24 && (
-                              <span className="bg-emerald-100 text-emerald-900 p-1 rounded text-[10px] font-black leading-tight border border-emerald-300">
-                                실기 실무 검정
-                              </span>
-                            )}
+                            <div className="space-y-1 mt-1">
+                              {matchedExams.map((ex, i) => (
+                                <div key={i} className={`p-1 rounded text-[10px] font-black leading-tight border ${ex.color}`}>
+                                  {ex.title}
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         );
                       })}
