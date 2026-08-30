@@ -9,11 +9,12 @@ import CategoryCourseSection from './components/CategoryCourseSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
+import AdminLayout from './components/Admin/AdminLayout';
 import Footer from './components/Footer';
 import AuthModal from './components/AuthModal';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'catalog' | 'about'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'catalog' | 'about' | 'admin'
   const [aboutTab, setAboutTab] = useState('greetings'); // 'greetings' | 'overview' | 'directions'
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
@@ -37,6 +38,11 @@ export default function App() {
       snapContainerRef.current.scrollBy({ top: vh, behavior: 'smooth' });
     }
   };
+
+  // If in Admin Mode, render full-screen Admin Layout
+  if (currentView === 'admin') {
+    return <AdminLayout onExitAdmin={() => setCurrentView('landing')} />;
+  }
 
   return (
     <div className="h-screen overflow-hidden bg-gray-50 flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-200 selection:text-emerald-900">

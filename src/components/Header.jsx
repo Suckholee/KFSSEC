@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, User, ChevronDown, Menu, X, BookOpen } from 'lucide-react';
+import { Search, User, ChevronDown, Menu, X, BookOpen, ShieldCheck } from 'lucide-react';
 
 export default function Header({ currentView = 'landing', onViewChange, onOpenAuth, onOpenAboutTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -129,8 +129,18 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
         </nav>
 
         {/* Right Header Utilities */}
-        <div className="hidden sm:flex items-center gap-5 shrink-0">
+        <div className="hidden sm:flex items-center gap-4 shrink-0">
           
+          {/* Admin Panel Quick Access Button */}
+          <button
+            onClick={() => onViewChange('admin')}
+            className="text-xs font-black text-emerald-900 bg-emerald-100/90 hover:bg-emerald-700 hover:text-white px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 border border-emerald-300/80 cursor-pointer shadow-xs"
+            title="관리자 통합 센터"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 group-hover:text-white" />
+            <span>관리자 센터</span>
+          </button>
+
           {/* Search Button */}
           <button
             onClick={() => setSearchOpen(!searchOpen)}
@@ -162,6 +172,12 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
 
         {/* Mobile Menu Toggle Button */}
         <div className="xl:hidden flex items-center gap-2">
+          <button
+            onClick={() => onViewChange('admin')}
+            className="px-2.5 py-1 text-xs font-bold text-emerald-900 bg-emerald-100 rounded-lg"
+          >
+            관리자
+          </button>
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             className="p-2 text-gray-600 hover:text-gray-900"
@@ -248,12 +264,12 @@ export default function Header({ currentView = 'landing', onViewChange, onOpenAu
           <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
             <button
               onClick={() => {
-                handleNavClick('catalog');
+                onViewChange('admin');
                 setMobileMenuOpen(false);
               }}
-              className="flex-1 py-2 text-center text-xs font-bold text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50"
+              className="flex-1 py-2 text-center text-xs font-bold text-emerald-900 bg-emerald-100 border border-emerald-300 rounded-lg"
             >
-              수강목록
+              관리자 센터
             </button>
             <button
               onClick={() => {
