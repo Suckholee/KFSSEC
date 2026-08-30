@@ -155,15 +155,15 @@ export default function AboutPage({ initialTab = 'greetings' }) {
 
         {/* SUB-TAB 2: 원장 인사말 */}
         {activeTab === 'speech' && (
-          <GreetingsSection />
+          <GreetingsSection viewMode="speech" />
         )}
 
-        {/* SUB-TAB 3: 원장 프로필 */}
+        {/* SUB-TAB 3: 원장 프로필 (Separated to render Career Cards!) */}
         {activeTab === 'profile' && (
-          <GreetingsSection />
+          <GreetingsSection viewMode="profile" />
         )}
 
-        {/* SUB-TAB 4: 조직도 (NEW ADDITION MATCHING IMAGE 4) */}
+        {/* SUB-TAB 4: 조직도 */}
         {activeTab === 'organization' && (
           <OrganizationSection />
         )}

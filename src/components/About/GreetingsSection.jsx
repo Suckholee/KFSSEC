@@ -14,7 +14,7 @@ import {
   BookmarkCheck,
 } from 'lucide-react';
 
-export default function GreetingsSection() {
+export default function GreetingsSection({ viewMode = 'all' }) {
   const highlightPoints = [
     {
       num: '1',
@@ -122,10 +122,9 @@ export default function GreetingsSection() {
     },
   ];
 
-  return (
-    <section className="space-y-12">
-      
-      {/* Top Green Vision Banner with Crisp Right Photo & Scroll Reveal Animation */}
+  const renderSpeechContent = () => (
+    <>
+      {/* Top Green Vision Banner */}
       <ScrollReveal direction="up" delay={0}>
         <div className="relative rounded-3xl p-8 sm:p-12 text-white shadow-xl overflow-hidden bg-[#073822] border border-emerald-500/30 min-h-[220px] flex items-center">
           <div className="absolute right-0 top-0 bottom-0 w-full sm:w-[65%] h-full overflow-hidden">
@@ -282,7 +281,7 @@ export default function GreetingsSection() {
         </div>
       </div>
 
-      {/* Highlight 4 Core Strengths Banner with Staggered Scroll Reveal */}
+      {/* Highlight 4 Core Strengths Banner */}
       <ScrollReveal direction="up" delay={100}>
         <div className="bg-[#0F5132] rounded-3xl p-8 sm:p-12 text-white space-y-8 shadow-xl">
           <div className="text-center max-w-3xl mx-auto space-y-2">
@@ -314,66 +313,79 @@ export default function GreetingsSection() {
           </div>
         </div>
       </ScrollReveal>
+    </>
+  );
 
-      {/* Chairman Ahn Hyeongsang 40-Year Career Profile Detail Section */}
-      <div className="space-y-8 pt-4">
-        <ScrollReveal direction="up" delay={100}>
-          <div className="border-b border-gray-200 pb-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-[#0F5132] text-xs font-black mb-2">
-              <Medal className="w-3.5 h-3.5" />
-              <span>40 YEARS OF DEDICATION & EXPERTISE</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-              안형상 이사장 프로필 & 주요 약력
-            </h3>
-            <p className="text-sm text-gray-600 font-medium mt-1">
-              특급호텔 40년 현장 경력과 국가 심사위원, 학술 연구를 갖춘 외식 명장의 발자취입니다.
-            </p>
+  const renderProfileContent = () => (
+    <div className="space-y-8 pt-2 animate-fadeIn font-sans text-gray-900">
+      <ScrollReveal direction="up" delay={100}>
+        <div className="border-b border-gray-200 pb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-[#0F5132] text-xs font-black mb-2">
+            <Medal className="w-3.5 h-3.5" />
+            <span>40 YEARS OF DEDICATION & EXPERTISE</span>
           </div>
-        </ScrollReveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {profileCards.map((card, idx) => {
-            const IconComp = card.icon;
-            return (
-              <ScrollReveal key={card.id} direction="up" delay={100 + idx * 80}>
-                <div className="bg-white rounded-3xl p-6 sm:p-7 border border-emerald-100/80 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group h-full">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center group-hover:bg-[#0F5132] group-hover:text-white transition-colors shadow-xs">
-                          <IconComp className="w-5 h-5 stroke-[2.2]" />
-                        </div>
-                        <div>
-                          <h4 className="text-base sm:text-lg font-black text-gray-900">
-                            {card.title}
-                          </h4>
-                          <span className="text-[11px] font-bold text-emerald-700 tracking-wider block">
-                            {card.subtitle}
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-xs font-black text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg">
-                        {card.id}
-                      </span>
-                    </div>
-
-                    <ul className="space-y-2.5 pt-1">
-                      {card.items.map((item, itemIdx) => (
-                        <li key={itemIdx} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-semibold leading-relaxed">
-                          <BookmarkCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </ScrollReveal>
-            );
-          })}
+          <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+            안형상 이사장 프로필 & 주요 약력
+          </h3>
+          <p className="text-sm text-gray-600 font-medium mt-1">
+            특급호텔 40년 현장 경력과 국가 심사위원, 학술 연구를 갖춘 외식 명장의 발자취입니다.
+          </p>
         </div>
-      </div>
+      </ScrollReveal>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {profileCards.map((card, idx) => {
+          const IconComp = card.icon;
+          return (
+            <ScrollReveal key={card.id} direction="up" delay={100 + idx * 80}>
+              <div className="bg-white rounded-3xl p-6 sm:p-7 border border-emerald-100/80 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group h-full">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#0F5132] flex items-center justify-center group-hover:bg-[#0F5132] group-hover:text-white transition-colors shadow-xs">
+                        <IconComp className="w-5 h-5 stroke-[2.2]" />
+                      </div>
+                      <div>
+                        <h4 className="text-base sm:text-lg font-black text-gray-900">
+                          {card.title}
+                        </h4>
+                        <span className="text-[11px] font-bold text-emerald-700 tracking-wider block">
+                          {card.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-xs font-black text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg">
+                      {card.id}
+                    </span>
+                  </div>
+
+                  <ul className="space-y-2.5 pt-1">
+                    {card.items.map((item, itemIdx) => (
+                      <li key={itemIdx} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-semibold leading-relaxed">
+                        <BookmarkCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </ScrollReveal>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  return (
+    <section className="space-y-12">
+      {viewMode === 'speech' && renderSpeechContent()}
+      {viewMode === 'profile' && renderProfileContent()}
+      {viewMode === 'all' && (
+        <>
+          {renderSpeechContent()}
+          {renderProfileContent()}
+        </>
+      )}
     </section>
   );
 }
