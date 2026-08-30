@@ -141,16 +141,30 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
       {/* Full Width Widescreen Layout matching Header padding */}
       <div className="w-full px-6 sm:px-10 lg:px-14 space-y-6">
         
-        {/* Main Layout: Left SubSidebar + Right Main Content */}
+        {/* Unified Main Layout: Left Vertical Sidebar Column (SubSidebar + Catalog Category Filters + Counseling Center) */}
         <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
           
-          {/* Left Vertical SubSidebar Menu */}
-          <SubSidebar
-            title="교육·자격증"
-            items={catalogSubItems}
-            activeId={subTab}
-            onSelectTab={(tabId) => setSubTab(tabId)}
-          />
+          {/* Left Vertical Sidebar Column */}
+          <div className="w-full md:w-56 lg:w-64 flex flex-col gap-6 shrink-0">
+            {/* 1. SubSidebar Navigation (Image 2) */}
+            <SubSidebar
+              title="교육·자격증"
+              items={catalogSubItems}
+              activeId={subTab}
+              onSelectTab={(tabId) => setSubTab(tabId)}
+            />
+
+            {/* 2. Catalog Category Filters & Counseling Center (Image 1 - Placed directly below SubSidebar) */}
+            {subTab === 'courses' && (
+              <Sidebar
+                activeCategory={activeSidebarCategory}
+                onSelectCategory={(catId) => {
+                  setActiveSidebarCategory(catId);
+                  if (catId === 'all') handleResetFilters();
+                }}
+              />
+            )}
+          </div>
 
           {/* Right Main Content Panel */}
           <div className="flex-1 w-full space-y-6 min-w-0">
@@ -204,89 +218,79 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                   </div>
                 </div>
 
-                {/* Main Catalog Section */}
-                <div className="flex flex-col lg:flex-row gap-6 items-start pt-2 w-full">
-                  <Sidebar
-                    activeCategory={activeSidebarCategory}
-                    onSelectCategory={(catId) => {
-                      setActiveSidebarCategory(catId);
-                      if (catId === 'all') handleResetFilters();
-                    }}
-                  />
+                {/* Course Grid & Filter Toolbar Container */}
+                <div className="space-y-6 w-full pt-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <span className="text-sm font-bold text-gray-700">
+                      총 <strong className="text-emerald-800 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
+                    </span>
 
-                  <div className="flex-1 w-full space-y-6 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <span className="text-sm font-bold text-gray-700">
-                        총 <strong className="text-emerald-800 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
-                      </span>
+                    <div className="flex items-center gap-3">
+                      <select
+                        value={sortOption}
+                        onChange={(e) => {
+                          setSortOption(e.target.value);
+                          setCurrentPage(1);
+                        }}
+                        className="px-3 py-2 bg-white border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold text-emerald-900 focus:outline-none focus:border-emerald-600 shadow-sm cursor-pointer"
+                      >
+                        <option value="latest">최신순</option>
+                        <option value="popular">인기순</option>
+                        <option value="price_low">수강료 낮은순</option>
+                        <option value="price_high">수강료 높은순</option>
+                      </select>
 
-                      <div className="flex items-center gap-3">
-                        <select
-                          value={sortOption}
-                          onChange={(e) => {
-                            setSortOption(e.target.value);
-                            setCurrentPage(1);
-                          }}
-                          className="px-3 py-2 bg-white border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold text-emerald-900 focus:outline-none focus:border-emerald-600 shadow-sm cursor-pointer"
+                      <div className="flex items-center bg-white border border-emerald-200 rounded-xl p-1 shadow-sm">
+                        <button
+                          onClick={() => setViewMode('grid')}
+                          className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                            viewMode === 'grid'
+                              ? 'bg-[#0F5132] text-white shadow-sm'
+                              : 'text-gray-400 hover:text-emerald-700'
+                          }`}
+                          title="그리드 뷰"
                         >
-                          <option value="latest">최신순</option>
-                          <option value="popular">인기순</option>
-                          <option value="price_low">수강료 낮은순</option>
-                          <option value="price_high">수강료 높은순</option>
-                        </select>
-
-                        <div className="flex items-center bg-white border border-emerald-200 rounded-xl p-1 shadow-sm">
-                          <button
-                            onClick={() => setViewMode('grid')}
-                            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                              viewMode === 'grid'
-                                ? 'bg-[#0F5132] text-white shadow-sm'
-                                : 'text-gray-400 hover:text-emerald-700'
-                            }`}
-                            title="그리드 뷰"
-                          >
-                            <LayoutGrid className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => setViewMode('list')}
-                            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                              viewMode === 'list'
-                                ? 'bg-[#0F5132] text-white shadow-sm'
-                                : 'text-gray-400 hover:text-emerald-700'
-                            }`}
-                            title="리스트 뷰"
-                          >
-                            <ListFilter className="w-4 h-4" />
-                          </button>
-                        </div>
+                          <LayoutGrid className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => setViewMode('list')}
+                          className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                            viewMode === 'list'
+                              ? 'bg-[#0F5132] text-white shadow-sm'
+                              : 'text-gray-400 hover:text-emerald-700'
+                          }`}
+                          title="리스트 뷰"
+                        >
+                          <ListFilter className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
-
-                    <FilterPanel
-                      selectedIndustry={selectedIndustry}
-                      onSelectIndustry={handleIndustryChange}
-                      selectedStage={selectedStage}
-                      onSelectStage={handleStageChange}
-                      selectedFormats={selectedFormats}
-                      onToggleFormat={handleToggleFormat}
-                    />
-
-                    <CourseGrid
-                      courses={courses}
-                      loading={loading}
-                      viewMode={viewMode}
-                      onSelectCourse={(c) => setModalCourse(c)}
-                      onResetFilters={handleResetFilters}
-                    />
-
-                    {!loading && courses.length > 0 && (
-                      <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={(p) => setCurrentPage(p)}
-                      />
-                    )}
                   </div>
+
+                  <FilterPanel
+                    selectedIndustry={selectedIndustry}
+                    onSelectIndustry={handleIndustryChange}
+                    selectedStage={selectedStage}
+                    onSelectStage={handleStageChange}
+                    selectedFormats={selectedFormats}
+                    onToggleFormat={handleToggleFormat}
+                  />
+
+                  <CourseGrid
+                    courses={courses}
+                    loading={loading}
+                    viewMode={viewMode}
+                    onSelectCourse={(c) => setModalCourse(c)}
+                    onResetFilters={handleResetFilters}
+                  />
+
+                  {!loading && courses.length > 0 && (
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={(p) => setCurrentPage(p)}
+                    />
+                  )}
                 </div>
 
               </div>
