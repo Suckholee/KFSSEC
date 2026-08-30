@@ -16,22 +16,29 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
       id: 1,
       title: '제철 미나리와 가리비 관자 조리',
       category: '한식·퓨전 명인 요리',
-      image: '/images/dir_7.jpg',
+      image: '/images/course_menu_dev.jpg',
       desc: '자연산 미나리의 산뜻한 향과 관자 조리의 깊은 풍미를 살린 대표 명인 요리',
     },
     {
       id: 2,
       title: '성게알(우니) & 연어알 타르타르 타워',
       category: '일식·해산물 명인 요리',
-      image: '/images/dir_3.jpg',
+      image: '/images/course_restaurant.jpg',
       desc: '신선한 최상급 우니와 이쿠라, 제철 해산물을 레이어링한 시그니처 요리',
     },
     {
       id: 3,
       title: '금박 포인트를 가미한 복어회 & 미나리 롤',
       category: '전통·고급 일식 명인 요리',
-      image: '/images/dir_12.jpg',
+      image: '/images/course_delivery.jpg',
       desc: '얇게 뜬 복어회와 식용 금박, 수제 양념장이 어우러진 최고급 명인 셰프 작품',
+    },
+    {
+      id: 4,
+      title: '명인 가문 정갈 한식 & 발효 소스 요리',
+      category: '전통 한식 명인 요리',
+      image: '/images/course_cafe.jpg',
+      desc: '100년 전통 발효 소스와 조리 명인의 정성이 들어간 한상차림 레시피',
     },
   ];
 
@@ -39,7 +46,7 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
     <div className="bg-gray-50 min-h-screen py-10 relative font-sans text-gray-900">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-10 max-w-7xl mx-auto">
         
-        {/* Sub-Navigation Tabs Bar (명인 사업단 | 명인 요리 - Matching Screenshots) */}
+        {/* Sub-Navigation Tabs Bar (명인 사업단 | 명인 요리) */}
         <div className="bg-white rounded-2xl p-2 border-2 border-black shadow-lg flex flex-wrap items-center justify-center gap-2 max-w-md mx-auto mb-8">
           <button
             onClick={() => setActiveTab('masters')}
@@ -66,7 +73,7 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
           </button>
         </div>
 
-        {/* SUB-TAB 1: 명인 사업단 (Matching Screenshot 1) */}
+        {/* SUB-TAB 1: 명인 사업단 */}
         {activeTab === 'masters' && (
           <div className="space-y-10 animate-fadeIn">
             
@@ -114,7 +121,7 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
           </div>
         )}
 
-        {/* SUB-TAB 2: 명인 요리 (Matching Screenshot 2 Slanted Dish Photos) */}
+        {/* SUB-TAB 2: 명인 요리 (High Resolution Real Dish Photos) */}
         {activeTab === 'dishes' && (
           <div className="space-y-10 animate-fadeIn">
             
@@ -132,32 +139,39 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
               </span>
             </div>
 
-            {/* 3 Slanted Photo Cards Grid (Matching Screenshot 2) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
+            {/* Slanted High Quality Food Dish Photos Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
               {masterDishes.map((dish, idx) => (
                 <ScrollReveal key={dish.id} direction="up" delay={idx * 100}>
-                  <div className="group bg-white rounded-3xl border-2 border-gray-300 p-4 shadow-xl hover:shadow-2xl hover:border-black transition-all duration-500 space-y-4 overflow-hidden">
+                  <div className="group bg-white rounded-3xl border-2 border-gray-300 p-4 shadow-xl hover:shadow-2xl hover:border-black transition-all duration-500 space-y-4 overflow-hidden h-full flex flex-col justify-between">
                     
-                    {/* Slanted Photo Container (Matching Screenshot 2) */}
-                    <div className="relative h-64 sm:h-72 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group-hover:skew-x-0 transition-transform duration-500">
+                    {/* Slanted High Resolution Dish Photo Container */}
+                    <div className="relative h-60 sm:h-64 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-4 group-hover:skew-x-0 transition-transform duration-500 shrink-0">
                       <img
                         src={dish.image}
                         alt={dish.title}
-                        className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-110 transition-transform duration-700"
+                        className="w-full h-full object-cover transform skew-x-4 group-hover:skew-x-0 group-hover:scale-108 transition-transform duration-700"
                       />
-                      <div className="absolute top-3 left-3 bg-black/80 text-emerald-300 font-black text-xs px-3 py-1 rounded-full transform skew-x-6">
+                      <div className="absolute top-3 left-3 bg-black/85 text-emerald-300 font-black text-[11px] px-3 py-1 rounded-full transform skew-x-4 border border-emerald-500/30">
                         {dish.category}
                       </div>
                     </div>
 
-                    {/* Dish Description */}
-                    <div className="space-y-2 px-2 pb-2">
-                      <h3 className="text-lg font-black text-black group-hover:text-emerald-700 transition-colors">
-                        {dish.title}
-                      </h3>
-                      <p className="text-xs text-gray-600 font-medium leading-relaxed">
-                        {dish.desc}
-                      </p>
+                    {/* Dish Title & Description */}
+                    <div className="space-y-2 px-1 pb-1 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-base font-black text-black group-hover:text-emerald-700 transition-colors leading-snug">
+                          {dish.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 font-medium leading-relaxed mt-1.5">
+                          {dish.desc}
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-700">
+                        <span>명인 레시피 과정</span>
+                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
 
                   </div>
