@@ -605,10 +605,10 @@ export default function AdminLayout({
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="수강신청 관리"
+            title="회원 관리"
           >
             <UserCheck className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">수강신청</span>
+            <span className="text-[9px] font-black mt-0.5">회원관리</span>
           </button>
 
           <button
@@ -645,7 +645,7 @@ export default function AdminLayout({
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
               {primaryMenu === 'developer' && '💻 개발 문의 채널'}
-              {primaryMenu === 'reservations' && '수강신청 & 회원 관리'}
+              {primaryMenu === 'reservations' && '회원 관리 센터 (128명)'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의'}
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
             </h2>
