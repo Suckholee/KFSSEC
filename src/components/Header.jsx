@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldCheck, ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
 
-export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab, onOpenCatalogTab }) {
+export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab, onOpenCatalogTab, onOpenConsultingTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState('KOR');
 
@@ -9,7 +9,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
     { title: '교육원 소개', key: 'about', action: () => onOpenAboutTab('greetings') },
     { title: '명인사업단', key: 'masters', action: () => onOpenMasterTab('masters') },
     { title: '교육·자격증', key: 'education', action: () => onOpenCatalogTab('courses') },
-    { title: '창업컨설팅', key: 'consulting', action: () => onViewChange('catalog') },
+    { title: '창업컨설팅', key: 'consulting', action: () => onOpenConsultingTab('education') },
     { title: '커뮤니티', key: 'community', action: () => onViewChange('landing') },
   ];
 
@@ -37,7 +37,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
             const isMenuActive =
               (menu.key === 'about' && currentView === 'about') ||
               (menu.key === 'masters' && currentView === 'masters') ||
-              (menu.key === 'education' && currentView === 'catalog');
+              (menu.key === 'education' && currentView === 'catalog') ||
+              (menu.key === 'consulting' && currentView === 'consulting');
 
             return (
               <div key={mIdx} className="relative group py-6 cursor-pointer">

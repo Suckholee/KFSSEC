@@ -10,6 +10,7 @@ import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
 import MasterBusinessPage from './components/Master/MasterBusinessPage';
+import ConsultingPage from './components/Consulting/ConsultingPage';
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminLoginModal from './components/Admin/AdminLoginModal';
 import Footer from './components/Footer';
@@ -23,6 +24,7 @@ export default function App() {
     if (path === '/catalog') return 'catalog';
     if (path === '/about') return 'about';
     if (path === '/masters') return 'masters';
+    if (path === '/consulting') return 'consulting';
     return 'landing';
   };
 
@@ -30,6 +32,7 @@ export default function App() {
   const [aboutTab, setAboutTab] = useState('greetings');
   const [masterTab, setMasterTab] = useState('masters');
   const [catalogTab, setCatalogTab] = useState('courses');
+  const [consultingTab, setConsultingTab] = useState('education');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
 
@@ -120,6 +123,8 @@ export default function App() {
         setCurrentView('about');
       } else if (path === '/masters') {
         setCurrentView('masters');
+      } else if (path === '/consulting') {
+        setCurrentView('consulting');
       } else {
         setCurrentView('landing');
       }
@@ -177,6 +182,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenConsultingTab = (tab = 'education') => {
+    setConsultingTab(tab);
+    changeView('consulting', '/consulting');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleScrollNext = () => {
     if (snapContainerRef.current) {
       const vh = snapContainerRef.current.clientHeight;
@@ -209,6 +220,7 @@ export default function App() {
         onOpenAboutTab={handleOpenAboutTab}
         onOpenMasterTab={handleOpenMasterTab}
         onOpenCatalogTab={handleOpenCatalogTab}
+        onOpenConsultingTab={handleOpenConsultingTab}
       />
 
       {/* Main Content Body */}
@@ -300,6 +312,13 @@ export default function App() {
 
             {currentView === 'masters' && (
               <MasterBusinessPage initialTab={masterTab} />
+            )}
+
+            {currentView === 'consulting' && (
+              <ConsultingPage
+                initialTab={consultingTab}
+                onOpenAuth={handleOpenAuth}
+              />
             )}
 
             <Footer
