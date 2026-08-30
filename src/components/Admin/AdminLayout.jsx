@@ -52,7 +52,15 @@ import NetflixCoursesSection from '../NetflixCoursesSection';
 import FullPackageCoursesSection from '../FullPackageCoursesSection';
 import CategoryCourseSection from '../CategoryCourseSection';
 import BannerSection from '../BannerSection';
-import { getCoursesFromDB, saveCoursesToDB } from '../../services/courseDatabase';
+import {
+  getCoursesFromDB,
+  saveCoursesToDB,
+  fetchCoursesFromAPI,
+  createCourseAPI,
+  updateCourseAPI,
+  deleteCourseAPI,
+  uploadImageAPI,
+} from '../../services/courseDatabase';
 
 export default function AdminLayout({
   siteData,
@@ -65,10 +73,19 @@ export default function AdminLayout({
   // Courses Database State
   const [coursesList, setCoursesList] = useState(getCoursesFromDB());
 
+  // Load Real Courses from REST API on Mount
+  useEffect(() => {
+    fetchCoursesFromAPI().then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setCoursesList(data);
+      }
+    });
+  }, []);
+
   // Parse initial primary menu and course selection from window.location.pathname
   const parsePathToState = () => {
-    const path = window.location.pathname; // e.g. /admin/courses/c1, /admin/inquiries
-    const parts = path.split('/').filter(Boolean); // ['admin', 'courses', 'c1']
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(Boolean);
     
     let menu = 'courses';
     let subTab = 'course_list';
@@ -119,7 +136,6 @@ export default function AdminLayout({
     }
   };
 
-  // Sync state when primaryMenu or selectedCourseForEdit changes
   const switchPrimaryMenu = (menu, subTab = 'course_list', course = null) => {
     setPrimaryMenu(menu);
     setSecondarySubTab(subTab);
@@ -127,7 +143,6 @@ export default function AdminLayout({
     updateAdminUrl(menu, subTab, course ? course.id : null);
   };
 
-  // Listen to browser popstate (back/forward buttons)
   useEffect(() => {
     const handlePopState = () => {
       const parsed = parsePathToState();
@@ -150,8 +165,8 @@ export default function AdminLayout({
     { label: '기업 설명회 현장', url: '/images/dir_2.jpg' },
   ];
 
-  // Direct Computer Image File Upload Handler
-  const handleFileUpload = (e) => {
+  // Direct Computer Image File Upload Handler to Real Server API
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
@@ -159,11 +174,13 @@ export default function AdminLayout({
         return;
       }
       const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageUrl = event.target.result;
+      reader.onload = async (event) => {
+        const base64Data = event.target.result;
+        // Upload file to Real REST API Server (/api/upload)
+        const serverPath = await uploadImageAPI(base64Data, file.name);
         setSelectedCourseForEdit((prev) => ({
           ...prev,
-          image: imageUrl,
+          image: serverPath,
         }));
       };
       reader.readAsDataURL(file);
@@ -220,34 +237,35 @@ export default function AdminLayout({
 
   const [adminInquiries, setAdminInquiries] = useState(defaultInquiries);
 
-  // Dedicated Course Page Save Handler
-  const handleSaveCourseDetail = (e) => {
+  // Dedicated Course Page Save Handler (Real REST API Integration)
+  const handleSaveCourseDetail = async (e) => {
     e.preventDefault();
     if (!selectedCourseForEdit.title || !selectedCourseForEdit.startDate) {
       alert('교육과정명과 개강일을 입력해주세요.');
       return;
     }
 
-    let updated;
     if (selectedCourseForEdit.id) {
-      updated = coursesList.map((c) => (c.id === selectedCourseForEdit.id ? selectedCourseForEdit : c));
+      // Real API PUT Update
+      await updateCourseAPI(selectedCourseForEdit.id, selectedCourseForEdit);
     } else {
-      const newCourse = { ...selectedCourseForEdit, id: `c_${Date.now()}` };
-      updated = [newCourse, ...coursesList];
+      // Real API POST Create
+      await createCourseAPI(selectedCourseForEdit);
     }
 
-    setCoursesList(updated);
-    saveCoursesToDB(updated);
+    // Refresh Real DB List
+    const fresh = await fetchCoursesFromAPI();
+    setCoursesList(fresh);
     switchPrimaryMenu('courses', 'course_list', null);
     triggerSavedNotice();
-    alert('🎉 업로드된 파일 및 강의 상세 정보가 성공적으로 DB에 저장되었습니다.');
+    alert('🎉 업로드된 이미지 및 강의 정보가 리얼 REST API 서버 DB에 저장되었습니다.');
   };
 
-  const handleDeleteCourse = (id) => {
-    if (window.confirm('정말 이 교육과정을 DB에서 삭제하시겠습니까?')) {
-      const updated = coursesList.filter((c) => c.id !== id);
-      setCoursesList(updated);
-      saveCoursesToDB(updated);
+  const handleDeleteCourse = async (id) => {
+    if (window.confirm('정말 이 교육과정을 리얼 DB에서 삭제하시겠습니까?')) {
+      await deleteCourseAPI(id);
+      const fresh = await fetchCoursesFromAPI();
+      setCoursesList(fresh);
       switchPrimaryMenu('courses', 'course_list', null);
       triggerSavedNotice();
     }
@@ -306,7 +324,7 @@ export default function AdminLayout({
             <h1 className="text-lg font-black tracking-tight flex items-center gap-2">
               <span>스마트 파트너 센터</span>
               <span className="text-[11px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                SMART PLACE ADMIN
+                REAL REST API DB CONNECTED
               </span>
             </h1>
           </div>
@@ -314,7 +332,7 @@ export default function AdminLayout({
 
         {/* Top Quick Links */}
         <div className="flex items-center gap-4 text-xs font-bold">
-          <span className="text-gray-400">사단법인 한국외식창업교육원 | 최고관리자</span>
+          <span className="text-gray-400">사단법인 한국외식창업교육원 | 리얼 백엔드 DB</span>
           <div className="h-4 w-px bg-gray-700" />
           <button
             onClick={onExitAdmin}
@@ -468,7 +486,7 @@ export default function AdminLayout({
             <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
               <CheckCircle className="w-5 h-5 text-emerald-700" />
               <span className="text-sm font-black">
-                강의 데이터 및 업로드 파일이 시스템에 반영되었습니다.
+                리얼 REST API 서버 DB(server/data/courses.json)에 변경 사항이 저장되었습니다.
               </span>
             </div>
           )}
@@ -501,7 +519,7 @@ export default function AdminLayout({
                     className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                   >
                     <Save className="w-4 h-4" />
-                    <span>💾 변경사항 저장 및 라이브 적용</span>
+                    <span>💾 리얼 DB에 저장 및 라이브 적용</span>
                   </button>
                 </div>
               </div>
@@ -517,7 +535,7 @@ export default function AdminLayout({
                       <span>강의 정보 & 이미지 파일 업로드 편집기</span>
                     </h3>
                     <p className="text-xs text-gray-500 font-bold mt-0.5">
-                      컴퓨터의 이미지를 파일로 직접 업로드하거나 URL을 통해 커버 썸네일을 등록할 수 있습니다.
+                      컴퓨터의 이미지를 파일로 업로드하면 리얼 REST API 서버(/api/upload)에 저장됩니다.
                     </p>
                   </div>
 
@@ -526,7 +544,7 @@ export default function AdminLayout({
                     <div className="flex items-center justify-between">
                       <label className="block text-xs font-black text-black flex items-center gap-2">
                         <Image className="w-4 h-4 text-emerald-700" />
-                        <span>강의 대표 커버 이미지 (내 컴퓨터 파일 업로드 / URL)</span>
+                        <span>강의 대표 커버 이미지 (서버 업로드 / URL)</span>
                       </label>
 
                       {/* DIRECT LOCAL FILE UPLOAD BUTTON */}
@@ -912,29 +930,6 @@ export default function AdminLayout({
                 <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
                   <YouTubeMediaSection youtubeData={siteData.youtube} />
                 </div>
-              </div>
-            </div>
-          )}
-
-          {primaryMenu === 'reviews' && (
-            <div className="space-y-6 animate-fadeIn max-w-5xl">
-              <div className="border-b-2 border-black pb-3">
-                <h3 className="text-xl font-black text-black tracking-tight">
-                  수강생 방문후기 & 별점 관리자
-                </h3>
-              </div>
-              <div className="space-y-4">
-                {reviewsList.map((rev) => (
-                  <div key={rev.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-amber-500 font-black text-sm">{'★'.repeat(rev.rating)}</span>
-                      <span className="text-xs font-mono text-gray-400">{rev.date}</span>
-                    </div>
-                    <p className="text-xs text-gray-800 font-medium leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-200">
-                      "{rev.content}"
-                    </p>
-                  </div>
-                ))}
               </div>
             </div>
           )}
