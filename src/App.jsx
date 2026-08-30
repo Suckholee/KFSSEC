@@ -195,7 +195,13 @@ export default function App() {
     const saved = localStorage.getItem('kfssec_site_data');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Force update if legacy b4wS9WvI38g video ID exists
+        if (parsed?.youtube?.videos?.some((v) => v.videoId === 'b4wS9WvI38g')) {
+          localStorage.removeItem('kfssec_site_data');
+        } else {
+          return parsed;
+        }
       } catch (e) {
         console.error('Failed to parse saved site data:', e);
       }
@@ -215,16 +221,18 @@ export default function App() {
             subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
             channel: '한국외식창업교육원 공식 채널',
             categoryBadge: '공식 채널 영상',
+            thumbnail: '/images/yt_thumb_1.jpg',
             uploadDate: '2024.02.03',
           },
           {
             id: 'v2',
-            videoUrl: 'https://www.youtube.com/watch?v=b4wS9WvI38g',
-            videoId: 'b4wS9WvI38g',
-            title: '아시아창의방송 언론 보도 스페셜',
-            subtitle: '한국외식창업교육원 언론 보도 및 외식 창업 조리 실습 특별 취재 영상',
-            channel: '아시아창의방송 공식 보도',
+            videoUrl: 'https://www.youtube.com/watch?v=E_WgebIP_SY',
+            videoId: 'E_WgebIP_SY',
+            title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
+            subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
+            channel: '아시아창의방송(actv) 언론 보도',
             categoryBadge: '언론 보도 영상',
+            thumbnail: '/images/yt_thumb_2.jpg',
             uploadDate: '2024.01.15',
           },
         ],
