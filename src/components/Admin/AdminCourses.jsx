@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Edit, Trash2, LayoutGrid, List, Users, Sparkles, Tag, Eye } from 'lucide-react';
+import CourseEditModal from './CourseEditModal';
 
 export default function AdminCourses() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [viewMode, setViewMode] = useState('gallery'); // 'gallery' | 'list'
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(null);
 
   const [courses, setCourses] = useState([
     {
@@ -119,6 +122,25 @@ export default function AdminCourses() {
     return matchesSearch && matchesCat;
   });
 
+  const handleOpenAddModal = () => {
+    setSelectedCourseForEdit(null);
+    setEditModalOpen(true);
+  };
+
+  const handleOpenEditModal = (course) => {
+    setSelectedCourseForEdit(course);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveCourse = (savedCourse) => {
+    const exists = courses.some((c) => c.id === savedCourse.id);
+    if (exists) {
+      setCourses(courses.map((c) => (c.id === savedCourse.id ? savedCourse : c)));
+    } else {
+      setCourses([savedCourse, ...courses]);
+    }
+  };
+
   const handleDelete = (id) => {
     if (window.confirm('정말로 이 교육과정을 목록에서 삭제하시겠습니까?')) {
       setCourses(courses.filter((c) => c.id !== id));
@@ -135,12 +157,12 @@ export default function AdminCourses() {
             교육과정 & 풀 패키지 상품 관리
           </h2>
           <p className="text-xs sm:text-sm text-emerald-200/70 font-medium mt-1">
-            메인 페이지 및 카탈로그에 노출되는 수강 상품을 갤러리 카드형과 리스트형으로 한눈에 관리합니다.
+            메인 페이지 및 카탈로그에 노출되는 수강 상품의 실제 사진, 과정명, 문구 및 가격을 실시간 편집합니다.
           </p>
         </div>
 
         <button
-          onClick={() => alert('신규 교육과정 등록 모달이 열립니다.')}
+          onClick={handleOpenAddModal}
           className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg transition-all shrink-0 cursor-pointer flex items-center gap-2 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
@@ -274,15 +296,16 @@ export default function AdminCourses() {
                     <span className="text-lg font-black text-white">{c.price}</span>
                     <div className="flex items-center gap-1.5">
                       <button
-                        onClick={() => alert(`[${c.title}] 정보 수정 모달이 열립니다.`)}
-                        className="p-2 rounded-xl bg-emerald-900/50 hover:bg-emerald-600 text-emerald-200 hover:text-white transition-colors cursor-pointer"
-                        title="수정"
+                        onClick={() => handleOpenEditModal(c)}
+                        className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1"
+                        title="사진 및 문구 수정"
                       >
                         <Edit className="w-3.5 h-3.5" />
+                        <span>수정</span>
                       </button>
                       <button
                         onClick={() => handleDelete(c.id)}
-                        className="p-2 rounded-xl bg-rose-900/50 hover:bg-rose-600 text-rose-200 hover:text-white transition-colors cursor-pointer"
+                        className="p-1.5 rounded-xl bg-rose-900/50 hover:bg-rose-600 text-rose-200 hover:text-white transition-colors cursor-pointer"
                         title="삭제"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -338,9 +361,9 @@ export default function AdminCourses() {
                     <td className="py-3 px-3 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button
-                          onClick={() => alert(`[${c.title}] 정보 수정 모달이 열립니다.`)}
+                          onClick={() => handleOpenEditModal(c)}
                           className="p-1.5 rounded-lg bg-emerald-900/40 hover:bg-emerald-800 text-emerald-300 transition-colors cursor-pointer"
-                          title="수정"
+                          title="사진 및 문구 수정"
                         >
                           <Edit className="w-3.5 h-3.5" />
                         </button>
@@ -360,6 +383,14 @@ export default function AdminCourses() {
           </div>
         </div>
       )}
+
+      {/* Interactive Course Edit & Add Modal */}
+      <CourseEditModal
+        isOpen={editModalOpen}
+        course={selectedCourseForEdit}
+        onClose={() => setEditModalOpen(false)}
+        onSaveCourse={handleSaveCourse}
+      />
 
     </div>
   );
