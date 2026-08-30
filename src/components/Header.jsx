@@ -194,28 +194,28 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
       </div>
 
-      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP */}
+      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (SOLID 100% OPAQUE DARK BACKDROP FOR CRYSTAL CLEAR READABILITY) */}
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`absolute left-0 right-0 top-full bg-[#0e1c16]/98 backdrop-blur-xl border-b border-emerald-500/30 shadow-2xl z-40 overflow-hidden transition-all duration-300 ease-out origin-top ${
+        className={`absolute left-0 right-0 top-full bg-[#08120d] border-b-2 border-emerald-500 shadow-2xl z-50 overflow-hidden transition-all duration-300 ease-out origin-top ${
           megaMenuOpen
-            ? 'max-h-[380px] opacity-100 translate-y-0 pointer-events-auto'
+            ? 'max-h-[400px] opacity-100 translate-y-0 pointer-events-auto'
             : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none'
         }`}
       >
         <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 grid grid-cols-5 gap-8">
           {megaMenuItems.map((col, cIdx) => (
             <div key={cIdx} className="space-y-3">
-              <h4 className="text-sm font-black text-emerald-300 border-b border-emerald-900/60 pb-2 flex items-center justify-between">
+              <h4 className="text-base font-black text-emerald-400 border-b border-emerald-800/80 pb-2.5 flex items-center justify-between">
                 <span>{col.title}</span>
               </h4>
-              <ul className="space-y-2 text-xs sm:text-sm font-extrabold text-gray-200">
+              <ul className="space-y-2.5 text-sm font-extrabold text-white">
                 {col.subLinks.map((sub, sIdx) => (
                   <li key={sIdx}>
                     <button
                       onClick={() => handleSubLinkClick(sub)}
-                      className="hover:text-emerald-300 text-gray-300 hover:translate-x-1.5 transition-all duration-200 cursor-pointer block text-left w-full py-1"
+                      className="text-white hover:text-emerald-300 font-extrabold text-sm hover:translate-x-1.5 transition-all duration-200 cursor-pointer block text-left w-full py-1 drop-shadow-sm"
                     >
                       {sub.label}
                     </button>
@@ -229,7 +229,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
       {/* MOBILE MENU DROPDOWN */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0a1410] border-b border-emerald-900/80 p-6 space-y-6 animate-fadeIn">
+        <div className="md:hidden bg-[#08120d] border-b border-emerald-900/80 p-6 space-y-6 animate-fadeIn">
           <div className="flex items-center justify-between pb-4 border-b border-emerald-900/60">
             <button
               onClick={() => {
@@ -257,12 +257,12 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
                 <h4 className="text-sm font-black text-emerald-400 border-b border-emerald-900/60 pb-1">
                   {col.title}
                 </h4>
-                <div className="grid grid-cols-2 gap-2 text-xs font-bold text-gray-300 pt-1">
+                <div className="grid grid-cols-2 gap-2 text-xs font-bold text-gray-200 pt-1">
                   {col.subLinks.map((sub, sIdx) => (
                     <button
                       key={sIdx}
                       onClick={() => handleSubLinkClick(sub)}
-                      className="text-left py-1 hover:text-emerald-300"
+                      className="text-left py-1 text-white hover:text-emerald-300"
                     >
                       • {sub.label}
                     </button>
