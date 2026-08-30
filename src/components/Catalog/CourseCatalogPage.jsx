@@ -251,47 +251,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                   </div>
                 </div>
 
-                {/* Slanted Chevron Banner Photos Container */}
-                <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4 w-full">
-                  <h2 className="text-2xl font-black text-black border-b-2 border-black pb-2">
-                    교육 과정
-                  </h2>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-2 w-full">
-                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group w-full">
-                      <img
-                        src="/images/dir_2.jpg"
-                        alt="채용 기업체 설명회"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
-                        채용 기업체 설명회
-                      </div>
-                    </div>
-
-                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group w-full">
-                      <img
-                        src="/images/dir_1.jpg"
-                        alt="정기 총회 세미나"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
-                        정기 총회 세미나
-                      </div>
-                    </div>
-
-                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group sm:col-span-2 lg:col-span-1 w-full">
-                      <img
-                        src="/images/dir_12.jpg"
-                        alt="명인 인증식 및 수여식"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
-                        명인 인증식 및 수여식
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
                 {/* Course Grid & Filter Toolbar Container */}
                 <div className="space-y-6 w-full pt-2">
