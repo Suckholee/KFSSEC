@@ -138,8 +138,8 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   return (
     <div className="bg-emerald-50/20 min-h-screen py-6 font-sans text-gray-900">
       
-      {/* Full Width Flush Layout matching Header margins */}
-      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-6">
+      {/* Full Width Widescreen Layout matching Header padding */}
+      <div className="w-full px-6 sm:px-10 lg:px-14 space-y-6">
         
         {/* Main Layout: Left SubSidebar + Right Main Content */}
         <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
@@ -159,7 +159,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
             {subTab === 'courses' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 
-                {/* Slanted Chevron Banner Photos Container - Fixed 100% Fit without Clipping */}
+                {/* Slanted Chevron Banner Photos Container */}
                 <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4 w-full">
                   <h2 className="text-2xl font-black text-black border-b-2 border-black pb-2">
                     교육 과정

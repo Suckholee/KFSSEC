@@ -73,8 +73,8 @@ export default function AboutPage({ initialTab = 'greetings' }) {
   return (
     <div className="bg-gray-50 min-h-screen py-6 font-sans text-gray-900">
       
-      {/* Full Width Flush Layout matching Header margins */}
-      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-6">
+      {/* Full Width Widescreen Layout matching Header padding */}
+      <div className="w-full px-6 sm:px-10 lg:px-14 space-y-6">
         
         {/* Main Content Layout: Left SubSidebar + Right Main Content */}
         <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">

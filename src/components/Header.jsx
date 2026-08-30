@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
+import { ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
 
 export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab, onOpenCatalogTab, onOpenConsultingTab, onOpenCommunityTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,10 +16,10 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
   return (
     <header className="relative bg-[#0a1410] border-b border-emerald-950/80 z-50 transition-all font-sans text-white shadow-md">
       
-      {/* Main Top Header Bar */}
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto h-20 sm:h-24 flex items-center justify-between">
+      {/* Full Width Top Header Bar (No Max-Width Constraint for Widescreen Layout) */}
+      <div className="w-full px-6 sm:px-10 lg:px-14 h-20 sm:h-24 flex items-center justify-between gap-6">
         
-        {/* Official Logo */}
+        {/* Official Logo (Far Left) */}
         <div
           onClick={() => onViewChange('landing')}
           className="flex items-center gap-3 cursor-pointer group shrink-0"
@@ -31,8 +31,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           />
         </div>
 
-        {/* Desktop Main Navigation Bar */}
-        <nav className="hidden md:flex items-center gap-8 lg:gap-12">
+        {/* Centered Desktop Main Navigation Bar (Balanced Center Layout) */}
+        <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-14">
           {mainMenuItems.map((menu, mIdx) => {
             const isMenuActive =
               (menu.key === 'about' && currentView === 'about') ||
@@ -45,7 +45,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
               <div key={mIdx} className="relative group py-6 cursor-pointer">
                 <button
                   onClick={menu.action}
-                  className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 cursor-pointer ${
+                  className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap ${
                     isMenuActive
                       ? 'text-emerald-400 border-b-2 border-dashed border-rose-500 pb-0.5'
                       : 'text-white hover:text-emerald-300'
@@ -58,19 +58,9 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           })}
         </nav>
 
-        {/* Right Top Utility Buttons */}
-        <div className="hidden md:flex items-center gap-4 shrink-0">
+        {/* Right Top Utility Buttons (Far Right - KOR Selector & Login) */}
+        <div className="hidden md:flex items-center gap-5 shrink-0">
           
-          {/* Admin Panel Shortcut */}
-          <button
-            onClick={() => onViewChange('admin')}
-            className="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/40 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
-            title="관리자 센터로 이동"
-          >
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>관리자 센터</span>
-          </button>
-
           {/* Language Selector Pill (KOR | ▼) */}
           <div className="relative">
             <button
@@ -86,7 +76,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           {/* # LOGIN / JOIN US Button */}
           <button
             onClick={() => onOpenAuth('login')}
-            className="group flex flex-col items-center justify-center text-xs font-black text-white hover:text-emerald-300 transition-colors cursor-pointer border-l border-emerald-900/80 pl-4"
+            className="group flex flex-col items-center justify-center text-xs font-black text-white hover:text-emerald-300 transition-colors cursor-pointer border-l border-emerald-900/80 pl-5"
           >
             <div className="flex items-center gap-1 text-sm font-black">
               <span className="text-xl font-mono text-emerald-400 group-hover:text-emerald-300">#</span>
@@ -112,16 +102,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       {/* MOBILE MENU DROPDOWN */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#08120d] border-b border-emerald-900/80 p-6 space-y-6 animate-fadeIn">
-          <div className="flex items-center justify-between pb-4 border-b border-emerald-900/60">
-            <button
-              onClick={() => {
-                onViewChange('admin');
-                setMobileMenuOpen(false);
-              }}
-              className="px-4 py-2 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black rounded-xl"
-            >
-              🛡️ 관리자 센터
-            </button>
+          <div className="flex items-center justify-end pb-4 border-b border-emerald-900/60">
             <button
               onClick={() => {
                 onOpenAuth('login');
