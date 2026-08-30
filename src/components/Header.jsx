@@ -14,7 +14,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       key: 'about',
       subLinks: [
         { label: '교육원 소개', tab: 'greetings' },
-        { label: '원장 인사말', tab: 'greetings' },
+        { label: '원장 인사말', tab: 'speech' },
         { label: '원장 프로필', tab: 'profile' },
         { label: '조직도', tab: 'organization' },
         { label: '교육원 사무국', tab: 'location' },
@@ -70,7 +70,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       setMegaMenuOpen(false);
-    }, 200); // Smooth 200ms debounce buffer to prevent accidental flickers
+    }, 200);
   };
 
   const handleSubLinkClick = (item) => {
@@ -134,7 +134,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           ))}
         </nav>
 
-        {/* Right Top Utility Buttons (KOR Selector & LOGIN/JOIN US & Admin Panel Shortcut) */}
+        {/* Right Top Utility Buttons */}
         <div className="hidden md:flex items-center gap-4 shrink-0">
           
           {/* Admin Panel Shortcut */}
@@ -185,7 +185,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
       </div>
 
-      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (SMOOTH SLIDE DOWN & FADE ANIMATION) */}
+      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP */}
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -197,10 +197,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       >
         <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 grid grid-cols-5 gap-8">
           {megaMenuItems.map((col, cIdx) => (
-            <div
-              key={cIdx}
-              className={`space-y-3 transition-all duration-500 delay-${cIdx * 75}`}
-            >
+            <div key={cIdx} className="space-y-3">
               <h4 className="text-sm font-black text-emerald-300 border-b border-emerald-900/60 pb-2 flex items-center justify-between">
                 <span>{col.title}</span>
               </h4>
