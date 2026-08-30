@@ -62,6 +62,7 @@ import {
   UserX,
   UserCheck as UserCheckIcon,
   RefreshCw,
+  FileCode,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -427,7 +428,7 @@ export default function AdminLayout({
     setCoursesList(fresh);
     switchPrimaryMenu('courses', 'course_list', null);
     triggerSavedNotice();
-    alert('🎉 업로드된 이미지 및 강의 정보가 리얼 REST API 서버 DB에 저장되었습니다.');
+    alert('🎉 업로드된 이미지 및 강의 상세 설명 정보가 리얼 REST API 서버 DB에 저장되었습니다.');
   };
 
   const handleDeleteCourse = async (id) => {
@@ -661,7 +662,7 @@ export default function AdminLayout({
                       certName: '한식 조리기능장 및 지도사 1급',
                       instructor: '안형상 이사장 / 40년 명장',
                       image: '/images/course_menu_dev.jpg',
-                      description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
+                      description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발휴 소스 및 시그니처 레시피 전수',
                     };
                     switchPrimaryMenu('courses', 'course_add', newBlank);
                   } else {
@@ -846,11 +847,11 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN 2: COURSE-FIRST ENROLLEE MANAGEMENT WORKSTATION (강의별 수강 신청자 관리자) */}
+          {/* DYNAMIC SCREEN 2: COURSE-FIRST ENROLLEE MANAGEMENT WORKSTATION */}
           {primaryMenu === 'reservations' && secondarySubTab === 'enrollees_list' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
-              {/* IF SPECIFIC COURSE SELECTED: SHOW COURSE STUDENT LIST */}
+              {/* IF SPECIFIC COURSE SELECTED */}
               {selectedCourseForEnrollees ? (
                 <div className="space-y-6 animate-fadeIn">
                   
@@ -991,7 +992,7 @@ export default function AdminLayout({
 
                 </div>
               ) : (
-                /* COURSE-FIRST GRID VIEW (12개 강의 목록 카드가 먼저 보이는 뷰) */
+                /* COURSE-FIRST GRID VIEW */
                 <div className="space-y-6 animate-fadeIn">
                   
                   {/* Header Title & Top Summary Cards */}
@@ -1451,7 +1452,7 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN 1: DEDICATED FULL-PAGE COURSE DETAIL EDITOR */}
+          {/* DYNAMIC SCREEN 1: DEDICATED FULL-PAGE COURSE DETAIL EDITOR (강의 정보 & 이미지 & 상세 설명 편집기) */}
           {selectedCourseForEdit ? (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
@@ -1487,15 +1488,16 @@ export default function AdminLayout({
               {/* Course Detail Editor Workstation Split View */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                {/* Left Form: Image File Upload & Text Detail Edit Controls */}
+                {/* Left Form: Image File Upload, Course Title & Detailed Description Editor */}
                 <form onSubmit={handleSaveCourseDetail} className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-300 shadow-lg space-y-6">
                   <div className="border-b-2 border-black pb-3">
                     <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
                       <Edit3 className="w-5 h-5 text-emerald-700" />
-                      <span>강의 정보 & 이미지 파일 업로드 편집기</span>
+                      <span>강의 정보, 내용 설명 & 이미지 편집기</span>
                     </h3>
                   </div>
 
+                  {/* IMAGE UPLOAD SECTION */}
                   <div className="space-y-4 bg-stone-50 p-5 rounded-2xl border-2 border-emerald-500/80 shadow-sm">
                     <div className="flex items-center justify-between">
                       <label className="block text-xs font-black text-black flex items-center gap-2">
@@ -1540,17 +1542,89 @@ export default function AdminLayout({
                     </div>
                   </div>
 
+                  {/* COURSE TITLE & CATEGORY */}
                   <div className="space-y-4 text-xs font-bold">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                      <div className="md:col-span-4">
+                        <label className="block text-gray-800 mb-1">카테고리 (분야)</label>
+                        <input
+                          type="text"
+                          value={selectedCourseForEdit.categoryName || selectedCourseForEdit.industry || '한식'}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, categoryName: e.target.value, industry: e.target.value })}
+                          className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-xs font-black text-black focus:outline-none focus:border-black"
+                        />
+                      </div>
+                      <div className="md:col-span-8">
+                        <label className="block text-gray-800 mb-1">강의명 (타이틀)</label>
+                        <input
+                          type="text"
+                          required
+                          value={selectedCourseForEdit.title || ''}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, title: e.target.value })}
+                          className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-black text-black focus:outline-none focus:border-black"
+                        />
+                      </div>
+                    </div>
+
+                    {/* DETAILED COURSE DESCRIPTION TEXTAREA (강의 커리큘럼 및 내용 상세 설명) */}
                     <div>
-                      <label className="block text-gray-800 mb-1">강의명 (타이틀)</label>
-                      <input
-                        type="text"
+                      <label className="block text-gray-800 mb-1 flex items-center justify-between">
+                        <span className="flex items-center gap-1.5 font-black text-black">
+                          <FileCode className="w-4 h-4 text-emerald-700" />
+                          <span>강의 상세 커리큘럼 및 교육 내용 설명 (수강생 안내문)</span>
+                        </span>
+                        <span className="text-[11px] text-emerald-700 font-mono">실시간 프론트엔드 동기화</span>
+                      </label>
+                      <textarea
+                        rows="6"
                         required
-                        value={selectedCourseForEdit.title || ''}
-                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, title: e.target.value })}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-black text-black focus:outline-none focus:border-black"
+                        placeholder="특급호텔 경력 명장이 직접 전수하는 시그니처 레시피, 발효 소스 비법 및 창업 현장 실무 커리큘럼을 입력하세요..."
+                        value={selectedCourseForEdit.description || ''}
+                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, description: e.target.value })}
+                        className="w-full p-4 border-2 border-gray-300 rounded-2xl text-xs font-medium text-black leading-relaxed focus:outline-none focus:border-black resize-none"
                       />
                     </div>
+
+                    {/* SCHEDULE & PRICE METADATA */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                      <div>
+                        <label className="block text-gray-700 mb-1">개강일 (Start Date)</label>
+                        <input
+                          type="date"
+                          value={selectedCourseForEdit.startDate || '2026-09-05'}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, startDate: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono text-black font-black"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-gray-700 mb-1">자격시험일 (Exam Date)</label>
+                        <input
+                          type="date"
+                          value={selectedCourseForEdit.examDate || '2026-09-30'}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, examDate: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono text-rose-700 font-black"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-gray-700 mb-1">수강료 (원)</label>
+                        <input
+                          type="number"
+                          value={selectedCourseForEdit.price || 4500000}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, price: Number(e.target.value) })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono text-emerald-950 font-black"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex justify-end">
+                    <button
+                      type="submit"
+                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>💾 리얼 DB에 강의 내용 저장 및 동기화</span>
+                    </button>
                   </div>
 
                 </form>
@@ -1561,7 +1635,7 @@ export default function AdminLayout({
                     <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
                       <h4 className="text-sm font-black text-black flex items-center gap-2">
                         <Eye className="w-4 h-4 text-emerald-700" />
-                        <span>수강생 화면 실시간 미리보기</span>
+                        <span>수강생 화면 실시간 미리보기 (Live Preview)</span>
                       </h4>
                     </div>
 
@@ -1572,11 +1646,31 @@ export default function AdminLayout({
                           alt="실시간 미리보기"
                           className="w-full h-full object-cover"
                         />
+                        <span className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
+                          {selectedCourseForEdit.categoryName || selectedCourseForEdit.industry || '한식'}
+                        </span>
                       </div>
 
                       <h4 className="text-base font-black text-black leading-snug">
                         {selectedCourseForEdit.title || '강의명을 입력하세요'}
                       </h4>
+
+                      {/* DETAILED DESCRIPTION PREVIEW */}
+                      <div className="bg-white p-3.5 rounded-xl border border-stone-200 space-y-1.5">
+                        <span className="text-[11px] font-black text-gray-500 block border-b border-stone-100 pb-1">
+                          📖 교육과정 커리큘럼 & 상세 설명
+                        </span>
+                        <p className="text-xs text-gray-800 font-medium leading-relaxed whitespace-pre-wrap">
+                          {selectedCourseForEdit.description || '수강생에게 제공될 특선 비법 및 커리큘럼 상세 설명이 여기에 표시됩니다.'}
+                        </p>
+                      </div>
+
+                      <div className="pt-2 border-t border-stone-200 flex items-center justify-between text-xs font-bold">
+                        <span className="text-gray-500 font-mono">📅 개강: {selectedCourseForEdit.startDate || '2026-09-05'}</span>
+                        <span className="text-emerald-900 font-black font-mono">
+                          {(selectedCourseForEdit.price || 4500000).toLocaleString()}원
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1651,6 +1745,10 @@ export default function AdminLayout({
                         <h4 className="text-base font-black text-black line-clamp-2 group-hover:text-emerald-900 transition-colors">
                           {c.title}
                         </h4>
+
+                        <p className="text-xs text-gray-600 font-medium line-clamp-2 bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                          {c.description || '특급호텔 경력 명장이 직접 전수하는 시그니처 레시피 및 창업 현장 실무 커리큘럼입니다.'}
+                        </p>
 
                         <div className="space-y-1 text-xs text-gray-600 font-bold border-t border-gray-200 pt-3">
                           <div className="flex items-center justify-between">
