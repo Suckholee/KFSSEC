@@ -1,288 +1,254 @@
 import React, { useState } from 'react';
-import { Search, User, ChevronDown, Menu, X, BookOpen, ShieldCheck } from 'lucide-react';
+import { ShieldCheck, ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
 
-export default function Header({ currentView = 'landing', onViewChange, onOpenAuth, onOpenAboutTab }) {
+export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab }) {
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [lang, setLang] = useState('KOR');
 
-  // Top Header Menu Items with Exact Matching Order
-  const navItems = [
+  const megaMenuItems = [
     {
-      id: 'about',
-      name: '교육원 소개',
-      subItems: ['원장 인사말', '기관 개요 및 설립목적', '12대 사업 방향', '조직도', '오시는 길'],
+      title: '교육원 소개',
+      key: 'about',
+      subLinks: [
+        { label: '교육원 소개', tab: 'greetings' },
+        { label: '원장 인사말', tab: 'greetings' },
+        { label: '원장 프로필', tab: 'profile' },
+        { label: '조직도', tab: 'organization' },
+        { label: '교육원 사무국', tab: 'location' },
+      ],
     },
     {
-      id: 'catalog',
-      name: '자격증 과정',
-      subItems: ['전체 교육과정', '자격증 과정 안내', '자격시험 일정', '기출문제 자료실'],
+      title: '명인사업단',
+      key: 'masters',
+      subLinks: [
+        { label: '명인 사업단', tab: 'masters' },
+        { label: '명인 요리', action: 'catalog_masters' },
+      ],
     },
     {
-      id: 'knowledge',
-      name: '지식 살롱',
-      subItems: ['창업 노하우', '외식 트렌드 리포트', '시그니처 레시피'],
+      title: '교육·자격증',
+      key: 'education',
+      hasAccent: true,
+      subLinks: [
+        { label: '교육 과정', action: 'catalog' },
+        { label: '교육 일정', action: 'schedule' },
+        { label: '자격 시험', action: 'certification' },
+        { label: '시험 일정', action: 'exam_schedule' },
+      ],
     },
     {
-      id: 'consulting',
-      name: '창업 컨설팅',
-      subItems: ['1:1 맞춤 컨설팅', '연구용역 실적', '상권 분석'],
+      title: '창업컨설팅',
+      key: 'consulting',
+      subLinks: [
+        { label: '창업 교육', action: 'package' },
+        { label: '창업 컨설팅', action: 'consulting_modal' },
+        { label: '청년 창업 상담', action: 'consulting_modal' },
+        { label: '창업 준비', action: 'startup_guide' },
+      ],
     },
     {
-      id: 'masters',
-      name: '명장·명인',
-      subItems: ['외식 요리명인', '명인 사업단 소개', '명인 칼럼'],
-    },
-    {
-      id: 'partners',
-      name: '협력 업체',
-      subItems: ['렌탈서비스', '출장서비스', 'POS & KIOSK 지원'],
-    },
-    {
-      id: 'community',
-      name: '게시판/이벤트',
-      subItems: ['공지사항', '외식 요리대회', '이벤트 안내', '1:1 문의하기'],
+      title: '커뮤니티',
+      key: 'community',
+      subLinks: [
+        { label: '공지 사항', action: 'notice' },
+        { label: '갤러리', action: 'gallery' },
+        { label: '요리대회', action: 'competition' },
+        { label: '문의하기', action: 'inquiry_modal' },
+      ],
     },
   ];
 
-  const handleNavClick = (id, subItem = null) => {
-    if (id === 'about') {
-      if (subItem === '기관 개요 및 설립목적') {
-        onOpenAboutTab('overview');
-      } else if (subItem === '12대 사업 방향') {
-        onOpenAboutTab('directions');
-      } else if (subItem === '오시는 길') {
-        onOpenAboutTab('location');
-      } else {
-        onOpenAboutTab('greetings');
-      }
-    } else if (id === 'catalog' || id === 'partners') {
+  const handleSubLinkClick = (item) => {
+    setMegaMenuOpen(false);
+    setMobileMenuOpen(false);
+
+    if (item.tab) {
+      onOpenAboutTab(item.tab);
+    } else if (item.action === 'catalog' || item.action === 'catalog_masters') {
       onViewChange('catalog');
+    } else if (item.action === 'consulting_modal' || item.action === 'inquiry_modal') {
+      onOpenAuth('consulting');
+    } else if (item.action === 'notice' || item.action === 'gallery') {
+      onViewChange('landing');
+      const el = document.getElementById('notice-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     } else {
       onViewChange('catalog');
     }
-    setActiveDropdown(null);
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-emerald-100 shadow-xs transition-all">
-      <div className="w-full px-4 sm:px-8 lg:px-10 py-3 flex items-center justify-between">
+    <header className="relative bg-white border-b-4 border-black z-50 transition-all font-sans text-gray-900">
+      
+      {/* Main Top Header Bar */}
+      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto h-20 sm:h-24 flex items-center justify-between">
         
         {/* Official Logo */}
-        <button
+        <div
           onClick={() => onViewChange('landing')}
-          className="flex items-center group text-left cursor-pointer shrink-0"
+          className="flex items-center gap-3 cursor-pointer group shrink-0"
         >
           <img
-            src="/images/official_logo.png"
+            src="/images/logo.png"
             alt="사단법인 한국외식창업교육원"
-            className="h-11 sm:h-12 w-auto object-contain group-hover:scale-102 transition-transform"
+            className="h-11 sm:h-14 w-auto object-contain group-hover:scale-103 transition-transform"
           />
-        </button>
+        </div>
 
-        {/* Center Desktop Navigation Menu */}
-        <nav className="hidden xl:flex items-center gap-7">
-          {navItems.map((item) => {
-            const isActive =
-              (item.id === 'catalog' && currentView === 'catalog') ||
-              (item.id === 'about' && currentView === 'about');
-
-            return (
-              <div
-                key={item.id}
-                className="relative py-2"
-                onMouseEnter={() => setActiveDropdown(item.id)}
-                onMouseLeave={() => setActiveDropdown(null)}
+        {/* Desktop Main Navigation Bar */}
+        <nav
+          onMouseEnter={() => setMegaMenuOpen(true)}
+          className="hidden md:flex items-center gap-8 lg:gap-12"
+        >
+          {megaMenuItems.map((menu, mIdx) => (
+            <div key={mIdx} className="relative group py-6 cursor-pointer">
+              <button
+                onClick={() => {
+                  if (menu.key === 'about') onOpenAboutTab('greetings');
+                  else onViewChange('catalog');
+                }}
+                className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 ${
+                  menu.hasAccent
+                    ? 'text-black border-b-2 border-dashed border-rose-500 pb-0.5'
+                    : 'text-gray-900 hover:text-emerald-700'
+                }`}
               >
-                <button
-                  onClick={() => handleNavClick(item.id)}
-                  className={`text-base font-bold transition-colors duration-150 flex items-center gap-1 cursor-pointer py-1 ${
-                    isActive || activeDropdown === item.id
-                      ? 'text-emerald-700 font-extrabold'
-                      : 'text-gray-800 hover:text-emerald-600'
-                  }`}
-                >
-                  <span>{item.name}</span>
-                  {item.subItems && (
-                    <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${activeDropdown === item.id ? 'rotate-180 text-emerald-600' : ''}`} />
-                  )}
-                </button>
-
-                {/* Dropdown Menu Overlay */}
-                {activeDropdown === item.id && item.subItems && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-52 bg-white rounded-2xl border border-emerald-100 shadow-xl p-2.5 space-y-1 animate-fadeIn z-50">
-                    {item.subItems.map((sub, sIdx) => (
-                      <button
-                        key={sIdx}
-                        onClick={() => handleNavClick(item.id, sub)}
-                        className="w-full text-left px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-800 transition-colors cursor-pointer"
-                      >
-                        {sub}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                <span>{menu.title}</span>
+              </button>
+            </div>
+          ))}
         </nav>
 
-        {/* Right Header Utilities */}
-        <div className="hidden sm:flex items-center gap-4 shrink-0">
+        {/* Right Top Utility Buttons (KOR Selector & LOGIN/JOIN US & Admin Panel Shortcut) */}
+        <div className="hidden md:flex items-center gap-4 shrink-0">
           
-          {/* Admin Panel Quick Access Button */}
+          {/* Admin Panel Shortcut */}
           <button
             onClick={() => onViewChange('admin')}
-            className="text-xs font-black text-emerald-900 bg-emerald-100/90 hover:bg-emerald-700 hover:text-white px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 border border-emerald-300/80 cursor-pointer shadow-xs"
-            title="관리자 통합 센터"
+            className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-500/40 text-emerald-800 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+            title="관리자 센터로 이동"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 group-hover:text-white" />
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>관리자 센터</span>
           </button>
 
-          {/* Search Button */}
-          <button
-            onClick={() => setSearchOpen(!searchOpen)}
-            className="p-2 text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-full transition-colors cursor-pointer"
-            title="교육 검색"
-          >
-            <Search className="w-5 h-5 stroke-[2.2]" />
-          </button>
+          {/* Language Selector Pill (KOR | ▼) */}
+          <div className="relative">
+            <button
+              onClick={() => setLang(lang === 'KOR' ? 'ENG' : 'KOR')}
+              className="px-4 py-1.5 bg-black text-white text-xs font-black rounded-full flex items-center gap-2 cursor-pointer shadow-md hover:bg-gray-800 transition-colors"
+            >
+              <span>{lang}</span>
+              <span className="text-gray-400">|</span>
+              <ChevronDown className="w-3.5 h-3.5 text-white" />
+            </button>
+          </div>
 
-          {/* 수강목록 */}
-          <button
-            onClick={() => handleNavClick('catalog')}
-            className="text-sm font-bold text-gray-700 hover:text-emerald-700 transition-colors cursor-pointer flex items-center gap-1.5"
-          >
-            <BookOpen className="w-4 h-4 text-emerald-600" />
-            <span>수강목록</span>
-          </button>
-
-          {/* User Profile Icon */}
+          {/* # LOGIN / JOIN US Button */}
           <button
             onClick={() => onOpenAuth('login')}
-            className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-800 flex items-center justify-center transition-colors cursor-pointer"
-            title="마이페이지 / 로그인"
+            className="group flex flex-col items-center justify-center text-xs font-black text-black hover:text-emerald-700 transition-colors cursor-pointer border-l-2 border-black pl-4"
           >
-            <User className="w-5 h-5" />
+            <div className="flex items-center gap-1 text-sm font-black">
+              <span className="text-xl font-mono text-black group-hover:text-emerald-600">#</span>
+              <span>LOGIN</span>
+            </div>
+            <span className="text-[10px] text-gray-600 font-bold tracking-widest -mt-1 group-hover:text-emerald-600">
+              JOIN US
+            </span>
           </button>
 
         </div>
 
-        {/* Mobile Menu Toggle Button */}
-        <div className="xl:hidden flex items-center gap-2">
-          <button
-            onClick={() => onViewChange('admin')}
-            className="px-2.5 py-1 text-xs font-bold text-emerald-900 bg-emerald-100 rounded-lg"
-          >
-            관리자
-          </button>
-          <button
-            onClick={() => setSearchOpen(!searchOpen)}
-            className="p-2 text-gray-600 hover:text-gray-900"
-          >
-            <Search className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-            aria-label="메뉴 열기"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
+        {/* Mobile Hamburger Toggle Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden p-2 text-black hover:text-emerald-700 rounded-xl"
+        >
+          {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+        </button>
+
       </div>
 
-      {/* Expandable Search Bar */}
-      {searchOpen && (
-        <div className="bg-emerald-50/60 border-t border-b border-emerald-100 px-4 sm:px-8 py-3 animate-fadeIn">
-          <div className="max-w-3xl mx-auto flex items-center gap-3">
-            <Search className="w-5 h-5 text-emerald-600" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="원하시는 교육과정, 업종, 자격증을 검색해보세요 (예: 카페, 한식, 비건)"
-              className="flex-1 bg-transparent border-none text-sm font-semibold text-gray-900 focus:outline-none placeholder-emerald-800/50"
-              autoFocus
-            />
-            <button
-              onClick={() => {
-                if (searchQuery.trim()) {
-                  onViewChange('catalog');
-                  setSearchOpen(false);
-                }
-              }}
-              className="px-4 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors"
-            >
-              검색
-            </button>
+      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (Matching Screenshot 2) */}
+      {megaMenuOpen && (
+        <div
+          onMouseEnter={() => setMegaMenuOpen(true)}
+          onMouseLeave={() => setMegaMenuOpen(false)}
+          className="absolute left-0 right-0 top-full bg-[#e8e8e8] border-b-2 border-gray-400 shadow-2xl z-40 transition-all duration-300 animate-fadeIn"
+        >
+          <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 grid grid-cols-5 gap-8">
+            {megaMenuItems.map((col, cIdx) => (
+              <div key={cIdx} className="space-y-3">
+                <h4 className="text-sm font-black text-gray-900 border-b border-gray-400 pb-2 flex items-center justify-between">
+                  <span>{col.title}</span>
+                </h4>
+                <ul className="space-y-2 text-xs sm:text-sm font-extrabold text-gray-800">
+                  {col.subLinks.map((sub, sIdx) => (
+                    <li key={sIdx}>
+                      <button
+                        onClick={() => handleSubLinkClick(sub)}
+                        className="hover:text-rose-600 transition-colors cursor-pointer block text-left w-full py-1 hover:translate-x-1 duration-200"
+                      >
+                        {sub.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      {/* Mobile Drawer Navigation */}
+      {/* MOBILE MENU DROPDOWN */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-gray-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-xl">
-          <nav className="flex flex-col space-y-1">
-            {navItems.map((item) => (
-              <div key={item.id} className="space-y-1">
-                <button
-                  onClick={() => {
-                    handleNavClick(item.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-bold flex items-center justify-between ${
-                    ((item.id === 'catalog' && currentView === 'catalog') || (item.id === 'about' && currentView === 'about'))
-                      ? 'bg-emerald-50 text-emerald-800 font-extrabold'
-                      : 'text-gray-800 hover:bg-gray-50'
-                  }`}
-                >
-                  <span>{item.name}</span>
-                </button>
-                {item.subItems && (
-                  <div className="pl-6 space-y-1">
-                    {item.subItems.map((sub, sIdx) => (
-                      <button
-                        key={sIdx}
-                        onClick={() => {
-                          handleNavClick(item.id, sub);
-                          setMobileMenuOpen(false);
-                        }}
-                        className="w-full text-left py-1 text-xs font-medium text-gray-500 hover:text-emerald-700"
-                      >
-                        • {sub}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </nav>
-          
-          <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
+        <div className="md:hidden bg-white border-b-4 border-black p-6 space-y-6 animate-fadeIn">
+          <div className="flex items-center justify-between pb-4 border-b border-gray-200">
             <button
               onClick={() => {
                 onViewChange('admin');
                 setMobileMenuOpen(false);
               }}
-              className="flex-1 py-2 text-center text-xs font-bold text-emerald-900 bg-emerald-100 border border-emerald-300 rounded-lg"
+              className="px-4 py-2 bg-emerald-700 text-white text-xs font-black rounded-xl"
             >
-              관리자 센터
+              🛡️ 관리자 센터
             </button>
             <button
               onClick={() => {
                 onOpenAuth('login');
                 setMobileMenuOpen(false);
               }}
-              className="flex-1 py-2 text-center text-xs font-bold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700"
+              className="px-4 py-2 bg-black text-white text-xs font-black rounded-xl"
             >
-              로그인 / 회원가입
+              # LOGIN / JOIN US
             </button>
+          </div>
+
+          <div className="space-y-6">
+            {megaMenuItems.map((col, cIdx) => (
+              <div key={cIdx} className="space-y-2">
+                <h4 className="text-sm font-black text-black border-b border-gray-300 pb-1">
+                  {col.title}
+                </h4>
+                <div className="grid grid-cols-2 gap-2 text-xs font-bold text-gray-700 pt-1">
+                  {col.subLinks.map((sub, sIdx) => (
+                    <button
+                      key={sIdx}
+                      onClick={() => handleSubLinkClick(sub)}
+                      className="text-left py-1 hover:text-rose-600"
+                    >
+                      • {sub.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
+
     </header>
   );
 }

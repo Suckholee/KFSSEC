@@ -1,140 +1,87 @@
 import React from 'react';
-import { ChevronRight, GraduationCap, Award, Building2, ChevronDown } from 'lucide-react';
+import { ChevronDown, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
   return (
-    <section className="relative overflow-hidden bg-[#062d1b] min-h-[620px] h-full flex items-center py-12 lg:py-16">
+    <section className="relative w-full bg-white text-black border-y-4 border-black overflow-hidden flex flex-col justify-center min-h-[500px] sm:min-h-[560px] lg:min-h-[620px]">
       
-      {/* 100% Full Opacity Raw Awards Photo Positioned on the Right (Completely Unobstructed) */}
-      <div className="absolute inset-0 z-0 overflow-hidden flex justify-end">
-        {/* Right Photo Container */}
-        <div className="relative w-full lg:w-[62%] h-full ml-auto">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+        
+        {/* Left Side: Chef Tossing Pan Food Graphic */}
+        <div className="w-full md:w-1/2 relative h-64 sm:h-80 lg:h-96 rounded-2xl overflow-hidden shadow-2xl bg-black border border-gray-300 group">
           <img
-            src="/images/hero_bg.jpg?v=3"
-            alt="2024 대한민국 자랑스러운 명인·장인·명장 인물대상 시상식"
-            className="w-full h-full object-cover object-center lg:object-right opacity-100"
+            src="/images/chef_tossing_food.jpg"
+            alt="외식창업 명인 셰프 조리 연출"
+            className="w-full h-full object-cover object-left group-hover:scale-103 transition-transform duration-700"
           />
-          {/* Smooth Edge Gradient Fade for Text Readability on the Left */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#062d1b] via-[#062d1b]/60 via-25% to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#062d1b]/30 via-transparent to-transparent" />
+          {/* Smooth Fade Transition Overlay into White on the Right */}
+          <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-white pointer-events-none" />
         </div>
-      </div>
 
-      <div className="relative z-10 w-full px-4 sm:px-8 lg:px-12 text-white">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        {/* Right Side: Exact Target Typography (Matching Image 1 & 2) */}
+        <div className="w-full md:w-1/2 space-y-6 md:pl-6 text-left">
           
-          {/* Main Hero Content Column (Positioned on the Left) */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-8 max-w-3xl">
-            
-            {/* Top Text & Headline */}
-            <div className="space-y-5">
-              {/* Sub-label Badge */}
-              <div className="inline-block px-4 py-1.5 bg-emerald-500/30 border border-emerald-400/40 rounded-full backdrop-blur-md">
-                <span className="text-xs sm:text-sm font-extrabold text-emerald-300 tracking-tight">
-                  사단법인 한국외식창업교육원
-                </span>
-              </div>
+          <div className="space-y-3">
+            {/* Title Row 1: 외식·창업 ·교육 ·개발 */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-black tracking-tight leading-tight">
+              <span className="border-b-4 border-dashed border-rose-600 pb-0.5 mr-2">
+                외식·창업
+              </span>
+              <span className="text-black font-black">
+                ·교육 ·개발
+              </span>
+            </h1>
 
-              {/* Main Headline (Line height & Spacing Fixed) */}
-              <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-white leading-[1.4] tracking-tight drop-shadow-lg">
-                <span>꿈꾸는 외식창업</span>
-                <span className="block mt-2 text-emerald-400 font-extrabold">
-                  아무에게나 맡기시겠습니까?
-                </span>
-              </h1>
+            {/* Title Row 2: 대한민국 외식, 창업을 위해 */}
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-800 tracking-tight pt-2">
+              대한민국 외식, 창업을 위해
+            </h2>
 
-              {/* Subtext */}
-              <div className="text-base sm:text-lg text-emerald-100/95 font-semibold leading-relaxed max-w-xl space-y-1.5 drop-shadow-md pt-1">
-                <p>오랜 현장실무경험과 실력을 갖춘 명인, 명장님께 맡겨주세요!</p>
-                <p className="text-white font-bold">성공적인 창업은 저희가 책임지겠습니다</p>
-              </div>
+            {/* Title Row 3: 교육 그리고 인재 개발 양성 */}
+            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-700 tracking-tight pt-1">
+              교육 그리고 인재 개발 양성
+            </p>
+          </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3.5 pt-2">
-                <button
-                  onClick={onExploreClick}
-                  className="px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-base rounded-2xl shadow-xl shadow-emerald-950/40 transition-all flex items-center gap-2 group hover:-translate-y-0.5 cursor-pointer"
-                >
-                  <span>교육과정 둘러보기</span>
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+          {/* Subtext description */}
+          <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed max-w-xl">
+            사단법인 한국외식창업교육원은 외식업 대표 명장진과 함께 상권분석, 레시피 개발, 매장운영, 수강생 N:N 커리큘럼 매칭 시스템을 지원합니다.
+          </p>
 
-                <button
-                  onClick={onAboutClick}
-                  className="px-7 py-3.5 bg-[#062d1b]/90 hover:bg-[#062d1b] border border-white/40 text-white font-bold text-base rounded-2xl backdrop-blur-md transition-all flex items-center gap-2 group hover:border-white/60 cursor-pointer shadow-lg"
-                >
-                  <span>교육원 소개</span>
-                  <ChevronRight className="w-5 h-5 text-emerald-300 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
+          {/* CTA Action Buttons */}
+          <div className="pt-4 flex flex-wrap items-center gap-3">
+            <button
+              onClick={onExploreClick}
+              className="px-6 py-3 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <span>전체 교육 과정 보기</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
 
-            {/* Stats Card Below the Main Buttons */}
-            <div className="pt-2">
-              <div className="w-full max-w-xl bg-[#042013]/90 border border-emerald-400/35 rounded-2xl p-5 sm:p-6 shadow-2xl text-white backdrop-blur-xl">
-                <div className="grid grid-cols-3 gap-2 sm:gap-4 divide-x divide-emerald-500/30">
-                  
-                  {/* Stat 1 */}
-                  <div className="flex flex-col items-center text-center px-1">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center mb-2.5 text-emerald-300 shadow-inner">
-                      <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.8]" />
-                    </div>
-                    <span className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">
-                      12,345명
-                    </span>
-                    <span className="text-[11px] sm:text-xs font-medium text-emerald-200/80 mt-1">
-                      누적 수강생
-                    </span>
-                  </div>
-
-                  {/* Stat 2 */}
-                  <div className="flex flex-col items-center text-center px-1">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center mb-2.5 text-emerald-300 shadow-inner">
-                      <Award className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.8]" />
-                    </div>
-                    <span className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">
-                      98.7%
-                    </span>
-                    <span className="text-[11px] sm:text-xs font-medium text-emerald-200/80 mt-1">
-                      수강생 만족도
-                    </span>
-                  </div>
-
-                  {/* Stat 3 */}
-                  <div className="flex flex-col items-center text-center px-1">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center mb-2.5 text-emerald-300 shadow-inner">
-                      <Building2 className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.8]" />
-                    </div>
-                    <span className="text-base sm:text-lg font-extrabold text-white tracking-tight leading-tight">
-                      1,200건+
-                    </span>
-                    <span className="text-[11px] sm:text-xs font-medium text-emerald-200/80 mt-1">
-                      창업 성공 사례
-                    </span>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
+            <button
+              onClick={onAboutClick}
+              className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-black font-bold text-xs sm:text-sm rounded-xl border border-gray-400 transition-all cursor-pointer"
+            >
+              <span>교육원 소개</span>
+            </button>
           </div>
 
         </div>
+
       </div>
 
-      {/* Subtle Scroll Down Indicator Bar */}
-      <button
-        onClick={onScrollNext}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 group cursor-pointer"
-        aria-label="아래로 스크롤"
-      >
-        <span className="text-[10px] sm:text-[11px] font-black tracking-[0.25em] uppercase text-emerald-300/80 group-hover:text-emerald-300 transition-colors drop-shadow-sm">
-          SCROLL DOWN
-        </span>
-        <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 group-hover:bg-emerald-500/30 group-hover:text-white transition-all shadow-md animate-bounce">
-          <ChevronDown className="w-4 h-4 stroke-[2.5]" />
-        </div>
-      </button>
+      {/* Scroll Down Indicator */}
+      {onScrollNext && (
+        <button
+          onClick={onScrollNext}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-gray-500 hover:text-black transition-colors cursor-pointer group"
+        >
+          <span className="text-[10px] font-black tracking-widest uppercase">
+            SCROLL DOWN
+          </span>
+          <ChevronDown className="w-4 h-4 animate-bounce" />
+        </button>
+      )}
 
     </section>
   );
