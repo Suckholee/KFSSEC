@@ -197,6 +197,104 @@ export default function AdminLayout({
     },
   ]);
 
+  // Student 1:1 Inquiries State connected to 128 Student Account Dataset
+  const [studentInquiries, setStudentInquiries] = useState([
+    {
+      id: 'INQ-2026-0830-01',
+      studentName: '강현우',
+      userId: 'user_student_6',
+      phone: '010-4821-3950',
+      email: 'student6@naver.com',
+      courseTitle: '외식창업 성공전략 마스터',
+      categoryName: '한식',
+      date: '2026.08.30 14:15',
+      title: '청년 외식창업 정부지원금 5천만원 연계 신청 방법 및 자격 문의',
+      content: '청년 창업 교육 지원 정책 및 소상공인 창업 지원금 연계 절차에 관해 문의드립니다. 제출해야 하는 사업계획서 및 증빙 서류 양식이 궁금합니다.',
+      status: 'completed',
+      replyDate: '2026.08.30 14:20',
+      replyContent: '안녕하세요 강현우 수강생님, 사단법인 한국외식창업교육원입니다.\n청년 외식창업 정부지원금 연계 서류는 스마트 파트너 센터 마이페이지에서 바로 다운로드 가능하며, 9월 5일 개강 당일 1:1 전담 컨설턴트가 사업계획서 검토 및 수정을 도와드립니다.',
+    },
+    {
+      id: 'INQ-2026-0830-02',
+      studentName: '윤경민',
+      userId: 'user_student_8',
+      phone: '010-7539-1420',
+      email: 'student8@gmail.com',
+      courseTitle: '메뉴개발과 원가관리',
+      categoryName: '한식',
+      date: '2026.08.30 11:30',
+      title: '소상공인 100년 전통 발효 소스 시그니처 전수 과정 수강료 문의',
+      content: '기존 매장 메뉴 리뉴얼 및 셰프 1:1 레시피 전수 과정 수강료 할인 패키지 혜택과 주말 실습 참여 가능 여부에 대해 상세 상담 부탁드립니다.',
+      status: 'pending',
+      replyDate: null,
+      replyContent: null,
+    },
+    {
+      id: 'INQ-2026-0830-03',
+      studentName: '임남궁건',
+      userId: 'user_student_10',
+      phone: '010-3841-9270',
+      email: 'student10@kakao.com',
+      courseTitle: '배달매장 운영 전략',
+      categoryName: '배달/밀키트',
+      date: '2026.08.30 09:45',
+      title: '배달 플랫폼 깃발 알고리즘 공략 및 밀키트 포장 실습 일정 문의',
+      content: '배달 전문 매장 깃발 세팅 노하우 및 HMR 밀키트 파우더 포장 패키징 실습이 몇 회 차 수업에 포함되어 있는지 궁금합니다.',
+      status: 'pending',
+      replyDate: null,
+      replyContent: null,
+    },
+    {
+      id: 'INQ-2026-0829-04',
+      studentName: '조수진',
+      userId: 'user_student_7',
+      phone: '010-9182-4510',
+      email: 'student7@daum.net',
+      courseTitle: '상권·입지 분석 실전',
+      categoryName: '한식',
+      date: '2026.08.29 16:20',
+      title: '1:1 현장 주방 동선 & 매장 설비 피드백 컨설팅 예약 문의',
+      content: '9월 매장 오픈 예정인 한식 전문점 주방 설비 및 동선 1:1 현장 컨설팅 일정을 신청하고자 합니다.',
+      status: 'completed',
+      replyDate: '2026.08.29 16:45',
+      replyContent: '조수진 대표님 안녕하세요!\n신청하신 1:1 주방 동선 컨설팅은 9월 5일 개강 당일 안형상 이사장님 직강 후 오프라인 실습실에서 진행될 예정입니다.',
+    },
+    {
+      id: 'INQ-2026-0828-05',
+      studentName: '장보미',
+      userId: 'user_student_9',
+      phone: '010-6214-8930',
+      email: 'student9@naver.com',
+      courseTitle: '파스타 & 파인다이닝 레스토랑 브런치 창업',
+      categoryName: '양식',
+      date: '2026.08.28 10:50',
+      title: '파스타 생면 제면기 및 주방 집기 거래망 문의',
+      content: '브런치 파스타 창업 과정 수강생 전용 커뮤니티에서 업소용 제면기 중고 구매 정보 및 시제품 테스트 도구를 제공받을 수 있나요?',
+      status: 'completed',
+      replyDate: '2026.08.28 11:10',
+      replyContent: '장보미 수강생님 반갑습니다.\n원장님 추천 검증된 주방 집기 거래망 및 수강생 정보 공유 커뮤니티 채팅방 링크를 문자로 발송해 드렸습니다.',
+    },
+    {
+      id: 'INQ-2026-0827-06',
+      studentName: '최성민',
+      userId: 'user_student_4',
+      phone: '010-2918-7340',
+      email: 'student4@gmail.com',
+      courseTitle: '외식업 마케팅 실전',
+      categoryName: '카페/디저트',
+      date: '2026.08.27 15:30',
+      title: '네이버 플레이스 상위 노출 & SNS 바이럴 마케팅 1:1 피드백 신청',
+      content: '카페 매장 플레이스 등록 후 블로그/인스타그램 바이럴 마케팅 광고 집행 전 수석 강사님의 1:1 사전 피드백을 수강하고 싶습니다.',
+      status: 'completed',
+      replyDate: '2026.08.27 16:00',
+      replyContent: '최성민 대표님 안녕하세요!\n정하늘 마케팅 팀장님의 1:1 피드백 세션이 9월 1일 오후 2시 온라인 Zoom 미팅으로 예약되었습니다.',
+    },
+  ]);
+
+  const [expandedStudentInquiryId, setExpandedStudentInquiryId] = useState('INQ-2026-0830-02');
+  const [inquiryFilterStatus, setInquiryFilterStatus] = useState('all');
+  const [inquirySearchKw, setInquirySearchKw] = useState('');
+
   // Selected Inquiry for Board Row Expansion Detail
   const [expandedDevInquiryId, setExpandedDevInquiryId] = useState(3);
   const [isWriteFormOpen, setIsWriteFormOpen] = useState(false);
@@ -1535,6 +1633,275 @@ export default function AdminLayout({
                       </div>
                     );
                   })}
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* DYNAMIC SCREEN: 1:1 STUDENT INQUIRIES WORKSTATION VIEW */}
+          {primaryMenu === 'inquiries' && (
+            <div className="space-y-6 animate-fadeIn max-w-6xl">
+              
+              {/* Header Title & Top Summary */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                <div>
+                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                    <MessageSquare className="w-6 h-6 text-emerald-700" />
+                    <span>1:1 수강 문의 관리자 (128명 수강생 회원 DB 연동)</span>
+                  </h3>
+                  <p className="text-xs text-gray-500 font-bold mt-0.5">
+                    회원 DB의 128명 수강생들이 남긴 수강 신청, 지원금 연계, 레시피 전수 및 1:1 컨설팅 질문에 실시간 답변하고 SMS를 발송합니다.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => alert('📥 전체 1:1 수강 문의 목록 엑셀(CSV) 다운로드가 시작됩니다.')}
+                    className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-4 h-4 text-emerald-400" />
+                    <span>📥 문의 목록 DB 다운로드</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* KPI Dashboard Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">💬 총 1:1 수강 문의</span>
+                  <span className="text-2xl font-black text-black font-mono">{studentInquiries.length}건</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">누적 수강 문의</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">⏳ 답변 대기중</span>
+                  <span className="text-2xl font-black text-amber-600 font-mono">
+                    {studentInquiries.filter((i) => i.status === 'pending').length}건
+                  </span>
+                  <span className="text-[10px] text-amber-700 font-bold block pt-1">긴급 처리 요청건</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">✓ 답변 완료</span>
+                  <span className="text-2xl font-black text-emerald-950 font-mono">
+                    {studentInquiries.filter((i) => i.status === 'completed').length}건
+                  </span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">처리 완료율 88%</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">⚡ 평균 답변 처리 시간</span>
+                  <span className="text-2xl font-black text-black font-mono">18분 이내</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">당일 처리 원칙</span>
+                </div>
+              </div>
+
+              {/* Filter Toolbar & Search Bar */}
+              <div className="bg-white p-4 rounded-2xl border-2 border-gray-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold">
+                <div className="flex items-center gap-2 flex-1 max-w-md">
+                  <Search className="w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="수강생 성명, 아이디, 강좌명, 문의 키워드 검색..."
+                    value={inquirySearchKw}
+                    onChange={(e) => setInquirySearchKw(e.target.value)}
+                    className="w-full px-3 py-2 bg-stone-50 border border-gray-300 rounded-xl text-black font-bold focus:outline-none focus:border-black"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setInquiryFilterStatus('all')}
+                    className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                      inquiryFilterStatus === 'all'
+                        ? 'bg-black text-white font-black'
+                        : 'bg-stone-100 text-gray-700 hover:bg-stone-200'
+                    }`}
+                  >
+                    전체 보기 ({studentInquiries.length})
+                  </button>
+                  <button
+                    onClick={() => setInquiryFilterStatus('pending')}
+                    className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                      inquiryFilterStatus === 'pending'
+                        ? 'bg-amber-600 text-white font-black'
+                        : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-300'
+                    }`}
+                  >
+                    ⏳ 답변 대기 ({studentInquiries.filter((i) => i.status === 'pending').length})
+                  </button>
+                  <button
+                    onClick={() => setInquiryFilterStatus('completed')}
+                    className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                      inquiryFilterStatus === 'completed'
+                        ? 'bg-emerald-700 text-white font-black'
+                        : 'bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border border-emerald-300'
+                    }`}
+                  >
+                    ✓ 답변 완료 ({studentInquiries.filter((i) => i.status === 'completed').length})
+                  </button>
+                </div>
+              </div>
+
+              {/* CLASSIC INQUIRY BOARD TABLE LIST */}
+              <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
+                <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
+                  <span>📋 1:1 수강 문의 전체 목록 (회원 DB 연동)</span>
+                  <span className="text-emerald-400 font-mono font-bold">클릭 시 상세 수강생 질문 및 답변 작성 가능</span>
+                </div>
+
+                <div className="divide-y divide-gray-200 text-xs font-bold">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-12 bg-gray-100 px-6 py-3 text-gray-600 font-black border-b border-gray-200">
+                    <div className="col-span-2">문의번호/일시</div>
+                    <div className="col-span-3">수강생 정보(성명/아이디/연락처)</div>
+                    <div className="col-span-5">수강 강좌 및 문의 제목</div>
+                    <div className="col-span-2 text-center">처리 상태</div>
+                  </div>
+
+                  {/* Table Rows */}
+                  {studentInquiries
+                    .filter((inq) => {
+                      if (inquiryFilterStatus !== 'all' && inq.status !== inquiryFilterStatus) return false;
+                      if (!inquirySearchKw.trim()) return true;
+                      const kw = inquirySearchKw.toLowerCase();
+                      return (
+                        inq.studentName.toLowerCase().includes(kw) ||
+                        inq.userId.toLowerCase().includes(kw) ||
+                        inq.phone.includes(kw) ||
+                        inq.title.toLowerCase().includes(kw) ||
+                        inq.courseTitle.toLowerCase().includes(kw)
+                      );
+                    })
+                    .map((inq) => {
+                      const isExpanded = expandedStudentInquiryId === inq.id;
+
+                      return (
+                        <div key={inq.id} className="transition-colors hover:bg-stone-50">
+                          
+                          {/* Summary Row */}
+                          <div
+                            onClick={() => setExpandedStudentInquiryId(isExpanded ? null : inq.id)}
+                            className="grid grid-cols-12 px-6 py-4 items-center cursor-pointer select-none"
+                          >
+                            <div className="col-span-2 space-y-0.5">
+                              <span className="font-mono text-black font-black block">{inq.id}</span>
+                              <span className="font-mono text-gray-400 text-[11px] block">{inq.date}</span>
+                            </div>
+
+                            <div className="col-span-3 space-y-0.5">
+                              <span className="text-sm font-black text-black block flex items-center gap-1.5">
+                                {inq.studentName}
+                                <span className="font-mono text-gray-400 font-normal text-[11px]">({inq.userId})</span>
+                              </span>
+                              <span className="font-mono text-gray-600 text-[11px] block">{inq.phone}</span>
+                            </div>
+
+                            <div className="col-span-5 space-y-1 pr-2">
+                              <span className="px-2 py-0.5 rounded bg-black text-white text-[10px] font-black inline-block">
+                                {inq.categoryName}
+                              </span>
+                              <span className="text-gray-500 font-bold text-[11px] block">강좌: {inq.courseTitle}</span>
+                              <h4 className="text-xs font-black text-black line-clamp-1">{inq.title}</h4>
+                            </div>
+
+                            <div className="col-span-2 text-center flex items-center justify-center gap-2">
+                              <span
+                                className={`px-3 py-1 rounded-full text-[10px] font-black border ${
+                                  inq.status === 'completed'
+                                    ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                    : 'bg-amber-100 text-amber-900 border-amber-300'
+                                }`}
+                              >
+                                {inq.status === 'completed' ? '✓ 답변완료' : '⏳ 답변대기'}
+                              </span>
+                              {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                            </div>
+                          </div>
+
+                          {/* EXPANDED DETAIL BOARD INQUIRY POST VIEW */}
+                          {isExpanded && (
+                            <div className="bg-stone-50 border-t border-stone-300 p-6 space-y-4 animate-fadeIn">
+                              
+                              {/* Student Question Card */}
+                              <div className="bg-white p-5 rounded-2xl border border-stone-300 shadow-xs space-y-3">
+                                <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                  <span className="text-xs font-black text-gray-800 flex items-center gap-2">
+                                    <MessageCircle className="w-4 h-4 text-emerald-700" />
+                                    <span>수강생 {inq.studentName}님의 상세 질문 내용</span>
+                                  </span>
+                                  <span className="font-mono text-gray-400 text-[11px]">{inq.date}</span>
+                                </div>
+                                <p className="text-xs text-gray-800 font-medium leading-relaxed whitespace-pre-wrap">
+                                  {inq.content}
+                                </p>
+                              </div>
+
+                              {/* Official Admin Reply Form & SMS Notification Action */}
+                              <div className="bg-emerald-50 p-5 rounded-2xl border-2 border-emerald-400 space-y-3 shadow-xs">
+                                <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
+                                  <span className="font-black text-emerald-900 flex items-center gap-2 text-sm">
+                                    <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                                    <span>사단법인 한국외식창업교육원 공식 답변 작성</span>
+                                  </span>
+                                  {inq.replyDate && (
+                                    <span className="font-mono text-xs text-emerald-800">최종 작성: {inq.replyDate}</span>
+                                  )}
+                                </div>
+
+                                <textarea
+                                  rows="4"
+                                  placeholder="수강생에게 전달할 공식 답변을 입력하세요..."
+                                  defaultValue={inq.replyContent || ''}
+                                  id={`admin-reply-textarea-${inq.id}`}
+                                  className="w-full p-3.5 bg-white border border-emerald-300 rounded-xl text-xs font-bold text-black leading-relaxed focus:outline-none focus:border-black resize-none shadow-inner"
+                                />
+
+                                <div className="flex items-center justify-between pt-1">
+                                  <span className="text-[11px] text-emerald-800 font-bold flex items-center gap-1">
+                                    <Send className="w-3.5 h-3.5" />
+                                    <span>답변 저장 시 수강생 ({inq.phone})에게 개별 SMS 문자가 자동 발송됩니다.</span>
+                                  </span>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const textEl = document.getElementById(`admin-reply-textarea-${inq.id}`);
+                                      if (textEl && textEl.value.trim()) {
+                                        const text = textEl.value.trim();
+                                        const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16).replace(/-/g, '.');
+                                        setStudentInquiries((prev) =>
+                                          prev.map((item) =>
+                                            item.id === inq.id
+                                              ? {
+                                                  ...item,
+                                                  status: 'completed',
+                                                  replyDate: nowStr,
+                                                  replyContent: text,
+                                                }
+                                              : item
+                                          )
+                                        );
+                                        alert(`🎉 [답변 저장 & SMS 발송 완료] ${inq.studentName} 수강생에게 답변 안내 문자가 발송되었습니다.`);
+                                      } else {
+                                        alert('답변 내용을 입력해 주세요.');
+                                      }
+                                    }}
+                                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                                  >
+                                    <Send className="w-4 h-4" />
+                                    <span>💬 답변 등록 및 수강생 SMS/알림 발송</span>
+                                  </button>
+                                </div>
+                              </div>
+
+                            </div>
+                          )}
+
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
 
