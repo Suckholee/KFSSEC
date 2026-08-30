@@ -5,7 +5,7 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-r from-[#FDFBF7] via-[#F8F6F0] to-[#EFEBE4] min-h-[640px] flex items-center py-10 lg:py-16 pb-20 lg:pb-16 border-b-2 border-[#E7E2D8]">
       
-      {/* Background Photo Container with Robust Dark Scrim to prevent text collision */}
+      {/* Background Photo Container with Dark Scrim for Pristine Text Readability */}
       <div className="absolute inset-0 z-0 overflow-hidden flex justify-end">
         <div className="relative w-full lg:w-[65%] h-full ml-auto">
           <img
@@ -13,7 +13,7 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
             alt="2024 대한민국 자랑스러운 명인·장인·명장 인물대상 시상식"
             className="w-full h-full object-cover object-center lg:object-right opacity-90 brightness-95"
           />
-          {/* Robust Multi-layer Scrim Overlay for Uncompromised Mobile Readability */}
+          {/* Multi-layer Gradient Fade */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#FDFBF7] via-[#FDFBF7]/95 sm:via-[#FDFBF7]/80 via-45% to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#FDFBF7] via-transparent to-transparent sm:hidden" />
         </div>
@@ -28,31 +28,31 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
             {/* Top Text & Headline */}
             <div className="space-y-4">
               {/* Sub-label Badge */}
-              <div className="inline-block px-4 py-1 bg-[#F2ECE0] border border-[#D4C5B0] rounded-full shadow-xs">
-                <span className="text-xs sm:text-sm font-bold text-[#0B3C26] tracking-tight">
-                  (사)한국외식창업교육원 · 펫창업 전문 자격 기관
+              <div className="inline-block px-4 py-1.5 bg-[#F2ECE0] border border-[#D4C5B0] rounded-full shadow-xs">
+                <span className="text-xs sm:text-sm font-extrabold text-[#0B3C26] tracking-tight">
+                  사단법인 한국외식창업교육원
                 </span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-2xl sm:text-4xl lg:text-[44px] font-black text-[#0B3C26] leading-[1.35] tracking-tight">
-                <span>꿈꾸는 외식 & 펫 창업</span>
+              <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-[#0B3C26] leading-[1.35] tracking-tight">
+                <span>꿈꾸는 외식창업</span>
                 <span className="block mt-1.5 text-[#07472A] font-extrabold">
-                  검증된 명인·장인에게 배우세요!
+                  아무에게나 맡기시겠습니까?
                 </span>
               </h1>
 
               {/* Subtext */}
-              <div className="text-sm sm:text-base text-[#4A4740] font-semibold leading-relaxed max-w-xl space-y-1 pt-1">
-                <p>외식 조리 실무부터 수제간식·행동교정 펫 창업까지 원스톱 전수!</p>
-                <p className="text-[#0B3C26] font-bold">성공적인 매장 오픈과 마케팅, 책임지고 지도합니다.</p>
+              <div className="text-base sm:text-lg text-[#4A4740] font-semibold leading-relaxed max-w-xl space-y-1 pt-1">
+                <p>오랜 현장실무경험과 실력을 갖춘 명인, 명장님께 맡겨주세요!</p>
+                <p className="text-[#0B3C26] font-extrabold">성공적인 창업은 저희가 책임지겠습니다</p>
               </div>
 
-              {/* Action Buttons with 44px+ Accessible Touch Targets */}
+              {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   onClick={onExploreClick}
-                  className="px-6 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-sm sm:text-base rounded-2xl shadow-lg shadow-[#0B3C26]/20 transition-all flex items-center gap-2 group cursor-pointer border border-[#0B3C26] min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+                  className="px-7 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-sm sm:text-base rounded-2xl shadow-lg shadow-[#0B3C26]/20 transition-all flex items-center gap-2 group cursor-pointer border border-[#0B3C26] min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
                   aria-label="교육과정 둘러보기 목록으로 이동"
                 >
                   <span>교육과정 둘러보기</span>
@@ -61,7 +61,7 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
 
                 <button
                   onClick={onAboutClick}
-                  className="px-6 py-3.5 bg-white hover:bg-[#F3ECE0] border-2 border-[#0B3C26] text-[#0B3C26] font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center gap-2 group cursor-pointer shadow-sm min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+                  className="px-7 py-3.5 bg-white hover:bg-[#F3ECE0] border-2 border-[#0B3C26] text-[#0B3C26] font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center gap-2 group cursor-pointer shadow-sm min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
                   aria-label="교육원 상세 소개 페이지로 이동"
                 >
                   <span>교육원 소개</span>
