@@ -125,7 +125,6 @@ export default function AdminLayout({
   const [newDevInquiryTitle, setNewDevInquiryTitle] = useState('');
   const [newDevInquiryDesc, setNewDevInquiryDesc] = useState('');
   const [newDevInquiryScreenshot, setNewDevInquiryScreenshot] = useState(null);
-  const [isPasteNotice, setIsPasteNotice] = useState(false);
   const devFileInputRef = useRef(null);
 
   // Hidden File Input Ref for course edit image upload
@@ -146,8 +145,6 @@ export default function AdminLayout({
     const reader = new FileReader();
     reader.onload = (ev) => {
       setNewDevInquiryScreenshot(ev.target.result);
-      setIsPasteNotice(true);
-      setTimeout(() => setIsPasteNotice(false), 3000);
     };
     reader.readAsDataURL(file);
   };
@@ -283,7 +280,7 @@ export default function AdminLayout({
     setNewDevInquiryDesc('');
     setNewDevInquiryScreenshot(null);
     triggerSavedNotice();
-    alert('🚀 개발자 소통 게시판에 클립보드 스크린샷과 문의글이 성공적으로 등록되었습니다!');
+    alert('🚀 문의가 등록되었습니다. 개발자 확인 후 답변이 등록됩니다.');
   };
 
   // Direct Computer Image File Upload Handler to Real Server API
@@ -361,8 +358,8 @@ export default function AdminLayout({
         ];
       case 'developer':
         return [
-          { id: 'dev_inquiry_list', label: '📋 개발 문의 게시판' },
-          { id: 'dev_issue_track', label: '📋 Ctrl+V 클립보드 지원' },
+          { id: 'dev_inquiry_list', label: '📋 개발 문의 목록' },
+          { id: 'dev_issue_track', label: '🐞 버그 제보' },
           { id: 'dev_feature_request', label: '✨ 신규 기능 제안' },
         ];
       case 'reservations':
@@ -396,7 +393,7 @@ export default function AdminLayout({
             <h1 className="text-lg font-black tracking-tight flex items-center gap-2">
               <span>스마트 파트너 센터</span>
               <span className="text-[11px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                CLIPBOARD CTRL+V SUPPORTED
+                DEV CHANNEL CONNECTED
               </span>
             </h1>
           </div>
@@ -411,8 +408,8 @@ export default function AdminLayout({
             }}
             className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black"
           >
-            <Clipboard className="w-4 h-4 text-emerald-200" />
-            <span>📋 Ctrl+V 캡쳐 스크린샷 붙여넣기 문의</span>
+            <Code className="w-4 h-4 text-emerald-200" />
+            <span>💻 개발 문의하기</span>
           </button>
 
           <div className="h-4 w-px bg-gray-700" />
@@ -474,10 +471,10 @@ export default function AdminLayout({
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="개발자 1:1 게시판"
+            title="개발 문의"
           >
             <Code className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">개발게시판</span>
+            <span className="text-[9px] font-black mt-0.5">개발문의</span>
           </button>
 
           <button
@@ -526,7 +523,7 @@ export default function AdminLayout({
             <h2 className="text-sm font-black text-black tracking-tight">
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
-              {primaryMenu === 'developer' && '💻 개발자 소통 게시판'}
+              {primaryMenu === 'developer' && '💻 개발 문의 채널'}
               {primaryMenu === 'reservations' && '수강신청 & 결제'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의'}
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
@@ -543,8 +540,8 @@ export default function AdminLayout({
               className="w-full py-2 px-3 bg-emerald-900 text-emerald-100 hover:bg-black rounded-xl text-xs font-black transition-all flex items-center justify-between shadow-sm cursor-pointer border border-emerald-700"
             >
               <span className="flex items-center gap-1.5">
-                <Clipboard className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Ctrl+V 스크린샷 붙여넣기 ➔</span>
+                <Code className="w-3.5 h-3.5 text-emerald-400" />
+                <span>💻 개발 문의하기 ➔</span>
               </span>
             </button>
           </div>
@@ -617,7 +614,7 @@ export default function AdminLayout({
                     <span>개발자 소통 & 1:1 개발 문의 게시판</span>
                   </h3>
                   <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    키보드 캡쳐(Ctrl+C / Cmd+C) 후 이 화면 어디서든 <strong className="text-emerald-800 font-black">Ctrl+V (Cmd+V)</strong>로 즉시 이미지 첨부가 가능합니다!
+                    버그 제보나 기능 요구사항을 게시글로 작성하면 개발자의 조치 답변이 실시간 반영됩니다.
                   </p>
                 </div>
 
@@ -627,12 +624,12 @@ export default function AdminLayout({
                     className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                   >
                     <PenTool className="w-4 h-4" />
-                    <span>{isWriteFormOpen ? '✕ 문의 작성 닫기' : '✏️ 새 개발 문의 작성 (Ctrl+V 붙여넣기 지원)'}</span>
+                    <span>{isWriteFormOpen ? '✕ 작성 취소' : '✏️ 개발 문의하기'}</span>
                   </button>
                 </div>
               </div>
 
-              {/* WRITE FORM COLLAPSIBLE PANEL WITH CLIPBOARD PASTE ZONE */}
+              {/* WRITE FORM COLLAPSIBLE PANEL */}
               {isWriteFormOpen && (
                 <form
                   onSubmit={handleSubmitDevInquiry}
@@ -642,19 +639,9 @@ export default function AdminLayout({
                   <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
                     <h4 className="text-base font-black text-black flex items-center gap-2">
                       <Send className="w-4 h-4 text-emerald-700" />
-                      <span>새 개발 문의 & 캡쳐 스크린샷 등록</span>
+                      <span>개발 문의 작성</span>
                     </h4>
-                    <span className="text-xs text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full font-black border border-emerald-300">
-                      ⚡ 클립보드 Ctrl+V 붙여넣기 대기중
-                    </span>
                   </div>
-
-                  {isPasteNotice && (
-                    <div className="bg-emerald-500 text-black font-black p-3 rounded-xl flex items-center gap-2 animate-bounce shadow-md">
-                      <Clipboard className="w-5 h-5" />
-                      <span>📋 클립보드 캡쳐 스크린샷 이미지가 성공적으로 붙여넣어졌습니다!</span>
-                    </div>
-                  )}
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                     <div className="md:col-span-3">
@@ -689,7 +676,7 @@ export default function AdminLayout({
                     <textarea
                       rows="4"
                       required
-                      placeholder="개발자에게 전달할 구체적인 증상 및 요청사항을 설명해주세요... (Ctrl+V로 스크린샷을 바로 붙여넣을 수 있습니다)"
+                      placeholder="개발자에게 전달할 요청사항을 설명해주세요... (스크린샷은 Ctrl+V로 바로 붙여넣거나 파일을 선택할 수 있습니다)"
                       value={newDevInquiryDesc}
                       onChange={(e) => setNewDevInquiryDesc(e.target.value)}
                       onPaste={handleClipboardPaste}
@@ -697,20 +684,17 @@ export default function AdminLayout({
                     />
                   </div>
 
-                  {/* SCREENSHOT FILE UPLOAD & CLIPBOARD PASTE DROP ZONE */}
+                  {/* SCREENSHOT FILE UPLOAD & CLIPBOARD PASTE AREA */}
                   <div
                     onPaste={handleClipboardPaste}
-                    className="space-y-3 bg-stone-50 p-5 rounded-2xl border-2 border-dashed border-emerald-500/80 shadow-sm relative group hover:border-emerald-600 transition-colors"
+                    className="space-y-3 bg-stone-50 p-4 rounded-2xl border border-stone-300 shadow-sm relative"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="space-y-0.5">
                         <span className="text-xs font-black text-black flex items-center gap-1.5">
-                          <Clipboard className="w-4 h-4 text-emerald-700 animate-pulse" />
-                          <span>📋 클립보드 스크린샷 붙여넣기 (Ctrl+V / Cmd+V)</span>
+                          <Paperclip className="w-4 h-4 text-emerald-700" />
+                          <span>스크린샷 이미지 첨부</span>
                         </span>
-                        <p className="text-[11px] text-gray-500 font-bold">
-                          캡쳐도구(Win+Shift+S 또는 Cmd+Shift+4)로 화면 캡쳐 후 이 창에서 <strong className="text-emerald-800">Ctrl+V</strong> 하시면 즉시 스크린샷이 붙여넣어집니다.
-                        </p>
                       </div>
 
                       <button
@@ -718,7 +702,7 @@ export default function AdminLayout({
                         onClick={() => devFileInputRef.current && devFileInputRef.current.click()}
                         className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-black transition-all cursor-pointer shrink-0"
                       >
-                        📁 내 컴퓨터 파일 선택
+                        📁 파일 선택
                       </button>
 
                       <input
@@ -731,16 +715,13 @@ export default function AdminLayout({
                     </div>
 
                     {/* Screenshot Preview */}
-                    {newDevInquiryScreenshot ? (
+                    {newDevInquiryScreenshot && (
                       <div className="relative h-44 rounded-xl overflow-hidden border-2 border-emerald-600 bg-black shadow-md">
                         <img
                           src={newDevInquiryScreenshot}
                           alt="첨부 스크린샷"
                           className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-2 left-2 bg-black/85 text-emerald-400 font-mono text-[11px] font-black px-2.5 py-1 rounded-lg border border-emerald-700 shadow-sm">
-                          ✓ 붙여넣은 스크린샷 캡쳐 이미지 적용 완료
-                        </div>
                         <button
                           type="button"
                           onClick={() => setNewDevInquiryScreenshot(null)}
@@ -749,10 +730,6 @@ export default function AdminLayout({
                         >
                           ✕
                         </button>
-                      </div>
-                    ) : (
-                      <div className="h-20 bg-white/80 border border-emerald-200 rounded-xl flex items-center justify-center text-xs font-bold text-emerald-900/70 border-dashed">
-                        📋 캡쳐 후 이 박스나 전체 화면에 Ctrl+V (Cmd+V) 해보세요!
                       </div>
                     )}
                   </div>
@@ -770,7 +747,7 @@ export default function AdminLayout({
                       className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                     >
                       <Send className="w-4 h-4" />
-                      <span>🚀 게시판에 문의글 및 스크린샷 등록</span>
+                      <span>🚀 문의글 등록하기</span>
                     </button>
                   </div>
                 </form>
@@ -779,8 +756,8 @@ export default function AdminLayout({
               {/* CLASSIC BOARD TABLE LIST (게시판 목록) */}
               <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
                 <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
-                  <span>📋 개발 문의 게시글 목록 (총 {devInquiries.length}건)</span>
-                  <span className="text-emerald-400 font-mono">Ctrl+V ClipBoard Paste Enabled</span>
+                  <span>📋 개발 문의 목록 (총 {devInquiries.length}건)</span>
+                  <span className="text-emerald-400 font-mono font-bold">클릭 시 조치 답변 확인 가능</span>
                 </div>
 
                 <div className="divide-y divide-gray-200 text-xs font-bold">
@@ -825,7 +802,7 @@ export default function AdminLayout({
                               className={`px-3 py-1 rounded-full text-[10px] font-black border ${
                                 ticket.status === 'completed'
                                   ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                                  : 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
+                                  : 'bg-amber-100 text-amber-900 border-amber-300'
                               }`}
                             >
                               {ticket.status === 'completed' ? '✓ 완료됨' : '⏳ 처리 진행중'}
