@@ -393,20 +393,23 @@ export default function AdminLayout({
             <h1 className="text-lg font-black tracking-tight flex items-center gap-2">
               <span>스마트 파트너 센터</span>
               <span className="text-[11px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                DEV CHANNEL CONNECTED
+                REAL REST API DB CONNECTED
               </span>
             </h1>
           </div>
         </div>
 
-        {/* Top Quick Links */}
+        {/* Top Quick Links - SINGLE CLEAN DEVELOPER INQUIRY BUTTON AT TOP RIGHT */}
         <div className="flex items-center gap-3 text-xs font-bold">
           <button
             onClick={() => {
               switchPrimaryMenu('developer', 'dev_inquiry_list', null);
-              setIsWriteFormOpen(true);
             }}
-            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black"
+            className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black ${
+              primaryMenu === 'developer'
+                ? 'bg-white text-black font-black'
+                : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+            }`}
           >
             <Code className="w-4 h-4 text-emerald-200" />
             <span>💻 개발 문의하기</span>
@@ -463,20 +466,6 @@ export default function AdminLayout({
             <span className="text-[9px] font-black mt-0.5">강좌DB</span>
           </button>
 
-          {/* DEVELOPER INQUIRY CHANNEL ICON */}
-          <button
-            onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'developer'
-                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
-            }`}
-            title="개발 문의"
-          >
-            <Code className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">개발문의</span>
-          </button>
-
           <button
             onClick={() => switchPrimaryMenu('reservations', 'enrollees_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
@@ -529,21 +518,6 @@ export default function AdminLayout({
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
             </h2>
             <p className="text-[10px] text-gray-500 font-bold mt-0.5">스마트 파트너 워크스페이스</p>
-          </div>
-
-          <div className="px-1">
-            <button
-              onClick={() => {
-                switchPrimaryMenu('developer', 'dev_inquiry_list', null);
-                setIsWriteFormOpen(true);
-              }}
-              className="w-full py-2 px-3 bg-emerald-900 text-emerald-100 hover:bg-black rounded-xl text-xs font-black transition-all flex items-center justify-between shadow-sm cursor-pointer border border-emerald-700"
-            >
-              <span className="flex items-center gap-1.5">
-                <Code className="w-3.5 h-3.5 text-emerald-400" />
-                <span>💻 개발 문의하기 ➔</span>
-              </span>
-            </button>
           </div>
 
           <div className="space-y-1">
