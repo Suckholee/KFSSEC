@@ -7,10 +7,6 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPost, setSelectedPost] = useState(null);
-  
-  // Admin Reply Input State
-  const [adminReplyText, setAdminReplyText] = useState('');
-  const [notifyUser, setNotifyUser] = useState(true);
 
   useEffect(() => {
     if (initialTab) {
@@ -62,55 +58,6 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
     );
     if (selectedPost && selectedPost.id === postId) {
       setSelectedPost((prev) => ({ ...prev, isPinned: !prev.isPinned }));
-    }
-  };
-
-  // Administrator Reply Submission Handler
-  const handleAdminReplySubmit = (e) => {
-    e.preventDefault();
-    if (!adminReplyText.trim()) {
-      alert('답변 내용을 입력해 주세요.');
-      return;
-    }
-
-    const replyData = {
-      author: '사단법인 한국외식창업교육원',
-      date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-      content: adminReplyText,
-    };
-
-    setPostsList((prev) =>
-      prev.map((p) =>
-        p.id === selectedPost.id
-          ? { ...p, reply: replyData, status: 'completed' }
-          : p
-      )
-    );
-
-    setSelectedPost((prev) => ({
-      ...prev,
-      reply: replyData,
-      status: 'completed',
-    }));
-
-    setAdminReplyText('');
-    alert('🎉 관리자 공식 답변이 등록되었습니다. 작성자에게 알림이 발송되었습니다.');
-  };
-
-  // Quick Preset Reply Templates for Admin
-  const applyReplyTemplate = (templateType) => {
-    if (templateType === 'government') {
-      setAdminReplyText(
-        '안녕하세요, 사단법인 한국외식창업교육원 사무국입니다.\n\n문의하신 청년 외식창업 정부 지원 정책의 경우, 만 39세 이하 예비 창업자 대상 교육 수강료 최대 80% 지원 혜택이 적용됩니다.\n자세한 서류 안내 및 지원금 신청은 본원 담당 컨설턴트(02-1234-5678)를 통해 1:1 안내받으실 수 있습니다.\n감사합니다.'
-      );
-    } else if (templateType === 'curriculum') {
-      setAdminReplyText(
-        '안녕하세요, 한국외식창업교육원 교육팀입니다.\n\n수강생 1:1 맞춤형 N:N 커리큘럼 매칭 상담 예약이 접수되었습니다.\n희망하시는 수강 일정 및 업종(한식/일식/중식/카페)에 맞춰 담당 조리 명장이 직접 맞춤 상담 전화를 드릴 예정입니다.\n감사합니다.'
-      );
-    } else if (templateType === 'recipe') {
-      setAdminReplyText(
-        '안녕하세요, 한국외식창업교육원 명인사업단입니다.\n\n소상공인 100년 전통 발효 소스 전수 과정 및 레시피 기술 이전에 관한 상세 카탈로그가 작성하신 이메일로 발송되었습니다.\n추가 문의사항은 언제든 편하게 남겨주세요.'
-      );
     }
   };
 
@@ -176,7 +123,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                 </div>
               </div>
 
-              {/* Exact Table Layout Matching Target Screenshot + Pinned & Answer Status Badges */}
+              {/* Table Layout Matching Target Screenshot + Answer Status Badges */}
               <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-white">
                 <table className="w-full text-left border-collapse text-xs sm:text-sm font-sans">
                   
@@ -288,10 +235,10 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
 
       </div>
 
-      {/* Post Detail & Administrator Reply Modal */}
+      {/* Public Post View Modal (Public View - Clean Answer Card Display) */}
       {selectedPost && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-3xl w-full border-2 border-black shadow-2xl space-y-6 animate-fadeIn max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-5 animate-fadeIn max-h-[90vh] overflow-y-auto">
             
             {/* Modal Header */}
             <div className="flex items-start justify-between border-b border-gray-200 pb-4">
@@ -314,7 +261,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                   )}
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-black text-black pt-2">
+                <h3 className="text-xl font-black text-black pt-2">
                   {selectedPost.title}
                 </h3>
                 <div className="flex items-center gap-4 text-xs font-bold text-gray-500 pt-1">
@@ -343,12 +290,12 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
               </div>
             )}
 
-            {/* Question Body */}
+            {/* Question Content */}
             <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 text-sm text-gray-800 font-medium leading-relaxed min-h-[100px] whitespace-pre-wrap">
               {selectedPost.content}
             </div>
 
-            {/* Existing Official Admin Reply View (If Answered) */}
+            {/* Official Administrator Reply Card (If Answered) */}
             {selectedPost.reply && (
               <div className="bg-emerald-50/90 rounded-2xl p-5 border-2 border-emerald-500 space-y-3 shadow-md animate-fadeIn">
                 <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
@@ -368,65 +315,13 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
               </div>
             )}
 
-            {/* ADMINISTRATOR CONVENIENCE REPLY BOX (관리자 편의 답변 작성란) */}
-            <div className="bg-stone-100 rounded-3xl p-5 border-2 border-black space-y-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm font-black text-black">
-                  <ShieldCheck className="w-5 h-5 text-emerald-700" />
-                  <span>관리자 전용 답변 작성</span>
-                </div>
-                
-                {/* 1-Click Quick Preset Reply Templates */}
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[11px] font-bold text-gray-500 hidden sm:inline">자주 쓰는 답변 템플릿:</span>
-                  <button
-                    type="button"
-                    onClick={() => applyReplyTemplate('government')}
-                    className="px-2.5 py-1 bg-white hover:bg-black hover:text-white text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition-all"
-                  >
-                    ⚡ 정부지원금
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => applyReplyTemplate('curriculum')}
-                    className="px-2.5 py-1 bg-white hover:bg-black hover:text-white text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition-all"
-                  >
-                    ⚡ 커리큘럼
-                  </button>
-                </div>
+            {/* Unanswered Notice for Public */}
+            {!selectedPost.reply && selectedPost.category === '문의' && (
+              <div className="bg-amber-50 rounded-2xl p-4 border border-amber-200 text-xs font-bold text-amber-900 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-amber-700 shrink-0" />
+                <span>담당 컨설턴트 및 교육팀에서 답변을 준비 중입니다. 빠르게 안내 도와드리겠습니다.</span>
               </div>
-
-              {/* Reply Input Textarea */}
-              <textarea
-                rows="4"
-                placeholder="수강생 문의에 대한 공식 답변을 작성해주세요..."
-                value={adminReplyText}
-                onChange={(e) => setAdminReplyText(e.target.value)}
-                className="w-full p-4 bg-white border border-gray-300 rounded-2xl text-xs sm:text-sm font-medium text-black focus:outline-none focus:border-black resize-none"
-              />
-
-              {/* SMS Notification Check & Submit Button */}
-              <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={notifyUser}
-                    onChange={(e) => setNotifyUser(e.target.checked)}
-                    className="rounded text-emerald-600 focus:ring-emerald-500"
-                  />
-                  <span>답변 등록 시 작성자 이메일/SMS 알림 자동 발송</span>
-                </label>
-
-                <button
-                  type="button"
-                  onClick={handleAdminReplySubmit}
-                  className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <Send className="w-4 h-4 text-emerald-400" />
-                  <span>공식 답변 등록</span>
-                </button>
-              </div>
-            </div>
+            )}
 
             {/* Modal Footer Controls */}
             <div className="pt-2 flex items-center justify-between border-t border-gray-200">
@@ -448,7 +343,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
 
               <button
                 onClick={() => setSelectedPost(null)}
-                className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-900 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-colors cursor-pointer"
               >
                 닫기
               </button>
