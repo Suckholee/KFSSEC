@@ -5,9 +5,10 @@ import FilterPanel from './FilterPanel';
 import CourseGrid from './CourseGrid';
 import Pagination from './Pagination';
 import CourseModal from '../CourseModal';
+import CalendarDateCoursesModal from './CalendarDateCoursesModal';
 import { fetchCourses } from '../../services/courseApi';
 import { getCoursesFromDB, getAcademicSchedulesFromDB, getExamSchedulesFromDB, fetchCoursesFromAPI } from '../../services/courseDatabase';
-import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight, Calendar, Award, GraduationCap, CheckCircle2, Clock, Search, X } from 'lucide-react';
+import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight, Calendar, Award, GraduationCap, CheckCircle2, Clock, Search, X, MousePointerClick } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
 export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
@@ -53,6 +54,27 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   const [dbCourses, setDbCourses] = useState(getCoursesFromDB());
   const [academicSchedules, setAcademicSchedules] = useState(getAcademicSchedulesFromDB());
   const [examSchedules, setExamSchedules] = useState(getExamSchedulesFromDB());
+
+  // Interactive Calendar Day Selection Modal State
+  const [selectedCalendarDayData, setSelectedCalendarDayData] = useState(null);
+
+  const handleCalendarDayClick = (dayNum) => {
+    if (!dayNum || dayNum < 1 || dayNum > 30) return;
+
+    const matchedEvents = academicSchedules.filter((s) => s.day === dayNum);
+    const matchedCourseIds = matchedEvents.map((e) => e.courseId);
+    const matchedCourses = dbCourses.filter((c) => matchedCourseIds.includes(c.id));
+
+    const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+    const dateObj = new Date(2026, 8, dayNum);
+    const weekDayStr = weekDays[dateObj.getDay()];
+
+    setSelectedCalendarDayData({
+      dayNum,
+      dateStr: `2026년 9월 ${dayNum}일 (${weekDayStr})`,
+      matchedCourses,
+    });
+  };
 
   const updateUrlParams = (newParams) => {
     const searchParams = new URLSearchParams();
@@ -337,16 +359,17 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   <div className="flex items-center justify-between border-b-2 border-black pb-3">
-                    <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
+                    <div className="inline-block bg-[#0B3C26] text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md border border-[#C5A059]">
                       2026년 9월 학사 & 개강 일정 (DB 실시간 연동)
                     </div>
-                    <span className="text-xs font-bold text-gray-500">
-                      관리자 DB에서 수정된 2026년 개강/종강 일자가 달력에 즉시 표시됩니다.
-                    </span>
+                    <div className="flex items-center gap-2 text-xs font-extrabold text-[#0B3C26] bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-300 shadow-2xs">
+                      <MousePointerClick className="w-4 h-4 text-[#D4AF37]" />
+                      <span>날짜를 클릭하면 해당 날짜 강의 목록 확인 및 즉시 수강 신청이 가능합니다.</span>
+                    </div>
                   </div>
 
                   <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100 w-full">
-                    <div className="grid grid-cols-7 bg-gray-700 text-white font-black text-center py-3 text-sm">
+                    <div className="grid grid-cols-7 bg-[#0B3C26] text-white font-black text-center py-3 text-sm border-b border-[#C5A059]">
                       <span className="text-rose-400">일</span>
                       <span>월</span>
                       <span>화</span>
@@ -365,14 +388,29 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                         const matchedEvents = academicSchedules.filter((s) => s.day === dayNum);
 
                         return (
-                          <div key={idx} className="min-h-[100px] p-2 flex flex-col justify-between hover:bg-emerald-50/50 transition-colors">
-                            <span className={`font-black ${isToday ? 'bg-emerald-700 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
-                              {isValidDay ? dayNum : ''}
-                            </span>
+                          <div
+                            key={idx}
+                            onClick={() => isValidDay && handleCalendarDayClick(dayNum)}
+                            className={`min-h-[105px] p-2 flex flex-col justify-between transition-all ${
+                              isValidDay
+                                ? 'hover:bg-emerald-100/70 hover:shadow-inner cursor-pointer group'
+                                : 'bg-gray-50/50 opacity-40 cursor-default'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className={`font-black ${isToday ? 'bg-[#0B3C26] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-xs' : ''}`}>
+                                {isValidDay ? dayNum : ''}
+                              </span>
+                              {isValidDay && matchedEvents.length > 0 && (
+                                <span className="text-[9px] font-black text-emerald-800 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  수강신청 ➔
+                                </span>
+                              )}
+                            </div>
 
                             <div className="space-y-1 mt-1">
                               {matchedEvents.map((ev, i) => (
-                                <div key={i} className={`p-1 rounded text-[10px] font-black leading-tight border ${ev.color}`}>
+                                <div key={i} className={`p-1 rounded text-[10px] font-black leading-tight border transition-transform group-hover:scale-102 ${ev.color}`}>
                                   {ev.title}
                                 </div>
                               ))}
@@ -461,14 +499,29 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                         const matchedExams = examSchedules.filter((e) => e.day === dayNum);
 
                         return (
-                          <div key={idx} className="min-h-[100px] p-2 flex flex-col justify-between hover:bg-rose-50/50 transition-colors">
-                            <span className={`font-black ${matchedExams.length > 0 ? 'bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
-                              {isValidDay ? dayNum : ''}
-                            </span>
+                          <div
+                            key={idx}
+                            onClick={() => isValidDay && handleCalendarDayClick(dayNum)}
+                            className={`min-h-[105px] p-2 flex flex-col justify-between transition-all ${
+                              isValidDay
+                                ? 'hover:bg-rose-100/70 hover:shadow-inner cursor-pointer group'
+                                : 'bg-gray-50/50 opacity-40 cursor-default'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className={`font-black ${matchedExams.length > 0 ? 'bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-xs' : ''}`}>
+                                {isValidDay ? dayNum : ''}
+                              </span>
+                              {isValidDay && matchedExams.length > 0 && (
+                                <span className="text-[9px] font-black text-rose-800 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  일정확인 ➔
+                                </span>
+                              )}
+                            </div>
 
                             <div className="space-y-1 mt-1">
                               {matchedExams.map((ex, i) => (
-                                <div key={i} className={`p-1 rounded text-[10px] font-black leading-tight border ${ex.color}`}>
+                                <div key={i} className={`p-1 rounded text-[10px] font-black leading-tight border transition-transform group-hover:scale-102 ${ex.color}`}>
                                   {ex.title}
                                 </div>
                               ))}
@@ -493,6 +546,19 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
         <CourseModal
           course={modalCourse}
           onClose={() => setModalCourse(null)}
+        />
+      )}
+
+      {/* Selected Calendar Day Courses & Registration Modal */}
+      {selectedCalendarDayData && (
+        <CalendarDateCoursesModal
+          isOpen={Boolean(selectedCalendarDayData)}
+          dayNum={selectedCalendarDayData.dayNum}
+          dateStr={selectedCalendarDayData.dateStr}
+          matchedCourses={selectedCalendarDayData.matchedCourses}
+          allCourses={dbCourses}
+          onClose={() => setSelectedCalendarDayData(null)}
+          onSelectCourseForModal={(course) => setModalCourse(course)}
         />
       )}
     </div>
