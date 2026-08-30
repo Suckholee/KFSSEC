@@ -2,6 +2,23 @@ import React, { useState } from 'react';
 import { Youtube, Play, ExternalLink, ChevronDown } from 'lucide-react';
 import YouTubeModal from './YouTubeModal';
 
+function YouTubeCardImage({ src, alt, fallbackSrc }) {
+  const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
+
+  return (
+    <img
+      src={imgSrc}
+      alt={alt}
+      onError={() => {
+        if (imgSrc !== fallbackSrc) {
+          setImgSrc(fallbackSrc);
+        }
+      }}
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 brightness-95"
+    />
+  );
+}
+
 export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
@@ -13,7 +30,8 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
       channel: '한국외식창업교육원 공식 채널',
       categoryBadge: '공식 채널 영상',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-      thumbnail: '/images/yt_thumb_1.jpg',
+      thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/hqdefault.jpg',
+      fallbackThumbnail: '/images/yt_thumb_1.jpg',
     },
     {
       id: 'E_WgebIP_SY',
@@ -22,7 +40,8 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
       channel: '아시아창의방송 (actv) 언론 보도',
       categoryBadge: '언론 보도 영상',
       badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30',
-      thumbnail: '/images/yt_thumb_2.jpg',
+      thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/hqdefault.jpg',
+      fallbackThumbnail: '/images/yt_thumb_2.jpg',
     },
   ];
 
@@ -38,7 +57,8 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
     channel: v.channel || '한국외식창업교육원 공식 채널',
     categoryBadge: v.categoryBadge || v.category || '공식 영상',
     badgeColor: v.badgeColor || 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-    thumbnail: v.thumbnail || (idx === 0 ? '/images/yt_thumb_1.jpg' : '/images/yt_thumb_2.jpg'),
+    thumbnail: v.thumbnail || `https://img.youtube.com/vi/${v.videoId || v.id}/hqdefault.jpg`,
+    fallbackThumbnail: idx === 0 ? '/images/yt_thumb_1.jpg' : '/images/yt_thumb_2.jpg',
   }));
 
   const handleKeyPress = (e, video) => {
@@ -93,15 +113,11 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
               className="bg-[#111C16] rounded-3xl border border-emerald-500/20 overflow-hidden shadow-lg hover:shadow-2xl hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
             >
               {/* YouTube Thumbnail Box with Large Red Play Button */}
-              <div className="relative aspect-video w-full bg-black overflow-hidden">
-                <img
+              <div className="relative aspect-video w-full bg-[#0A1410] overflow-hidden">
+                <YouTubeCardImage
                   src={video.thumbnail}
                   alt={video.title}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/images/yt_thumb_1.jpg';
-                  }}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 brightness-95"
+                  fallbackSrc={video.fallbackThumbnail}
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
 
