@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ShieldCheck, ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
 
 export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab }) {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState('KOR');
+  
+  const timeoutRef = useRef(null);
 
   const megaMenuItems = [
     {
@@ -59,7 +61,20 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
     },
   ];
 
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setMegaMenuOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setMegaMenuOpen(false);
+    }, 200); // Smooth 200ms debounce buffer to prevent accidental flickers
+  };
+
   const handleSubLinkClick = (item) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setMegaMenuOpen(false);
     setMobileMenuOpen(false);
 
@@ -96,7 +111,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
         {/* Desktop Main Navigation Bar */}
         <nav
-          onMouseEnter={() => setMegaMenuOpen(true)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           className="hidden md:flex items-center gap-8 lg:gap-12"
         >
           {megaMenuItems.map((menu, mIdx) => (
@@ -169,36 +185,41 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
       </div>
 
-      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (DARK THEME) */}
-      {megaMenuOpen && (
-        <div
-          onMouseEnter={() => setMegaMenuOpen(true)}
-          onMouseLeave={() => setMegaMenuOpen(false)}
-          className="absolute left-0 right-0 top-full bg-[#0e1c16] border-b border-emerald-500/30 shadow-2xl z-40 transition-all duration-300 animate-fadeIn"
-        >
-          <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 grid grid-cols-5 gap-8">
-            {megaMenuItems.map((col, cIdx) => (
-              <div key={cIdx} className="space-y-3">
-                <h4 className="text-sm font-black text-emerald-300 border-b border-emerald-900/60 pb-2 flex items-center justify-between">
-                  <span>{col.title}</span>
-                </h4>
-                <ul className="space-y-2 text-xs sm:text-sm font-extrabold text-gray-200">
-                  {col.subLinks.map((sub, sIdx) => (
-                    <li key={sIdx}>
-                      <button
-                        onClick={() => handleSubLinkClick(sub)}
-                        className="hover:text-emerald-300 transition-colors cursor-pointer block text-left w-full py-1 hover:translate-x-1 duration-200"
-                      >
-                        {sub.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (SMOOTH SLIDE DOWN & FADE ANIMATION) */}
+      <div
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={`absolute left-0 right-0 top-full bg-[#0e1c16]/98 backdrop-blur-xl border-b border-emerald-500/30 shadow-2xl z-40 overflow-hidden transition-all duration-300 ease-out origin-top ${
+          megaMenuOpen
+            ? 'max-h-[380px] opacity-100 translate-y-0 pointer-events-auto'
+            : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 grid grid-cols-5 gap-8">
+          {megaMenuItems.map((col, cIdx) => (
+            <div
+              key={cIdx}
+              className={`space-y-3 transition-all duration-500 delay-${cIdx * 75}`}
+            >
+              <h4 className="text-sm font-black text-emerald-300 border-b border-emerald-900/60 pb-2 flex items-center justify-between">
+                <span>{col.title}</span>
+              </h4>
+              <ul className="space-y-2 text-xs sm:text-sm font-extrabold text-gray-200">
+                {col.subLinks.map((sub, sIdx) => (
+                  <li key={sIdx}>
+                    <button
+                      onClick={() => handleSubLinkClick(sub)}
+                      className="hover:text-emerald-300 text-gray-300 hover:translate-x-1.5 transition-all duration-200 cursor-pointer block text-left w-full py-1"
+                    >
+                      {sub.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
 
       {/* MOBILE MENU DROPDOWN */}
       {mobileMenuOpen && (
