@@ -26,6 +26,7 @@ import {
   Maximize2,
   Layers,
   Edit3,
+  Home,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -237,12 +238,12 @@ export default function AdminLayout({
               <h1 className="text-xl font-black text-black tracking-tight">
                 한국외식창업교육원 관리자 센터
               </h1>
-              <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-emerald-700" /> WHITE LIVE ADMIN
+              <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-emerald-700" /> 홈화면 실시간 편집
               </span>
             </div>
             <p className="text-xs text-gray-500 font-medium">
-              실제 홈페이지 UI를 보면서 직접 클릭하여 편집하는 시각적 페이지 관리자
+              홈페이지 실제 화면을 직접 보면서 클릭하여 수정하는 관리자 페이지
             </p>
           </div>
         </div>
@@ -279,8 +280,8 @@ export default function AdminLayout({
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
-            <Monitor className="w-4 h-4 text-emerald-400" />
-            <span>🖥️ WYSIWYG 라이브 에디터</span>
+            <Home className="w-4 h-4 text-emerald-400" />
+            <span>🏠 홈화면 관리</span>
           </button>
 
           <button
@@ -303,7 +304,7 @@ export default function AdminLayout({
           </button>
 
           <div className="pt-4 border-t border-gray-200 space-y-2">
-            <span className="text-[11px] font-bold text-gray-400 uppercase px-2">빠른 양식 편집</span>
+            <span className="text-[11px] font-bold text-gray-400 uppercase px-2">빠른 항목 수정</span>
             
             <button
               onClick={() => {
@@ -343,7 +344,7 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* MODE 1: VISUAL WYSIWYG LIVE CANVAS EDITOR (WHITE THEME) */}
+          {/* MODE 1: HOME PAGE MANAGEMENT (REAL SITE COPIED FOR EDITING) */}
           {activeTab === 'visual_editor' && (
             <div className="space-y-6 animate-fadeIn w-full">
               
@@ -351,7 +352,7 @@ export default function AdminLayout({
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-emerald-600 animate-ping" />
                   <span className="text-sm font-black text-black">
-                    라이브 시각적 프레임워크 (홈페이지 실제 화면에서 직접 요소 편집)
+                    홈화면 관리 (홈페이지 실제 화면에서 직접 요소 클릭 및 수정)
                   </span>
                 </div>
                 <span className="text-xs font-bold text-gray-600">
@@ -423,7 +424,7 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* MODE 2: INQUIRIES & BOARD MANAGEMENT (WHITE THEME) */}
+          {/* MODE 2: INQUIRIES & BOARD MANAGEMENT */}
           {activeTab === 'inquiries' && (
             <div className="space-y-8 animate-fadeIn max-w-6xl">
               
@@ -633,7 +634,7 @@ export default function AdminLayout({
 
       </div>
 
-      {/* EDITING DRAWER / MODAL FOR YOUTUBE (WHITE THEME) */}
+      {/* EDITING DRAWER / MODAL FOR YOUTUBE */}
       {editingSection === 'youtube' && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-6 animate-fadeIn max-h-[90vh] overflow-y-auto text-gray-900">
@@ -714,7 +715,7 @@ export default function AdminLayout({
         </div>
       )}
 
-      {/* EDITING DRAWER / MODAL FOR BANNER (WHITE THEME) */}
+      {/* EDITING DRAWER / MODAL FOR BANNER */}
       {editingSection === 'banner' && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-black shadow-2xl space-y-6 animate-fadeIn text-gray-900">
