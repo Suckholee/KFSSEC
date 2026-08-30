@@ -39,6 +39,9 @@ import {
   ChevronLeft,
   Search,
   Filter,
+  Image,
+  ArrowLeft,
+  Check,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -59,14 +62,25 @@ export default function AdminLayout({
 }) {
   // Primary Navigation Group: 'home', 'courses', 'reservations', 'inquiries', 'reviews', 'analytics'
   const [primaryMenu, setPrimaryMenu] = useState('courses');
-  const [secondarySubTab, setSecondarySubTab] = useState('course_list'); // Sub-tab within active category
+  const [secondarySubTab, setSecondarySubTab] = useState('course_list');
   const [isSavedNotice, setIsSavedNotice] = useState(false);
   const [editingSection, setEditingSection] = useState(null);
 
   // Courses Database State
   const [coursesList, setCoursesList] = useState(getCoursesFromDB());
-  const [editingCourse, setEditingCourse] = useState(null);
-  const [showCourseFormModal, setShowCourseFormModal] = useState(false);
+  
+  // Dedicated Full-Page Course Editor State
+  const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(null);
+
+  // Image Presets for Quick Selection
+  const imagePresets = [
+    { label: '조리 실습 / 메뉴 개발', url: '/images/course_menu_dev.jpg' },
+    { label: '특급 호텔 레스토랑', url: '/images/course_restaurant.jpg' },
+    { label: '배달 / 밀키트 포장', url: '/images/course_delivery.jpg' },
+    { label: '카페 / 바리스타 / 디저트', url: '/images/course_cafe.jpg' },
+    { label: '총회 세미나 현장', url: '/images/dir_1.jpg' },
+    { label: '기업 설명회 현장', url: '/images/dir_2.jpg' },
+  ];
 
   // SmartPlace Student Reviews State
   const [reviewsList, setReviewsList] = useState([
@@ -88,25 +102,9 @@ export default function AdminLayout({
       content: '활어 오로시 칼질 기본기부터 오마카세 메뉴 구성까지 실습 위주라 당장 매장에 적용할 수 있었습니다.',
       reply: null,
     },
-    {
-      id: 3,
-      courseTitle: '배달전문점 & 밀키트 HMR 식품 제조 실무',
-      studentName: '박OO 수강생',
-      rating: 5,
-      date: '2024.02.20',
-      content: '정부 지원금 연계 절차와 배달 플랫폼 상권 분석을 한 번에 해결할 수 있어서 큰 도움이 되었습니다.',
-      reply: null,
-    },
   ]);
 
   const [reviewReplyText, setReviewReplyText] = useState({});
-
-  // Student Reservations & Enrollees State
-  const [enrollees, setEnrollees] = useState([
-    { id: 'e1', name: '박OO', phone: '010-1234-5678', course: '전통 한식 조리 마스터', date: '2024.02.29', status: '결제완료', amount: '4,500,000원' },
-    { id: 'e2', name: '최OO', phone: '010-9876-5432', course: '일식 횟집 & 초밥 오마카세', date: '2024.02.28', status: '상담대기', amount: '5,200,000원' },
-    { id: 'e3', name: '정OO', phone: '010-5555-7777', course: '배달전문점 & 밀키트 HMR', date: '2024.02.27', status: '결제완료', amount: '3,200,000원' },
-  ]);
 
   // Default Inquiries list
   const defaultInquiries = [
@@ -133,9 +131,6 @@ export default function AdminLayout({
   ];
 
   const [adminInquiries, setAdminInquiries] = useState(defaultInquiries);
-  const [selectedInquiry, setSelectedInquiry] = useState(null);
-  const [inquiryReplyText, setInquiryReplyText] = useState('');
-  const [inquiryFilter, setInquiryFilter] = useState('all');
 
   // YouTube & Banner State
   const [ytTitle, setYtTitle] = useState(siteData.youtube.title);
@@ -144,21 +139,27 @@ export default function AdminLayout({
   const [bannerActive, setBannerActive] = useState(siteData.banner.active);
   const [bannerTitle, setBannerTitle] = useState(siteData.banner.title);
 
-  // Save Course DB
-  const handleSaveCourseForm = (e) => {
+  // Dedicated Course Page Save Handler
+  const handleSaveCourseDetail = (e) => {
     e.preventDefault();
+    if (!selectedCourseForEdit.title || !selectedCourseForEdit.startDate) {
+      alert('교육과정명과 개강일을 입력해주세요.');
+      return;
+    }
+
     let updated;
-    if (editingCourse.id) {
-      updated = coursesList.map((c) => (c.id === editingCourse.id ? editingCourse : c));
+    if (selectedCourseForEdit.id) {
+      updated = coursesList.map((c) => (c.id === selectedCourseForEdit.id ? selectedCourseForEdit : c));
     } else {
-      const newCourse = { ...editingCourse, id: `c_${Date.now()}` };
+      const newCourse = { ...selectedCourseForEdit, id: `c_${Date.now()}` };
       updated = [newCourse, ...coursesList];
     }
+
     setCoursesList(updated);
     saveCoursesToDB(updated);
-    setShowCourseFormModal(false);
-    setEditingCourse(null);
+    setSelectedCourseForEdit(null);
     triggerSavedNotice();
+    alert('🎉 강의 이미지 및 상세 정보가 성공적으로 반영되었습니다.');
   };
 
   const handleDeleteCourse = (id) => {
@@ -166,6 +167,7 @@ export default function AdminLayout({
       const updated = coursesList.filter((c) => c.id !== id);
       setCoursesList(updated);
       saveCoursesToDB(updated);
+      setSelectedCourseForEdit(null);
       triggerSavedNotice();
     }
   };
@@ -187,7 +189,7 @@ export default function AdminLayout({
     setTimeout(() => setIsSavedNotice(false), 3000);
   };
 
-  // Sub-menu definitions based on active primary icon (Kakao Business 2-Level Navigation)
+  // Sub-menu definitions
   const getSecondaryMenus = () => {
     switch (primaryMenu) {
       case 'home':
@@ -207,7 +209,6 @@ export default function AdminLayout({
         return [
           { id: 'enrollees_list', label: '수강 신청자 명단' },
           { id: 'payment_status', label: '수강료 결제 현황' },
-          { id: 'consulting_requests', label: '1:1 컨설팅 신청' },
         ];
       case 'inquiries':
         return [
@@ -217,12 +218,10 @@ export default function AdminLayout({
       case 'reviews':
         return [
           { id: 'review_list', label: '수강 후기 & 별점 관리' },
-          { id: 'review_reply', label: '후기 답글 작성' },
         ];
       case 'analytics':
         return [
           { id: 'stats_overview', label: '방문자 & 신청 통계' },
-          { id: 'marketing_hub', label: '마케팅 & 문자 발송' },
         ];
       default:
         return [];
@@ -248,7 +247,7 @@ export default function AdminLayout({
           </div>
         </div>
 
-        {/* Top Quick Links & User Controls */}
+        {/* Top Quick Links */}
         <div className="flex items-center gap-4 text-xs font-bold">
           <span className="text-gray-400">사단법인 한국외식창업교육원 | 최고관리자</span>
           <div className="h-4 w-px bg-gray-700" />
@@ -278,6 +277,7 @@ export default function AdminLayout({
             onClick={() => {
               setPrimaryMenu('home');
               setSecondarySubTab('visual_editor');
+              setSelectedCourseForEdit(null);
             }}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'home'
@@ -294,6 +294,7 @@ export default function AdminLayout({
             onClick={() => {
               setPrimaryMenu('courses');
               setSecondarySubTab('course_list');
+              setSelectedCourseForEdit(null);
             }}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'courses'
@@ -310,8 +311,9 @@ export default function AdminLayout({
             onClick={() => {
               setPrimaryMenu('reservations');
               setSecondarySubTab('enrollees_list');
+              setSelectedCourseForEdit(null);
             }}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer relative ${
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'reservations'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
@@ -326,6 +328,7 @@ export default function AdminLayout({
             onClick={() => {
               setPrimaryMenu('inquiries');
               setSecondarySubTab('inquiry_all');
+              setSelectedCourseForEdit(null);
             }}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer relative ${
               primaryMenu === 'inquiries'
@@ -336,15 +339,13 @@ export default function AdminLayout({
           >
             <MessageSquare className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">1:1문의</span>
-            {adminInquiries.filter((i) => i.status === 'pending').length > 0 && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping" />
-            )}
           </button>
 
           <button
             onClick={() => {
               setPrimaryMenu('reviews');
               setSecondarySubTab('review_list');
+              setSelectedCourseForEdit(null);
             }}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'reviews'
@@ -355,22 +356,6 @@ export default function AdminLayout({
           >
             <Star className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">후기</span>
-          </button>
-
-          <button
-            onClick={() => {
-              setPrimaryMenu('analytics');
-              setSecondarySubTab('stats_overview');
-            }}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'analytics'
-                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
-            }`}
-            title="통계/마케팅"
-          >
-            <TrendingUp className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">통계</span>
           </button>
         </nav>
 
@@ -383,7 +368,6 @@ export default function AdminLayout({
               {primaryMenu === 'reservations' && '수강신청 & 결제'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의'}
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
-              {primaryMenu === 'analytics' && '통계 & 마케팅'}
             </h2>
             <p className="text-[10px] text-gray-500 font-bold mt-0.5">스마트 파트너 워크스페이스</p>
           </div>
@@ -392,101 +376,10 @@ export default function AdminLayout({
             {getSecondaryMenus().map((menu) => (
               <button
                 key={menu.id}
-                onClick={() => setSecondarySubTab(menu.id)}
-                className={`w-full text-left py-2.5 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-between cursor-pointer ${
-                  secondarySubTab === menu.id
-                    ? 'bg-emerald-50 text-emerald-950 border border-emerald-300 font-black shadow-xs'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                <span>{menu.label}</span>
-                {secondarySubTab === menu.id && <ChevronRight className="w-3.5 h-3.5 text-emerald-700" />}
-              </button>
-            ))}
-          </div>
-        </aside>
-
-        {/* MAIN WORKSTATION CANVAS AREA (Naver SmartPlace Dashboard Layout) */}
-        <main className="flex-1 p-6 overflow-y-auto bg-[#f4f6f8] space-y-6">
-          
-          {/* SmartPlace Summary Stats Banner */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white p-5 rounded-2xl border border-gray-300 shadow-xs flex items-center justify-between">
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-gray-500">누적 수강 신청자</span>
-                <div className="text-2xl font-black text-black">1,240 명</div>
-                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  전월 대비 +15% 증가
-                </span>
-              </div>
-              <div className="p-3 bg-emerald-100 rounded-2xl text-emerald-800">
-                <Users className="w-6 h-6" />
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-gray-300 shadow-xs flex items-center justify-between">
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-gray-500">평균 수강 만족도</span>
-                <div className="text-2xl font-black text-black flex items-center gap-1">
-                  <span>4.95</span>
-                  <span className="text-xs text-amber-500 font-bold">★ (348건)</span>
-                </div>
-                <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-                  최고 등급 만족도
-                </span>
-              </div>
-              <div className="p-3 bg-amber-100 rounded-2xl text-amber-800">
-                <Star className="w-6 h-6" />
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-gray-300 shadow-xs flex items-center justify-between">
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-gray-500">이번 달 개강 과목</span>
-                <div className="text-2xl font-black text-black">{coursesList.length} 개 강좌</div>
-                <span className="text-[10px] font-bold text-sky-800 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200">
-                  정원 마감 임박
-                </span>
-              </div>
-              <div className="p-3 bg-sky-100 rounded-2xl text-sky-800">
-                <BookOpen className="w-6 h-6" />
-              </div>
-            </div>
-
-            <div className="bg-white p-5 rounded-2xl border border-gray-300 shadow-xs flex items-center justify-between">
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-gray-500">미답변 1:1 문의</span>
-                <div className="text-2xl font-black text-black">
-                  {adminInquiries.filter((i) => i.status === 'pending').length} 건
-                </div>
-                <span className="text-[10px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
-                  빠른 답변 필요
-                </span>
-              </div>
-              <div className="p-3 bg-rose-100 rounded-2xl text-rose-800">
-                <MessageSquare className="w-6 h-6" />
-              </div>
-            </div>
-          </div>
-
-          {/* DYNAMIC CONTENT PANELS */}
-          {/* CATEGORY 1: COURSES DATABASE CONTROL PANEL */}
-          {primaryMenu === 'courses' && (
-            <div className="space-y-6 animate-fadeIn">
-              
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
-                <div>
-                  <h3 className="text-xl font-black text-black tracking-tight">
-                    네이버 스마트플레이스 스타일 교육과정 DB 관리자
-                  </h3>
-                  <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    등록된 강좌의 개강일, 수강료, 모집 상태를 시각적으로 컨트롤하고 학사 일정에 즉시 반영합니다.
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setEditingCourse({
+                onClick={() => {
+                  setSecondarySubTab(menu.id);
+                  if (menu.id === 'course_add') {
+                    setSelectedCourseForEdit({
                       title: '',
                       category: 'hansik',
                       categoryName: '한식',
@@ -502,154 +395,449 @@ export default function AdminLayout({
                       certName: '한식 조리기능장 및 지도사 1급',
                       instructor: '안형상 이사장 / 40년 명장',
                       image: '/images/course_menu_dev.jpg',
-                      description: '',
+                      description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
                     });
-                    setShowCourseFormModal(true);
-                  }}
-                  className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 text-emerald-400" />
-                  <span>➕ 신규 강좌 DB 등록</span>
-                </button>
-              </div>
+                  } else {
+                    setSelectedCourseForEdit(null);
+                  }
+                }}
+                className={`w-full text-left py-2.5 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-between cursor-pointer ${
+                  secondarySubTab === menu.id
+                    ? 'bg-emerald-50 text-emerald-950 border border-emerald-300 font-black shadow-xs'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span>{menu.label}</span>
+                {secondarySubTab === menu.id && <ChevronRight className="w-3.5 h-3.5 text-emerald-700" />}
+              </button>
+            ))}
+          </div>
+        </aside>
 
-              {/* Visual SmartPlace Course Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {coursesList.map((c) => (
-                  <div
-                    key={c.id}
-                    className="bg-white rounded-3xl p-5 border-2 border-gray-300 shadow-md space-y-4 hover:border-black transition-all flex flex-col justify-between"
-                  >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
-                          {c.categoryName || c.industry}
-                        </span>
-                        <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                          모집중 (정원 15명)
-                        </span>
-                      </div>
-
-                      <h4 className="text-base font-black text-black line-clamp-2">
-                        {c.title}
-                      </h4>
-
-                      <div className="space-y-1 text-xs text-gray-600 font-bold border-t border-gray-200 pt-3">
-                        <div className="flex items-center justify-between">
-                          <span>📅 개강일:</span>
-                          <span className="font-mono text-black">{c.startDate}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span>📝 자격시험일:</span>
-                          <span className="font-mono text-rose-700">{c.examDate || '미정'}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span>💰 정가 수강료:</span>
-                          <span className="font-mono text-emerald-900 font-black">{c.price.toLocaleString()}원</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="pt-3 border-t border-gray-200 flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => {
-                          setEditingCourse(c);
-                          setShowCourseFormModal(true);
-                        }}
-                        className="px-3 py-1.5 bg-gray-100 hover:bg-black hover:text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => handleDeleteCourse(c.id)}
-                        className="px-3 py-1.5 bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
+        {/* MAIN WORKSTATION CANVAS AREA */}
+        <main className="flex-1 p-6 overflow-y-auto bg-[#f4f6f8] space-y-6">
+          
+          {/* Notification Alert for Saved Changes */}
+          {isSavedNotice && (
+            <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
+              <CheckCircle className="w-5 h-5 text-emerald-700" />
+              <span className="text-sm font-black">
+                강의 데이터 및 변경 사항이 시스템에 저장되었습니다.
+              </span>
             </div>
           )}
 
-          {/* CATEGORY 2: STUDENT REVIEWS & RATING MANAGEMENT PANEL (Naver SmartPlace Review Style) */}
-          {primaryMenu === 'reviews' && (
-            <div className="space-y-6 animate-fadeIn max-w-5xl">
-              <div className="border-b-2 border-black pb-3">
-                <h3 className="text-xl font-black text-black tracking-tight">
-                  수강생 방문후기 & 별점 관리자
-                </h3>
-                <p className="text-xs text-gray-500 font-bold mt-0.5">
-                  수강생들이 작성한 생생한 별점 후기를 확인하고 공식 감사 답글을 달 수 있습니다.
-                </p>
+          {/* DYNAMIC SCREEN 1: DEDICATED FULL-PAGE COURSE DETAIL EDITOR (When a course is selected!) */}
+          {selectedCourseForEdit ? (
+            <div className="space-y-6 animate-fadeIn max-w-6xl">
+              
+              {/* Back to List & Top Action Bar */}
+              <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-300 shadow-sm">
+                <button
+                  onClick={() => setSelectedCourseForEdit(null)}
+                  className="px-4 py-2 bg-gray-100 hover:bg-black hover:text-white text-gray-800 font-black text-xs rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>⬅️ 전체 교육과정 목록으로 돌아가기</span>
+                </button>
+
+                <div className="flex items-center gap-3">
+                  {selectedCourseForEdit.id && (
+                    <button
+                      onClick={() => handleDeleteCourse(selectedCourseForEdit.id)}
+                      className="px-4 py-2 bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white font-black text-xs rounded-xl transition-colors cursor-pointer"
+                    >
+                      🗑️ 이 강좌 삭제
+                    </button>
+                  )}
+                  <button
+                    onClick={handleSaveCourseDetail}
+                    className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>💾 변경사항 저장 및 라이브 적용</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                {reviewsList.map((rev) => (
-                  <div key={rev.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-amber-500 font-black text-sm">
-                          {'★'.repeat(rev.rating)}
-                        </span>
-                        <span className="text-xs font-black text-black">{rev.studentName}</span>
-                      </div>
-                      <span className="text-xs font-mono text-gray-400">{rev.date}</span>
-                    </div>
-
-                    <div className="text-xs font-bold text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
-                      강좌: {rev.courseTitle}
-                    </div>
-
-                    <p className="text-xs text-gray-800 font-medium leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-200">
-                      "{rev.content}"
+              {/* Course Detail Editor Workstation Split View */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                {/* Left Form: Image & Text Detail Edit Controls (7 cols) */}
+                <form onSubmit={handleSaveCourseDetail} className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-300 shadow-lg space-y-6">
+                  <div className="border-b-2 border-black pb-3">
+                    <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                      <Edit3 className="w-5 h-5 text-emerald-700" />
+                      <span>강의 정보 & 이미지 상세 편집기</span>
+                    </h3>
+                    <p className="text-xs text-gray-500 font-bold mt-0.5">
+                      수강생 페이지에 노출될 썸네일 이미지, 강의 제목, 수강료 및 커리큘럼을 편집합니다.
                     </p>
+                  </div>
 
-                    {rev.reply ? (
-                      <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-300 text-xs text-emerald-950 font-medium space-y-1">
-                        <span className="font-black text-emerald-900">↳ 사단법인 한국외식창업교육원 공식 답글:</span>
-                        <p>{rev.reply}</p>
+                  {/* Section A: Course Cover Image Selection & URL */}
+                  <div className="space-y-3 bg-stone-50 p-4 rounded-2xl border border-stone-300">
+                    <label className="block text-xs font-black text-black flex items-center gap-2">
+                      <Image className="w-4 h-4 text-emerald-700" />
+                      <span>강의 대표 커버 이미지 (URL 및 추천 프리셋 선택)</span>
+                    </label>
+
+                    {/* Image Preview Box */}
+                    <div className="relative h-44 rounded-xl overflow-hidden border border-gray-300 bg-black group">
+                      <img
+                        src={selectedCourseForEdit.image || '/images/course_menu_dev.jpg'}
+                        alt="강의 프리뷰"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-black px-2.5 py-1 rounded">
+                        현재 대표 썸네일 이미지
                       </div>
-                    ) : (
-                      <div className="flex items-center gap-2 pt-2">
+                    </div>
+
+                    <div className="space-y-2">
+                      <input
+                        type="text"
+                        placeholder="이미지 절대 경로 또는 URL 주소 입력..."
+                        value={selectedCourseForEdit.image || ''}
+                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, image: e.target.value })}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-xs font-mono font-bold focus:outline-none focus:border-black"
+                      />
+
+                      {/* Quick Presets */}
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        <span className="text-[11px] font-bold text-gray-500">추천 프리셋:</span>
+                        {imagePresets.map((p, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => setSelectedCourseForEdit({ ...selectedCourseForEdit, image: p.url })}
+                            className={`px-2.5 py-1 text-[11px] font-bold rounded-lg border transition-all cursor-pointer ${
+                              selectedCourseForEdit.image === p.url
+                                ? 'bg-black text-white border-black'
+                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                            }`}
+                          >
+                            {p.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Section B: Course Title & Basic Specs */}
+                  <div className="space-y-4 text-xs font-bold">
+                    <div>
+                      <label className="block text-gray-800 mb-1">강의명 (타이틀)</label>
+                      <input
+                        type="text"
+                        required
+                        value={selectedCourseForEdit.title || ''}
+                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, title: e.target.value })}
+                        className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-black text-black focus:outline-none focus:border-black"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-gray-800 mb-1">업종 분야</label>
+                        <select
+                          value={selectedCourseForEdit.industry || '한식'}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, industry: e.target.value, categoryName: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-bold"
+                        >
+                          <option value="한식">한식</option>
+                          <option value="일식">일식</option>
+                          <option value="중식">중식</option>
+                          <option value="양식">양식</option>
+                          <option value="카페/디저트">카페/디저트</option>
+                          <option value="배달/밀키트">배달/밀키트</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-800 mb-1">수강 형태</label>
+                        <select
+                          value={selectedCourseForEdit.format || '오프라인'}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, format: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-bold"
+                        >
+                          <option value="오프라인">오프라인 실습</option>
+                          <option value="온라인">온라인 실시간</option>
+                          <option value="혼합형">온/오프라인 혼합</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-gray-800 mb-1">정가 수강료 (원)</label>
+                        <input
+                          type="number"
+                          value={selectedCourseForEdit.price || 0}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, price: parseInt(e.target.value, 10) || 0 })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono text-black focus:outline-none focus:border-black"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-800 mb-1">할인율 (%)</label>
+                        <input
+                          type="number"
+                          value={selectedCourseForEdit.discountRate || 0}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, discountRate: parseInt(e.target.value, 10) || 0 })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono text-black focus:outline-none focus:border-black"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-800 mb-1">교육 기간</label>
                         <input
                           type="text"
-                          placeholder="수강생 후기에 답글을 입력해 주세요..."
-                          value={reviewReplyText[rev.id] || ''}
-                          onChange={(e) =>
-                            setReviewReplyText({ ...reviewReplyText, [rev.id]: e.target.value })
-                          }
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-xl text-xs font-medium focus:outline-none focus:border-black"
+                          value={selectedCourseForEdit.duration || '4주 과정'}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, duration: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl text-black focus:outline-none focus:border-black"
                         />
-                        <button
-                          onClick={() => handleReviewReplySubmit(rev.id)}
-                          className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-xs cursor-pointer"
-                        >
-                          답글 등록
-                        </button>
                       </div>
-                    )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-gray-800 mb-1">📅 개강일 (학사일정 연동)</label>
+                        <input
+                          type="date"
+                          required
+                          value={selectedCourseForEdit.startDate || ''}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, startDate: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono focus:outline-none focus:border-black"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-800 mb-1">📝 자격시험일 (시험달력 연동)</label>
+                        <input
+                          type="date"
+                          value={selectedCourseForEdit.examDate || ''}
+                          onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, examDate: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-xl font-mono focus:outline-none focus:border-black"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-800 mb-1">🏆 연계 자격증명</label>
+                      <input
+                        type="text"
+                        value={selectedCourseForEdit.certName || ''}
+                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, certName: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-800 mb-1">담당 명장 / 주방장 강사</label>
+                      <input
+                        type="text"
+                        value={selectedCourseForEdit.instructor || ''}
+                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, instructor: e.target.value })}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-800 mb-1">강의 상세 커리큘럼 및 설명</label>
+                      <textarea
+                        rows="5"
+                        value={selectedCourseForEdit.description || ''}
+                        onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, description: e.target.value })}
+                        className="w-full p-3 border border-gray-300 rounded-xl leading-relaxed focus:outline-none focus:border-black resize-none"
+                      />
+                    </div>
                   </div>
-                ))}
+
+                </form>
+
+                {/* Right Panel: Live Student Preview Card & Details (5 cols) */}
+                <div className="lg:col-span-5 space-y-6">
+                  <div className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-md space-y-4 sticky top-6">
+                    <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
+                      <h4 className="text-sm font-black text-black flex items-center gap-2">
+                        <Eye className="w-4 h-4 text-emerald-700" />
+                        <span>수강생 화면 실시간 미리보기</span>
+                      </h4>
+                      <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        LIVE PREVIEW
+                      </span>
+                    </div>
+
+                    {/* Live Preview Card */}
+                    <div className="bg-stone-50 rounded-2xl overflow-hidden border border-stone-300 shadow-sm space-y-3 p-4">
+                      <div className="relative h-44 rounded-xl overflow-hidden bg-black">
+                        <img
+                          src={selectedCourseForEdit.image || '/images/course_menu_dev.jpg'}
+                          alt="실시간 미리보기"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded">
+                          {selectedCourseForEdit.industry || '한식'}
+                        </div>
+                      </div>
+
+                      <h4 className="text-base font-black text-black leading-snug">
+                        {selectedCourseForEdit.title || '강의명을 입력하세요'}
+                      </h4>
+
+                      <p className="text-xs text-gray-600 font-medium line-clamp-3 leading-relaxed">
+                        {selectedCourseForEdit.description || '강의 상세 설명이 여기에 노출됩니다.'}
+                      </p>
+
+                      <div className="space-y-1 text-xs text-gray-700 font-bold pt-2 border-t border-stone-200">
+                        <div className="flex items-center justify-between">
+                          <span>📅 개강일자:</span>
+                          <span className="font-mono text-emerald-900 font-black">{selectedCourseForEdit.startDate || '일정 미정'}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>🏆 자격증:</span>
+                          <span className="text-gray-900 font-black">{selectedCourseForEdit.certName || '없음'}</span>
+                        </div>
+                        <div className="flex items-center justify-between pt-1">
+                          <span>💰 수강료:</span>
+                          <span className="font-mono text-sm font-black text-black">
+                            {(selectedCourseForEdit.price || 0).toLocaleString()}원
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
+
             </div>
+          ) : (
+            /* DYNAMIC SCREEN 2: ALL COURSES CARDS GRID VIEW */
+            primaryMenu === 'courses' && (
+              <div className="space-y-6 animate-fadeIn">
+                
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                  <div>
+                    <h3 className="text-xl font-black text-black tracking-tight">
+                      네이버 스마트플레이스 스타일 교육과정 DB 관리자
+                    </h3>
+                    <p className="text-xs text-gray-500 font-bold mt-0.5">
+                      강의 카드를 클릭하거나 [수정] 버튼을 누르면 이미지와 내용을 전면 편집할 수 있는 상세 페이지로 전환됩니다.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setSelectedCourseForEdit({
+                        title: '',
+                        category: 'hansik',
+                        categoryName: '한식',
+                        industry: '한식',
+                        stage: '창업 준비',
+                        format: '오프라인',
+                        price: 4500000,
+                        discountRate: 30,
+                        duration: '4주 과정',
+                        startDate: new Date().toISOString().split('T')[0],
+                        endDate: '',
+                        examDate: '',
+                        certName: '한식 조리기능장 및 지도사 1급',
+                        instructor: '안형상 이사장 / 40년 명장',
+                        image: '/images/course_menu_dev.jpg',
+                        description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
+                      });
+                    }}
+                    className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4 text-emerald-400" />
+                    <span>➕ 신규 강좌 DB 등록</span>
+                  </button>
+                </div>
+
+                {/* Visual SmartPlace Course Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {coursesList.map((c) => (
+                    <div
+                      key={c.id}
+                      onClick={() => setSelectedCourseForEdit(c)}
+                      className="bg-white rounded-3xl p-5 border-2 border-gray-300 shadow-md space-y-4 hover:border-black hover:scale-[1.01] transition-all cursor-pointer flex flex-col justify-between group"
+                    >
+                      <div className="space-y-3">
+                        <div className="relative h-44 rounded-2xl overflow-hidden bg-black">
+                          <img
+                            src={c.image || '/images/course_menu_dev.jpg'}
+                            alt={c.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-3 left-3 bg-black/80 text-white text-[11px] font-black px-3 py-1 rounded-full">
+                            {c.categoryName || c.industry}
+                          </div>
+                        </div>
+
+                        <h4 className="text-base font-black text-black line-clamp-2 group-hover:text-emerald-900 transition-colors">
+                          {c.title}
+                        </h4>
+
+                        <div className="space-y-1 text-xs text-gray-600 font-bold border-t border-gray-200 pt-3">
+                          <div className="flex items-center justify-between">
+                            <span>📅 개강일:</span>
+                            <span className="font-mono text-black">{c.startDate}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span>📝 자격시험일:</span>
+                            <span className="font-mono text-rose-700">{c.examDate || '미정'}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span>💰 정가 수강료:</span>
+                            <span className="font-mono text-emerald-900 font-black">{c.price.toLocaleString()}원</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-gray-200 flex items-center justify-between">
+                        <span className="text-xs font-bold text-emerald-800">
+                          클릭하여 상세 편집 ➔
+                        </span>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedCourseForEdit(c);
+                            }}
+                            className="px-3 py-1.5 bg-black text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                          >
+                            수정
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteCourse(c.id);
+                            }}
+                            className="px-3 py-1.5 bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            )
           )}
 
-          {/* CATEGORY 3: VISUAL LIVE HOME EDITOR (Image 1 Panel style) */}
+          {/* OTHER MENU SCREENS */}
           {primaryMenu === 'home' && (
             <div className="space-y-6 animate-fadeIn">
               <div className="bg-white p-4 rounded-2xl border border-gray-300 flex items-center justify-between">
                 <span className="text-sm font-black text-black">
                   🖥️ 홈화면 시각적 라이브 에디터 (실제 화면 직접 보면서 클릭 수정)
                 </span>
-                <span className="text-xs font-bold text-gray-500">
-                  각 요소의 <strong className="text-emerald-700 font-black">[✏️ 수정]</strong> 버튼을 누르면 모달 편집창이 출력됩니다.
-                </span>
               </div>
-
-              {/* LIVE PAGE CANVAS WRAPPER */}
               <div className="space-y-8 bg-white rounded-3xl p-4 sm:p-6 border-2 border-gray-300 shadow-xl text-gray-900 overflow-hidden relative">
                 <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
                   <EventBannerSection bannerData={siteData.banner} onEventClick={() => {}} />
@@ -657,35 +845,26 @@ export default function AdminLayout({
                 <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
                   <YouTubeMediaSection youtubeData={siteData.youtube} />
                 </div>
-                <div className="relative border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden group shadow-md">
-                  <NetflixCoursesSection onSelectCourse={() => {}} />
-                </div>
               </div>
             </div>
           )}
 
-          {/* CATEGORY 4: INQUIRIES WORKSTATION */}
-          {primaryMenu === 'inquiries' && (
+          {primaryMenu === 'reviews' && (
             <div className="space-y-6 animate-fadeIn max-w-5xl">
               <div className="border-b-2 border-black pb-3">
                 <h3 className="text-xl font-black text-black tracking-tight">
-                  수강생 1:1 문의 & 1초 템플릿 답변 워크스테이션
+                  수강생 방문후기 & 별점 관리자
                 </h3>
               </div>
-
               <div className="space-y-4">
-                {adminInquiries.map((item) => (
-                  <div key={item.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
+                {reviewsList.map((rev) => (
+                  <div key={rev.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
-                        {item.category}
-                      </span>
-                      <span className="text-xs font-mono text-gray-400">{item.date}</span>
+                      <span className="text-amber-500 font-black text-sm">{'★'.repeat(rev.rating)}</span>
+                      <span className="text-xs font-mono text-gray-400">{rev.date}</span>
                     </div>
-
-                    <h4 className="text-base font-black text-black">{item.title}</h4>
-                    <p className="text-xs text-gray-700 bg-stone-50 p-4 rounded-2xl border border-stone-200 leading-relaxed">
-                      {item.content}
+                    <p className="text-xs text-gray-800 font-medium leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                      "{rev.content}"
                     </p>
                   </div>
                 ))}
@@ -696,100 +875,6 @@ export default function AdminLayout({
         </main>
 
       </div>
-
-      {/* COURSE FORM MODAL */}
-      {showCourseFormModal && editingCourse && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <form
-            onSubmit={handleSaveCourseForm}
-            className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-4 animate-fadeIn max-h-[90vh] overflow-y-auto text-gray-900"
-          >
-            <div className="flex items-center justify-between border-b-2 border-black pb-3">
-              <h3 className="text-lg font-black text-black flex items-center gap-2">
-                <Database className="w-5 h-5 text-emerald-700" />
-                <span>교육과정 & 학사/시험일정 DB 등록/수정</span>
-              </h3>
-              <button
-                type="button"
-                onClick={() => setShowCourseFormModal(false)}
-                className="text-gray-400 hover:text-black font-black text-xl"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold">
-              <div className="sm:col-span-2">
-                <label className="block text-gray-700 mb-1">교육과정명</label>
-                <input
-                  type="text"
-                  required
-                  value={editingCourse.title}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-black text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 mb-1">개강일 (📅 [교육 일정] 달력 연동)</label>
-                <input
-                  type="date"
-                  required
-                  value={editingCourse.startDate}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, startDate: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-mono"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 mb-1">자격시험 검정일 (📝 [시험 일정] 달력 연동)</label>
-                <input
-                  type="date"
-                  value={editingCourse.examDate}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, examDate: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-mono"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 mb-1">정가 수강료 (원)</label>
-                <input
-                  type="number"
-                  value={editingCourse.price}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, price: parseInt(e.target.value, 10) || 0 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black font-mono"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 mb-1">연계 자격증 명칭</label>
-                <input
-                  type="text"
-                  value={editingCourse.certName}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, certName: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black"
-                />
-              </div>
-            </div>
-
-            <div className="pt-3 flex items-center justify-end gap-2 border-t border-gray-200">
-              <button
-                type="button"
-                onClick={() => setShowCourseFormModal(false)}
-                className="px-5 py-2 bg-gray-200 text-gray-800 font-bold text-xs rounded-xl hover:bg-gray-300"
-              >
-                취소
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2.5 bg-black text-white font-black text-xs rounded-xl shadow-md hover:bg-gray-800 transition-colors"
-              >
-                DB 저장 및 사이트 실시간 반영
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
 
     </div>
   );
