@@ -1,53 +1,60 @@
 import React, { useState } from 'react';
-import { ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
+import { ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers, LogOut, ShieldCheck } from 'lucide-react';
 
-export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab, onOpenCatalogTab, onOpenConsultingTab, onOpenCommunityTab }) {
+export default function Header({
+  activeTab = 'home',
+  subTab = null,
+  onTabChange,
+  onOpenAuth,
+  currentUser,
+  onLogout,
+}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState('KOR');
 
   const mainMenuItems = [
-    { title: '교육원 소개', key: 'about', action: () => onOpenAboutTab('greetings') },
-    { title: '명인사업단', key: 'masters', action: () => onOpenMasterTab('masters') },
-    { title: '교육·자격증', key: 'education', action: () => onOpenCatalogTab('courses') },
-    { title: '창업컨설팅', key: 'consulting', action: () => onOpenConsultingTab('education') },
-    { title: '커뮤니티', key: 'community', action: () => onOpenCommunityTab('all') },
+    { title: '교육원 소개', key: 'about', defaultSubTab: 'greetings' },
+    { title: '명인사업단', key: 'master', defaultSubTab: 'intro' },
+    { title: '교육·자격증', key: 'catalog', defaultSubTab: 'courses' },
+    { title: '창업컨설팅', key: 'consulting', defaultSubTab: 'apply' },
+    { title: '커뮤니티', key: 'community', defaultSubTab: 'all' },
   ];
 
   return (
     <header className="relative bg-[#0a1410] border-b border-emerald-950/80 z-50 transition-all font-sans text-white shadow-md">
       
-      {/* Full Width Top Header Bar (No Max-Width Constraint for Widescreen Layout) */}
+      {/* Full Width Top Header Bar */}
       <div className="w-full px-6 sm:px-10 lg:px-14 h-20 sm:h-24 flex items-center justify-between gap-6">
         
         {/* Official Logo (Far Left) */}
         <div
-          onClick={() => onViewChange('landing')}
+          onClick={() => onTabChange && onTabChange('home')}
           className="flex items-center gap-3 cursor-pointer group shrink-0"
+          title="한국외식창업교육원 홈으로 이동"
         >
           <img
             src="/images/logo.png"
             alt="사단법인 한국외식창업교육원"
-            className="h-10 sm:h-12 w-auto object-contain group-hover:scale-103 transition-transform"
+            className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform"
           />
         </div>
 
-        {/* Centered Desktop Main Navigation Bar (Balanced Center Layout) */}
+        {/* Centered Desktop Main Navigation Bar */}
         <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-14">
-          {mainMenuItems.map((menu, mIdx) => {
-            const isMenuActive =
-              (menu.key === 'about' && currentView === 'about') ||
-              (menu.key === 'masters' && currentView === 'masters') ||
-              (menu.key === 'education' && currentView === 'catalog') ||
-              (menu.key === 'consulting' && currentView === 'consulting') ||
-              (menu.key === 'community' && currentView === 'community');
+          {mainMenuItems.map((menu) => {
+            const isMenuActive = activeTab === menu.key;
 
             return (
-              <div key={mIdx} className="relative group py-6 cursor-pointer">
+              <div key={menu.key} className="relative group py-6 cursor-pointer">
                 <button
-                  onClick={menu.action}
-                  className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap ${
+                  onClick={() => {
+                    if (onTabChange) {
+                      onTabChange(menu.key, menu.defaultSubTab);
+                    }
+                  }}
+                  className={`text-base lg:text-lg font-black tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap ${
                     isMenuActive
-                      ? 'text-emerald-400 border-b-2 border-dashed border-rose-500 pb-0.5'
+                      ? 'text-emerald-400 border-b-2 border-dashed border-rose-500 pb-0.5 scale-105'
                       : 'text-white hover:text-emerald-300'
                   }`}
                 >
@@ -58,10 +65,10 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           })}
         </nav>
 
-        {/* Right Top Utility Buttons (Far Right - KOR Selector & Login) */}
+        {/* Right Top Utility Buttons (KOR Selector & User Auth) */}
         <div className="hidden md:flex items-center gap-5 shrink-0">
           
-          {/* Language Selector Pill (KOR | ▼) */}
+          {/* Language Selector Pill */}
           <div className="relative">
             <button
               onClick={() => setLang(lang === 'KOR' ? 'ENG' : 'KOR')}
@@ -73,19 +80,39 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
             </button>
           </div>
 
-          {/* # LOGIN / JOIN US Button */}
-          <button
-            onClick={() => onOpenAuth('login')}
-            className="group flex flex-col items-center justify-center text-xs font-black text-white hover:text-emerald-300 transition-colors cursor-pointer border-l border-emerald-900/80 pl-5"
-          >
-            <div className="flex items-center gap-1 text-sm font-black">
-              <span className="text-xl font-mono text-emerald-400 group-hover:text-emerald-300">#</span>
-              <span>LOGIN</span>
+          {/* USER AUTH / LOGIN STATUS BUTTON */}
+          {currentUser ? (
+            <div className="flex items-center gap-3 border-l border-emerald-900/80 pl-5">
+              <div className="flex items-center gap-2">
+                <div className="bg-emerald-600 p-1.5 rounded-full text-black">
+                  <User className="w-3.5 h-3.5 text-white" />
+                </div>
+                <span className="text-xs font-black text-white">
+                  {currentUser.name || '수강생 회원'}님
+                </span>
+              </div>
+              <button
+                onClick={onLogout}
+                className="px-3 py-1.5 bg-rose-950/80 hover:bg-rose-900 text-rose-300 text-xs font-black rounded-xl border border-rose-800 transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>로그아웃</span>
+              </button>
             </div>
-            <span className="text-[10px] text-emerald-300/80 font-bold tracking-widest -mt-1 group-hover:text-white">
-              JOIN US
-            </span>
-          </button>
+          ) : (
+            <button
+              onClick={() => onOpenAuth && onOpenAuth('login')}
+              className="group flex flex-col items-center justify-center text-xs font-black text-white hover:text-emerald-300 transition-colors cursor-pointer border-l border-emerald-900/80 pl-5"
+            >
+              <div className="flex items-center gap-1 text-sm font-black">
+                <span className="text-xl font-mono text-emerald-400 group-hover:text-emerald-300">#</span>
+                <span>LOGIN</span>
+              </div>
+              <span className="text-[10px] text-emerald-300/80 font-bold tracking-widest -mt-1 group-hover:text-white">
+                JOIN US
+              </span>
+            </button>
+          )}
 
         </div>
 
@@ -103,26 +130,45 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#08120d] border-b border-emerald-900/80 p-6 space-y-6 animate-fadeIn">
           <div className="flex items-center justify-end pb-4 border-b border-emerald-900/60">
-            <button
-              onClick={() => {
-                onOpenAuth('login');
-                setMobileMenuOpen(false);
-              }}
-              className="px-4 py-2 bg-emerald-500 text-white text-xs font-black rounded-xl"
-            >
-              # LOGIN / JOIN US
-            </button>
+            {currentUser ? (
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-black text-white">{currentUser.name}님</span>
+                <button
+                  onClick={() => {
+                    onLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="px-3 py-1.5 bg-rose-950 text-rose-300 text-xs font-black rounded-xl"
+                >
+                  로그아웃
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  onOpenAuth('login');
+                  setMobileMenuOpen(false);
+                }}
+                className="px-4 py-2 bg-emerald-500 text-white text-xs font-black rounded-xl"
+              >
+                # LOGIN / JOIN US
+              </button>
+            )}
           </div>
 
           <div className="space-y-4">
-            {mainMenuItems.map((menu, mIdx) => (
+            {mainMenuItems.map((menu) => (
               <button
-                key={mIdx}
+                key={menu.key}
                 onClick={() => {
-                  menu.action();
+                  if (onTabChange) {
+                    onTabChange(menu.key, menu.defaultSubTab);
+                  }
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-left py-2 text-base font-black text-white hover:text-emerald-300 border-b border-emerald-900/40"
+                className={`w-full text-left py-2 text-base font-black border-b border-emerald-900/40 ${
+                  activeTab === menu.key ? 'text-emerald-400 font-black' : 'text-white hover:text-emerald-300'
+                }`}
               >
                 {menu.title}
               </button>
