@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Search, Filter, Phone, CheckCircle2, Clock, XCircle, CreditCard, ChevronDown, Download } from 'lucide-react';
+import { Search, Filter, Phone, CheckCircle2, Clock, XCircle, CreditCard, ChevronDown, Download, Eye, EyeOff, Shield } from 'lucide-react';
+import { maskName, maskPhone, maskEmail, maskId } from '../../utils/security';
 
 export default function AdminApplications() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [privacyMode, setPrivacyMode] = useState(true);
 
   const [applications, setApplications] = useState([
     {
@@ -116,17 +118,33 @@ export default function AdminApplications() {
             실시간 수강 신청 및 결제 관리
           </h2>
           <p className="text-xs sm:text-sm text-emerald-200/70 font-medium mt-1">
-            홈페이지에서 신청된 창업 수강생 내역, 입금 상태 및 상담 진행 상태를 관리합니다.
+            개인정보보호법에 의거하여 수강생 명단의 성함, 연락처, 이메일이 마스킹 처리됩니다.
           </p>
         </div>
 
-        <button
-          onClick={() => alert('Excel 명단 다운로드 기능이 시작됩니다.')}
-          className="px-5 py-2.5 bg-[#162a20] hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 font-bold text-xs sm:text-sm rounded-xl shadow-lg transition-all shrink-0 cursor-pointer flex items-center gap-2 self-start sm:self-auto"
-        >
-          <Download className="w-4 h-4" />
-          <span>수강생 명단 엑셀 다운로드</span>
-        </button>
+        <div className="flex items-center gap-3 shrink-0 self-start sm:self-auto">
+          {/* Privacy Toggle Button */}
+          <button
+            onClick={() => setPrivacyMode(!privacyMode)}
+            className={`px-3.5 py-2.5 rounded-xl text-xs font-extrabold border transition-all flex items-center gap-1.5 cursor-pointer ${
+              privacyMode
+                ? 'bg-emerald-950 text-emerald-300 border-emerald-500/40'
+                : 'bg-rose-950/60 text-rose-300 border-rose-500/40'
+            }`}
+            title="개인정보 마스킹 켜기/끄기"
+          >
+            {privacyMode ? <EyeOff className="w-4 h-4 text-emerald-400" /> : <Eye className="w-4 h-4 text-rose-400" />}
+            <span>{privacyMode ? '개인정보 마스킹 작동중' : '마스킹 해제됨'}</span>
+          </button>
+
+          <button
+            onClick={() => alert('Excel 명단 다운로드 기능이 시작됩니다.')}
+            className="px-5 py-2.5 bg-[#162a20] hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 font-bold text-xs sm:text-sm rounded-xl shadow-lg transition-all shrink-0 cursor-pointer flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            <span>수강생 명단 엑셀 다운로드</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter & Search Bar */}
@@ -178,12 +196,20 @@ export default function AdminApplications() {
             <tbody className="divide-y divide-emerald-900/30 text-xs sm:text-sm font-semibold text-gray-200">
               {filteredApps.map((app) => (
                 <tr key={app.id} className="hover:bg-emerald-950/40 transition-colors">
-                  <td className="py-3.5 px-3 font-mono text-xs text-gray-400">{app.id}</td>
-                  <td className="py-3.5 px-3 font-black text-white">{app.name}</td>
+                  <td className="py-3.5 px-3 font-mono text-xs text-gray-400">
+                    {privacyMode ? maskId(app.id) : app.id}
+                  </td>
+                  <td className="py-3.5 px-3 font-black text-white">
+                    {privacyMode ? maskName(app.name) : app.name}
+                  </td>
                   <td className="py-3.5 px-3">
                     <div className="text-xs">
-                      <span className="font-bold text-emerald-300 block">{app.phone}</span>
-                      <span className="text-gray-400 text-[11px]">{app.email}</span>
+                      <span className="font-bold text-emerald-300 block">
+                        {privacyMode ? maskPhone(app.phone) : app.phone}
+                      </span>
+                      <span className="text-gray-400 text-[11px]">
+                        {privacyMode ? maskEmail(app.email) : app.email}
+                      </span>
                     </div>
                   </td>
                   <td className="py-3.5 px-3 font-bold text-gray-200">{app.course}</td>
