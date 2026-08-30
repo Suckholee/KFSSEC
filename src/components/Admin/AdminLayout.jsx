@@ -20,7 +20,7 @@ import {
   Bell,
 } from 'lucide-react';
 
-export default function AdminLayout({ onExitAdmin }) {
+export default function AdminLayout({ onExitAdmin, onLogout }) {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -80,18 +80,27 @@ export default function AdminLayout({ onExitAdmin }) {
         </div>
 
         {/* Right Header Status Utilities */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-xs font-bold text-emerald-300">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>안형상 이사장 (최고 관리자)</span>
+            <span>안형상 이사장 (관리자 인증됨)</span>
           </div>
 
           <button
             onClick={onExitAdmin}
-            className="px-3.5 py-1.5 bg-emerald-900/40 hover:bg-emerald-800 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
-            <span>사용자 홈페이지로 나가기</span>
+            <span>사용자 홈페이지</span>
             <ExternalLink className="w-3.5 h-3.5" />
+          </button>
+
+          <button
+            onClick={onLogout}
+            className="px-3 py-1.5 bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/30 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+            title="관리자 로그아웃"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">로그아웃</span>
           </button>
         </div>
       </header>
