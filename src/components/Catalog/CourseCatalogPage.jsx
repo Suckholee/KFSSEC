@@ -136,11 +136,13 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   ];
 
   return (
-    <div className="bg-emerald-50/20 min-h-screen py-8 font-sans text-gray-900">
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-6">
+    <div className="bg-emerald-50/20 min-h-screen py-6 font-sans text-gray-900">
+      
+      {/* Full Width Flush Layout matching Header margins */}
+      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-6">
         
-        {/* Main Content Layout: Left SubSidebar + Right Main Content (100% Matching Screenshot) */}
-        <div className="flex flex-col md:flex-row gap-8 items-start">
+        {/* Main Layout: Left SubSidebar + Right Main Content */}
+        <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
           
           {/* Left Vertical SubSidebar Menu */}
           <SubSidebar
@@ -151,49 +153,49 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
           />
 
           {/* Right Main Content Panel */}
-          <div className="flex-1 w-full space-y-8">
+          <div className="flex-1 w-full space-y-6 min-w-0">
             
-            {/* SUB-TAB 1: 교육 과정 (Matching Target Screenshot) */}
+            {/* SUB-TAB 1: 교육 과정 */}
             {subTab === 'courses' && (
-              <div className="space-y-8 animate-fadeIn">
+              <div className="space-y-8 animate-fadeIn w-full">
                 
-                {/* Slanted Chevron Banner Photos Container (Matching Target Screenshot) */}
-                <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4 overflow-hidden">
+                {/* Slanted Chevron Banner Photos Container - Fixed 100% Fit without Clipping */}
+                <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4 w-full">
                   <h2 className="text-2xl font-black text-black border-b-2 border-black pb-2">
                     교육 과정
                   </h2>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
-                    {/* Chevron Shape 1 */}
-                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-2 w-full">
+                    {/* Shape 1 */}
+                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group w-full">
                       <img
                         src="/images/dir_2.jpg"
-                        alt="외국인 채용 기업체 설명회"
-                        className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
+                        alt="채용 기업체 설명회"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
                         채용 기업체 설명회
                       </div>
                     </div>
 
-                    {/* Chevron Shape 2 */}
-                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
+                    {/* Shape 2 */}
+                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group w-full">
                       <img
                         src="/images/dir_1.jpg"
-                        alt="정기총회 연설"
-                        className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
+                        alt="정기 총회 세미나"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
                         정기 총회 세미나
                       </div>
                     </div>
 
-                    {/* Chevron Shape 3 */}
-                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
+                    {/* Shape 3 */}
+                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group sm:col-span-2 lg:col-span-1 w-full">
                       <img
                         src="/images/dir_12.jpg"
-                        alt="정기총회 & 명인 인증식"
-                        className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
+                        alt="명인 인증식 및 수여식"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
                         명인 인증식 및 수여식
@@ -203,7 +205,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                 </div>
 
                 {/* Main Catalog Section */}
-                <div className="flex flex-col lg:flex-row gap-8 items-start pt-2">
+                <div className="flex flex-col lg:flex-row gap-6 items-start pt-2 w-full">
                   <Sidebar
                     activeCategory={activeSidebarCategory}
                     onSelectCategory={(catId) => {
@@ -212,7 +214,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                     }}
                   />
 
-                  <div className="flex-1 w-full space-y-6">
+                  <div className="flex-1 w-full space-y-6 min-w-0">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <span className="text-sm font-bold text-gray-700">
                         총 <strong className="text-emerald-800 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
@@ -292,13 +294,13 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
             {/* SUB-TAB 2: 교육 일정 */}
             {subTab === 'schedule' && (
-              <div className="space-y-8 animate-fadeIn">
-                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
+              <div className="space-y-8 animate-fadeIn w-full">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
                     교육 일정
                   </div>
 
-                  <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+                  <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100 w-full">
                     <div className="grid grid-cols-7 bg-gray-700 text-white font-black text-center py-3 text-sm">
                       <span className="text-rose-400">일</span>
                       <span>월</span>
@@ -352,13 +354,13 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
             {/* SUB-TAB 3: 자격 시험 */}
             {subTab === 'cert_exam' && (
-              <div className="space-y-8 animate-fadeIn">
-                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
+              <div className="space-y-8 animate-fadeIn w-full">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
                     자격 시험
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 w-full">
                     {[
                       { title: '외식창업 지도사 1급/2급', desc: '상권분석 및 매장운영 실무 역량을 인증하는 비영리 민간 자격증' },
                       { title: '메뉴개발 전문가 자격증', desc: 'HMR/RMR 레시피 개발 및 식자재 원가 산정 전문가 인증' },
@@ -383,13 +385,13 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
             {/* SUB-TAB 4: 시험 일정 */}
             {subTab === 'exam_schedule' && (
-              <div className="space-y-8 animate-fadeIn">
-                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
+              <div className="space-y-8 animate-fadeIn w-full">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
                     시험 일정
                   </div>
 
-                  <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+                  <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100 w-full">
                     <div className="grid grid-cols-7 bg-gray-700 text-white font-black text-center py-3 text-sm">
                       <span className="text-rose-400">일</span>
                       <span>월</span>

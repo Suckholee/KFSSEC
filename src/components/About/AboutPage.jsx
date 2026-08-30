@@ -71,11 +71,13 @@ export default function AboutPage({ initialTab = 'greetings' }) {
   ];
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 font-sans text-gray-900">
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-6">
+    <div className="bg-gray-50 min-h-screen py-6 font-sans text-gray-900">
+      
+      {/* Full Width Flush Layout matching Header margins */}
+      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-6">
         
-        {/* Main Content Layout: Left SubSidebar + Right Main Content (Matching Target Design) */}
-        <div className="flex flex-col md:flex-row gap-8 items-start">
+        {/* Main Content Layout: Left SubSidebar + Right Main Content */}
+        <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
           
           {/* Left Vertical SubSidebar Menu */}
           <SubSidebar
@@ -86,14 +88,14 @@ export default function AboutPage({ initialTab = 'greetings' }) {
           />
 
           {/* Right Main Content Panel */}
-          <div className="flex-1 w-full space-y-6">
+          <div className="flex-1 w-full space-y-6 min-w-0">
             
             {/* SUB-TAB 1: 교육원 소개 */}
             {activeTab === 'greetings' && (
-              <div className="space-y-8 animate-fadeIn">
+              <div className="space-y-8 animate-fadeIn w-full">
                 
                 {/* Image 1 Profile Summary Box */}
-                <div className="bg-black text-white rounded-3xl p-6 sm:p-10 border border-gray-800 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div className="bg-black text-white rounded-3xl p-6 sm:p-10 border border-gray-800 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
                   <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-gray-300 flex items-center justify-center shadow-inner">
                     <img
                       src="/images/logo.png"
@@ -129,7 +131,7 @@ export default function AboutPage({ initialTab = 'greetings' }) {
                 </div>
 
                 {/* Establishment Purpose (설립목적) */}
-                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-gray-300 shadow-lg space-y-6">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-gray-300 shadow-lg space-y-6 w-full">
                   <h3 className="text-xl font-black text-black border-b-2 border-black pb-2">
                     • 설립목적
                   </h3>

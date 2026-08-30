@@ -49,11 +49,13 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
   ];
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8 font-sans text-gray-900">
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-6">
+    <div className="bg-gray-50 min-h-screen py-6 font-sans text-gray-900">
+      
+      {/* Full Width Flush Layout matching Header margins */}
+      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-6">
         
-        {/* Main Content Layout: Left SubSidebar + Right Main Content (Matching Target Design) */}
-        <div className="flex flex-col md:flex-row gap-8 items-start">
+        {/* Main Content Layout: Left SubSidebar + Right Main Content */}
+        <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
           
           {/* Left Vertical SubSidebar Menu */}
           <SubSidebar
@@ -64,14 +66,14 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
           />
 
           {/* Right Main Content Panel */}
-          <div className="flex-1 w-full space-y-6">
+          <div className="flex-1 w-full space-y-6 min-w-0">
             
             {/* SUB-TAB 1: 명인 사업단 */}
             {activeTab === 'masters' && (
-              <div className="space-y-8 animate-fadeIn">
+              <div className="space-y-8 animate-fadeIn w-full">
                 
                 {/* Header Card Box with Logo & Title */}
-                <div className="bg-black text-white rounded-3xl p-6 sm:p-10 border border-gray-800 shadow-xl grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                <div className="bg-black text-white rounded-3xl p-6 sm:p-10 border border-gray-800 shadow-xl grid grid-cols-1 sm:grid-cols-12 gap-6 items-center w-full">
                   <div className="sm:col-span-5 bg-white p-6 rounded-2xl border border-gray-300 flex items-center justify-center shadow-inner">
                     <img
                       src="/images/logo.png"
@@ -88,7 +90,7 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
                 </div>
 
                 {/* Purpose & Content Box */}
-                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-gray-300 shadow-lg space-y-6">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-gray-300 shadow-lg space-y-6 w-full">
                   <h3 className="text-xl font-black text-black border-b-2 border-black pb-2 flex items-center gap-2">
                     <Scale className="w-5 h-5 text-emerald-700" />
                     <span>• 설립목적</span>
@@ -116,7 +118,7 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
 
             {/* SUB-TAB 2: 명인 요리 */}
             {activeTab === 'dishes' && (
-              <div className="space-y-8 animate-fadeIn">
+              <div className="space-y-8 animate-fadeIn w-full">
                 
                 <div className="border-b-2 border-black pb-4 flex items-center justify-between">
                   <div>
@@ -133,7 +135,7 @@ export default function MasterBusinessPage({ initialTab = 'masters' }) {
                 </div>
 
                 {/* Slanted High Quality Food Dish Photos Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2 w-full">
                   {masterDishes.map((dish, idx) => (
                     <ScrollReveal key={dish.id} direction="up" delay={idx * 100}>
                       <div className="group bg-white rounded-3xl border-2 border-gray-300 p-4 shadow-xl hover:shadow-2xl hover:border-black transition-all duration-500 space-y-4 overflow-hidden h-full flex flex-col justify-between">
