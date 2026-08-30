@@ -49,6 +49,9 @@ import {
   Paperclip,
   CheckSquare,
   MessageCircle,
+  ChevronDown,
+  ChevronUp,
+  PenTool,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -81,7 +84,17 @@ export default function AdminLayout({
   // Developer Inquiries / Communications State
   const [devInquiries, setDevInquiries] = useState([
     {
-      id: 1,
+      id: 3,
+      type: '신규기능',
+      title: '관리자 서브 라우팅(/admin/courses, /admin/developer) 구축 요청',
+      description: '운영 편의성을 위해 관리자 센터 메뉴 클릭 시 주소가 다이내믹하게 변경되고 새로고침/뒤로가기가 되도록 해주세요.',
+      screenshot: null,
+      status: 'completed',
+      date: '2026.08.30 19:40',
+      devReply: '✓ 구현 완료: window.history.pushState 및 Admin Sub-Routing(/admin/courses, /admin/developer) 구조 적용되었습니다.',
+    },
+    {
+      id: 2,
       type: '신규기능',
       title: '수강생 필수 서비스 안내 결제 팝업 모달 연결 요청',
       description: '메인 랜딩페이지 결제 안내 배너 클릭 시 3 STEP 수강료 및 환불 안내 팝업 모달이 뜨도록 수정 부탁드립니다.',
@@ -91,7 +104,7 @@ export default function AdminLayout({
       devReply: '✓ 구현 완료: PaymentGuideModal.jsx 작성 및 BannerSection 배너 클릭 이벤트 연동 완료되었습니다.',
     },
     {
-      id: 2,
+      id: 1,
       type: 'UI개선',
       title: '관리자 센터 다크톤을 화이트 톤으로 전면 개편 요청',
       description: '관리자가 장시간 사용 시 눈 피로도가 덜 하도록 깔끔한 오프화이트 톤과 에메랄드 포인트로 변경해 주세요.',
@@ -101,6 +114,10 @@ export default function AdminLayout({
       devReply: '✓ 구현 완료: AdminLayout.jsx 전면 화이트 톤(White Theme) 및 고대비 파트너 뷰로 스타일링 적용되었습니다.',
     },
   ]);
+
+  // Selected Inquiry for Board Row Expansion Detail
+  const [expandedDevInquiryId, setExpandedDevInquiryId] = useState(3);
+  const [isWriteFormOpen, setIsWriteFormOpen] = useState(false);
 
   // Form state for creating new Developer Inquiry
   const [newDevInquiryType, setNewDevInquiryType] = useState('버그수정');
@@ -226,11 +243,13 @@ export default function AdminLayout({
     };
 
     setDevInquiries([created, ...devInquiries]);
+    setExpandedDevInquiryId(created.id);
+    setIsWriteFormOpen(false);
     setNewDevInquiryTitle('');
     setNewDevInquiryDesc('');
     setNewDevInquiryScreenshot(null);
     triggerSavedNotice();
-    alert('🚀 개발자 소통 창구로 문의 및 스크린샷이 성공적으로 전송되었습니다!');
+    alert('🚀 개발자 소통 게시판에 문의 및 스크린샷이 성공적으로 등록되었습니다!');
   };
 
   // Direct Computer Image File Upload Handler to Real Server API
@@ -308,7 +327,7 @@ export default function AdminLayout({
         ];
       case 'developer':
         return [
-          { id: 'dev_inquiry_list', label: '💻 개발자 문의 & 소통' },
+          { id: 'dev_inquiry_list', label: '📋 개발 문의 게시판' },
           { id: 'dev_issue_track', label: '🐞 버그 제보 & 스크린샷' },
           { id: 'dev_feature_request', label: '✨ 신규 기능 제안' },
         ];
@@ -351,13 +370,12 @@ export default function AdminLayout({
 
         {/* Top Quick Links */}
         <div className="flex items-center gap-3 text-xs font-bold">
-          {/* DIRECT DEVELOPER INQUIRY HEADER BUTTON */}
           <button
             onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
             className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black animate-pulse"
           >
             <Code className="w-4 h-4 text-emerald-200" />
-            <span>💻 개발자 1:1 문의 / 스크린샷 전송</span>
+            <span>💻 개발자 1:1 문의 게시판</span>
           </button>
 
           <div className="h-4 w-px bg-gray-700" />
@@ -411,7 +429,7 @@ export default function AdminLayout({
             <span className="text-[9px] font-black mt-0.5">강좌DB</span>
           </button>
 
-          {/* DEVELOPER INQUIRY CHANNEL ICON WITH PULSE BADGE */}
+          {/* DEVELOPER INQUIRY CHANNEL ICON */}
           <button
             onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer border relative ${
@@ -419,11 +437,11 @@ export default function AdminLayout({
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105 border-emerald-400'
                 : 'text-emerald-400 hover:text-white hover:bg-gray-800 border-emerald-800/80 bg-emerald-950/40'
             }`}
-            title="개발자 1:1 소통 문의"
+            title="개발자 1:1 게시판"
           >
             <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-black animate-ping" />
             <Code className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">개발문의</span>
+            <span className="text-[9px] font-black mt-0.5">개발게시판</span>
           </button>
 
           <button
@@ -472,7 +490,7 @@ export default function AdminLayout({
             <h2 className="text-sm font-black text-black tracking-tight">
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
-              {primaryMenu === 'developer' && '💻 개발자 1:1 소통 창구'}
+              {primaryMenu === 'developer' && '💻 개발자 소통 게시판'}
               {primaryMenu === 'reservations' && '수강신청 & 결제'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의'}
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
@@ -480,7 +498,6 @@ export default function AdminLayout({
             <p className="text-[10px] text-gray-500 font-bold mt-0.5">스마트 파트너 워크스페이스</p>
           </div>
 
-          {/* QUICK SHORTCUT BUTTON TO DEVELOPER INQUIRY CHANNEL */}
           <div className="px-1">
             <button
               onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
@@ -488,9 +505,8 @@ export default function AdminLayout({
             >
               <span className="flex items-center gap-1.5">
                 <Code className="w-3.5 h-3.5 text-emerald-400" />
-                <span>개발 문의 & 스크린샷</span>
+                <span>개발 문의 게시판 ➔</span>
               </span>
-              <ChevronRight className="w-3.5 h-3.5 text-emerald-400" />
             </button>
           </div>
 
@@ -545,74 +561,75 @@ export default function AdminLayout({
             <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
               <CheckCircle className="w-5 h-5 text-emerald-700" />
               <span className="text-sm font-black">
-                요청 사항이 개발자에게 성공적으로 전송되었습니다.
+                게시물이 성공적으로 등록되었습니다.
               </span>
             </div>
           )}
 
-          {/* DYNAMIC SCREEN: DEVELOPER INQUIRY & FEEDBACK CHANNEL */}
+          {/* DYNAMIC SCREEN: DEVELOPER INQUIRY BOARD VIEW */}
           {primaryMenu === 'developer' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
+              {/* Header Title & Top Action Bar */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
                 <div>
                   <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
                     <Terminal className="w-6 h-6 text-emerald-700" />
-                    <span>개발자 소통 & 1:1 개발 문의 채널</span>
+                    <span>개발자 소통 & 1:1 개발 문의 게시판</span>
                   </h3>
                   <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    화면 오류, 버그 제보, 스크린샷 및 신규 기능 요구사항을 담당 개발자(Antigravity)에게 전달합니다.
+                    개발자(Antigravity)와 주고받은 문의 및 기능 요청 조치 결과 게시판입니다.
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 bg-emerald-100 px-3.5 py-1.5 rounded-2xl border border-emerald-300 text-emerald-900 text-xs font-black">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping" />
-                  <span>담당 개발자: 실시간 수신중 (Antigravity AI)</span>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setIsWriteFormOpen(!isWriteFormOpen)}
+                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    <PenTool className="w-4 h-4" />
+                    <span>{isWriteFormOpen ? '✕ 문의 작성 닫기' : '✏️ 새 개발 문의 작성'}</span>
+                  </button>
                 </div>
               </div>
 
-              {/* Form & Previous Inquiries Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
-                {/* Left Form: Submit New Developer Inquiry (5 cols) */}
-                <form onSubmit={handleSubmitDevInquiry} className="lg:col-span-5 bg-white p-6 rounded-3xl border-2 border-black shadow-lg space-y-4 text-xs font-bold">
-                  <div className="border-b border-gray-200 pb-2">
+              {/* WRITE FORM COLLAPSIBLE PANEL */}
+              {isWriteFormOpen && (
+                <form onSubmit={handleSubmitDevInquiry} className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-black shadow-xl space-y-4 text-xs font-bold animate-fadeIn">
+                  <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
                     <h4 className="text-base font-black text-black flex items-center gap-2">
                       <Send className="w-4 h-4 text-emerald-700" />
-                      <span>새 개발 문의 & 스크린샷 등록</span>
+                      <span>새 개발 문의 & 스크린샷 캡쳐 등록</span>
                     </h4>
+                    <span className="text-xs text-emerald-800 font-mono">Form Status: Active</span>
                   </div>
 
-                  <div>
-                    <label className="block text-gray-700 mb-1">문의 유형</label>
-                    <div className="grid grid-cols-4 gap-1.5">
-                      {['버그수정', '신규기능', 'UI개선', '성능기타'].map((t) => (
-                        <button
-                          key={t}
-                          type="button"
-                          onClick={() => setNewDevInquiryType(t)}
-                          className={`py-1.5 rounded-xl border text-[11px] font-black transition-all cursor-pointer ${
-                            newDevInquiryType === t
-                              ? 'bg-black text-white border-black shadow-xs'
-                              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                          }`}
-                        >
-                          {t}
-                        </button>
-                      ))}
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div className="md:col-span-3">
+                      <label className="block text-gray-700 mb-1">문의 유형</label>
+                      <select
+                        value={newDevInquiryType}
+                        onChange={(e) => setNewDevInquiryType(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-xl font-black text-black focus:outline-none focus:border-black"
+                      >
+                        <option value="버그수정">🐞 버그수정</option>
+                        <option value="신규기능">✨ 신규기능</option>
+                        <option value="UI개선">🎨 UI개선</option>
+                        <option value="성능기타">⚡ 성능기타</option>
+                      </select>
                     </div>
-                  </div>
 
-                  <div>
-                    <label className="block text-gray-700 mb-1">문의 제목</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="예: 메인 랜딩페이지 띠배너 고해상도 지원 요청"
-                      value={newDevInquiryTitle}
-                      onChange={(e) => setNewDevInquiryTitle(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-xl font-bold text-black focus:outline-none focus:border-black"
-                    />
+                    <div className="md:col-span-9">
+                      <label className="block text-gray-700 mb-1">문의 제목</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="예: 메인 랜딩페이지 띠배너 고해상도 지원 요청"
+                        value={newDevInquiryTitle}
+                        onChange={(e) => setNewDevInquiryTitle(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-xl font-bold text-black focus:outline-none focus:border-black"
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -638,9 +655,9 @@ export default function AdminLayout({
                       <button
                         type="button"
                         onClick={() => devFileInputRef.current && devFileInputRef.current.click()}
-                        className="px-3 py-1.5 bg-black hover:bg-gray-800 text-white rounded-lg text-[11px] font-bold transition-all cursor-pointer"
+                        className="px-3.5 py-1.5 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-black transition-all cursor-pointer"
                       >
-                        📁 스크린샷 캡쳐 파일 선택
+                        📁 내 컴퓨터 스크린샷 캡쳐 파일 선택
                       </button>
 
                       <input
@@ -653,7 +670,7 @@ export default function AdminLayout({
                     </div>
 
                     {newDevInquiryScreenshot && (
-                      <div className="relative h-32 rounded-xl overflow-hidden border border-emerald-500 bg-black">
+                      <div className="relative h-36 rounded-xl overflow-hidden border border-emerald-500 bg-black">
                         <img
                           src={newDevInquiryScreenshot}
                           alt="첨부 스크린샷"
@@ -662,7 +679,7 @@ export default function AdminLayout({
                         <button
                           type="button"
                           onClick={() => setNewDevInquiryScreenshot(null)}
-                          className="absolute top-1 right-1 bg-rose-600 text-white w-5 h-5 rounded-full flex items-center justify-center font-black text-xs"
+                          className="absolute top-2 right-2 bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs"
                         >
                           ✕
                         </button>
@@ -670,34 +687,72 @@ export default function AdminLayout({
                     )}
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Send className="w-4 h-4" />
-                    <span>🚀 개발자에게 문의 및 스크린샷 전송</span>
-                  </button>
+                  <div className="flex items-center justify-end gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsWriteFormOpen(false)}
+                      className="px-4 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-black text-xs rounded-xl transition-all cursor-pointer"
+                    >
+                      취소
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      <Send className="w-4 h-4" />
+                      <span>🚀 게시판에 문의글 및 스크린샷 등록</span>
+                    </button>
+                  </div>
                 </form>
+              )}
 
-                {/* Right History: List of Developer Tickets & Responses (7 cols) */}
-                <div className="lg:col-span-7 space-y-4">
-                  <div className="border-b border-gray-300 pb-2">
-                    <h4 className="text-sm font-black text-black flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4 text-emerald-700" />
-                      <span>개발 문의 및 조치 결과 히스토리 ({devInquiries.length}건)</span>
-                    </h4>
+              {/* CLASSIC BOARD TABLE LIST (게시판 목록) */}
+              <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
+                <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
+                  <span>📋 개발 문의 게시글 목록 (총 {devInquiries.length}건)</span>
+                  <span className="text-emerald-400 font-mono">게시판 형태 지원</span>
+                </div>
+
+                <div className="divide-y divide-gray-200 text-xs font-bold">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-12 bg-gray-100 px-6 py-3 text-gray-600 font-black border-b border-gray-200">
+                    <div className="col-span-1 text-center">번호</div>
+                    <div className="col-span-2 text-center">유형</div>
+                    <div className="col-span-5">문의 제목 & 첨부</div>
+                    <div className="col-span-2 text-center">작성일시</div>
+                    <div className="col-span-2 text-center">처리 상태</div>
                   </div>
 
-                  <div className="space-y-4">
-                    {devInquiries.map((ticket) => (
-                      <div key={ticket.id} className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-black text-white">
+                  {/* Table Rows */}
+                  {devInquiries.map((ticket) => {
+                    const isExpanded = expandedDevInquiryId === ticket.id;
+
+                    return (
+                      <div key={ticket.id} className="transition-colors hover:bg-stone-50">
+                        
+                        {/* Summary Row */}
+                        <div
+                          onClick={() => setExpandedDevInquiryId(isExpanded ? null : ticket.id)}
+                          className="grid grid-cols-12 px-6 py-4 items-center cursor-pointer select-none"
+                        >
+                          <div className="col-span-1 text-center font-mono text-gray-500">#{ticket.id}</div>
+                          <div className="col-span-2 text-center">
+                            <span className="px-2.5 py-1 rounded-full bg-black text-white text-[10px] font-black">
                               {ticket.type}
                             </span>
+                          </div>
+                          <div className="col-span-5 font-black text-black flex items-center gap-2 pr-2">
+                            <span>{ticket.title}</span>
+                            {ticket.screenshot && (
+                              <span className="text-[10px] bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded border border-emerald-300 flex items-center gap-1 font-mono">
+                                📷 캡쳐첨부
+                              </span>
+                            )}
+                          </div>
+                          <div className="col-span-2 text-center font-mono text-gray-500 text-[11px]">{ticket.date}</div>
+                          <div className="col-span-2 text-center flex items-center justify-center gap-2">
                             <span
-                              className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border ${
+                              className={`px-3 py-1 rounded-full text-[10px] font-black border ${
                                 ticket.status === 'completed'
                                   ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
                                   : 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
@@ -705,42 +760,53 @@ export default function AdminLayout({
                             >
                               {ticket.status === 'completed' ? '✓ 완료됨' : '⏳ 처리 진행중'}
                             </span>
+                            {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                           </div>
-                          <span className="text-xs font-mono text-gray-400 font-bold">{ticket.date}</span>
                         </div>
 
-                        <h4 className="text-sm font-black text-black">{ticket.title}</h4>
-                        <p className="text-xs text-gray-700 font-medium leading-relaxed bg-stone-50 p-3.5 rounded-2xl border border-stone-200">
-                          {ticket.description}
-                        </p>
+                        {/* EXPANDED DETAIL BOARD POST VIEW */}
+                        {isExpanded && (
+                          <div className="bg-stone-50 border-t border-stone-300 p-6 space-y-4 animate-fadeIn">
+                            <div className="bg-white p-5 rounded-2xl border border-stone-300 shadow-xs space-y-3">
+                              <span className="text-xs font-black text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-2">
+                                <PenTool className="w-4 h-4 text-emerald-700" />
+                                <span>상세 문의 내용</span>
+                              </span>
+                              <p className="text-xs text-gray-800 font-medium leading-relaxed whitespace-pre-wrap">
+                                {ticket.description}
+                              </p>
 
-                        {ticket.screenshot && (
-                          <div className="relative h-40 rounded-xl overflow-hidden border border-gray-300 bg-black">
-                            <img
-                              src={ticket.screenshot}
-                              alt="첨부 스크린샷"
-                              className="w-full h-full object-cover"
-                            />
-                            <span className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-black px-2 py-0.5 rounded">
-                              📷 첨부 스크린샷
-                            </span>
+                              {ticket.screenshot && (
+                                <div className="pt-2">
+                                  <span className="text-[11px] font-bold text-gray-500 block mb-1.5">📷 첨부된 스크린샷 이미지:</span>
+                                  <div className="relative max-w-xl h-64 rounded-2xl overflow-hidden border-2 border-gray-300 bg-black shadow-md">
+                                    <img
+                                      src={ticket.screenshot}
+                                      alt="첨부 스크린샷"
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Developer Reply Card */}
+                            {ticket.devReply && (
+                              <div className="bg-emerald-50 p-5 rounded-2xl border-2 border-emerald-400 text-xs font-bold text-emerald-950 space-y-2 shadow-xs">
+                                <span className="font-black text-emerald-900 flex items-center gap-2 border-b border-emerald-200 pb-2 text-sm">
+                                  <Terminal className="w-4 h-4 text-emerald-700" />
+                                  <span>👨‍💻 개발자(Antigravity) 조치 및 작업 결과</span>
+                                </span>
+                                <p className="leading-relaxed font-mono text-xs">{ticket.devReply}</p>
+                              </div>
+                            )}
                           </div>
                         )}
 
-                        {ticket.devReply && (
-                          <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-300 text-xs font-bold text-emerald-950 space-y-1">
-                            <span className="font-black text-emerald-900 flex items-center gap-1.5">
-                              <Terminal className="w-3.5 h-3.5 text-emerald-700" />
-                              <span>개발자 조치 결과:</span>
-                            </span>
-                            <p className="leading-relaxed font-mono">{ticket.devReply}</p>
-                          </div>
-                        )}
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
-
               </div>
 
             </div>
