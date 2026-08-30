@@ -99,6 +99,18 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
       setExamSchedules(getExamSchedulesFromDB());
     });
 
+    const handleCoursesUpdate = () => {
+      setDbCourses(getCoursesFromDB());
+      setAcademicSchedules(getAcademicSchedulesFromDB());
+      setExamSchedules(getExamSchedulesFromDB());
+      if (subTab === 'courses') {
+        loadData();
+      }
+    };
+
+    window.addEventListener('kfssec_courses_updated', handleCoursesUpdate);
+    window.addEventListener('storage', handleCoursesUpdate);
+
     if (subTab === 'courses') {
       loadData();
       updateUrlParams({
@@ -111,6 +123,11 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
         category: activeSidebarCategory,
       });
     }
+
+    return () => {
+      window.removeEventListener('kfssec_courses_updated', handleCoursesUpdate);
+      window.removeEventListener('storage', handleCoursesUpdate);
+    };
   }, [searchTerm, selectedIndustry, selectedStage, selectedFormats, sortOption, currentPage, activeSidebarCategory, subTab]);
 
   const handleIndustryChange = (ind) => {

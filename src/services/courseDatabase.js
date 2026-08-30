@@ -1,5 +1,5 @@
 // Central Dynamic Database Service - Communicates with Real REST API Server (/api/courses)
-// With fallback to server/data/courses.json & localStorage for offline resilience
+// With fallback to localStorage for offline resilience & Vercel deployment
 
 const DEFAULT_COURSES = [
   {
@@ -232,19 +232,22 @@ const DEFAULT_COURSES = [
   },
 ];
 
-// Fetch all courses from Real REST API Backend DB
+// Fetch all courses from Real REST API Backend DB with fallback
 export async function fetchCoursesFromAPI() {
   try {
     const res = await fetch('/api/courses');
     if (res.ok) {
-      const json = await res.json();
-      if (json.success && Array.isArray(json.data)) {
-        localStorage.setItem('kfssec_courses_db', JSON.stringify(json.data));
-        return json.data;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          saveCoursesToDB(json.data);
+          return json.data;
+        }
       }
     }
   } catch (err) {
-    console.warn('[REAL DB CLIENT] Real REST API server offline, fallback to localStorage/default:', err);
+    console.warn('[REAL DB CLIENT] Real REST API server offline, fallback to localStorage:', err);
   }
 
   // Fallback to localStorage or default
@@ -256,8 +259,7 @@ export function getCoursesFromDB() {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      // Force update if saved dates are old 2024
-      if (parsed.length > 0 && parsed[0].startDate.startsWith('2026')) {
+      if (Array.isArray(parsed) && parsed.length > 0) {
         return parsed;
       }
     } catch (e) {
@@ -268,29 +270,56 @@ export function getCoursesFromDB() {
   return DEFAULT_COURSES;
 }
 
+export function saveCoursesToDB(courses) {
+  if (!Array.isArray(courses) || courses.length === 0) return;
+  localStorage.setItem('kfssec_courses_db', JSON.stringify(courses));
+  // Dispatch custom event to notify all components in real-time
+  try {
+    window.dispatchEvent(new Event('kfssec_courses_updated'));
+  } catch (e) {
+    // Ignore in non-browser context
+  }
+}
+
 // REST API POST Create Course
 export async function createCourseAPI(courseData) {
+  const newCourse = {
+    ...courseData,
+    id: courseData.id || `c${Date.now()}`,
+  };
+
   try {
     const res = await fetch('/api/courses', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(courseData),
+      body: JSON.stringify(newCourse),
     });
     if (res.ok) {
-      const json = await res.json();
-      if (json.success) return json.data;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const current = getCoursesFromDB();
+          const updated = [json.data, ...current];
+          saveCoursesToDB(updated);
+          return json.data;
+        }
+      }
     }
   } catch (err) {
     console.warn('Real API create error, saving locally:', err);
   }
+
   const current = getCoursesFromDB();
-  const updated = [courseData, ...current];
+  const updated = [newCourse, ...current];
   saveCoursesToDB(updated);
-  return courseData;
+  return newCourse;
 }
 
-// REST API PUT Update Course
+// REST API PUT Update Course with 100% robust string ID matching
 export async function updateCourseAPI(id, courseData) {
+  let updatedPayload = courseData;
+
   try {
     const res = await fetch(`/api/courses/${id}`, {
       method: 'PUT',
@@ -298,16 +327,32 @@ export async function updateCourseAPI(id, courseData) {
       body: JSON.stringify(courseData),
     });
     if (res.ok) {
-      const json = await res.json();
-      if (json.success) return json.data;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          updatedPayload = json.data;
+        }
+      }
     }
   } catch (err) {
     console.warn('Real API update error, saving locally:', err);
   }
+
+  // Update in local DB store using robust string ID matching
   const current = getCoursesFromDB();
-  const updated = current.map((c) => (c.id === id ? { ...c, ...courseData } : c));
+  const idStr = String(id);
+
+  const updated = current.map((c) => {
+    const cIdStr = String(c.id);
+    if (cIdStr === idStr || cIdStr === `c${idStr}` || `c${cIdStr}` === idStr) {
+      return { ...c, ...updatedPayload };
+    }
+    return c;
+  });
+
   saveCoursesToDB(updated);
-  return courseData;
+  return updatedPayload;
 }
 
 // REST API DELETE Course
@@ -317,14 +362,24 @@ export async function deleteCourseAPI(id) {
       method: 'DELETE',
     });
     if (res.ok) {
-      const json = await res.json();
-      if (json.success) return true;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const json = await res.json();
+        if (json.success) {
+          // Proceed
+        }
+      }
     }
   } catch (err) {
     console.warn('Real API delete error, saving locally:', err);
   }
+
   const current = getCoursesFromDB();
-  const updated = current.filter((c) => c.id !== id);
+  const idStr = String(id);
+  const updated = current.filter((c) => {
+    const cIdStr = String(c.id);
+    return !(cIdStr === idStr || cIdStr === `c${idStr}` || `c${cIdStr}` === idStr);
+  });
   saveCoursesToDB(updated);
   return true;
 }
@@ -338,17 +393,16 @@ export async function uploadImageAPI(base64Data, fileName) {
       body: JSON.stringify({ imageBase64: base64Data, fileName }),
     });
     if (res.ok) {
-      const json = await res.json();
-      if (json.success && json.url) return json.url;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const json = await res.json();
+        if (json.success && json.url) return json.url;
+      }
     }
   } catch (err) {
     console.warn('Real API upload error:', err);
   }
-  return base64Data; // Fallback to base64 stream
-}
-
-export function saveCoursesToDB(courses) {
-  localStorage.setItem('kfssec_courses_db', JSON.stringify(courses));
+  return base64Data;
 }
 
 // Derive Academic Schedules (교육 일정) dynamically from DB

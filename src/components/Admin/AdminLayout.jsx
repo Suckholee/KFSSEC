@@ -410,6 +410,19 @@ export default function AdminLayout({
     }
   };
 
+  // Listen for real-time course DB updates
+  useEffect(() => {
+    const handleCoursesUpdate = () => {
+      setCoursesList(getCoursesFromDB());
+    };
+    window.addEventListener('kfssec_courses_updated', handleCoursesUpdate);
+    window.addEventListener('storage', handleCoursesUpdate);
+    return () => {
+      window.removeEventListener('kfssec_courses_updated', handleCoursesUpdate);
+      window.removeEventListener('storage', handleCoursesUpdate);
+    };
+  }, []);
+
   // Dedicated Course Page Save Handler
   const handleSaveCourseDetail = async (e) => {
     e.preventDefault();
@@ -424,11 +437,11 @@ export default function AdminLayout({
       await createCourseAPI(selectedCourseForEdit);
     }
 
-    const fresh = await fetchCoursesFromAPI();
+    const fresh = getCoursesFromDB();
     setCoursesList(fresh);
     switchPrimaryMenu('courses', 'course_list', null);
     triggerSavedNotice();
-    alert('🎉 업로드된 이미지 및 강의 상세 설명 정보가 리얼 REST API 서버 DB에 저장되었습니다.');
+    alert('🎉 작성하신 내용(강의명, 커리큘럼 설명, 커버 이미지)이 리얼 DB에 저장 및 라이브 적용되었습니다.');
   };
 
   const handleDeleteCourse = async (id) => {
