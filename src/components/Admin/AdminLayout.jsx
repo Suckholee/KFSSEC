@@ -409,7 +409,7 @@ export default function AdminLayout({
               switchPrimaryMenu('developer', 'dev_inquiry_list', null);
               setIsWriteFormOpen(true);
             }}
-            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black animate-pulse"
+            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black"
           >
             <Clipboard className="w-4 h-4 text-emerald-200" />
             <span>📋 Ctrl+V 캡쳐 스크린샷 붙여넣기 문의</span>
@@ -469,14 +469,13 @@ export default function AdminLayout({
           {/* DEVELOPER INQUIRY CHANNEL ICON */}
           <button
             onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer border relative ${
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'developer'
-                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105 border-emerald-400'
-                : 'text-emerald-400 hover:text-white hover:bg-gray-800 border-emerald-800/80 bg-emerald-950/40'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
             title="개발자 1:1 게시판"
           >
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-black animate-ping" />
             <Code className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">개발게시판</span>
           </button>
