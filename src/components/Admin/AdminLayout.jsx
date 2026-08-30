@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   LogOut,
   LayoutDashboard,
@@ -42,6 +42,8 @@ import {
   Image,
   ArrowLeft,
   Check,
+  Upload,
+  FolderOpen,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -66,6 +68,9 @@ export default function AdminLayout({
   const [isSavedNotice, setIsSavedNotice] = useState(false);
   const [editingSection, setEditingSection] = useState(null);
 
+  // Hidden File Input Ref for direct computer image upload
+  const fileInputRef = useRef(null);
+
   // Courses Database State
   const [coursesList, setCoursesList] = useState(getCoursesFromDB());
   
@@ -81,6 +86,26 @@ export default function AdminLayout({
     { label: '총회 세미나 현장', url: '/images/dir_1.jpg' },
     { label: '기업 설명회 현장', url: '/images/dir_2.jpg' },
   ];
+
+  // Direct Computer Image File Upload Handler
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        alert('이미지 파일(JPG, PNG, WEBP 등)만 업로드할 수 있습니다.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageUrl = event.target.result;
+        setSelectedCourseForEdit((prev) => ({
+          ...prev,
+          image: imageUrl,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // SmartPlace Student Reviews State
   const [reviewsList, setReviewsList] = useState([
@@ -132,13 +157,6 @@ export default function AdminLayout({
 
   const [adminInquiries, setAdminInquiries] = useState(defaultInquiries);
 
-  // YouTube & Banner State
-  const [ytTitle, setYtTitle] = useState(siteData.youtube.title);
-  const [ytSubtitle, setYtSubtitle] = useState(siteData.youtube.subtitle);
-  const [videos, setVideos] = useState(siteData.youtube.videos);
-  const [bannerActive, setBannerActive] = useState(siteData.banner.active);
-  const [bannerTitle, setBannerTitle] = useState(siteData.banner.title);
-
   // Dedicated Course Page Save Handler
   const handleSaveCourseDetail = (e) => {
     e.preventDefault();
@@ -159,7 +177,7 @@ export default function AdminLayout({
     saveCoursesToDB(updated);
     setSelectedCourseForEdit(null);
     triggerSavedNotice();
-    alert('🎉 강의 이미지 및 상세 정보가 성공적으로 반영되었습니다.');
+    alert('🎉 업로드된 파일 및 강의 상세 정보가 성공적으로 DB에 저장되었습니다.');
   };
 
   const handleDeleteCourse = (id) => {
@@ -170,18 +188,6 @@ export default function AdminLayout({
       setSelectedCourseForEdit(null);
       triggerSavedNotice();
     }
-  };
-
-  // Review Reply Handler
-  const handleReviewReplySubmit = (reviewId) => {
-    const text = reviewReplyText[reviewId];
-    if (!text || !text.trim()) return;
-
-    setReviewsList((prev) =>
-      prev.map((r) => (r.id === reviewId ? { ...r, reply: text } : r))
-    );
-    setReviewReplyText((prev) => ({ ...prev, [reviewId]: '' }));
-    triggerSavedNotice();
   };
 
   const triggerSavedNotice = () => {
@@ -218,10 +224,6 @@ export default function AdminLayout({
       case 'reviews':
         return [
           { id: 'review_list', label: '수강 후기 & 별점 관리' },
-        ];
-      case 'analytics':
-        return [
-          { id: 'stats_overview', label: '방문자 & 신청 통계' },
         ];
       default:
         return [];
@@ -271,7 +273,7 @@ export default function AdminLayout({
       {/* Main Container with 2-Tier Dual Left Sidebar (Kakao Business Style) */}
       <div className="flex-1 flex overflow-hidden">
         
-        {/* TIER 1: Far Left Narrow Icon Bar (64px - Kakao Partner Style) */}
+        {/* TIER 1: Far Left Narrow Icon Bar */}
         <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-4 shrink-0 z-20">
           <button
             onClick={() => {
@@ -359,7 +361,7 @@ export default function AdminLayout({
           </button>
         </nav>
 
-        {/* TIER 2: Secondary Expanding Sub-Panel (200px - Kakao & SmartPlace Hybrid) */}
+        {/* TIER 2: Secondary Expanding Sub-Panel */}
         <aside className="w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10">
           <div className="px-2 border-b border-gray-200 pb-3">
             <h2 className="text-sm font-black text-black tracking-tight">
@@ -422,12 +424,12 @@ export default function AdminLayout({
             <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
               <CheckCircle className="w-5 h-5 text-emerald-700" />
               <span className="text-sm font-black">
-                강의 데이터 및 변경 사항이 시스템에 저장되었습니다.
+                강의 데이터 및 업로드 파일이 시스템에 반영되었습니다.
               </span>
             </div>
           )}
 
-          {/* DYNAMIC SCREEN 1: DEDICATED FULL-PAGE COURSE DETAIL EDITOR (When a course is selected!) */}
+          {/* DYNAMIC SCREEN 1: DEDICATED FULL-PAGE COURSE DETAIL EDITOR */}
           {selectedCourseForEdit ? (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
@@ -463,34 +465,55 @@ export default function AdminLayout({
               {/* Course Detail Editor Workstation Split View */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                {/* Left Form: Image & Text Detail Edit Controls (7 cols) */}
+                {/* Left Form: Image File Upload & Text Detail Edit Controls (7 cols) */}
                 <form onSubmit={handleSaveCourseDetail} className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-300 shadow-lg space-y-6">
                   <div className="border-b-2 border-black pb-3">
                     <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
                       <Edit3 className="w-5 h-5 text-emerald-700" />
-                      <span>강의 정보 & 이미지 상세 편집기</span>
+                      <span>강의 정보 & 이미지 파일 업로드 편집기</span>
                     </h3>
                     <p className="text-xs text-gray-500 font-bold mt-0.5">
-                      수강생 페이지에 노출될 썸네일 이미지, 강의 제목, 수강료 및 커리큘럼을 편집합니다.
+                      컴퓨터의 이미지를 파일로 직접 업로드하거나 URL을 통해 커버 썸네일을 등록할 수 있습니다.
                     </p>
                   </div>
 
-                  {/* Section A: Course Cover Image Selection & URL */}
-                  <div className="space-y-3 bg-stone-50 p-4 rounded-2xl border border-stone-300">
-                    <label className="block text-xs font-black text-black flex items-center gap-2">
-                      <Image className="w-4 h-4 text-emerald-700" />
-                      <span>강의 대표 커버 이미지 (URL 및 추천 프리셋 선택)</span>
-                    </label>
+                  {/* Section A: Course Cover Image Selection, FILE UPLOAD & Presets */}
+                  <div className="space-y-4 bg-stone-50 p-5 rounded-2xl border-2 border-emerald-500/80 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-black text-black flex items-center gap-2">
+                        <Image className="w-4 h-4 text-emerald-700" />
+                        <span>강의 대표 커버 이미지 (내 컴퓨터 파일 업로드 / URL)</span>
+                      </label>
+
+                      {/* DIRECT LOCAL FILE UPLOAD BUTTON */}
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105"
+                      >
+                        <Upload className="w-4 h-4" />
+                        <span>📁 내 컴퓨터에서 이미지 파일 선택 및 업로드</span>
+                      </button>
+
+                      {/* Hidden HTML File Input */}
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                    </div>
 
                     {/* Image Preview Box */}
-                    <div className="relative h-44 rounded-xl overflow-hidden border border-gray-300 bg-black group">
+                    <div className="relative h-52 rounded-2xl overflow-hidden border-2 border-emerald-600 bg-black group shadow-md">
                       <img
                         src={selectedCourseForEdit.image || '/images/course_menu_dev.jpg'}
-                        alt="강의 프리뷰"
+                        alt="강의 커버 프리뷰"
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-black px-2.5 py-1 rounded">
-                        현재 대표 썸네일 이미지
+                      <div className="absolute top-3 left-3 bg-black/85 text-emerald-400 font-mono font-black text-xs px-3 py-1.5 rounded-lg border border-emerald-700 shadow-md">
+                        ✓ 대표 썸네일 이미지 적용중
                       </div>
                     </div>
 
@@ -500,7 +523,7 @@ export default function AdminLayout({
                         placeholder="이미지 절대 경로 또는 URL 주소 입력..."
                         value={selectedCourseForEdit.image || ''}
                         onChange={(e) => setSelectedCourseForEdit({ ...selectedCourseForEdit, image: e.target.value })}
-                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-xl text-xs font-mono font-bold focus:outline-none focus:border-black"
+                        className="w-full px-3.5 py-2 bg-white border border-gray-300 rounded-xl text-xs font-mono font-bold focus:outline-none focus:border-black"
                       />
 
                       {/* Quick Presets */}
@@ -671,7 +694,7 @@ export default function AdminLayout({
 
                     {/* Live Preview Card */}
                     <div className="bg-stone-50 rounded-2xl overflow-hidden border border-stone-300 shadow-sm space-y-3 p-4">
-                      <div className="relative h-44 rounded-xl overflow-hidden bg-black">
+                      <div className="relative h-48 rounded-xl overflow-hidden bg-black">
                         <img
                           src={selectedCourseForEdit.image || '/images/course_menu_dev.jpg'}
                           alt="실시간 미리보기"
@@ -724,7 +747,7 @@ export default function AdminLayout({
                       네이버 스마트플레이스 스타일 교육과정 DB 관리자
                     </h3>
                     <p className="text-xs text-gray-500 font-bold mt-0.5">
-                      강의 카드를 클릭하거나 [수정] 버튼을 누르면 이미지와 내용을 전면 편집할 수 있는 상세 페이지로 전환됩니다.
+                      강의 카드를 클릭하거나 [수정] 버튼을 누르면 이미지 파일 직접 업로드 및 내용을 전면 편집할 수 있는 상세 페이지로 전환됩니다.
                     </p>
                   </div>
 
@@ -798,7 +821,7 @@ export default function AdminLayout({
 
                       <div className="pt-3 border-t border-gray-200 flex items-center justify-between">
                         <span className="text-xs font-bold text-emerald-800">
-                          클릭하여 상세 편집 ➔
+                          클릭하여 이미지 파일 & 내용 편집 ➔
                         </span>
 
                         <div className="flex items-center gap-2">
@@ -845,29 +868,6 @@ export default function AdminLayout({
                 <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
                   <YouTubeMediaSection youtubeData={siteData.youtube} />
                 </div>
-              </div>
-            </div>
-          )}
-
-          {primaryMenu === 'reviews' && (
-            <div className="space-y-6 animate-fadeIn max-w-5xl">
-              <div className="border-b-2 border-black pb-3">
-                <h3 className="text-xl font-black text-black tracking-tight">
-                  수강생 방문후기 & 별점 관리자
-                </h3>
-              </div>
-              <div className="space-y-4">
-                {reviewsList.map((rev) => (
-                  <div key={rev.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-amber-500 font-black text-sm">{'★'.repeat(rev.rating)}</span>
-                      <span className="text-xs font-mono text-gray-400">{rev.date}</span>
-                    </div>
-                    <p className="text-xs text-gray-800 font-medium leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-200">
-                      "{rev.content}"
-                    </p>
-                  </div>
-                ))}
               </div>
             </div>
           )}
