@@ -1,99 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { ShieldCheck, ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
 
 export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab, onOpenCatalogTab }) {
-  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState('KOR');
-  
-  const timeoutRef = useRef(null);
 
-  const megaMenuItems = [
-    {
-      title: '교육원 소개',
-      key: 'about',
-      subLinks: [
-        { label: '교육원 소개', tab: 'greetings' },
-        { label: '원장 인사말', tab: 'speech' },
-        { label: '원장 프로필', tab: 'profile' },
-        { label: '조직도', tab: 'organization' },
-        { label: '교육원 사무국', tab: 'location' },
-      ],
-    },
-    {
-      title: '명인사업단',
-      key: 'masters',
-      subLinks: [
-        { label: '명인 사업단', masterTab: 'masters' },
-        { label: '명인 요리', masterTab: 'dishes' },
-      ],
-    },
-    {
-      title: '교육·자격증',
-      key: 'education',
-      subLinks: [
-        { label: '교육 과정', catalogTab: 'courses' },
-        { label: '교육 일정', catalogTab: 'schedule' },
-        { label: '자격 시험', catalogTab: 'cert_exam' },
-        { label: '시험 일정', catalogTab: 'exam_schedule' },
-      ],
-    },
-    {
-      title: '창업컨설팅',
-      key: 'consulting',
-      subLinks: [
-        { label: '창업 교육', action: 'package' },
-        { label: '창업 컨설팅', action: 'consulting_modal' },
-        { label: '청년 창업 상담', action: 'consulting_modal' },
-        { label: '창업 준비', action: 'startup_guide' },
-      ],
-    },
-    {
-      title: '커뮤니티',
-      key: 'community',
-      subLinks: [
-        { label: '공지 사항', action: 'notice' },
-        { label: '갤러리', action: 'gallery' },
-        { label: '요리대회', action: 'competition' },
-        { label: '문의하기', action: 'inquiry_modal' },
-      ],
-    },
+  const mainMenuItems = [
+    { title: '교육원 소개', key: 'about', action: () => onOpenAboutTab('greetings') },
+    { title: '명인사업단', key: 'masters', action: () => onOpenMasterTab('masters') },
+    { title: '교육·자격증', key: 'education', action: () => onOpenCatalogTab('courses') },
+    { title: '창업컨설팅', key: 'consulting', action: () => onViewChange('catalog') },
+    { title: '커뮤니티', key: 'community', action: () => onViewChange('landing') },
   ];
 
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setMegaMenuOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      setMegaMenuOpen(false);
-    }, 200);
-  };
-
-  const handleSubLinkClick = (item) => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setMegaMenuOpen(false);
-    setMobileMenuOpen(false);
-
-    if (item.tab) {
-      onOpenAboutTab(item.tab);
-    } else if (item.masterTab) {
-      onOpenMasterTab(item.masterTab);
-    } else if (item.catalogTab) {
-      onOpenCatalogTab(item.catalogTab);
-    } else if (item.action === 'consulting_modal' || item.action === 'inquiry_modal') {
-      onOpenAuth('consulting');
-    } else if (item.action === 'notice' || item.action === 'gallery') {
-      onViewChange('landing');
-    } else {
-      onOpenCatalogTab('courses');
-    }
-  };
-
   return (
-    <header className="relative bg-[#0a1410] border-b border-emerald-950/80 z-50 transition-all font-sans text-white">
+    <header className="relative bg-[#0a1410] border-b border-emerald-950/80 z-50 transition-all font-sans text-white shadow-md">
       
       {/* Main Top Header Bar */}
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto h-20 sm:h-24 flex items-center justify-between">
@@ -111,12 +32,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
         </div>
 
         {/* Desktop Main Navigation Bar */}
-        <nav
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          className="hidden md:flex items-center gap-8 lg:gap-12"
-        >
-          {megaMenuItems.map((menu, mIdx) => {
+        <nav className="hidden md:flex items-center gap-8 lg:gap-12">
+          {mainMenuItems.map((menu, mIdx) => {
             const isMenuActive =
               (menu.key === 'about' && currentView === 'about') ||
               (menu.key === 'masters' && currentView === 'masters') ||
@@ -125,12 +42,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
             return (
               <div key={mIdx} className="relative group py-6 cursor-pointer">
                 <button
-                  onClick={() => {
-                    if (menu.key === 'about') onOpenAboutTab('greetings');
-                    else if (menu.key === 'masters') onOpenMasterTab('masters');
-                    else onOpenCatalogTab('courses');
-                  }}
-                  className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 ${
+                  onClick={menu.action}
+                  className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 cursor-pointer ${
                     isMenuActive
                       ? 'text-emerald-400 border-b-2 border-dashed border-rose-500 pb-0.5'
                       : 'text-white hover:text-emerald-300'
@@ -194,39 +107,6 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
       </div>
 
-      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (SOLID 100% OPAQUE DARK BACKDROP FOR CRYSTAL CLEAR READABILITY) */}
-      <div
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className={`absolute left-0 right-0 top-full bg-[#08120d] border-b-2 border-emerald-500 shadow-2xl z-50 overflow-hidden transition-all duration-300 ease-out origin-top ${
-          megaMenuOpen
-            ? 'max-h-[400px] opacity-100 translate-y-0 pointer-events-auto'
-            : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 grid grid-cols-5 gap-8">
-          {megaMenuItems.map((col, cIdx) => (
-            <div key={cIdx} className="space-y-3">
-              <h4 className="text-base font-black text-emerald-400 border-b border-emerald-800/80 pb-2.5 flex items-center justify-between">
-                <span>{col.title}</span>
-              </h4>
-              <ul className="space-y-2.5 text-sm font-extrabold text-white">
-                {col.subLinks.map((sub, sIdx) => (
-                  <li key={sIdx}>
-                    <button
-                      onClick={() => handleSubLinkClick(sub)}
-                      className="text-white hover:text-emerald-300 font-extrabold text-sm hover:translate-x-1.5 transition-all duration-200 cursor-pointer block text-left w-full py-1 drop-shadow-sm"
-                    >
-                      {sub.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* MOBILE MENU DROPDOWN */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#08120d] border-b border-emerald-900/80 p-6 space-y-6 animate-fadeIn">
@@ -251,24 +131,18 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
             </button>
           </div>
 
-          <div className="space-y-6">
-            {megaMenuItems.map((col, cIdx) => (
-              <div key={cIdx} className="space-y-2">
-                <h4 className="text-sm font-black text-emerald-400 border-b border-emerald-900/60 pb-1">
-                  {col.title}
-                </h4>
-                <div className="grid grid-cols-2 gap-2 text-xs font-bold text-gray-200 pt-1">
-                  {col.subLinks.map((sub, sIdx) => (
-                    <button
-                      key={sIdx}
-                      onClick={() => handleSubLinkClick(sub)}
-                      className="text-left py-1 text-white hover:text-emerald-300"
-                    >
-                      • {sub.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+          <div className="space-y-4">
+            {mainMenuItems.map((menu, mIdx) => (
+              <button
+                key={mIdx}
+                onClick={() => {
+                  menu.action();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-left py-2 text-base font-black text-white hover:text-emerald-300 border-b border-emerald-900/40"
+              >
+                {menu.title}
+              </button>
             ))}
           </div>
         </div>

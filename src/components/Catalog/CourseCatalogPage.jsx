@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SubSidebar from '../common/SubSidebar';
 import Sidebar from './Sidebar';
 import FilterPanel from './FilterPanel';
 import CourseGrid from './CourseGrid';
@@ -127,318 +128,312 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
     setCurrentPage(1);
   };
 
-  const catalogSubTabs = [
-    { id: 'courses', label: '교육 과정', icon: GraduationCap },
-    { id: 'schedule', label: '교육 일정', icon: Calendar },
-    { id: 'cert_exam', label: '자격 시험', icon: Award },
-    { id: 'exam_schedule', label: '시험 일정', icon: Clock },
+  const catalogSubItems = [
+    { id: 'courses', label: '교육 과정' },
+    { id: 'schedule', label: '교육 일정' },
+    { id: 'cert_exam', label: '자격 시험' },
+    { id: 'exam_schedule', label: '시험 일정' },
   ];
 
   return (
     <div className="bg-emerald-50/20 min-h-screen py-8 font-sans text-gray-900">
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-8">
+      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-6">
         
-        {/* Top 4 Sub-Tabs Bar (Matching Screenshots 1 - 4) */}
-        <div className="bg-white rounded-2xl p-2 border-2 border-black shadow-lg flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
-          {catalogSubTabs.map((tab) => {
-            const Icon = tab.icon;
-            const isSelected = subTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setSubTab(tab.id)}
-                className={`px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 cursor-pointer ${
-                  isSelected
-                    ? 'bg-black text-white shadow-md'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-black'
-                }`}
-              >
-                <Icon className={`w-4 h-4 ${isSelected ? 'text-emerald-400' : 'text-gray-500'}`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
+        {/* Main Content Layout: Left SubSidebar + Right Main Content (100% Matching Screenshot) */}
+        <div className="flex flex-col md:flex-row gap-8 items-start">
+          
+          {/* Left Vertical SubSidebar Menu */}
+          <SubSidebar
+            title="교육·자격증"
+            items={catalogSubItems}
+            activeId={subTab}
+            onSelectTab={(tabId) => setSubTab(tabId)}
+          />
 
-        {/* SUB-TAB 1: 교육 과정 (Matching Screenshot 1) */}
-        {subTab === 'courses' && (
-          <div className="space-y-8 animate-fadeIn">
+          {/* Right Main Content Panel */}
+          <div className="flex-1 w-full space-y-8">
             
-            {/* Slanted Chevron Banner Photos Container (Matching Screenshot 1) */}
-            <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4 overflow-hidden">
-              <h2 className="text-2xl font-black text-black border-b-2 border-black pb-2">
-                교육 과정
-              </h2>
+            {/* SUB-TAB 1: 교육 과정 (Matching Target Screenshot) */}
+            {subTab === 'courses' && (
+              <div className="space-y-8 animate-fadeIn">
+                
+                {/* Slanted Chevron Banner Photos Container (Matching Target Screenshot) */}
+                <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4 overflow-hidden">
+                  <h2 className="text-2xl font-black text-black border-b-2 border-black pb-2">
+                    교육 과정
+                  </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
-                {/* Chevron Shape 1 */}
-                <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
-                  <img
-                    src="/images/dir_2.jpg"
-                    alt="외국인 채용 기업체 설명회"
-                    className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
-                    채용 기업체 설명회
-                  </div>
-                </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+                    {/* Chevron Shape 1 */}
+                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
+                      <img
+                        src="/images/dir_2.jpg"
+                        alt="외국인 채용 기업체 설명회"
+                        className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
+                        채용 기업체 설명회
+                      </div>
+                    </div>
 
-                {/* Chevron Shape 2 */}
-                <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
-                  <img
-                    src="/images/dir_1.jpg"
-                    alt="정기총회 연설"
-                    className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
-                    정기 총회 세미나
-                  </div>
-                </div>
+                    {/* Chevron Shape 2 */}
+                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
+                      <img
+                        src="/images/dir_1.jpg"
+                        alt="정기총회 연설"
+                        className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
+                        정기 총회 세미나
+                      </div>
+                    </div>
 
-                {/* Chevron Shape 3 */}
-                <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
-                  <img
-                    src="/images/dir_12.jpg"
-                    alt="정기총회 & 명인 인증식"
-                    className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
-                    명인 인증식 및 수여식
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Main Catalog Section */}
-            <div className="flex flex-col lg:flex-row gap-8 items-start pt-2">
-              <Sidebar
-                activeCategory={activeSidebarCategory}
-                onSelectCategory={(catId) => {
-                  setActiveSidebarCategory(catId);
-                  if (catId === 'all') handleResetFilters();
-                }}
-              />
-
-              <div className="flex-1 w-full space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <span className="text-sm font-bold text-gray-700">
-                    총 <strong className="text-emerald-800 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
-                  </span>
-
-                  <div className="flex items-center gap-3">
-                    <select
-                      value={sortOption}
-                      onChange={(e) => {
-                        setSortOption(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                      className="px-3 py-2 bg-white border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold text-emerald-900 focus:outline-none focus:border-emerald-600 shadow-sm cursor-pointer"
-                    >
-                      <option value="latest">최신순</option>
-                      <option value="popular">인기순</option>
-                      <option value="price_low">수강료 낮은순</option>
-                      <option value="price_high">수강료 높은순</option>
-                    </select>
-
-                    <div className="flex items-center bg-white border border-emerald-200 rounded-xl p-1 shadow-sm">
-                      <button
-                        onClick={() => setViewMode('grid')}
-                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                          viewMode === 'grid'
-                            ? 'bg-[#0F5132] text-white shadow-sm'
-                            : 'text-gray-400 hover:text-emerald-700'
-                        }`}
-                        title="그리드 뷰"
-                      >
-                        <LayoutGrid className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => setViewMode('list')}
-                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                          viewMode === 'list'
-                            ? 'bg-[#0F5132] text-white shadow-sm'
-                            : 'text-gray-400 hover:text-emerald-700'
-                        }`}
-                        title="리스트 뷰"
-                      >
-                        <ListFilter className="w-4 h-4" />
-                      </button>
+                    {/* Chevron Shape 3 */}
+                    <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-6 group hover:skew-x-0 transition-transform duration-500">
+                      <img
+                        src="/images/dir_12.jpg"
+                        alt="정기총회 & 명인 인증식"
+                        className="w-full h-full object-cover transform skew-x-6 group-hover:skew-x-0 group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute top-3 left-3 bg-black/85 text-white font-black text-xs px-3 py-1 rounded">
+                        명인 인증식 및 수여식
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <FilterPanel
-                  selectedIndustry={selectedIndustry}
-                  onSelectIndustry={handleIndustryChange}
-                  selectedStage={selectedStage}
-                  onSelectStage={handleStageChange}
-                  selectedFormats={selectedFormats}
-                  onToggleFormat={handleToggleFormat}
-                />
-
-                <CourseGrid
-                  courses={courses}
-                  loading={loading}
-                  viewMode={viewMode}
-                  onSelectCourse={(c) => setModalCourse(c)}
-                  onResetFilters={handleResetFilters}
-                />
-
-                {!loading && courses.length > 0 && (
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(p) => setCurrentPage(p)}
+                {/* Main Catalog Section */}
+                <div className="flex flex-col lg:flex-row gap-8 items-start pt-2">
+                  <Sidebar
+                    activeCategory={activeSidebarCategory}
+                    onSelectCategory={(catId) => {
+                      setActiveSidebarCategory(catId);
+                      if (catId === 'all') handleResetFilters();
+                    }}
                   />
-                )}
-              </div>
-            </div>
 
-          </div>
-        )}
+                  <div className="flex-1 w-full space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <span className="text-sm font-bold text-gray-700">
+                        총 <strong className="text-emerald-800 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
+                      </span>
 
-        {/* SUB-TAB 2: 교육 일정 (Matching Screenshot 2 Calendar Grid) */}
-        {subTab === 'schedule' && (
-          <div className="space-y-8 animate-fadeIn">
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
-              <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                교육 일정
-              </div>
+                      <div className="flex items-center gap-3">
+                        <select
+                          value={sortOption}
+                          onChange={(e) => {
+                            setSortOption(e.target.value);
+                            setCurrentPage(1);
+                          }}
+                          className="px-3 py-2 bg-white border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold text-emerald-900 focus:outline-none focus:border-emerald-600 shadow-sm cursor-pointer"
+                        >
+                          <option value="latest">최신순</option>
+                          <option value="popular">인기순</option>
+                          <option value="price_low">수강료 낮은순</option>
+                          <option value="price_high">수강료 높은순</option>
+                        </select>
 
-              {/* Monthly Academic Schedule Calendar Grid */}
-              <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100">
-                <div className="grid grid-cols-7 bg-gray-700 text-white font-black text-center py-3 text-sm">
-                  <span className="text-rose-400">일</span>
-                  <span>월</span>
-                  <span>화</span>
-                  <span>수</span>
-                  <span>목</span>
-                  <span>금</span>
-                  <span className="text-sky-400">토</span>
-                </div>
-
-                <div className="grid grid-cols-7 text-xs font-bold text-gray-800 divide-x divide-y divide-gray-300 bg-white">
-                  {Array.from({ length: 35 }).map((_, idx) => {
-                    const dayNum = idx - 2; // offset for month
-                    const isValidDay = dayNum > 0 && dayNum <= 31;
-                    const isToday = dayNum === 15;
-
-                    return (
-                      <div key={idx} className="min-h-[90px] p-2 flex flex-col justify-between hover:bg-emerald-50/50 transition-colors">
-                        <span className={`font-black ${isToday ? 'bg-emerald-700 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
-                          {isValidDay ? dayNum : ''}
-                        </span>
-
-                        {dayNum === 5 && (
-                          <span className="bg-emerald-100 text-emerald-900 p-1 rounded text-[10px] font-black leading-tight border border-emerald-300">
-                            한식 마스터 개강
-                          </span>
-                        )}
-                        {dayNum === 12 && (
-                          <span className="bg-amber-100 text-amber-900 p-1 rounded text-[10px] font-black leading-tight border border-amber-300">
-                            일식 횟집 창업 개강
-                          </span>
-                        )}
-                        {dayNum === 20 && (
-                          <span className="bg-rose-100 text-rose-900 p-1 rounded text-[10px] font-black leading-tight border border-rose-300">
-                            메뉴 개발 특강
-                          </span>
-                        )}
-                        {dayNum === 28 && (
-                          <span className="bg-sky-100 text-sky-900 p-1 rounded text-[10px] font-black leading-tight border border-sky-300">
-                            수강생 종강 발표회
-                          </span>
-                        )}
+                        <div className="flex items-center bg-white border border-emerald-200 rounded-xl p-1 shadow-sm">
+                          <button
+                            onClick={() => setViewMode('grid')}
+                            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                              viewMode === 'grid'
+                                ? 'bg-[#0F5132] text-white shadow-sm'
+                                : 'text-gray-400 hover:text-emerald-700'
+                            }`}
+                            title="그리드 뷰"
+                          >
+                            <LayoutGrid className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setViewMode('list')}
+                            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                              viewMode === 'list'
+                                ? 'bg-[#0F5132] text-white shadow-sm'
+                                : 'text-gray-400 hover:text-emerald-700'
+                            }`}
+                            title="리스트 뷰"
+                          >
+                            <ListFilter className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+                    </div>
 
-        {/* SUB-TAB 3: 자격 시험 (Matching Screenshot 3) */}
-        {subTab === 'cert_exam' && (
-          <div className="space-y-8 animate-fadeIn">
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
-              <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                자격 시험
-              </div>
+                    <FilterPanel
+                      selectedIndustry={selectedIndustry}
+                      onSelectIndustry={handleIndustryChange}
+                      selectedStage={selectedStage}
+                      onSelectStage={handleStageChange}
+                      selectedFormats={selectedFormats}
+                      onToggleFormat={handleToggleFormat}
+                    />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                {[
-                  { title: '외식창업 지도사 1급/2급', desc: '상권분석 및 매장운영 실무 역량을 인증하는 비영리 민간 자격증' },
-                  { title: '메뉴개발 전문가 자격증', desc: 'HMR/RMR 레시피 개발 및 식자재 원가 산정 전문가 인증' },
-                  { title: '조리기능장 자격 검정', desc: '외식업 40년 경력 명장진의 실기 검정 및 기술 심사' },
-                  { title: '외식경영 관리사', desc: '외식 프랜차이즈 가맹 표준화 및 경영 컨설팅 자격' },
-                ].map((cert, idx) => (
-                  <div key={idx} className="bg-stone-50 p-6 rounded-2xl border border-stone-300 space-y-3 hover:border-emerald-500 hover:bg-emerald-50/40 transition-all">
-                    <h3 className="text-lg font-black text-black">{cert.title}</h3>
-                    <p className="text-xs text-gray-600 font-medium leading-relaxed">{cert.desc}</p>
-                    <button
-                      onClick={() => alert(`"${cert.title}" 자격시험 응시 요강을 확인합니다.`)}
-                      className="px-4 py-2 bg-black text-white text-xs font-black rounded-xl hover:bg-gray-800 transition-colors cursor-pointer"
-                    >
-                      응시 요강 보기
-                    </button>
+                    <CourseGrid
+                      courses={courses}
+                      loading={loading}
+                      viewMode={viewMode}
+                      onSelectCourse={(c) => setModalCourse(c)}
+                      onResetFilters={handleResetFilters}
+                    />
+
+                    {!loading && courses.length > 0 && (
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={(p) => setCurrentPage(p)}
+                      />
+                    )}
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* SUB-TAB 4: 시험 일정 (Matching Screenshot 4 Calendar Grid) */}
-        {subTab === 'exam_schedule' && (
-          <div className="space-y-8 animate-fadeIn">
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
-              <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                시험 일정
-              </div>
-
-              {/* Monthly Exam Calendar Grid */}
-              <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100">
-                <div className="grid grid-cols-7 bg-gray-700 text-white font-black text-center py-3 text-sm">
-                  <span className="text-rose-400">일</span>
-                  <span>월</span>
-                  <span>화</span>
-                  <span>수</span>
-                  <span>목</span>
-                  <span>금</span>
-                  <span className="text-sky-400">토</span>
                 </div>
 
-                <div className="grid grid-cols-7 text-xs font-bold text-gray-800 divide-x divide-y divide-gray-300 bg-white">
-                  {Array.from({ length: 35 }).map((_, idx) => {
-                    const dayNum = idx - 2;
-                    const isValidDay = dayNum > 0 && dayNum <= 31;
-                    const isExamDay = dayNum === 10 || dayNum === 24;
+              </div>
+            )}
 
-                    return (
-                      <div key={idx} className="min-h-[90px] p-2 flex flex-col justify-between hover:bg-rose-50/50 transition-colors">
-                        <span className={`font-black ${isExamDay ? 'bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
-                          {isValidDay ? dayNum : ''}
-                        </span>
+            {/* SUB-TAB 2: 교육 일정 */}
+            {subTab === 'schedule' && (
+              <div className="space-y-8 animate-fadeIn">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
+                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
+                    교육 일정
+                  </div>
 
-                        {dayNum === 10 && (
-                          <span className="bg-rose-100 text-rose-900 p-1 rounded text-[10px] font-black leading-tight border border-rose-300">
-                            제24회 필기 시험
-                          </span>
-                        )}
-                        {dayNum === 24 && (
-                          <span className="bg-emerald-100 text-emerald-900 p-1 rounded text-[10px] font-black leading-tight border border-emerald-300">
-                            실기 실무 검정
-                          </span>
-                        )}
+                  <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+                    <div className="grid grid-cols-7 bg-gray-700 text-white font-black text-center py-3 text-sm">
+                      <span className="text-rose-400">일</span>
+                      <span>월</span>
+                      <span>화</span>
+                      <span>수</span>
+                      <span>목</span>
+                      <span>금</span>
+                      <span className="text-sky-400">토</span>
+                    </div>
+
+                    <div className="grid grid-cols-7 text-xs font-bold text-gray-800 divide-x divide-y divide-gray-300 bg-white">
+                      {Array.from({ length: 35 }).map((_, idx) => {
+                        const dayNum = idx - 2;
+                        const isValidDay = dayNum > 0 && dayNum <= 31;
+                        const isToday = dayNum === 15;
+
+                        return (
+                          <div key={idx} className="min-h-[90px] p-2 flex flex-col justify-between hover:bg-emerald-50/50 transition-colors">
+                            <span className={`font-black ${isToday ? 'bg-emerald-700 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
+                              {isValidDay ? dayNum : ''}
+                            </span>
+
+                            {dayNum === 5 && (
+                              <span className="bg-emerald-100 text-emerald-900 p-1 rounded text-[10px] font-black leading-tight border border-emerald-300">
+                                한식 마스터 개강
+                              </span>
+                            )}
+                            {dayNum === 12 && (
+                              <span className="bg-amber-100 text-amber-900 p-1 rounded text-[10px] font-black leading-tight border border-amber-300">
+                                일식 횟집 창업 개강
+                              </span>
+                            )}
+                            {dayNum === 20 && (
+                              <span className="bg-rose-100 text-rose-900 p-1 rounded text-[10px] font-black leading-tight border border-rose-300">
+                                메뉴 개발 특강
+                              </span>
+                            )}
+                            {dayNum === 28 && (
+                              <span className="bg-sky-100 text-sky-900 p-1 rounded text-[10px] font-black leading-tight border border-sky-300">
+                                수강생 종강 발표회
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SUB-TAB 3: 자격 시험 */}
+            {subTab === 'cert_exam' && (
+              <div className="space-y-8 animate-fadeIn">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
+                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
+                    자격 시험
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    {[
+                      { title: '외식창업 지도사 1급/2급', desc: '상권분석 및 매장운영 실무 역량을 인증하는 비영리 민간 자격증' },
+                      { title: '메뉴개발 전문가 자격증', desc: 'HMR/RMR 레시피 개발 및 식자재 원가 산정 전문가 인증' },
+                      { title: '조리기능장 자격 검정', desc: '외식업 40년 경력 명장진의 실기 검정 및 기술 심사' },
+                      { title: '외식경영 관리사', desc: '외식 프랜차이즈 가맹 표준화 및 경영 컨설팅 자격' },
+                    ].map((cert, idx) => (
+                      <div key={idx} className="bg-stone-50 p-6 rounded-2xl border border-stone-300 space-y-3 hover:border-emerald-500 hover:bg-emerald-50/40 transition-all">
+                        <h3 className="text-lg font-black text-black">{cert.title}</h3>
+                        <p className="text-xs text-gray-600 font-medium leading-relaxed">{cert.desc}</p>
+                        <button
+                          onClick={() => alert(`"${cert.title}" 자격시험 응시 요강을 확인합니다.`)}
+                          className="px-4 py-2 bg-black text-white text-xs font-black rounded-xl hover:bg-gray-800 transition-colors cursor-pointer"
+                        >
+                          응시 요강 보기
+                        </button>
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* SUB-TAB 4: 시험 일정 */}
+            {subTab === 'exam_schedule' && (
+              <div className="space-y-8 animate-fadeIn">
+                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6">
+                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
+                    시험 일정
+                  </div>
+
+                  <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-gray-100">
+                    <div className="grid grid-cols-7 bg-gray-700 text-white font-black text-center py-3 text-sm">
+                      <span className="text-rose-400">일</span>
+                      <span>월</span>
+                      <span>화</span>
+                      <span>수</span>
+                      <span>목</span>
+                      <span>금</span>
+                      <span className="text-sky-400">토</span>
+                    </div>
+
+                    <div className="grid grid-cols-7 text-xs font-bold text-gray-800 divide-x divide-y divide-gray-300 bg-white">
+                      {Array.from({ length: 35 }).map((_, idx) => {
+                        const dayNum = idx - 2;
+                        const isValidDay = dayNum > 0 && dayNum <= 31;
+                        const isExamDay = dayNum === 10 || dayNum === 24;
+
+                        return (
+                          <div key={idx} className="min-h-[90px] p-2 flex flex-col justify-between hover:bg-rose-50/50 transition-colors">
+                            <span className={`font-black ${isExamDay ? 'bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center' : ''}`}>
+                              {isValidDay ? dayNum : ''}
+                            </span>
+
+                            {dayNum === 10 && (
+                              <span className="bg-rose-100 text-rose-900 p-1 rounded text-[10px] font-black leading-tight border border-rose-300">
+                                제24회 필기 시험
+                              </span>
+                            )}
+                            {dayNum === 24 && (
+                              <span className="bg-emerald-100 text-emerald-900 p-1 rounded text-[10px] font-black leading-tight border border-emerald-300">
+                                실기 실무 검정
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
-        )}
+
+        </div>
 
       </div>
 
