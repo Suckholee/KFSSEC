@@ -1453,6 +1453,82 @@ export default function AdminLayout({
                                 <p className="leading-relaxed font-mono text-xs">{ticket.devReply}</p>
                               </div>
                             )}
+
+                            {/* Additional Admin Follow-up Comments List */}
+                            {ticket.comments && ticket.comments.length > 0 && (
+                              <div className="space-y-2 pt-2">
+                                <span className="text-[11px] font-black text-gray-500 block">💬 주고받은 추가 대화 & 피드백:</span>
+                                {ticket.comments.map((c, cIdx) => (
+                                  <div key={cIdx} className="bg-white p-3 rounded-xl border border-stone-300 text-xs font-bold space-y-1">
+                                    <div className="flex items-center justify-between text-gray-500 text-[10px]">
+                                      <span>👤 {c.author}</span>
+                                      <span className="font-mono">{c.date}</span>
+                                    </div>
+                                    <p className="text-gray-800 font-medium">{c.text}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* ADMIN QUICK REPLY / FOLLOW-UP COMMENT FORM */}
+                            <div className="bg-white p-4 rounded-2xl border border-stone-300 space-y-3 pt-3">
+                              <span className="text-xs font-black text-black flex items-center gap-1.5">
+                                <MessageCircle className="w-4 h-4 text-emerald-700" />
+                                <span>💬 이 문의건에 대해 개발자(Antigravity)에게 추가 의견/댓글 전달하기</span>
+                              </span>
+                              
+                              <div className="flex gap-2">
+                                <input
+                                  type="text"
+                                  placeholder="추가 요청사항이나 피드백을 입력하세요... (예: 버튼 색상을 조금 더 진하게 해줄 수 있나요?)"
+                                  id={`reply-input-${ticket.id}`}
+                                  className="flex-1 px-3 py-2 bg-stone-50 border border-gray-300 rounded-xl text-xs font-bold text-black focus:outline-none focus:border-black"
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && e.target.value.trim()) {
+                                      const text = e.target.value.trim();
+                                      const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16).replace(/-/g, '.');
+                                      setDevInquiries((prev) =>
+                                        prev.map((t) =>
+                                          t.id === ticket.id
+                                            ? {
+                                                ...t,
+                                                comments: [...(t.comments || []), { author: '관리자(대표님)', text, date: nowStr }],
+                                              }
+                                            : t
+                                        )
+                                      );
+                                      e.target.value = '';
+                                      alert('💬 개발자에게 추가 피드백/댓글이 전송되었습니다.');
+                                    }
+                                  }}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const inputEl = document.getElementById(`reply-input-${ticket.id}`);
+                                    if (inputEl && inputEl.value.trim()) {
+                                      const text = inputEl.value.trim();
+                                      const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16).replace(/-/g, '.');
+                                      setDevInquiries((prev) =>
+                                        prev.map((t) =>
+                                          t.id === ticket.id
+                                            ? {
+                                                ...t,
+                                                comments: [...(t.comments || []), { author: '관리자(대표님)', text, date: nowStr }],
+                                              }
+                                            : t
+                                        )
+                                      );
+                                      inputEl.value = '';
+                                      alert('💬 개발자에게 추가 피드백/댓글이 전송되었습니다.');
+                                    }
+                                  }}
+                                  className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-black transition-colors cursor-pointer shrink-0"
+                                >
+                                  전달
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         )}
 
