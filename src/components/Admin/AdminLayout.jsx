@@ -45,7 +45,7 @@ export default function AdminLayout({
 }) {
   const [activeTab, setActiveTab] = useState('visual_editor'); // 'visual_editor', 'inquiries', 'youtube', 'banner'
   const [isSavedNotice, setIsSavedNotice] = useState(false);
-  const [editingSection, setEditingSection] = useState(null); // 'youtube', 'banner', 'course'
+  const [editingSection, setEditingSection] = useState(null); // 'youtube', 'banner'
 
   // Default Inquiries list if postsList not provided
   const defaultInquiries = [
@@ -224,24 +224,24 @@ export default function AdminLayout({
   });
 
   return (
-    <div className="min-h-screen bg-[#070d0a] text-gray-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen bg-gray-100 text-gray-900 flex flex-col font-sans selection:bg-emerald-200 selection:text-emerald-900">
       
-      {/* Top Admin Header Bar */}
-      <header className="bg-[#0b1611] border-b border-emerald-900/60 h-20 px-6 sm:px-10 flex items-center justify-between shadow-xl shrink-0 z-50">
+      {/* Top White Admin Header Bar */}
+      <header className="bg-white border-b border-gray-300 h-20 px-6 sm:px-10 flex items-center justify-between shadow-sm shrink-0 z-50">
         <div className="flex items-center gap-4">
-          <div className="bg-emerald-500/20 p-2.5 rounded-2xl border border-emerald-500/40 text-emerald-400">
+          <div className="bg-emerald-100 p-2.5 rounded-2xl border border-emerald-300 text-emerald-800">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-black text-white tracking-tight">
-                한국외식창업교육원 시각적 라이브 관리자 센터
+              <h1 className="text-xl font-black text-black tracking-tight">
+                한국외식창업교육원 관리자 센터
               </h1>
-              <span className="text-[10px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-emerald-400" /> WYSIWYG LIVE EDITOR
+              <span className="text-[10px] font-mono bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-emerald-700" /> WHITE LIVE ADMIN
               </span>
             </div>
-            <p className="text-xs text-gray-400 font-medium">
+            <p className="text-xs text-gray-500 font-medium">
               실제 홈페이지 UI를 보면서 직접 클릭하여 편집하는 시각적 페이지 관리자
             </p>
           </div>
@@ -250,16 +250,16 @@ export default function AdminLayout({
         <div className="flex items-center gap-4">
           <button
             onClick={onExitAdmin}
-            className="px-4 py-2 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-800 text-xs font-black rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-300 text-xs font-black rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-xs"
           >
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className="w-4 h-4 text-emerald-700" />
             <span>메인 사이트로 이동</span>
           </button>
           <button
             onClick={onLogout}
-            className="px-4 py-2 bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800 text-xs font-black rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 bg-black hover:bg-gray-800 text-white text-xs font-black rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 text-rose-400" />
             <span>관리자 로그아웃</span>
           </button>
         </div>
@@ -268,18 +268,18 @@ export default function AdminLayout({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         
-        {/* Sidebar Navigation */}
-        <aside className="w-full md:w-64 bg-[#09120e] border-r border-emerald-900/50 p-6 space-y-3 shrink-0">
+        {/* White Sidebar Navigation */}
+        <aside className="w-full md:w-64 bg-white border-r border-gray-300 p-6 space-y-3 shrink-0 shadow-xs">
           
           <button
             onClick={() => setActiveTab('visual_editor')}
             className={`w-full text-left py-3.5 px-4 rounded-2xl text-xs sm:text-sm font-black transition-all flex items-center gap-3 cursor-pointer ${
               activeTab === 'visual_editor'
-                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/40 border border-emerald-400'
-                : 'text-gray-400 hover:text-white hover:bg-emerald-950/50'
+                ? 'bg-black text-white shadow-lg shadow-gray-400/40'
+                : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
-            <Monitor className="w-4 h-4" />
+            <Monitor className="w-4 h-4 text-emerald-400" />
             <span>🖥️ WYSIWYG 라이브 에디터</span>
           </button>
 
@@ -287,12 +287,12 @@ export default function AdminLayout({
             onClick={() => setActiveTab('inquiries')}
             className={`w-full text-left py-3.5 px-4 rounded-2xl text-xs sm:text-sm font-black transition-all flex items-center justify-between cursor-pointer ${
               activeTab === 'inquiries'
-                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/40 border border-emerald-400'
-                : 'text-gray-400 hover:text-white hover:bg-emerald-950/50'
+                ? 'bg-black text-white shadow-lg shadow-gray-400/40'
+                : 'text-gray-700 hover:bg-gray-100'
             }`}
           >
             <div className="flex items-center gap-3">
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="w-4 h-4 text-emerald-400" />
               <span>💬 수강생 문의 & 1:1 답변</span>
             </div>
             {adminInquiries.filter((i) => i.status === 'pending').length > 0 && (
@@ -302,17 +302,17 @@ export default function AdminLayout({
             )}
           </button>
 
-          <div className="pt-4 border-t border-emerald-950 space-y-2">
-            <span className="text-[11px] font-bold text-gray-500 uppercase px-2">빠른 양식 편집</span>
+          <div className="pt-4 border-t border-gray-200 space-y-2">
+            <span className="text-[11px] font-bold text-gray-400 uppercase px-2">빠른 양식 편집</span>
             
             <button
               onClick={() => {
                 setActiveTab('visual_editor');
                 setEditingSection('youtube');
               }}
-              className="w-full text-left py-2.5 px-3 text-xs font-bold text-gray-300 hover:text-emerald-300 hover:bg-emerald-950/40 rounded-xl flex items-center gap-2"
+              className="w-full text-left py-2.5 px-3 text-xs font-bold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-xl flex items-center gap-2"
             >
-              <Video className="w-4 h-4 text-emerald-400" />
+              <Video className="w-4 h-4 text-emerald-700" />
               <span>유튜브 미디어 설정</span>
             </button>
 
@@ -321,9 +321,9 @@ export default function AdminLayout({
                 setActiveTab('visual_editor');
                 setEditingSection('banner');
               }}
-              className="w-full text-left py-2.5 px-3 text-xs font-bold text-gray-300 hover:text-emerald-300 hover:bg-emerald-950/40 rounded-xl flex items-center gap-2"
+              className="w-full text-left py-2.5 px-3 text-xs font-bold text-gray-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-xl flex items-center gap-2"
             >
-              <FileText className="w-4 h-4 text-emerald-400" />
+              <FileText className="w-4 h-4 text-emerald-700" />
               <span>행사 띠 배너 설정</span>
             </button>
           </div>
@@ -331,43 +331,43 @@ export default function AdminLayout({
         </aside>
 
         {/* Dynamic Admin View Section */}
-        <main className="flex-1 p-4 sm:p-8 overflow-y-auto bg-[#060c09] space-y-6">
+        <main className="flex-1 p-4 sm:p-8 overflow-y-auto bg-gray-100 space-y-6">
           
           {/* Notification Alert for Saved Changes */}
           {isSavedNotice && (
-            <div className="bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn">
-              <CheckCircle className="w-5 h-5 text-emerald-400" />
-              <span className="text-sm font-bold">
+            <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
+              <CheckCircle className="w-5 h-5 text-emerald-700" />
+              <span className="text-sm font-black">
                 사이트 변경 사항이 실시간으로 홈페이지에 반영되었습니다.
               </span>
             </div>
           )}
 
-          {/* MODE 1: VISUAL WYSIWYG LIVE CANVAS EDITOR (REAL SITE COPIED WITH EDIT BADGES) */}
+          {/* MODE 1: VISUAL WYSIWYG LIVE CANVAS EDITOR (WHITE THEME) */}
           {activeTab === 'visual_editor' && (
             <div className="space-y-6 animate-fadeIn w-full">
               
-              <div className="flex items-center justify-between bg-[#0b1611] p-4 rounded-2xl border border-emerald-900/80">
+              <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-300 shadow-xs">
                 <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500 animate-ping" />
-                  <span className="text-sm font-black text-white">
+                  <div className="w-3 h-3 rounded-full bg-emerald-600 animate-ping" />
+                  <span className="text-sm font-black text-black">
                     라이브 시각적 프레임워크 (홈페이지 실제 화면에서 직접 요소 편집)
                   </span>
                 </div>
-                <span className="text-xs font-bold text-gray-400">
-                  각 섹션 우상단의 <strong className="text-emerald-400 font-black">[✏️ 수정]</strong> 버튼을 누르면 실시간 편집이 가능합니다.
+                <span className="text-xs font-bold text-gray-600">
+                  각 섹션 우상단의 <strong className="text-emerald-700 font-black">[✏️ 수정]</strong> 버튼을 누르면 실시간 편집이 가능합니다.
                 </span>
               </div>
 
               {/* LIVE PAGE CANVAS WRAPPER */}
-              <div className="space-y-8 bg-white rounded-3xl p-4 sm:p-6 border-4 border-emerald-950 shadow-2xl text-gray-900 overflow-hidden relative">
+              <div className="space-y-8 bg-white rounded-3xl p-4 sm:p-6 border-2 border-gray-300 shadow-xl text-gray-900 overflow-hidden relative">
                 
                 {/* 1. Event Banner Section Frame */}
-                <div className="relative border-4 border-dashed border-emerald-500/80 rounded-2xl overflow-hidden group shadow-lg">
+                <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
                   <div className="absolute top-4 right-4 z-40">
                     <button
                       onClick={() => setEditingSection('banner')}
-                      className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-black rounded-xl shadow-xl flex items-center gap-1.5 cursor-pointer hover:scale-105 transition-all"
+                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow-xl flex items-center gap-1.5 cursor-pointer hover:scale-105 transition-all"
                     >
                       <Edit3 className="w-4 h-4" />
                       <span>✏️ 행사 띠배너 수정</span>
@@ -380,11 +380,11 @@ export default function AdminLayout({
                 </div>
 
                 {/* 2. YouTube Media Section Frame */}
-                <div className="relative border-4 border-dashed border-emerald-500/80 rounded-2xl overflow-hidden group shadow-lg">
+                <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
                   <div className="absolute top-4 right-4 z-40">
                     <button
                       onClick={() => setEditingSection('youtube')}
-                      className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-black rounded-xl shadow-xl flex items-center gap-1.5 cursor-pointer hover:scale-105 transition-all"
+                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow-xl flex items-center gap-1.5 cursor-pointer hover:scale-105 transition-all"
                     >
                       <Edit3 className="w-4 h-4" />
                       <span>✏️ 유튜브 방송미디어 수정</span>
@@ -396,7 +396,7 @@ export default function AdminLayout({
                 </div>
 
                 {/* 3. Netflix Courses Section Frame */}
-                <div className="relative border-4 border-dashed border-gray-400 rounded-2xl overflow-hidden group shadow-lg">
+                <div className="relative border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden group shadow-md">
                   <div className="absolute top-4 right-4 z-40">
                     <button
                       onClick={() => alert('교육과정 마스터 카탈로그 편집 화면으로 이동합니다.')}
@@ -412,7 +412,7 @@ export default function AdminLayout({
                 </div>
 
                 {/* 4. Full Package Courses Section Frame */}
-                <div className="relative border-4 border-dashed border-gray-400 rounded-2xl overflow-hidden group shadow-lg">
+                <div className="relative border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden group shadow-md">
                   <FullPackageCoursesSection
                     onSelectPackage={() => {}}
                   />
@@ -423,16 +423,16 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* MODE 2: INQUIRIES & BOARD MANAGEMENT */}
+          {/* MODE 2: INQUIRIES & BOARD MANAGEMENT (WHITE THEME) */}
           {activeTab === 'inquiries' && (
             <div className="space-y-8 animate-fadeIn max-w-6xl">
               
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-900/60 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-4">
                 <div>
-                  <h2 className="text-2xl font-black text-white tracking-tight">
+                  <h2 className="text-2xl font-black text-black tracking-tight">
                     수강생 1:1 문의 & 게시글 관리 워크스테이션
                   </h2>
-                  <p className="text-xs text-gray-400 font-medium mt-1">
+                  <p className="text-xs text-gray-500 font-bold mt-1">
                     수강생 문의글을 조회하고 1-Click 보조 템플릿으로 빠르게 공식 답변을 등록합니다.
                   </p>
                 </div>
@@ -443,8 +443,8 @@ export default function AdminLayout({
                     onClick={() => setInquiryFilter('all')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                       inquiryFilter === 'all'
-                        ? 'bg-emerald-500 text-black'
-                        : 'bg-[#0b1611] text-gray-400 border border-emerald-900'
+                        ? 'bg-black text-white'
+                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'
                     }`}
                   >
                     전체 ({adminInquiries.length})
@@ -454,7 +454,7 @@ export default function AdminLayout({
                     className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                       inquiryFilter === 'pending'
                         ? 'bg-amber-500 text-black'
-                        : 'bg-[#0b1611] text-amber-400 border border-amber-900/50'
+                        : 'bg-amber-50 text-amber-800 border border-amber-300'
                     }`}
                   >
                     ⏳ 답변대기 ({adminInquiries.filter((i) => i.status === 'pending').length})
@@ -463,8 +463,8 @@ export default function AdminLayout({
                     onClick={() => setInquiryFilter('completed')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                       inquiryFilter === 'completed'
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-[#0b1611] text-emerald-400 border border-emerald-900/50'
+                        ? 'bg-emerald-700 text-white'
+                        : 'bg-emerald-50 text-emerald-800 border border-emerald-300'
                     }`}
                   >
                     ✓ 답변완료 ({adminInquiries.filter((i) => i.status === 'completed').length})
@@ -488,34 +488,34 @@ export default function AdminLayout({
                           setSelectedInquiry(item);
                           setInquiryReplyText(item.reply ? item.reply.content : '');
                         }}
-                        className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 ${
+                        className={`p-5 rounded-2xl border-2 transition-all cursor-pointer space-y-2 ${
                           isSelected
-                            ? 'bg-emerald-950/80 border-emerald-500 shadow-lg'
-                            : 'bg-[#0b1611] border-emerald-900/50 hover:border-emerald-700'
+                            ? 'bg-emerald-50 border-emerald-600 shadow-md'
+                            : 'bg-white border-gray-300 hover:border-black shadow-xs'
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <span
                             className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border ${
                               isAnswered
-                                ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
-                                : 'bg-amber-950 text-amber-300 border-amber-800 animate-pulse'
+                                ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                : 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
                             }`}
                           >
                             {isAnswered ? '✓ 답변완료' : '⏳ 답변대기'}
                           </span>
-                          <span className="text-[11px] font-mono text-gray-400">
+                          <span className="text-[11px] font-mono text-gray-500 font-bold">
                             {item.date}
                           </span>
                         </div>
 
-                        <h4 className="text-sm font-black text-white line-clamp-1">
+                        <h4 className="text-sm font-black text-black line-clamp-1">
                           {item.title}
                         </h4>
 
-                        <div className="flex items-center justify-between text-xs text-gray-400 font-bold pt-1 border-t border-emerald-950">
+                        <div className="flex items-center justify-between text-xs text-gray-600 font-bold pt-1 border-t border-gray-200">
                           <span>작성자: {item.author}</span>
-                          <ChevronRight className="w-4 h-4 text-emerald-500" />
+                          <ChevronRight className="w-4 h-4 text-gray-500" />
                         </div>
                       </div>
                     );
@@ -523,68 +523,69 @@ export default function AdminLayout({
                 </div>
 
                 {/* Right Workstation Panel with 1-Click Templates */}
-                <div className="lg:col-span-7 bg-[#0b1611] p-6 rounded-3xl border border-emerald-900/60 space-y-6">
+                <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-300 shadow-lg space-y-6">
                   {selectedInquiry ? (
                     <div className="space-y-6">
                       
-                      <div className="border-b border-emerald-900/80 pb-4 space-y-2">
+                      <div className="border-b-2 border-gray-200 pb-4 space-y-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-black text-emerald-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">
+                          <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
                             {selectedInquiry.category}
                           </span>
                           {selectedInquiry.status === 'completed' ? (
-                            <span className="text-xs font-black text-emerald-300 bg-emerald-900/60 px-3 py-1 rounded-full">
+                            <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
                               ✓ 공식 답변 완료됨
                             </span>
                           ) : (
-                            <span className="text-xs font-black text-amber-300 bg-amber-950 px-3 py-1 rounded-full border border-amber-800">
+                            <span className="text-xs font-black text-amber-900 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
                               ⏳ 답변 대기중
                             </span>
                           )}
                         </div>
 
-                        <h3 className="text-xl font-black text-white">
+                        <h3 className="text-xl font-black text-black">
                           {selectedInquiry.title}
                         </h3>
 
-                        <div className="flex items-center gap-4 text-xs font-bold text-gray-400">
+                        <div className="flex items-center gap-4 text-xs font-bold text-gray-500">
                           <span>작성자: {selectedInquiry.author}</span>
                           <span>|</span>
                           <span>작성일: {selectedInquiry.date}</span>
                         </div>
                       </div>
 
-                      <div className="bg-[#050a08] p-4 rounded-2xl border border-emerald-950 text-xs text-gray-200 font-medium whitespace-pre-wrap leading-relaxed">
+                      <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 text-xs text-gray-800 font-medium whitespace-pre-wrap leading-relaxed">
                         {selectedInquiry.content}
                       </div>
 
-                      <div className="bg-[#08120d] p-5 rounded-2xl border border-emerald-800 space-y-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-900/60 pb-3">
-                          <div className="flex items-center gap-2 text-sm font-black text-emerald-300">
-                            <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                      <div className="bg-stone-50 p-5 rounded-2xl border-2 border-black space-y-4 shadow-sm">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-300 pb-3">
+                          <div className="flex items-center gap-2 text-sm font-black text-black">
+                            <ShieldCheck className="w-5 h-5 text-emerald-700" />
                             <span>공식 답변 작성 및 템플릿 완성</span>
                           </div>
 
+                          {/* 1-Click Preset Template Shortcuts */}
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <span className="text-[10px] font-bold text-gray-400">자주 쓰는 템플릿:</span>
+                            <span className="text-[10px] font-bold text-gray-500">자주 쓰는 템플릿:</span>
                             <button
                               type="button"
                               onClick={() => applyAdminTemplate('government')}
-                              className="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                              className="px-2.5 py-1 bg-white hover:bg-black hover:text-white text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition-all cursor-pointer"
                             >
                               ⚡ 정부지원금
                             </button>
                             <button
                               type="button"
                               onClick={() => applyAdminTemplate('curriculum')}
-                              className="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                              className="px-2.5 py-1 bg-white hover:bg-black hover:text-white text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition-all cursor-pointer"
                             >
                               ⚡ 커리큘럼
                             </button>
                             <button
                               type="button"
                               onClick={() => applyAdminTemplate('recipe')}
-                              className="px-2.5 py-1 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-700 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                              className="px-2.5 py-1 bg-white hover:bg-black hover:text-white text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition-all cursor-pointer"
                             >
                               ⚡ 레시피 전수
                             </button>
@@ -596,19 +597,19 @@ export default function AdminLayout({
                           placeholder="수강생에게 전달할 답변을 입력하거나 상단 템플릿 버튼을 클릭하세요..."
                           value={inquiryReplyText}
                           onChange={(e) => setInquiryReplyText(e.target.value)}
-                          className="w-full p-4 bg-[#050a08] border border-emerald-900 rounded-xl text-xs font-medium text-white focus:outline-none focus:border-emerald-500 resize-none leading-relaxed"
+                          className="w-full p-4 bg-white border border-gray-300 rounded-xl text-xs font-medium text-black focus:outline-none focus:border-black resize-none leading-relaxed"
                         />
 
                         <div className="flex items-center justify-between pt-1">
-                          <span className="text-[11px] font-bold text-gray-400">
+                          <span className="text-[11px] font-bold text-gray-500">
                             ✓ 등록 시 작성자 이메일/SMS 알림이 자동 전송됩니다.
                           </span>
 
                           <button
                             onClick={handleAdminInquiryReplySubmit}
-                            className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                            className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                           >
-                            <Send className="w-4 h-4" />
+                            <Send className="w-4 h-4 text-emerald-400" />
                             <span>공식 답변 등록/수정</span>
                           </button>
                         </div>
@@ -617,7 +618,7 @@ export default function AdminLayout({
                     </div>
                   ) : (
                     <div className="py-20 text-center text-gray-500 font-bold space-y-2">
-                      <MessageSquare className="w-10 h-10 mx-auto text-emerald-900" />
+                      <MessageSquare className="w-10 h-10 mx-auto text-gray-400" />
                       <p>좌측 목록에서 답변할 수강생 문의글을 선택해주세요.</p>
                     </div>
                   )}
@@ -632,18 +633,18 @@ export default function AdminLayout({
 
       </div>
 
-      {/* EDITING DRAWER / MODAL FOR YOUTUBE */}
+      {/* EDITING DRAWER / MODAL FOR YOUTUBE (WHITE THEME) */}
       {editingSection === 'youtube' && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0b1611] rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-emerald-500 shadow-2xl space-y-6 animate-fadeIn max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-emerald-900 pb-3">
-              <h3 className="text-lg font-black text-white flex items-center gap-2">
-                <Video className="w-5 h-5 text-emerald-400" />
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-6 animate-fadeIn max-h-[90vh] overflow-y-auto text-gray-900">
+            <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+              <h3 className="text-lg font-black text-black flex items-center gap-2">
+                <Video className="w-5 h-5 text-emerald-700" />
                 <span>유튜브 미디어 라이브 편집</span>
               </h3>
               <button
                 onClick={() => setEditingSection(null)}
-                className="text-gray-400 hover:text-white font-black text-xl"
+                className="text-gray-400 hover:text-black font-black text-xl"
               >
                 ✕
               </button>
@@ -651,44 +652,44 @@ export default function AdminLayout({
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-black text-emerald-400 mb-1">
+                <label className="block text-xs font-black text-gray-700 mb-1">
                   섹션 타이틀
                 </label>
                 <input
                   type="text"
                   value={ytTitle}
                   onChange={(e) => setYtTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#050a08] border border-emerald-900 rounded-xl text-xs font-bold text-white"
+                  className="w-full px-3 py-2 bg-stone-50 border border-gray-300 rounded-xl text-xs font-bold text-black focus:outline-none focus:border-black"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-black text-emerald-400 mb-1">
+                <label className="block text-xs font-black text-gray-700 mb-1">
                   비전 설명 문구
                 </label>
                 <textarea
                   rows="2"
                   value={ytSubtitle}
                   onChange={(e) => setYtSubtitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#050a08] border border-emerald-900 rounded-xl text-xs font-medium text-white resize-none"
+                  className="w-full px-3 py-2 bg-stone-50 border border-gray-300 rounded-xl text-xs font-medium text-black focus:outline-none focus:border-black resize-none"
                 />
               </div>
 
               <div className="pt-2">
-                <h4 className="text-xs font-black text-gray-300 mb-2">등록 동영상 URL</h4>
+                <h4 className="text-xs font-black text-black mb-2">등록 동영상 URL</h4>
                 {videos.map((vid) => (
-                  <div key={vid.id} className="p-3 bg-[#050a08] rounded-xl border border-emerald-950 space-y-2 mb-2">
+                  <div key={vid.id} className="p-3 bg-stone-50 rounded-xl border border-stone-300 space-y-2 mb-2">
                     <input
                       type="text"
                       value={vid.videoUrl}
                       onChange={(e) => handleUpdateVideoField(vid.id, 'videoUrl', e.target.value)}
-                      className="w-full px-2.5 py-1.5 bg-[#09120e] border border-emerald-900 rounded-lg text-xs font-mono text-emerald-300"
+                      className="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-mono text-emerald-800 font-bold"
                     />
                     <input
                       type="text"
                       value={vid.title}
                       onChange={(e) => handleUpdateVideoField(vid.id, 'title', e.target.value)}
-                      className="w-full px-2.5 py-1.5 bg-[#09120e] border border-emerald-900 rounded-lg text-xs font-bold text-white"
+                      className="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-bold text-black"
                     />
                   </div>
                 ))}
@@ -698,13 +699,13 @@ export default function AdminLayout({
             <div className="pt-2 flex items-center justify-end gap-2">
               <button
                 onClick={() => setEditingSection(null)}
-                className="px-4 py-2 bg-emerald-950 text-emerald-300 font-bold text-xs rounded-xl hover:bg-emerald-900"
+                className="px-4 py-2 bg-gray-200 text-gray-800 font-bold text-xs rounded-xl hover:bg-gray-300"
               >
                 취소
               </button>
               <button
                 onClick={handleSaveYouTube}
-                className="px-6 py-2 bg-emerald-500 text-black font-black text-xs rounded-xl shadow-md hover:bg-emerald-400"
+                className="px-6 py-2 bg-black text-white font-black text-xs rounded-xl shadow-md hover:bg-gray-800"
               >
                 라이브 적용 및 저장
               </button>
@@ -713,30 +714,30 @@ export default function AdminLayout({
         </div>
       )}
 
-      {/* EDITING DRAWER / MODAL FOR BANNER */}
+      {/* EDITING DRAWER / MODAL FOR BANNER (WHITE THEME) */}
       {editingSection === 'banner' && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0b1611] rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-emerald-500 shadow-2xl space-y-6 animate-fadeIn">
-            <div className="flex items-center justify-between border-b border-emerald-900 pb-3">
-              <h3 className="text-lg font-black text-white flex items-center gap-2">
-                <FileText className="w-5 h-5 text-emerald-400" />
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-black shadow-2xl space-y-6 animate-fadeIn text-gray-900">
+            <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+              <h3 className="text-lg font-black text-black flex items-center gap-2">
+                <FileText className="w-5 h-5 text-emerald-700" />
                 <span>행사 띠배너 라이브 편집</span>
               </h3>
               <button
                 onClick={() => setEditingSection(null)}
-                className="text-gray-400 hover:text-white font-black text-xl"
+                className="text-gray-400 hover:text-black font-black text-xl"
               >
                 ✕
               </button>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between bg-[#050a08] p-3 rounded-xl border border-emerald-950">
-                <span className="text-xs font-bold text-gray-300">띠배너 표시 활성화</span>
+              <div className="flex items-center justify-between bg-stone-50 p-3 rounded-xl border border-stone-300">
+                <span className="text-xs font-bold text-gray-700">띠배너 표시 활성화</span>
                 <button
                   onClick={() => setBannerActive(!bannerActive)}
                   className={`px-3 py-1 rounded-lg text-xs font-black border ${
-                    bannerActive ? 'bg-emerald-500 text-black' : 'bg-stone-800 text-gray-400'
+                    bannerActive ? 'bg-black text-white' : 'bg-gray-200 text-gray-600'
                   }`}
                 >
                   {bannerActive ? 'ON' : 'OFF'}
@@ -744,14 +745,14 @@ export default function AdminLayout({
               </div>
 
               <div>
-                <label className="block text-xs font-black text-emerald-400 mb-1">
+                <label className="block text-xs font-black text-gray-700 mb-1">
                   이벤트 배너 문구
                 </label>
                 <input
                   type="text"
                   value={bannerTitle}
                   onChange={(e) => setBannerTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#050a08] border border-emerald-900 rounded-xl text-xs font-bold text-white"
+                  className="w-full px-3 py-2 bg-stone-50 border border-gray-300 rounded-xl text-xs font-bold text-black focus:outline-none focus:border-black"
                 />
               </div>
             </div>
@@ -759,13 +760,13 @@ export default function AdminLayout({
             <div className="pt-2 flex items-center justify-end gap-2">
               <button
                 onClick={() => setEditingSection(null)}
-                className="px-4 py-2 bg-emerald-950 text-emerald-300 font-bold text-xs rounded-xl hover:bg-emerald-900"
+                className="px-4 py-2 bg-gray-200 text-gray-800 font-bold text-xs rounded-xl hover:bg-gray-300"
               >
                 취소
               </button>
               <button
                 onClick={handleSaveBanner}
-                className="px-6 py-2 bg-emerald-500 text-black font-black text-xs rounded-xl shadow-md hover:bg-emerald-400"
+                className="px-6 py-2 bg-black text-white font-black text-xs rounded-xl shadow-md hover:bg-gray-800"
               >
                 라이브 적용 및 저장
               </button>
