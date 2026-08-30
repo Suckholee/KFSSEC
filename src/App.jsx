@@ -9,6 +9,7 @@ import CategoryCourseSection from './components/CategoryCourseSection';
 import BannerSection from './components/BannerSection';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
+import MasterBusinessPage from './components/Master/MasterBusinessPage';
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminLoginModal from './components/Admin/AdminLoginModal';
 import Footer from './components/Footer';
@@ -21,11 +22,13 @@ export default function App() {
     if (path === '/admin') return 'admin';
     if (path === '/catalog') return 'catalog';
     if (path === '/about') return 'about';
+    if (path === '/masters') return 'masters';
     return 'landing';
   };
 
   const [currentView, setCurrentView] = useState(getInitialView);
   const [aboutTab, setAboutTab] = useState('greetings');
+  const [masterTab, setMasterTab] = useState('masters');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
 
@@ -114,6 +117,8 @@ export default function App() {
         setCurrentView('catalog');
       } else if (path === '/about') {
         setCurrentView('about');
+      } else if (path === '/masters') {
+        setCurrentView('masters');
       } else {
         setCurrentView('landing');
       }
@@ -159,6 +164,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenMasterTab = (tab = 'masters') => {
+    setMasterTab(tab);
+    changeView('masters', '/masters');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleScrollNext = () => {
     if (snapContainerRef.current) {
       const vh = snapContainerRef.current.clientHeight;
@@ -180,7 +191,7 @@ export default function App() {
 
   return (
     <div className="h-screen overflow-hidden bg-gray-50 flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-200 selection:text-emerald-900">
-      {/* Header with Dark Luxury Theme + 5-Column Mega Menu Dropdown */}
+      {/* Header */}
       <Header
         currentView={currentView}
         onViewChange={(view) => {
@@ -189,9 +200,10 @@ export default function App() {
         }}
         onOpenAuth={handleOpenAuth}
         onOpenAboutTab={handleOpenAboutTab}
+        onOpenMasterTab={handleOpenMasterTab}
       />
 
-      {/* Main Content Body with One-Scroll Fullpage Snap */}
+      {/* Main Content Body */}
       <main className="flex-1 overflow-hidden">
         {currentView === 'landing' ? (
           <div ref={snapContainerRef} className="scroll-snap-container no-scrollbar">
@@ -285,6 +297,10 @@ export default function App() {
 
             {currentView === 'about' && (
               <AboutPage initialTab={aboutTab} />
+            )}
+
+            {currentView === 'masters' && (
+              <MasterBusinessPage initialTab={masterTab} />
             )}
 
             <Footer

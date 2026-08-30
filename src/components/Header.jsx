@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ShieldCheck, ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers } from 'lucide-react';
 
-export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab }) {
+export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAboutTab, onOpenMasterTab }) {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState('KOR');
@@ -24,8 +24,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       title: '명인사업단',
       key: 'masters',
       subLinks: [
-        { label: '명인 사업단', tab: 'masters' },
-        { label: '명인 요리', action: 'catalog_masters' },
+        { label: '명인 사업단', masterTab: 'masters' },
+        { label: '명인 요리', masterTab: 'dishes' },
       ],
     },
     {
@@ -79,6 +79,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
     if (item.tab) {
       onOpenAboutTab(item.tab);
+    } else if (item.masterTab) {
+      onOpenMasterTab(item.masterTab);
     } else if (item.action === 'catalog' || item.action === 'catalog_masters') {
       onViewChange('catalog');
     } else if (item.action === 'consulting_modal' || item.action === 'inquiry_modal') {
@@ -117,6 +119,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           {megaMenuItems.map((menu, mIdx) => {
             const isMenuActive =
               (menu.key === 'about' && currentView === 'about') ||
+              (menu.key === 'masters' && currentView === 'masters') ||
               (menu.key === 'education' && currentView === 'catalog');
 
             return (
@@ -124,6 +127,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
                 <button
                   onClick={() => {
                     if (menu.key === 'about') onOpenAboutTab('greetings');
+                    else if (menu.key === 'masters') onOpenMasterTab('masters');
                     else onViewChange('catalog');
                   }}
                   className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 ${
