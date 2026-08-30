@@ -12,6 +12,7 @@ import AboutPage from './components/About/AboutPage';
 import MasterBusinessPage from './components/Master/MasterBusinessPage';
 import ConsultingPage from './components/Consulting/ConsultingPage';
 import CommunityPage from './components/Community/CommunityPage';
+import CommunityEditorPage from './components/Community/CommunityEditorPage';
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminLoginModal from './components/Admin/AdminLoginModal';
 import Footer from './components/Footer';
@@ -26,6 +27,7 @@ export default function App() {
     if (path === '/about') return 'about';
     if (path === '/masters') return 'masters';
     if (path === '/consulting') return 'consulting';
+    if (path === '/community/write') return 'community_editor';
     if (path === '/community') return 'community';
     return 'landing';
   };
@@ -36,8 +38,108 @@ export default function App() {
   const [catalogTab, setCatalogTab] = useState('courses');
   const [consultingTab, setConsultingTab] = useState('education');
   const [communityTab, setCommunityTab] = useState('all');
+  
+  // User Authentication State
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const [currentUser, setCurrentUser] = useState({ name: '안형상 (회원)' });
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
+
+  // Shared Community Posts List State
+  const [postsList, setPostsList] = useState([
+    {
+      id: 1,
+      category: '공지 사항',
+      categoryType: 'notice',
+      title: '240203 사단법인 한국외식창업교육원 정기총회 개최 안내',
+      date: '2024.02.03',
+      author: 'Admin',
+      views: 1245,
+      content: '사단법인 한국외식창업교육원 2023년 사업 결산 및 2024년 글로벌 K-FOOD 외식 창업 육성 비전 발표 정기총회가 개최됩니다.',
+    },
+    {
+      id: 2,
+      category: '공지 사항',
+      categoryType: 'notice',
+      title: '외식창업 수강생 N:N 커리큘럼 매칭 포트폴리오 시스템 도입',
+      date: '2024.01.26',
+      author: 'Admin',
+      views: 980,
+      content: '수강생 1인이 다수의 조리/창업 커리큘럼을 연계하여 수강하고 혜택을 제공받을 수 있는 N:N 매칭 포트폴리오 시스템이 도입되었습니다.',
+    },
+    {
+      id: 3,
+      category: '공지 사항',
+      categoryType: 'notice',
+      title: '제 01회 요리대회 <OO활용한 OO지역활성 대회> 규정집 & 접수 신청',
+      date: '2023.01.26',
+      author: 'Admin',
+      views: 2150,
+      content: '지역 농수축산물을 활용한 제01회 대한민국 창의 요리대회 참가를 위한 규정집 다운로드 및 접수 페이지입니다.',
+    },
+    {
+      id: 4,
+      category: '요리대회',
+      categoryType: 'competition',
+      title: '제 01회 요리대회 <OO활용한 OO지역활성 대회> 접수 신청',
+      date: '2023.01.26',
+      author: 'Admin',
+      views: 1890,
+      content: '전국 조리 관련 학생 및 외식업 종사자 누구나 응시 가능한 신제품 메뉴 개발 요리대회 접수가 진행 중입니다.',
+    },
+    {
+      id: 5,
+      category: '갤러리',
+      categoryType: 'gallery',
+      title: '2024 대한민국 자랑스러운 외식 명인 시상식 현장 화보',
+      date: '2023.01.26',
+      author: '안 OO',
+      views: 750,
+      image: '/images/hero_bg.jpg',
+      content: '특급호텔 40년 현장 실무 경력의 조리 명장진과 인정받은 수강생들의 시상식 현장 사진 기록입니다.',
+    },
+    {
+      id: 6,
+      category: '갤러리',
+      categoryType: 'gallery',
+      title: '외식창업 조리 실습실 시그니처 메뉴 테스트 현장',
+      date: '2023.01.26',
+      author: '김 OOO',
+      views: 640,
+      image: '/images/course_menu_dev.jpg',
+      content: '100년 전통 발효 소스와 시그니처 레시피 개발을 위한 외식창업 조리 실습실 현장입니다.',
+    },
+    {
+      id: 7,
+      category: '문의',
+      categoryType: 'inquiry',
+      title: '청년 외식창업 정부지원금 연계 신청 방법 문의',
+      date: '2023.01.26',
+      author: '박 OOO',
+      views: 310,
+      content: '청년 창업 교육 지원 정책 및 소상공인 창업 지원금 연계 절차에 관해 문의드립니다.',
+    },
+    {
+      id: 8,
+      category: '문의',
+      categoryType: 'inquiry',
+      title: '1:1 수강생 커리큘럼 매칭 상담 예약 문의',
+      date: '2023.01.26',
+      author: '이 OO',
+      views: 280,
+      content: '한식 및 배달밀키트 복수 수강 패키지 할인 혜택 및 주말반 수강 일정 상담을 신청합니다.',
+    },
+    {
+      id: 9,
+      category: '문의',
+      categoryType: 'inquiry',
+      title: '소상공인 100년 전통 발효 소스 전수 과정 문의',
+      date: '2023.01.26',
+      author: '최 OOO',
+      views: 420,
+      content: '기존 매장 메뉴 리뉴얼 및 셰프 1:1 레시피 전수 과정 수강료 문의드립니다.',
+    },
+  ]);
 
   // Central Dynamic Site Data Store with localStorage Persistence
   const [siteData, setSiteData] = useState(() => {
@@ -109,7 +211,13 @@ export default function App() {
   // Sync View to URL Pathname & Handle Popstate Navigation
   const changeView = (view, pathName = null) => {
     setCurrentView(view);
-    const targetPath = pathName || (view === 'landing' ? '/' : `/${view}`);
+    const targetPath =
+      pathName ||
+      (view === 'landing'
+        ? '/'
+        : view === 'community_editor'
+        ? '/community/write'
+        : `/${view}`);
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ view }, '', targetPath);
     }
@@ -128,6 +236,8 @@ export default function App() {
         setCurrentView('masters');
       } else if (path === '/consulting') {
         setCurrentView('consulting');
+      } else if (path === '/community/write') {
+        setCurrentView('community_editor');
       } else if (path === '/community') {
         setCurrentView('community');
       } else {
@@ -197,6 +307,17 @@ export default function App() {
     setCommunityTab(tab);
     changeView('community', '/community');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePublishPost = (newPost) => {
+    const createdPost = {
+      id: postsList.length + 1,
+      ...newPost,
+    };
+    setPostsList([createdPost, ...postsList]);
+    changeView('community', '/community');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    alert('🎉 게시글이 성공적으로 발행되었습니다!');
   };
 
   const handleScrollNext = () => {
@@ -337,6 +458,18 @@ export default function App() {
               <CommunityPage
                 initialTab={communityTab}
                 onOpenAuth={handleOpenAuth}
+                isUserLoggedIn={isUserLoggedIn}
+                onGoToEditor={() => changeView('community_editor', '/community/write')}
+                postsList={postsList}
+                setPostsList={setPostsList}
+              />
+            )}
+
+            {currentView === 'community_editor' && (
+              <CommunityEditorPage
+                onPublishPost={handlePublishPost}
+                onCancel={() => changeView('community', '/community')}
+                currentUser={currentUser}
               />
             )}
 
