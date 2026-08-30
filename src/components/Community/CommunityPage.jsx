@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
-import { MessageSquare, Bell, Image, Trophy, HelpCircle, PenSquare, Search, Eye, Calendar, User, ChevronRight, X, Lock } from 'lucide-react';
+import { MessageSquare, Bell, Image, Trophy, HelpCircle, PenSquare, Search, Eye, Calendar, User, ChevronRight, X, Lock, Pin } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
 export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLoggedIn, onGoToEditor, postsList = [], setPostsList }) {
@@ -22,15 +22,23 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
     { id: 'inquiry', label: '문의하기' },
   ];
 
-  // Filter posts based on activeTab and searchTerm
-  const filteredPosts = postsList.filter((post) => {
-    const matchesTab =
-      activeTab === 'all' ? true : post.categoryType === activeTab;
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.author.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesTab && matchesSearch;
-  });
+  // Filter & Sort Posts (Pinned posts first, then newest first)
+  const filteredPosts = postsList
+    .filter((post) => {
+      const matchesTab =
+        activeTab === 'all' ? true : post.categoryType === activeTab;
+      const matchesSearch =
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.author.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesTab && matchesSearch;
+    })
+    .sort((a, b) => {
+      const aPinned = a.isPinned || a.category === '공지 사항';
+      const bPinned = b.isPinned || b.category === '공지 사항';
+      if (aPinned && !bPinned) return -1;
+      if (!aPinned && bPinned) return 1;
+      return 0;
+    });
 
   const handleWriteButtonClick = () => {
     if (!isUserLoggedIn) {
@@ -40,6 +48,16 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
       if (onGoToEditor) {
         onGoToEditor();
       }
+    }
+  };
+
+  const handleTogglePin = (postId) => {
+    if (!setPostsList) return;
+    setPostsList((prev) =>
+      prev.map((p) => (p.id === postId ? { ...p, isPinned: !p.isPinned } : p))
+    );
+    if (selectedPost && selectedPost.id === postId) {
+      setSelectedPost((prev) => ({ ...prev, isPinned: !prev.isPinned }));
     }
   };
 
@@ -72,7 +90,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                     게시판
                   </h2>
                   <p className="text-xs text-gray-500 font-bold mt-1">
-                    사단법인 한국외식창업교육원 공지사항 및 커뮤니티 게시판입니다.
+                    사단법인 한국외식창업교육원 공지사항 및 커뮤니티 게시판입니다. (📌 주요 공지 상단 고정)
                   </p>
                 </div>
 
@@ -105,7 +123,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                 </div>
               </div>
 
-              {/* Exact Table Layout Matching Target Screenshot */}
+              {/* Exact Table Layout Matching Target Screenshot + Pinned Post Highlighting */}
               <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-sm bg-white">
                 <table className="w-full text-left border-collapse text-xs sm:text-sm font-sans">
                   
@@ -123,45 +141,66 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                   {/* Table Body */}
                   <tbody className="divide-y divide-gray-300 text-gray-800 font-medium">
                     {filteredPosts.length > 0 ? (
-                      filteredPosts.map((post, idx) => (
-                        <tr
-                          key={post.id}
-                          onClick={() => setSelectedPost(post)}
-                          className="hover:bg-emerald-50/60 transition-colors cursor-pointer text-center"
-                        >
-                          <td className="py-3.5 px-3 border-r border-gray-200 font-bold text-gray-600">
-                            {filteredPosts.length - idx}
-                          </td>
+                      filteredPosts.map((post, idx) => {
+                        const isPinnedRow = post.isPinned || post.category === '공지 사항';
 
-                          <td className="py-3.5 px-4 border-r border-gray-200">
-                            <span
-                              className={`px-2.5 py-1 rounded text-xs font-black inline-block ${
-                                post.category === '공지 사항'
-                                  ? 'text-rose-600 font-black'
-                                  : post.category === '요리대회'
-                                  ? 'text-blue-700 font-bold'
-                                  : post.category === '갤러리'
-                                  ? 'text-emerald-700 font-bold'
-                                  : 'text-gray-800 font-bold'
-                              }`}
-                            >
-                              {post.category}
-                            </span>
-                          </td>
+                        return (
+                          <tr
+                            key={post.id}
+                            onClick={() => setSelectedPost(post)}
+                            className={`transition-colors cursor-pointer text-center ${
+                              isPinnedRow
+                                ? 'bg-rose-50/70 hover:bg-rose-100/80 border-l-4 border-l-rose-600 font-bold'
+                                : 'hover:bg-emerald-50/60'
+                            }`}
+                          >
+                            <td className="py-3.5 px-3 border-r border-gray-200 font-bold text-gray-600">
+                              {isPinnedRow ? (
+                                <span className="inline-flex items-center justify-center bg-rose-600 text-white rounded-full p-1 shadow-xs" title="상단 고정">
+                                  <Pin className="w-3 h-3 fill-white text-white" />
+                                </span>
+                              ) : (
+                                filteredPosts.length - idx
+                              )}
+                            </td>
 
-                          <td className="py-3.5 px-6 border-r border-gray-200 text-left font-bold text-gray-900 hover:text-rose-600 transition-colors">
-                            {post.title}
-                          </td>
+                            <td className="py-3.5 px-4 border-r border-gray-200">
+                              <span
+                                className={`px-2.5 py-1 rounded text-xs font-black inline-block ${
+                                  post.category === '공지 사항'
+                                    ? 'text-rose-600 font-black'
+                                    : post.category === '요리대회'
+                                    ? 'text-blue-700 font-bold'
+                                    : post.category === '갤러리'
+                                    ? 'text-emerald-700 font-bold'
+                                    : 'text-gray-800 font-bold'
+                                }`}
+                              >
+                                {post.category}
+                              </span>
+                            </td>
 
-                          <td className="py-3.5 px-4 border-r border-gray-200 text-gray-600 font-semibold text-xs">
-                            {post.date}
-                          </td>
+                            <td className="py-3.5 px-6 border-r border-gray-200 text-left font-bold text-gray-900 hover:text-rose-600 transition-colors">
+                              <div className="flex items-center gap-2">
+                                {isPinnedRow && (
+                                  <span className="text-[11px] font-black text-white bg-rose-600 px-1.5 py-0.5 rounded shrink-0">
+                                    📌 필독
+                                  </span>
+                                )}
+                                <span className="line-clamp-1">{post.title}</span>
+                              </div>
+                            </td>
 
-                          <td className="py-3.5 px-4 font-bold text-gray-700">
-                            {post.author}
-                          </td>
-                        </tr>
-                      ))
+                            <td className="py-3.5 px-4 border-r border-gray-200 text-gray-600 font-semibold text-xs">
+                              {post.date}
+                            </td>
+
+                            <td className="py-3.5 px-4 font-bold text-gray-700">
+                              {post.author}
+                            </td>
+                          </tr>
+                        );
+                      })
                     ) : (
                       <tr>
                         <td colSpan="5" className="py-12 text-center text-gray-500 font-bold">
@@ -188,9 +227,16 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-5 animate-fadeIn">
             <div className="flex items-start justify-between border-b border-gray-200 pb-4">
               <div className="space-y-1">
-                <span className="text-xs font-black text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
-                  {selectedPost.category}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
+                    {selectedPost.category}
+                  </span>
+                  {(selectedPost.isPinned || selectedPost.category === '공지 사항') && (
+                    <span className="text-xs font-black text-white bg-rose-600 px-2.5 py-0.5 rounded-md flex items-center gap-1">
+                      📌 상단고정
+                    </span>
+                  )}
+                </div>
                 <h3 className="text-xl font-black text-black pt-2">
                   {selectedPost.title}
                 </h3>
@@ -222,7 +268,24 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
               {selectedPost.content}
             </div>
 
-            <div className="pt-2 text-right">
+            <div className="pt-2 flex items-center justify-between">
+              {/* Toggle Pin Status Button */}
+              <button
+                onClick={() => handleTogglePin(selectedPost.id)}
+                className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer border ${
+                  selectedPost.isPinned || selectedPost.category === '공지 사항'
+                    ? 'bg-rose-100 text-rose-800 border-rose-300'
+                    : 'bg-stone-100 text-stone-700 border-stone-300 hover:bg-stone-200'
+                }`}
+              >
+                <Pin className="w-3.5 h-3.5" />
+                <span>
+                  {selectedPost.isPinned || selectedPost.category === '공지 사항'
+                    ? '상단 고정 해제'
+                    : '상단에 고정하기'}
+                </span>
+              </button>
+
               <button
                 onClick={() => setSelectedPost(null)}
                 className="px-6 py-2.5 bg-black text-white font-black text-xs rounded-xl shadow-md hover:bg-gray-800 transition-colors cursor-pointer"

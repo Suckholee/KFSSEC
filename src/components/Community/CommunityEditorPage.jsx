@@ -19,6 +19,7 @@ import {
   Sparkles,
   HelpCircle,
   AlertCircle,
+  Pin,
 } from 'lucide-react';
 
 export default function CommunityEditorPage({ onPublishPost, onCancel, currentUser }) {
@@ -28,6 +29,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
   const [coverImage, setCoverImage] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState(['외식창업', '수강문의']);
+  const [isPinned, setIsPinned] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
   const [isDraftSaved, setIsDraftSaved] = useState(false);
 
@@ -88,6 +90,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
       content,
       coverImage: coverImage || null,
       tags,
+      isPinned: category === '공지 사항' || isPinned,
       author: currentUser?.name || '수강생 (회원)',
       date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
       views: 1,
@@ -170,29 +173,50 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
         {/* Main Editor Body */}
         <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-xl space-y-6">
           
-          {/* 1. Category Selection & Cover Image Selector Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 pb-6 border-b border-gray-200">
+          {/* 1. Category Selection, Pin Toggle & Cover Image Selector Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 pb-6 border-b border-gray-200 items-center">
             
             {/* Category Dropdown */}
             <div className="sm:col-span-4 space-y-2">
               <label className="block text-xs font-black text-gray-700">게시판 카테고리 선택</label>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setCategory(val);
+                  if (val === '공지 사항') setIsPinned(true);
+                }}
                 className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-300 rounded-2xl text-sm font-black text-black focus:outline-none focus:border-black shadow-xs cursor-pointer"
               >
                 <option value="문의">문의하기</option>
                 <option value="갤러리">갤러리</option>
                 <option value="요리대회">요리대회</option>
-                <option value="공지 사항">공지 사항 (관리자 전용)</option>
+                <option value="공지 사항">공지 사항 (상단 고정)</option>
               </select>
             </div>
 
+            {/* Top Pin Toggle Button */}
+            <div className="sm:col-span-3 space-y-2">
+              <label className="block text-xs font-black text-gray-700">상단 고정 여부</label>
+              <button
+                type="button"
+                onClick={() => setIsPinned(!isPinned)}
+                className={`w-full py-3 px-4 rounded-2xl text-xs font-black transition-all border-2 flex items-center justify-center gap-2 cursor-pointer ${
+                  isPinned
+                    ? 'bg-rose-50 border-rose-500 text-rose-700 shadow-sm'
+                    : 'bg-stone-50 border-stone-300 text-stone-600 hover:border-black'
+                }`}
+              >
+                <Pin className={`w-4 h-4 ${isPinned ? 'fill-rose-500 text-rose-600' : ''}`} />
+                <span>{isPinned ? '📌 상단 고정 설정됨' : '상단 고정 안함'}</span>
+              </button>
+            </div>
+
             {/* Preset Cover Image Selector */}
-            <div className="sm:col-span-8 space-y-2">
+            <div className="sm:col-span-5 space-y-2">
               <label className="block text-xs font-black text-gray-700 flex items-center gap-1">
                 <ImageIcon className="w-4 h-4 text-emerald-700" />
-                <span>대표 사진/커버 이미지 선택</span>
+                <span>대표 커버 이미지 선택</span>
               </label>
               <div className="flex flex-wrap items-center gap-2">
                 {presetCoverImages.map((img, idx) => (
@@ -354,10 +378,17 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
             />
           ) : (
             <div className="p-6 bg-stone-50 border-2 border-black rounded-3xl space-y-4 min-h-[360px]">
-              <div className="border-b border-stone-300 pb-3">
-                <span className="text-xs font-black text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
-                  {category}
-                </span>
+              <div className="border-b border-stone-300 pb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
+                    {category}
+                  </span>
+                  {isPinned && (
+                    <span className="text-xs font-black text-white bg-rose-600 px-2.5 py-0.5 rounded-md flex items-center gap-1">
+                      📌 상단고정
+                    </span>
+                  )}
+                </div>
                 <h2 className="text-2xl font-black text-black pt-2">{title || '제목 없음'}</h2>
               </div>
               <div className="text-sm font-medium text-gray-800 whitespace-pre-wrap leading-relaxed">
