@@ -7,7 +7,7 @@ import Pagination from './Pagination';
 import CourseModal from '../CourseModal';
 import { fetchCourses } from '../../services/courseApi';
 import { getCoursesFromDB, getAcademicSchedulesFromDB, getExamSchedulesFromDB, fetchCoursesFromAPI } from '../../services/courseDatabase';
-import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight, Calendar, Award, GraduationCap, CheckCircle2, Clock } from 'lucide-react';
+import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight, Calendar, Award, GraduationCap, CheckCircle2, Clock, Search, X } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
 export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
@@ -22,6 +22,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   const getInitialParams = () => {
     const searchParams = new URLSearchParams(window.location.search);
     return {
+      search: searchParams.get('search') || '',
       industry: searchParams.get('industry') || '전체보기',
       stage: searchParams.get('stage') || '전체보기',
       formats: searchParams.get('format') ? searchParams.get('format').split(',') : [],
@@ -33,6 +34,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
   const initialParams = getInitialParams();
 
+  const [searchTerm, setSearchTerm] = useState(initialParams.search);
   const [activeSidebarCategory, setActiveSidebarCategory] = useState(initialParams.category);
   const [selectedIndustry, setSelectedIndustry] = useState(initialParams.industry);
   const [selectedStage, setSelectedStage] = useState(initialParams.stage);
@@ -54,6 +56,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
   const updateUrlParams = (newParams) => {
     const searchParams = new URLSearchParams();
+    if (newParams.search) searchParams.set('search', newParams.search);
     if (newParams.industry && newParams.industry !== '전체보기') searchParams.set('industry', newParams.industry);
     if (newParams.stage && newParams.stage !== '전체보기') searchParams.set('stage', newParams.stage);
     if (newParams.formats && newParams.formats.length > 0) searchParams.set('format', newParams.formats.join(','));
@@ -70,6 +73,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
     setLoading(true);
     try {
       const res = await fetchCourses({
+        search: searchTerm,
         industry: selectedIndustry,
         stage: selectedStage,
         formats: selectedFormats,
@@ -98,6 +102,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
     if (subTab === 'courses') {
       loadData();
       updateUrlParams({
+        search: searchTerm,
         industry: selectedIndustry,
         stage: selectedStage,
         formats: selectedFormats,
@@ -106,7 +111,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
         category: activeSidebarCategory,
       });
     }
-  }, [selectedIndustry, selectedStage, selectedFormats, sortOption, currentPage, activeSidebarCategory, subTab]);
+  }, [searchTerm, selectedIndustry, selectedStage, selectedFormats, sortOption, currentPage, activeSidebarCategory, subTab]);
 
   const handleIndustryChange = (ind) => {
     setSelectedIndustry(ind);
@@ -134,6 +139,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   };
 
   const handleResetFilters = () => {
+    setSearchTerm('');
     setSelectedIndustry('전체보기');
     setSelectedStage('전체보기');
     setSelectedFormats([]);
@@ -184,6 +190,50 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
             {subTab === 'courses' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 
+                {/* PROMINENT COURSE SEARCH INPUT BAR */}
+                <div className="bg-white p-5 rounded-3xl border-2 border-black shadow-lg space-y-3 w-full">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-black flex items-center gap-1.5">
+                      <Search className="w-4 h-4 text-emerald-700" />
+                      <span>원하시는 요리 교육과정 키워드 직접 검색</span>
+                    </span>
+                    {searchTerm && (
+                      <button
+                        onClick={handleResetFilters}
+                        className="text-xs text-rose-600 font-bold hover:underline"
+                      >
+                        필터 & 검색 초기화 ↺
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="relative flex items-center w-full">
+                    <Search className="w-5 h-5 text-gray-400 absolute left-4 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="🔎 배우고 싶은 요리 과정, 메뉴 비법, 강사명, 키워드를 입력하세요... (예: 한식, 일식, 카페, 짬뽕, 파스타)"
+                      value={searchTerm}
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="w-full pl-12 pr-12 py-3.5 bg-stone-50 border-2 border-stone-300 focus:border-black rounded-2xl text-sm font-black text-black placeholder:text-gray-400 focus:outline-none transition-all shadow-inner"
+                    />
+                    {searchTerm && (
+                      <button
+                        onClick={() => {
+                          setSearchTerm('');
+                          setCurrentPage(1);
+                        }}
+                        className="absolute right-4 text-gray-400 hover:text-black font-black text-sm"
+                        title="검색어 지우기"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                </div>
+
                 {/* Slanted Chevron Banner Photos Container */}
                 <div className="bg-white rounded-3xl p-6 border-2 border-black shadow-lg space-y-4 w-full">
                   <h2 className="text-2xl font-black text-black border-b-2 border-black pb-2">
@@ -231,6 +281,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <span className="text-sm font-bold text-gray-700">
                       총 <strong className="text-emerald-800 font-black">{totalCount}개</strong>의 교육과정이 있습니다.
+                      {searchTerm && <span className="text-emerald-700 font-bold ml-2"> (검색어: "{searchTerm}")</span>}
                     </span>
 
                     <div className="flex items-center gap-3">
@@ -244,7 +295,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                       >
                         <option value="latest">최신순</option>
                         <option value="popular">인기순</option>
-                        <option value="price_low">수갈료 낮은순</option>
+                        <option value="price_low">수강료 낮은순</option>
                         <option value="price_high">수강료 높은순</option>
                       </select>
 
@@ -330,11 +381,10 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
                     <div className="grid grid-cols-7 text-xs font-bold text-gray-800 divide-x divide-y divide-gray-300 bg-white">
                       {Array.from({ length: 35 }).map((_, idx) => {
-                        const dayNum = idx - 1; // Align to 2026 Sept 1st (Tuesday)
+                        const dayNum = idx - 1;
                         const isValidDay = dayNum > 0 && dayNum <= 30;
                         const isToday = dayNum === 15;
 
-                        // Match dynamic schedules from DB
                         const matchedEvents = academicSchedules.filter((s) => s.day === dayNum);
 
                         return (
@@ -431,7 +481,6 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                         const dayNum = idx - 1;
                         const isValidDay = dayNum > 0 && dayNum <= 30;
 
-                        // Match dynamic exam schedules from DB
                         const matchedExams = examSchedules.filter((e) => e.day === dayNum);
 
                         return (
