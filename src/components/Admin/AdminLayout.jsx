@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   LogOut,
   LayoutDashboard,
@@ -62,20 +62,83 @@ export default function AdminLayout({
   postsList = [],
   setPostsList,
 }) {
-  // Primary Navigation Group: 'home', 'courses', 'reservations', 'inquiries', 'reviews', 'analytics'
-  const [primaryMenu, setPrimaryMenu] = useState('courses');
-  const [secondarySubTab, setSecondarySubTab] = useState('course_list');
+  // Courses Database State
+  const [coursesList, setCoursesList] = useState(getCoursesFromDB());
+
+  // Parse initial primary menu and course selection from window.location.pathname
+  const parsePathToState = () => {
+    const path = window.location.pathname; // e.g. /admin/courses/c1, /admin/inquiries
+    const parts = path.split('/').filter(Boolean); // ['admin', 'courses', 'c1']
+    
+    let menu = 'courses';
+    let subTab = 'course_list';
+    let selectedCourse = null;
+
+    if (parts[1] === 'home') {
+      menu = 'home';
+      subTab = 'visual_editor';
+    } else if (parts[1] === 'reservations') {
+      menu = 'reservations';
+      subTab = 'enrollees_list';
+    } else if (parts[1] === 'inquiries') {
+      menu = 'inquiries';
+      subTab = 'inquiry_all';
+    } else if (parts[1] === 'reviews') {
+      menu = 'reviews';
+      subTab = 'review_list';
+    } else if (parts[1] === 'courses') {
+      menu = 'courses';
+      if (parts[2]) {
+        const found = getCoursesFromDB().find((c) => c.id === parts[2]);
+        if (found) {
+          selectedCourse = found;
+        }
+      }
+    }
+
+    return { menu, subTab, selectedCourse };
+  };
+
+  const initialState = parsePathToState();
+  const [primaryMenu, setPrimaryMenu] = useState(initialState.menu);
+  const [secondarySubTab, setSecondarySubTab] = useState(initialState.subTab);
+  const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(initialState.selectedCourse);
   const [isSavedNotice, setIsSavedNotice] = useState(false);
-  const [editingSection, setEditingSection] = useState(null);
 
   // Hidden File Input Ref for direct computer image upload
   const fileInputRef = useRef(null);
 
-  // Courses Database State
-  const [coursesList, setCoursesList] = useState(getCoursesFromDB());
-  
-  // Dedicated Full-Page Course Editor State
-  const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(null);
+  // Helper to push browser URL state dynamically
+  const updateAdminUrl = (menu, subTab, courseId = null) => {
+    let targetPath = `/admin/${menu}`;
+    if (menu === 'courses' && courseId) {
+      targetPath = `/admin/courses/${courseId}`;
+    }
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+  };
+
+  // Sync state when primaryMenu or selectedCourseForEdit changes
+  const switchPrimaryMenu = (menu, subTab = 'course_list', course = null) => {
+    setPrimaryMenu(menu);
+    setSecondarySubTab(subTab);
+    setSelectedCourseForEdit(course);
+    updateAdminUrl(menu, subTab, course ? course.id : null);
+  };
+
+  // Listen to browser popstate (back/forward buttons)
+  useEffect(() => {
+    const handlePopState = () => {
+      const parsed = parsePathToState();
+      setPrimaryMenu(parsed.menu);
+      setSecondarySubTab(parsed.subTab);
+      setSelectedCourseForEdit(parsed.selectedCourse);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Image Presets for Quick Selection
   const imagePresets = [
@@ -175,7 +238,7 @@ export default function AdminLayout({
 
     setCoursesList(updated);
     saveCoursesToDB(updated);
-    setSelectedCourseForEdit(null);
+    switchPrimaryMenu('courses', 'course_list', null);
     triggerSavedNotice();
     alert('🎉 업로드된 파일 및 강의 상세 정보가 성공적으로 DB에 저장되었습니다.');
   };
@@ -185,7 +248,7 @@ export default function AdminLayout({
       const updated = coursesList.filter((c) => c.id !== id);
       setCoursesList(updated);
       saveCoursesToDB(updated);
-      setSelectedCourseForEdit(null);
+      switchPrimaryMenu('courses', 'course_list', null);
       triggerSavedNotice();
     }
   };
@@ -276,11 +339,7 @@ export default function AdminLayout({
         {/* TIER 1: Far Left Narrow Icon Bar */}
         <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-4 shrink-0 z-20">
           <button
-            onClick={() => {
-              setPrimaryMenu('home');
-              setSecondarySubTab('visual_editor');
-              setSelectedCourseForEdit(null);
-            }}
+            onClick={() => switchPrimaryMenu('home', 'visual_editor', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'home'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
@@ -293,11 +352,7 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => {
-              setPrimaryMenu('courses');
-              setSecondarySubTab('course_list');
-              setSelectedCourseForEdit(null);
-            }}
+            onClick={() => switchPrimaryMenu('courses', 'course_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'courses'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
@@ -310,11 +365,7 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => {
-              setPrimaryMenu('reservations');
-              setSecondarySubTab('enrollees_list');
-              setSelectedCourseForEdit(null);
-            }}
+            onClick={() => switchPrimaryMenu('reservations', 'enrollees_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'reservations'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
@@ -327,11 +378,7 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => {
-              setPrimaryMenu('inquiries');
-              setSecondarySubTab('inquiry_all');
-              setSelectedCourseForEdit(null);
-            }}
+            onClick={() => switchPrimaryMenu('inquiries', 'inquiry_all', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer relative ${
               primaryMenu === 'inquiries'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
@@ -344,11 +391,7 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => {
-              setPrimaryMenu('reviews');
-              setSecondarySubTab('review_list');
-              setSelectedCourseForEdit(null);
-            }}
+            onClick={() => switchPrimaryMenu('reviews', 'review_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'reviews'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
@@ -381,7 +424,7 @@ export default function AdminLayout({
                 onClick={() => {
                   setSecondarySubTab(menu.id);
                   if (menu.id === 'course_add') {
-                    setSelectedCourseForEdit({
+                    const newBlank = {
                       title: '',
                       category: 'hansik',
                       categoryName: '한식',
@@ -398,9 +441,10 @@ export default function AdminLayout({
                       instructor: '안형상 이사장 / 40년 명장',
                       image: '/images/course_menu_dev.jpg',
                       description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
-                    });
+                    };
+                    switchPrimaryMenu('courses', 'course_add', newBlank);
                   } else {
-                    setSelectedCourseForEdit(null);
+                    switchPrimaryMenu(primaryMenu, menu.id, null);
                   }
                 }}
                 className={`w-full text-left py-2.5 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-between cursor-pointer ${
@@ -436,7 +480,7 @@ export default function AdminLayout({
               {/* Back to List & Top Action Bar */}
               <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-300 shadow-sm">
                 <button
-                  onClick={() => setSelectedCourseForEdit(null)}
+                  onClick={() => switchPrimaryMenu('courses', 'course_list', null)}
                   className="px-4 py-2 bg-gray-100 hover:bg-black hover:text-white text-gray-800 font-black text-xs rounded-xl transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -465,7 +509,7 @@ export default function AdminLayout({
               {/* Course Detail Editor Workstation Split View */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                {/* Left Form: Image File Upload & Text Detail Edit Controls (7 cols) */}
+                {/* Left Form: Image File Upload & Text Detail Edit Controls */}
                 <form onSubmit={handleSaveCourseDetail} className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-300 shadow-lg space-y-6">
                   <div className="border-b-2 border-black pb-3">
                     <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
@@ -477,7 +521,7 @@ export default function AdminLayout({
                     </p>
                   </div>
 
-                  {/* Section A: Course Cover Image Selection, FILE UPLOAD & Presets */}
+                  {/* Section A: Course Cover Image Selection */}
                   <div className="space-y-4 bg-stone-50 p-5 rounded-2xl border-2 border-emerald-500/80 shadow-sm">
                     <div className="flex items-center justify-between">
                       <label className="block text-xs font-black text-black flex items-center gap-2">
@@ -495,7 +539,6 @@ export default function AdminLayout({
                         <span>📁 내 컴퓨터에서 이미지 파일 선택 및 업로드</span>
                       </button>
 
-                      {/* Hidden HTML File Input */}
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -679,7 +722,7 @@ export default function AdminLayout({
 
                 </form>
 
-                {/* Right Panel: Live Student Preview Card & Details (5 cols) */}
+                {/* Right Panel: Live Student Preview Card */}
                 <div className="lg:col-span-5 space-y-6">
                   <div className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-md space-y-4 sticky top-6">
                     <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
@@ -753,7 +796,7 @@ export default function AdminLayout({
 
                   <button
                     onClick={() => {
-                      setSelectedCourseForEdit({
+                      const newBlank = {
                         title: '',
                         category: 'hansik',
                         categoryName: '한식',
@@ -770,7 +813,8 @@ export default function AdminLayout({
                         instructor: '안형상 이사장 / 40년 명장',
                         image: '/images/course_menu_dev.jpg',
                         description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
-                      });
+                      };
+                      switchPrimaryMenu('courses', 'course_add', newBlank);
                     }}
                     className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                   >
@@ -784,7 +828,7 @@ export default function AdminLayout({
                   {coursesList.map((c) => (
                     <div
                       key={c.id}
-                      onClick={() => setSelectedCourseForEdit(c)}
+                      onClick={() => switchPrimaryMenu('courses', 'course_list', c)}
                       className="bg-white rounded-3xl p-5 border-2 border-gray-300 shadow-md space-y-4 hover:border-black hover:scale-[1.01] transition-all cursor-pointer flex flex-col justify-between group"
                     >
                       <div className="space-y-3">
@@ -828,7 +872,7 @@ export default function AdminLayout({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setSelectedCourseForEdit(c);
+                              switchPrimaryMenu('courses', 'course_list', c);
                             }}
                             className="px-3 py-1.5 bg-black text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
                           >
@@ -868,6 +912,29 @@ export default function AdminLayout({
                 <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
                   <YouTubeMediaSection youtubeData={siteData.youtube} />
                 </div>
+              </div>
+            </div>
+          )}
+
+          {primaryMenu === 'reviews' && (
+            <div className="space-y-6 animate-fadeIn max-w-5xl">
+              <div className="border-b-2 border-black pb-3">
+                <h3 className="text-xl font-black text-black tracking-tight">
+                  수강생 방문후기 & 별점 관리자
+                </h3>
+              </div>
+              <div className="space-y-4">
+                {reviewsList.map((rev) => (
+                  <div key={rev.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-500 font-black text-sm">{'★'.repeat(rev.rating)}</span>
+                      <span className="text-xs font-mono text-gray-400">{rev.date}</span>
+                    </div>
+                    <p className="text-xs text-gray-800 font-medium leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                      "{rev.content}"
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           )}

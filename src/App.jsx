@@ -23,7 +23,7 @@ export default function App() {
   // Determine initial view based on window.location.pathname
   const getInitialView = () => {
     const path = window.location.pathname;
-    if (path === '/admin') return 'admin';
+    if (path.startsWith('/admin')) return 'admin';
     if (path === '/catalog') return 'catalog';
     if (path === '/about') return 'about';
     if (path === '/masters') return 'masters';
@@ -143,7 +143,7 @@ export default function App() {
     },
   ]);
 
-  // Central Dynamic Site Data Store with localStorage Persistence
+  // Central Dynamic Site Data Store
   const [siteData, setSiteData] = useState(() => {
     const saved = localStorage.getItem('kfssec_site_data');
     if (saved) {
@@ -219,6 +219,8 @@ export default function App() {
         ? '/'
         : view === 'community_editor'
         ? '/community/write'
+        : view === 'admin'
+        ? '/admin/courses'
         : `/${view}`);
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ view }, '', targetPath);
@@ -228,7 +230,7 @@ export default function App() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
-      if (path === '/admin') {
+      if (path.startsWith('/admin')) {
         setCurrentView('admin');
       } else if (path === '/catalog') {
         setCurrentView('catalog');
@@ -266,7 +268,7 @@ export default function App() {
     setIsAdminAuthenticated(true);
     localStorage.setItem('kfssec_admin_auth', 'true');
     setAdminLoginModalOpen(false);
-    changeView('admin', '/admin');
+    changeView('admin', '/admin/courses');
   };
 
   const handleAdminLogout = () => {
