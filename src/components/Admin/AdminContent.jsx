@@ -14,10 +14,12 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
       'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88'
   );
 
+  // Managed List of YouTube Videos storing Full YouTube URLs
   const [youtubeVideos, setYoutubeVideos] = useState(
     siteData?.youtube?.videos || [
       {
         id: 'v1',
+        videoUrl: 'https://www.youtube.com/watch?v=ZDZFUpS0fFE',
         videoId: 'ZDZFUpS0fFE',
         title: '240203 한국외식창업교육원 정기총회',
         subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
@@ -27,6 +29,7 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
       },
       {
         id: 'v2',
+        videoUrl: 'https://www.youtube.com/watch?v=E_WgebIP_SY',
         videoId: 'E_WgebIP_SY',
         title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
         subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
@@ -38,7 +41,7 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
   );
 
   const [activeViewMode, setActiveViewMode] = useState('visual');
-  const [newVideoInput, setNewVideoInput] = useState(''); // Accepts full URL or Video ID
+  const [newVideoInputUrl, setNewVideoInputUrl] = useState(''); // Accepts full URL
   const [newVideoTitle, setNewVideoTitle] = useState('');
   const [newVideoCategory, setNewVideoCategory] = useState('공식 채널 영상');
 
@@ -64,15 +67,17 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
 
   const handleAddVideo = (e) => {
     e.preventDefault();
-    const extractedId = extractYoutubeId(newVideoInput);
+    const rawUrl = newVideoInputUrl.trim();
+    const extractedId = extractYoutubeId(rawUrl);
 
-    if (!extractedId || !newVideoTitle.trim()) {
-      alert('유튜브 영상 주소(URL) 또는 ID와 영상 제목을 모두 입력해주세요.');
+    if (!rawUrl || !newVideoTitle.trim()) {
+      alert('유튜브 영상 전체 주소(URL)와 영상 제목을 모두 입력해주세요.');
       return;
     }
 
     const newVideo = {
       id: `v-${Date.now()}`,
+      videoUrl: rawUrl.startsWith('http') ? rawUrl : `https://www.youtube.com/watch?v=${extractedId}`,
       videoId: extractedId,
       title: newVideoTitle.trim(),
       subtitle: '사단법인 한국외식창업교육원 영상 콘텐츠',
@@ -83,7 +88,7 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
 
     const updatedVideos = [...youtubeVideos, newVideo];
     setYoutubeVideos(updatedVideos);
-    setNewVideoInput('');
+    setNewVideoInputUrl('');
     setNewVideoTitle('');
 
     if (onUpdateSiteData) {
@@ -139,10 +144,16 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
     }
   };
 
-  const handleUpdateVideoId = (id, rawInput) => {
-    const extractedId = extractYoutubeId(rawInput);
+  const handleUpdateVideoUrl = (id, newUrl) => {
+    const extractedId = extractYoutubeId(newUrl);
     const updatedVideos = youtubeVideos.map((v) =>
-      v.id === id ? { ...v, videoId: extractedId } : v
+      v.id === id
+        ? {
+            ...v,
+            videoUrl: newUrl,
+            videoId: extractedId || v.videoId,
+          }
+        : v
     );
     setYoutubeVideos(updatedVideos);
     if (onUpdateSiteData) {
@@ -189,11 +200,11 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
               유튜브 미디어 & 시각적 랜딩페이지 편집 관리자
             </h2>
             <span className="px-2.5 py-0.5 rounded-full bg-red-600/20 text-red-300 border border-red-500/40 text-xs font-black">
-              LIVE VISUAL EDITOR
+              FULL URL INTEGRATED
             </span>
           </div>
           <p className="text-xs sm:text-sm text-emerald-200/70 font-medium mt-1">
-            유튜브 웹주소(URL) 전체를 복사해서 붙여넣으셔도 썸네일과 동영상이 자동으로 연동됩니다.
+            유튜브 웹주소(URL) 전체를 그대로 입력 및 보관하며, 실시간 썸네일과 동영상이 자동으로 연동됩니다.
           </p>
         </div>
 
@@ -224,17 +235,6 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
             <span>⚙️ 폼 상세 입력 모드</span>
           </button>
         </div>
-      </div>
-
-      {/* Helpful Guide Card: What is YouTube Video ID & URL? */}
-      <div className="bg-[#0f1f18] p-5 rounded-2xl border border-emerald-500/30 text-xs sm:text-sm space-y-2 text-emerald-100 shadow-md">
-        <div className="flex items-center gap-2 text-emerald-300 font-extrabold text-sm">
-          <HelpCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>💡 유튜브 영상 주소(URL) 및 고유 ID 안내</span>
-        </div>
-        <p className="text-gray-300 leading-relaxed font-medium">
-          유튜브 주소창에 보이는 <strong>전체 웹주소(예: <code className="text-emerald-300 font-mono bg-black/50 px-1.5 py-0.5 rounded">https://www.youtube.com/watch?v=ZDZFUpS0fFE</code>)</strong>를 통째로 복사해서 입력창에 붙여넣으시면, 11자리 고유 식별코드인 <code className="text-emerald-300 font-mono bg-black/50 px-1.5 py-0.5 rounded">ZDZFUpS0fFE</code>를 **시스템이 알아서 자동으로 추출**하여 썸네일을 생성합니다!
-        </p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-8">
@@ -320,7 +320,9 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
               {/* 2-Column Real YouTube Videos Visual Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 {youtubeVideos.map((video) => {
-                  const thumbnailUrl = `https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg`;
+                  const effectiveId = extractYoutubeId(video.videoUrl || video.videoId);
+                  const thumbnailUrl = `https://img.youtube.com/vi/${effectiveId}/hqdefault.jpg`;
+                  const displayUrl = video.videoUrl || `https://www.youtube.com/watch?v=${video.videoId}`;
 
                   return (
                     <div
@@ -346,7 +348,7 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
 
                         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-bold text-white">
                           <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md text-emerald-300 border border-white/20">
-                            HD 동영상 시청하기 (Video ID: {video.videoId})
+                            HD 동영상 시청하기 (HD PLAY)
                           </span>
                         </div>
                       </div>
@@ -368,16 +370,17 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
                           />
                         </div>
 
-                        {/* Editable Video URL or ID Input */}
+                        {/* FULL YOUTUBE URL INPUT FIELD */}
                         <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-between gap-3 text-xs">
                           <div className="flex items-center gap-1.5 flex-1">
-                            <span className="text-gray-400 font-bold shrink-0">유튜브 주소/ID:</span>
+                            <LinkIcon className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                            <span className="text-gray-400 font-extrabold shrink-0">유튜브 웹주소(URL):</span>
                             <input
                               type="text"
-                              value={video.videoId}
-                              onChange={(e) => handleUpdateVideoId(video.id, e.target.value)}
-                              placeholder="유튜브 URL 전체 또는 ID 입력"
-                              className="w-full bg-[#162a20] border border-emerald-500/40 rounded-lg px-2 py-1 text-xs font-mono text-emerald-300 focus:outline-none focus:border-emerald-400"
+                              value={displayUrl}
+                              onChange={(e) => handleUpdateVideoUrl(video.id, e.target.value)}
+                              placeholder="https://www.youtube.com/watch?v=..."
+                              className="w-full bg-[#162a20] border border-emerald-500/40 rounded-lg px-2.5 py-1 text-xs font-mono text-emerald-300 focus:outline-none focus:border-emerald-400 truncate"
                             />
                           </div>
 
@@ -440,16 +443,16 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
         <div className="bg-[#111c16] rounded-3xl p-6 border border-emerald-500/20 shadow-xl space-y-4">
           <h4 className="text-sm font-black text-white flex items-center gap-2">
             <Plus className="w-4 h-4 text-emerald-400" />
-            <span>+ 신규 유튜브 영상 추가 (유튜브 전체 웹주소 또는 ID 입력)</span>
+            <span>+ 신규 유튜브 영상 추가 (유튜브 웹주소 전체 입력)</span>
           </h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
             <div className="sm:col-span-5 space-y-1">
-              <label className="text-[11px] font-bold text-emerald-300">유튜브 웹주소(URL) 또는 ID</label>
+              <label className="text-[11px] font-bold text-emerald-300">유튜브 웹주소(URL) 전체</label>
               <input
                 type="text"
-                value={newVideoInput}
-                onChange={(e) => setNewVideoInput(e.target.value)}
+                value={newVideoInputUrl}
+                onChange={(e) => setNewVideoInputUrl(e.target.value)}
                 placeholder="예: https://www.youtube.com/watch?v=ZDZFUpS0fFE"
                 className="w-full bg-[#16241c] border border-emerald-500/40 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-400"
               />
