@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Edit, Trash2, LayoutGrid, List, Users, Sparkles, Tag, Eye } from 'lucide-react';
 import CourseEditModal from './CourseEditModal';
+import { calculateDiscount } from '../../utils/price';
 
 export default function AdminCourses() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,6 +17,7 @@ export default function AdminCourses() {
       categoryName: '풀 패키지',
       title: '외식창업 마스터 풀 패키지',
       instructor: '안형상 이사장 외 명장진',
+      originalPrice: '1,500,000원',
       price: '1,200,000원',
       discount: '20% OFF',
       status: '운영중',
@@ -30,6 +32,7 @@ export default function AdminCourses() {
       categoryName: '풀 패키지',
       title: '메뉴개발·원가관리 풀 패키지',
       instructor: '김서연 명인 / 박지훈 셰프',
+      originalPrice: '1,150,000원',
       price: '980,000원',
       discount: '15% OFF',
       status: '운영중',
@@ -44,8 +47,9 @@ export default function AdminCourses() {
       categoryName: '풀 패키지',
       title: '매장운영·서비스 풀 패키지',
       instructor: '안형상 이사장 직강',
+      originalPrice: '1,900,000원',
       price: '950,000원',
-      discount: '15% OFF',
+      discount: '50% OFF',
       status: '운영중',
       studentsCount: 110,
       thumbnail: '/images/package_card_3.png',
@@ -58,6 +62,7 @@ export default function AdminCourses() {
       categoryName: '풀 패키지',
       title: '외식마케팅·프랜차이즈 풀 패키지',
       instructor: '김서연 전문이사',
+      originalPrice: '1,340,000원',
       price: '1,100,000원',
       discount: '18% OFF',
       status: '운영중',
@@ -72,6 +77,7 @@ export default function AdminCourses() {
       categoryName: '행동교정',
       title: '반려견 행동 이해·상담 입문',
       instructor: '김서연 전문원장',
+      originalPrice: '150,000원',
       price: '120,000원',
       discount: '20% OFF',
       status: '운영중',
@@ -86,6 +92,7 @@ export default function AdminCourses() {
       categoryName: '펫푸드',
       title: '반려동물 영양·식재료 기초',
       instructor: '김서연 영양사',
+      originalPrice: '150,000원',
       price: '120,000원',
       discount: '20% OFF',
       status: '운영중',
@@ -100,6 +107,7 @@ export default function AdminCourses() {
       categoryName: '창업전략',
       title: '창업기획·사업계획 수립 마스터',
       instructor: '김서연 이사',
+      originalPrice: '150,000원',
       price: '120,000원',
       discount: '20% OFF',
       status: '운영중',
@@ -114,6 +122,7 @@ export default function AdminCourses() {
       categoryName: '인기 클래스',
       title: '성공적인 카페 & 음료 매장 창업 마스터클래스',
       instructor: '안형상 이사장 직강',
+      originalPrice: '150,000원',
       price: '150,000원',
       discount: 'NEW',
       status: '모집중',
@@ -165,7 +174,7 @@ export default function AdminCourses() {
             교육과정 & 풀 패키지 상품 관리
           </h2>
           <p className="text-xs sm:text-sm text-emerald-200/70 font-medium mt-1">
-            PC에서 실제 사진을 직접 업로드하고 100% 잘림 없이 선명하게 노출시킬 수 있습니다.
+            할인율(%)을 적용하면 정가(취소선)와 최종 할인가가 자동 계산되어 함께 선명하게 표기됩니다.
           </p>
         </div>
 
@@ -249,89 +258,104 @@ export default function AdminCourses() {
 
       </div>
 
-      {/* VIEW MODE 1: GALLERY CARD GRID VIEW WITH UNCLIPPED IMAGES */}
+      {/* VIEW MODE 1: GALLERY CARD GRID VIEW WITH ORIGINAL & DISCOUNTED PRICES */}
       {viewMode === 'gallery' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredCourses.map((c) => (
-            <div
-              key={c.id}
-              className="bg-[#111c16] rounded-3xl border border-emerald-500/20 hover:border-emerald-400/60 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
-            >
-              {/* Thumbnail Cover Header with Unclipped Fit Support */}
-              <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-black/90 p-1 flex items-center justify-center">
-                <img
-                  src={c.thumbnail}
-                  alt={c.title}
-                  className={`w-full h-full ${
-                    c.fitMode === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
-                  } group-hover:scale-105 transition-transform duration-500`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111c16] via-transparent to-black/30 pointer-events-none" />
+          {filteredCourses.map((c) => {
+            const priceCalc = calculateDiscount(c.originalPrice || c.price, c.discount);
 
-                <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-black shadow-md tracking-wider">
-                    {c.categoryName}
-                  </span>
-                  <span className="px-2 py-0.5 rounded-md bg-rose-500 text-white text-[11px] font-black shadow-md">
-                    {c.discount}
-                  </span>
-                </div>
+            return (
+              <div
+                key={c.id}
+                className="bg-[#111c16] rounded-3xl border border-emerald-500/20 hover:border-emerald-400/60 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                {/* Thumbnail Cover Header with Unclipped Fit Support */}
+                <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-black/90 p-1 flex items-center justify-center">
+                  <img
+                    src={c.thumbnail}
+                    alt={c.title}
+                    className={`w-full h-full ${
+                      c.fitMode === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
+                    } group-hover:scale-105 transition-transform duration-500`}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111c16] via-transparent to-black/30 pointer-events-none" />
 
-                <div className="absolute bottom-2 left-3 text-xs font-mono text-gray-300 font-bold bg-black/60 px-2 py-0.5 rounded-md backdrop-blur-xs">
-                  {c.id}
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                <div className="space-y-2">
-                  <h3 className="text-base font-black text-white group-hover:text-emerald-300 transition-colors leading-snug line-clamp-2">
-                    {c.title}
-                  </h3>
-                  <p className="text-xs text-gray-400 line-clamp-2 font-medium leading-relaxed">
-                    {c.desc}
-                  </p>
-                </div>
-
-                <div className="space-y-3 pt-3 border-t border-emerald-900/40">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 font-medium">강사: {c.instructor}</span>
-                    <div className="flex items-center gap-1 text-emerald-400 font-bold">
-                      <Users className="w-3.5 h-3.5" />
-                      <span>{c.studentsCount} 명 수강</span>
-                    </div>
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-black shadow-md tracking-wider">
+                      {c.categoryName}
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded-md bg-rose-500 text-white text-[11px] font-black shadow-md">
+                      {c.discount}
+                    </span>
                   </div>
 
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-lg font-black text-white">{c.price}</span>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={() => handleOpenEditModal(c)}
-                        className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1"
-                        title="사진 업로드 및 문구 수정"
-                      >
-                        <Edit className="w-3.5 h-3.5" />
-                        <span>수정</span>
-                      </button>
-                      <button
-                        onClick={() => handleDelete(c.id)}
-                        className="p-1.5 rounded-xl bg-rose-900/50 hover:bg-rose-600 text-rose-200 hover:text-white transition-colors cursor-pointer"
-                        title="삭제"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                  <div className="absolute bottom-2 left-3 text-xs font-mono text-gray-300 font-bold bg-black/60 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                    {c.id}
+                  </div>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <h3 className="text-base font-black text-white group-hover:text-emerald-300 transition-colors leading-snug line-clamp-2">
+                      {c.title}
+                    </h3>
+                    <p className="text-xs text-gray-400 line-clamp-2 font-medium leading-relaxed">
+                      {c.desc}
+                    </p>
+                  </div>
+
+                  <div className="space-y-3 pt-3 border-t border-emerald-900/40">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-400 font-medium">강사: {c.instructor}</span>
+                      <div className="flex items-center gap-1 text-emerald-400 font-bold">
+                        <Users className="w-3.5 h-3.5" />
+                        <span>{c.studentsCount} 명 수강</span>
+                      </div>
+                    </div>
+
+                    {/* Original Price (Strikethrough) & Final Discounted Price */}
+                    <div className="flex items-end justify-between pt-1">
+                      <div className="flex flex-col">
+                        {priceCalc.hasDiscount && (
+                          <span className="line-through text-gray-400 text-xs font-bold tracking-tight">
+                            {priceCalc.originalPriceStr}
+                          </span>
+                        )}
+                        <span className="text-lg font-black text-emerald-300">
+                          {priceCalc.discountedPriceStr}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleOpenEditModal(c)}
+                          className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1"
+                          title="정가 및 할인율 수정"
+                        >
+                          <Edit className="w-3.5 h-3.5" />
+                          <span>수정</span>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(c.id)}
+                          className="p-1.5 rounded-xl bg-rose-900/50 hover:bg-rose-600 text-rose-200 hover:text-white transition-colors cursor-pointer"
+                          title="삭제"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
-        /* VIEW MODE 2: TABLE LIST VIEW WITH THUMBNAIL PREVIEW */
+        /* VIEW MODE 2: TABLE LIST VIEW WITH ORIGINAL & DISCOUNTED PRICES */
         <div className="bg-[#111c16] rounded-3xl p-6 border border-emerald-500/20 shadow-xl">
           <div className="overflow-x-auto no-scrollbar">
-            <table className="w-full text-left border-collapse min-w-[800px]">
+            <table className="w-full text-left border-collapse min-w-[850px]">
               <thead>
                 <tr className="text-xs font-black text-emerald-400/80 border-b border-emerald-900/40">
                   <th className="pb-3 px-3">썸네일</th>
@@ -339,61 +363,69 @@ export default function AdminCourses() {
                   <th className="pb-3 px-3">카테고리</th>
                   <th className="pb-3 px-3">교육 과정명</th>
                   <th className="pb-3 px-3">담당 명인 / 강사</th>
-                  <th className="pb-3 px-3">수강료</th>
-                  <th className="pb-3 px-3">할인/혜택</th>
-                  <th className="pb-3 px-3">수강생 수</th>
+                  <th className="pb-3 px-3">정가 (원래가격)</th>
+                  <th className="pb-3 px-3">할인 수강료</th>
+                  <th className="pb-3 px-3">할인 뱃지</th>
                   <th className="pb-3 px-3 text-center">관리</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-emerald-900/30 text-xs sm:text-sm font-semibold text-gray-200">
-                {filteredCourses.map((c) => (
-                  <tr key={c.id} className="hover:bg-emerald-950/40 transition-colors">
-                    <td className="py-3 px-3">
-                      <div className="w-14 h-14 rounded-xl overflow-hidden bg-black border border-emerald-500/30 shrink-0 p-0.5 flex items-center justify-center">
-                        <img
-                          src={c.thumbnail}
-                          alt={c.title}
-                          className={`w-full h-full ${
-                            c.fitMode === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
-                          }`}
-                        />
-                      </div>
-                    </td>
-                    <td className="py-3 px-3 font-mono text-xs text-gray-400">{c.id}</td>
-                    <td className="py-3 px-3">
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-black">
-                        {c.categoryName}
-                      </span>
-                    </td>
-                    <td className="py-3 px-3 font-black text-white">{c.title}</td>
-                    <td className="py-3 px-3 text-gray-300">{c.instructor}</td>
-                    <td className="py-3 px-3 font-black text-emerald-300">{c.price}</td>
-                    <td className="py-3 px-3">
-                      <span className="px-2 py-0.5 bg-rose-500/20 text-rose-300 rounded-md text-xs font-bold">
-                        {c.discount}
-                      </span>
-                    </td>
-                    <td className="py-3 px-3 font-bold text-gray-300">{c.studentsCount} 명</td>
-                    <td className="py-3 px-3 text-center">
-                      <div className="flex items-center justify-center gap-2">
-                        <button
-                          onClick={() => handleOpenEditModal(c)}
-                          className="p-1.5 rounded-lg bg-emerald-900/40 hover:bg-emerald-800 text-emerald-300 transition-colors cursor-pointer"
-                          title="사진 업로드 및 문구 수정"
-                        >
-                          <Edit className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(c.id)}
-                          className="p-1.5 rounded-lg bg-rose-900/40 hover:bg-rose-800 text-rose-300 transition-colors cursor-pointer"
-                          title="삭제"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {filteredCourses.map((c) => {
+                  const priceCalc = calculateDiscount(c.originalPrice || c.price, c.discount);
+
+                  return (
+                    <tr key={c.id} className="hover:bg-emerald-950/40 transition-colors">
+                      <td className="py-3 px-3">
+                        <div className="w-14 h-14 rounded-xl overflow-hidden bg-black border border-emerald-500/30 shrink-0 p-0.5 flex items-center justify-center">
+                          <img
+                            src={c.thumbnail}
+                            alt={c.title}
+                            className={`w-full h-full ${
+                              c.fitMode === 'cover' ? 'object-cover object-top' : 'object-contain object-center'
+                            }`}
+                          />
+                        </div>
+                      </td>
+                      <td className="py-3 px-3 font-mono text-xs text-gray-400">{c.id}</td>
+                      <td className="py-3 px-3">
+                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-black">
+                          {c.categoryName}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 font-black text-white">{c.title}</td>
+                      <td className="py-3 px-3 text-gray-300">{c.instructor}</td>
+                      <td className="py-3 px-3 font-bold text-gray-400 line-through">
+                        {priceCalc.hasDiscount ? priceCalc.originalPriceStr : '-'}
+                      </td>
+                      <td className="py-3 px-3 font-black text-emerald-300">
+                        {priceCalc.discountedPriceStr}
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="px-2.5 py-0.5 bg-rose-500/20 text-rose-300 border border-rose-500/40 rounded-md text-xs font-black">
+                          {c.discount}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() => handleOpenEditModal(c)}
+                            className="p-1.5 rounded-lg bg-emerald-900/40 hover:bg-emerald-800 text-emerald-300 transition-colors cursor-pointer"
+                            title="정가 및 할인율 수정"
+                          >
+                            <Edit className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(c.id)}
+                            className="p-1.5 rounded-lg bg-rose-900/40 hover:bg-rose-800 text-rose-300 transition-colors cursor-pointer"
+                            title="삭제"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
