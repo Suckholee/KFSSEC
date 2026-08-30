@@ -31,7 +31,6 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
     {
       title: '교육·자격증',
       key: 'education',
-      hasAccent: true,
       subLinks: [
         { label: '교육 과정', action: 'catalog' },
         { label: '교육 일정', action: 'schedule' },
@@ -115,23 +114,29 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           onMouseLeave={handleMouseLeave}
           className="hidden md:flex items-center gap-8 lg:gap-12"
         >
-          {megaMenuItems.map((menu, mIdx) => (
-            <div key={mIdx} className="relative group py-6 cursor-pointer">
-              <button
-                onClick={() => {
-                  if (menu.key === 'about') onOpenAboutTab('greetings');
-                  else onViewChange('catalog');
-                }}
-                className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 ${
-                  menu.hasAccent
-                    ? 'text-emerald-400 border-b-2 border-dashed border-rose-500 pb-0.5'
-                    : 'text-white hover:text-emerald-300'
-                }`}
-              >
-                <span>{menu.title}</span>
-              </button>
-            </div>
-          ))}
+          {megaMenuItems.map((menu, mIdx) => {
+            const isMenuActive =
+              (menu.key === 'about' && currentView === 'about') ||
+              (menu.key === 'education' && currentView === 'catalog');
+
+            return (
+              <div key={mIdx} className="relative group py-6 cursor-pointer">
+                <button
+                  onClick={() => {
+                    if (menu.key === 'about') onOpenAboutTab('greetings');
+                    else onViewChange('catalog');
+                  }}
+                  className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 ${
+                    isMenuActive
+                      ? 'text-emerald-400 border-b-2 border-dashed border-rose-500 pb-0.5'
+                      : 'text-white hover:text-emerald-300'
+                  }`}
+                >
+                  <span>{menu.title}</span>
+                </button>
+              </div>
+            );
+          })}
         </nav>
 
         {/* Right Top Utility Buttons */}
