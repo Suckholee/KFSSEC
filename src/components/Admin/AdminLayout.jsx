@@ -52,6 +52,7 @@ import {
   ChevronDown,
   ChevronUp,
   PenTool,
+  Clipboard,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -124,6 +125,7 @@ export default function AdminLayout({
   const [newDevInquiryTitle, setNewDevInquiryTitle] = useState('');
   const [newDevInquiryDesc, setNewDevInquiryDesc] = useState('');
   const [newDevInquiryScreenshot, setNewDevInquiryScreenshot] = useState(null);
+  const [isPasteNotice, setIsPasteNotice] = useState(false);
   const devFileInputRef = useRef(null);
 
   // Hidden File Input Ref for course edit image upload
@@ -137,6 +139,42 @@ export default function AdminLayout({
       }
     });
   }, []);
+
+  // Clipboard Paste Image Handler (Ctrl+V / Cmd+V Support)
+  const processImageFile = (file) => {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setNewDevInquiryScreenshot(ev.target.result);
+      setIsPasteNotice(true);
+      setTimeout(() => setIsPasteNotice(false), 3000);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleClipboardPaste = (e) => {
+    const items = e.clipboardData?.items;
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            processImageFile(file);
+            e.preventDefault();
+            break;
+          }
+        }
+      }
+    }
+  };
+
+  // Global Paste Listener when Write Form is Open
+  useEffect(() => {
+    if (!isWriteFormOpen) return;
+    const handleGlobalPaste = (e) => handleClipboardPaste(e);
+    window.addEventListener('paste', handleGlobalPaste);
+    return () => window.removeEventListener('paste', handleGlobalPaste);
+  }, [isWriteFormOpen]);
 
   // Parse initial primary menu and course selection from window.location.pathname
   const parsePathToState = () => {
@@ -215,11 +253,7 @@ export default function AdminLayout({
   const handleDevScreenshotUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setNewDevInquiryScreenshot(ev.target.result);
-      };
-      reader.readAsDataURL(file);
+      processImageFile(file);
     }
   };
 
@@ -249,7 +283,7 @@ export default function AdminLayout({
     setNewDevInquiryDesc('');
     setNewDevInquiryScreenshot(null);
     triggerSavedNotice();
-    alert('🚀 개발자 소통 게시판에 문의 및 스크린샷이 성공적으로 등록되었습니다!');
+    alert('🚀 개발자 소통 게시판에 클립보드 스크린샷과 문의글이 성공적으로 등록되었습니다!');
   };
 
   // Direct Computer Image File Upload Handler to Real Server API
@@ -328,7 +362,7 @@ export default function AdminLayout({
       case 'developer':
         return [
           { id: 'dev_inquiry_list', label: '📋 개발 문의 게시판' },
-          { id: 'dev_issue_track', label: '🐞 버그 제보 & 스크린샷' },
+          { id: 'dev_issue_track', label: '📋 Ctrl+V 클립보드 지원' },
           { id: 'dev_feature_request', label: '✨ 신규 기능 제안' },
         ];
       case 'reservations':
@@ -362,7 +396,7 @@ export default function AdminLayout({
             <h1 className="text-lg font-black tracking-tight flex items-center gap-2">
               <span>스마트 파트너 센터</span>
               <span className="text-[11px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                DEV CHANNEL CONNECTED
+                CLIPBOARD CTRL+V SUPPORTED
               </span>
             </h1>
           </div>
@@ -371,11 +405,14 @@ export default function AdminLayout({
         {/* Top Quick Links */}
         <div className="flex items-center gap-3 text-xs font-bold">
           <button
-            onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
+            onClick={() => {
+              switchPrimaryMenu('developer', 'dev_inquiry_list', null);
+              setIsWriteFormOpen(true);
+            }}
             className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black animate-pulse"
           >
-            <Code className="w-4 h-4 text-emerald-200" />
-            <span>💻 개발자 1:1 문의 게시판</span>
+            <Clipboard className="w-4 h-4 text-emerald-200" />
+            <span>📋 Ctrl+V 캡쳐 스크린샷 붙여넣기 문의</span>
           </button>
 
           <div className="h-4 w-px bg-gray-700" />
@@ -500,12 +537,15 @@ export default function AdminLayout({
 
           <div className="px-1">
             <button
-              onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
+              onClick={() => {
+                switchPrimaryMenu('developer', 'dev_inquiry_list', null);
+                setIsWriteFormOpen(true);
+              }}
               className="w-full py-2 px-3 bg-emerald-900 text-emerald-100 hover:bg-black rounded-xl text-xs font-black transition-all flex items-center justify-between shadow-sm cursor-pointer border border-emerald-700"
             >
               <span className="flex items-center gap-1.5">
-                <Code className="w-3.5 h-3.5 text-emerald-400" />
-                <span>개발 문의 게시판 ➔</span>
+                <Clipboard className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Ctrl+V 스크린샷 붙여넣기 ➔</span>
               </span>
             </button>
           </div>
@@ -568,7 +608,7 @@ export default function AdminLayout({
 
           {/* DYNAMIC SCREEN: DEVELOPER INQUIRY BOARD VIEW */}
           {primaryMenu === 'developer' && (
-            <div className="space-y-6 animate-fadeIn max-w-6xl">
+            <div className="space-y-6 animate-fadeIn max-w-6xl" onPaste={handleClipboardPaste}>
               
               {/* Header Title & Top Action Bar */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
@@ -578,7 +618,7 @@ export default function AdminLayout({
                     <span>개발자 소통 & 1:1 개발 문의 게시판</span>
                   </h3>
                   <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    개발자(Antigravity)와 주고받은 문의 및 기능 요청 조치 결과 게시판입니다.
+                    키보드 캡쳐(Ctrl+C / Cmd+C) 후 이 화면 어디서든 <strong className="text-emerald-800 font-black">Ctrl+V (Cmd+V)</strong>로 즉시 이미지 첨부가 가능합니다!
                   </p>
                 </div>
 
@@ -588,21 +628,34 @@ export default function AdminLayout({
                     className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                   >
                     <PenTool className="w-4 h-4" />
-                    <span>{isWriteFormOpen ? '✕ 문의 작성 닫기' : '✏️ 새 개발 문의 작성'}</span>
+                    <span>{isWriteFormOpen ? '✕ 문의 작성 닫기' : '✏️ 새 개발 문의 작성 (Ctrl+V 붙여넣기 지원)'}</span>
                   </button>
                 </div>
               </div>
 
-              {/* WRITE FORM COLLAPSIBLE PANEL */}
+              {/* WRITE FORM COLLAPSIBLE PANEL WITH CLIPBOARD PASTE ZONE */}
               {isWriteFormOpen && (
-                <form onSubmit={handleSubmitDevInquiry} className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-black shadow-xl space-y-4 text-xs font-bold animate-fadeIn">
+                <form
+                  onSubmit={handleSubmitDevInquiry}
+                  onPaste={handleClipboardPaste}
+                  className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-black shadow-xl space-y-4 text-xs font-bold animate-fadeIn"
+                >
                   <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
                     <h4 className="text-base font-black text-black flex items-center gap-2">
                       <Send className="w-4 h-4 text-emerald-700" />
-                      <span>새 개발 문의 & 스크린샷 캡쳐 등록</span>
+                      <span>새 개발 문의 & 캡쳐 스크린샷 등록</span>
                     </h4>
-                    <span className="text-xs text-emerald-800 font-mono">Form Status: Active</span>
+                    <span className="text-xs text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full font-black border border-emerald-300">
+                      ⚡ 클립보드 Ctrl+V 붙여넣기 대기중
+                    </span>
                   </div>
+
+                  {isPasteNotice && (
+                    <div className="bg-emerald-500 text-black font-black p-3 rounded-xl flex items-center gap-2 animate-bounce shadow-md">
+                      <Clipboard className="w-5 h-5" />
+                      <span>📋 클립보드 캡쳐 스크린샷 이미지가 성공적으로 붙여넣어졌습니다!</span>
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                     <div className="md:col-span-3">
@@ -637,27 +690,36 @@ export default function AdminLayout({
                     <textarea
                       rows="4"
                       required
-                      placeholder="개발자에게 전달할 구체적인 증상 및 요청사항을 설명해주세요..."
+                      placeholder="개발자에게 전달할 구체적인 증상 및 요청사항을 설명해주세요... (Ctrl+V로 스크린샷을 바로 붙여넣을 수 있습니다)"
                       value={newDevInquiryDesc}
                       onChange={(e) => setNewDevInquiryDesc(e.target.value)}
+                      onPaste={handleClipboardPaste}
                       className="w-full p-3 border border-gray-300 rounded-xl leading-relaxed focus:outline-none focus:border-black resize-none"
                     />
                   </div>
 
-                  {/* SCREENSHOT FILE UPLOAD AREA */}
-                  <div className="space-y-2 bg-stone-50 p-4 rounded-2xl border border-stone-300">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-black text-gray-800 flex items-center gap-1.5">
-                        <Paperclip className="w-3.5 h-3.5 text-emerald-700" />
-                        <span>스크린샷 이미지 첨부</span>
-                      </span>
+                  {/* SCREENSHOT FILE UPLOAD & CLIPBOARD PASTE DROP ZONE */}
+                  <div
+                    onPaste={handleClipboardPaste}
+                    className="space-y-3 bg-stone-50 p-5 rounded-2xl border-2 border-dashed border-emerald-500/80 shadow-sm relative group hover:border-emerald-600 transition-colors"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="space-y-0.5">
+                        <span className="text-xs font-black text-black flex items-center gap-1.5">
+                          <Clipboard className="w-4 h-4 text-emerald-700 animate-pulse" />
+                          <span>📋 클립보드 스크린샷 붙여넣기 (Ctrl+V / Cmd+V)</span>
+                        </span>
+                        <p className="text-[11px] text-gray-500 font-bold">
+                          캡쳐도구(Win+Shift+S 또는 Cmd+Shift+4)로 화면 캡쳐 후 이 창에서 <strong className="text-emerald-800">Ctrl+V</strong> 하시면 즉시 스크린샷이 붙여넣어집니다.
+                        </p>
+                      </div>
 
                       <button
                         type="button"
                         onClick={() => devFileInputRef.current && devFileInputRef.current.click()}
-                        className="px-3.5 py-1.5 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-black transition-all cursor-pointer"
+                        className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-black transition-all cursor-pointer shrink-0"
                       >
-                        📁 내 컴퓨터 스크린샷 캡쳐 파일 선택
+                        📁 내 컴퓨터 파일 선택
                       </button>
 
                       <input
@@ -669,20 +731,29 @@ export default function AdminLayout({
                       />
                     </div>
 
-                    {newDevInquiryScreenshot && (
-                      <div className="relative h-36 rounded-xl overflow-hidden border border-emerald-500 bg-black">
+                    {/* Screenshot Preview */}
+                    {newDevInquiryScreenshot ? (
+                      <div className="relative h-44 rounded-xl overflow-hidden border-2 border-emerald-600 bg-black shadow-md">
                         <img
                           src={newDevInquiryScreenshot}
                           alt="첨부 스크린샷"
                           className="w-full h-full object-cover"
                         />
+                        <div className="absolute top-2 left-2 bg-black/85 text-emerald-400 font-mono text-[11px] font-black px-2.5 py-1 rounded-lg border border-emerald-700 shadow-sm">
+                          ✓ 붙여넣은 스크린샷 캡쳐 이미지 적용 완료
+                        </div>
                         <button
                           type="button"
                           onClick={() => setNewDevInquiryScreenshot(null)}
-                          className="absolute top-2 right-2 bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center font-black text-xs"
+                          className="absolute top-2 right-2 bg-rose-600 hover:bg-rose-700 text-white w-7 h-7 rounded-full flex items-center justify-center font-black text-xs shadow-md transition-transform hover:scale-110"
+                          title="이미지 삭제"
                         >
                           ✕
                         </button>
+                      </div>
+                    ) : (
+                      <div className="h-20 bg-white/80 border border-emerald-200 rounded-xl flex items-center justify-center text-xs font-bold text-emerald-900/70 border-dashed">
+                        📋 캡쳐 후 이 박스나 전체 화면에 Ctrl+V (Cmd+V) 해보세요!
                       </div>
                     )}
                   </div>
@@ -710,7 +781,7 @@ export default function AdminLayout({
               <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
                 <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
                   <span>📋 개발 문의 게시글 목록 (총 {devInquiries.length}건)</span>
-                  <span className="text-emerald-400 font-mono">게시판 형태 지원</span>
+                  <span className="text-emerald-400 font-mono">Ctrl+V ClipBoard Paste Enabled</span>
                 </div>
 
                 <div className="divide-y divide-gray-200 text-xs font-bold">
