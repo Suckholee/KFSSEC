@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import NoticePostSection from './components/NoticePostSection';
 import EventBannerSection from './components/EventBannerSection';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
@@ -181,7 +180,7 @@ export default function App() {
 
   return (
     <div className="h-screen overflow-hidden bg-gray-50 flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-200 selection:text-emerald-900">
-      {/* Header with Client Target 5-Column Mega Menu Dropdown */}
+      {/* Header with Dark Luxury Theme + 5-Column Mega Menu Dropdown */}
       <Header
         currentView={currentView}
         onViewChange={(view) => {
@@ -197,7 +196,7 @@ export default function App() {
         {currentView === 'landing' ? (
           <div ref={snapContainerRef} className="scroll-snap-container no-scrollbar">
             {/* Section 1: Hero Banner */}
-            <section className="scroll-snap-section flex flex-col justify-center bg-white">
+            <section className="scroll-snap-section flex flex-col justify-center">
               <Hero
                 onExploreClick={() => {
                   changeView('catalog', '/catalog');
@@ -208,12 +207,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 2: Notice & Posts Section (Matching Client Image 1) */}
-            <section className="scroll-snap-section flex flex-col justify-center bg-white">
-              <NoticePostSection onScrollNext={handleScrollNext} />
-            </section>
-
-            {/* Section 3: Event Strip Banner */}
+            {/* Section 2: Event Strip Banner */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#0c1015]">
               <EventBannerSection
                 bannerData={siteData.banner}
@@ -222,7 +216,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 4: Netflix-Style Course Catalog */}
+            {/* Section 3: Netflix-Style Course Catalog */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#091510]">
               <NetflixCoursesSection
                 onSelectCourse={() => handleOpenAuth('login')}
@@ -230,7 +224,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 5: YouTube Media Section */}
+            {/* Section 4: YouTube Media Section */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#08100d]">
               <YouTubeMediaSection
                 youtubeData={siteData.youtube}
@@ -238,7 +232,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 6: Full Package Courses Section */}
+            {/* Section 5: Full Package Courses Section */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#061811]">
               <FullPackageCoursesSection
                 onSelectPackage={() => handleOpenAuth('login')}
@@ -246,7 +240,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 7: Unified Category Course Section */}
+            {/* Section 6: Unified Category Course Section */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#0a1410]">
               <CategoryCourseSection
                 onViewMoreClick={() => {
@@ -258,7 +252,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 8: Login & Payment Guide Banners */}
+            {/* Section 7: Login & Payment Guide Banners */}
             <section className="scroll-snap-section flex flex-col justify-center py-6">
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
@@ -270,7 +264,7 @@ export default function App() {
               />
             </section>
 
-            {/* Section 9: Footer */}
+            {/* Section 8: Footer */}
             <section className="scroll-snap-section flex flex-col justify-end">
               <Footer
                 onViewChange={(view) => {

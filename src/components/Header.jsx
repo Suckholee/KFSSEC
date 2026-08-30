@@ -71,15 +71,13 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
       onOpenAuth('consulting');
     } else if (item.action === 'notice' || item.action === 'gallery') {
       onViewChange('landing');
-      const el = document.getElementById('notice-section');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
     } else {
       onViewChange('catalog');
     }
   };
 
   return (
-    <header className="relative bg-white border-b-4 border-black z-50 transition-all font-sans text-gray-900">
+    <header className="relative bg-[#0a1410] border-b border-emerald-950/80 z-50 transition-all font-sans text-white">
       
       {/* Main Top Header Bar */}
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto h-20 sm:h-24 flex items-center justify-between">
@@ -92,7 +90,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           <img
             src="/images/logo.png"
             alt="사단법인 한국외식창업교육원"
-            className="h-11 sm:h-14 w-auto object-contain group-hover:scale-103 transition-transform"
+            className="h-10 sm:h-12 w-auto object-contain group-hover:scale-103 transition-transform"
           />
         </div>
 
@@ -110,8 +108,8 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
                 }}
                 className={`text-base lg:text-lg font-black tracking-tight transition-colors flex items-center gap-1 ${
                   menu.hasAccent
-                    ? 'text-black border-b-2 border-dashed border-rose-500 pb-0.5'
-                    : 'text-gray-900 hover:text-emerald-700'
+                    ? 'text-emerald-400 border-b-2 border-dashed border-rose-500 pb-0.5'
+                    : 'text-white hover:text-emerald-300'
                 }`}
               >
                 <span>{menu.title}</span>
@@ -126,10 +124,10 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           {/* Admin Panel Shortcut */}
           <button
             onClick={() => onViewChange('admin')}
-            className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-500/40 text-emerald-800 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+            className="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/40 text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
             title="관리자 센터로 이동"
           >
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>관리자 센터</span>
           </button>
 
@@ -137,10 +135,10 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           <div className="relative">
             <button
               onClick={() => setLang(lang === 'KOR' ? 'ENG' : 'KOR')}
-              className="px-4 py-1.5 bg-black text-white text-xs font-black rounded-full flex items-center gap-2 cursor-pointer shadow-md hover:bg-gray-800 transition-colors"
+              className="px-4 py-1.5 bg-emerald-950 border border-emerald-500/40 text-white text-xs font-black rounded-full flex items-center gap-2 cursor-pointer shadow-md hover:bg-emerald-900 transition-colors"
             >
               <span>{lang}</span>
-              <span className="text-gray-400">|</span>
+              <span className="text-emerald-500">|</span>
               <ChevronDown className="w-3.5 h-3.5 text-white" />
             </button>
           </div>
@@ -148,13 +146,13 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           {/* # LOGIN / JOIN US Button */}
           <button
             onClick={() => onOpenAuth('login')}
-            className="group flex flex-col items-center justify-center text-xs font-black text-black hover:text-emerald-700 transition-colors cursor-pointer border-l-2 border-black pl-4"
+            className="group flex flex-col items-center justify-center text-xs font-black text-white hover:text-emerald-300 transition-colors cursor-pointer border-l border-emerald-900/80 pl-4"
           >
             <div className="flex items-center gap-1 text-sm font-black">
-              <span className="text-xl font-mono text-black group-hover:text-emerald-600">#</span>
+              <span className="text-xl font-mono text-emerald-400 group-hover:text-emerald-300">#</span>
               <span>LOGIN</span>
             </div>
-            <span className="text-[10px] text-gray-600 font-bold tracking-widest -mt-1 group-hover:text-emerald-600">
+            <span className="text-[10px] text-emerald-300/80 font-bold tracking-widest -mt-1 group-hover:text-white">
               JOIN US
             </span>
           </button>
@@ -164,32 +162,32 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
         {/* Mobile Hamburger Toggle Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-black hover:text-emerald-700 rounded-xl"
+          className="md:hidden p-2 text-emerald-300 hover:text-white rounded-xl"
         >
           {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
 
       </div>
 
-      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (Matching Screenshot 2) */}
+      {/* DESKTOP HOVER MEGA-MENU DROPDOWN BACKDROP (DARK THEME) */}
       {megaMenuOpen && (
         <div
           onMouseEnter={() => setMegaMenuOpen(true)}
           onMouseLeave={() => setMegaMenuOpen(false)}
-          className="absolute left-0 right-0 top-full bg-[#e8e8e8] border-b-2 border-gray-400 shadow-2xl z-40 transition-all duration-300 animate-fadeIn"
+          className="absolute left-0 right-0 top-full bg-[#0e1c16] border-b border-emerald-500/30 shadow-2xl z-40 transition-all duration-300 animate-fadeIn"
         >
           <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 grid grid-cols-5 gap-8">
             {megaMenuItems.map((col, cIdx) => (
               <div key={cIdx} className="space-y-3">
-                <h4 className="text-sm font-black text-gray-900 border-b border-gray-400 pb-2 flex items-center justify-between">
+                <h4 className="text-sm font-black text-emerald-300 border-b border-emerald-900/60 pb-2 flex items-center justify-between">
                   <span>{col.title}</span>
                 </h4>
-                <ul className="space-y-2 text-xs sm:text-sm font-extrabold text-gray-800">
+                <ul className="space-y-2 text-xs sm:text-sm font-extrabold text-gray-200">
                   {col.subLinks.map((sub, sIdx) => (
                     <li key={sIdx}>
                       <button
                         onClick={() => handleSubLinkClick(sub)}
-                        className="hover:text-rose-600 transition-colors cursor-pointer block text-left w-full py-1 hover:translate-x-1 duration-200"
+                        className="hover:text-emerald-300 transition-colors cursor-pointer block text-left w-full py-1 hover:translate-x-1 duration-200"
                       >
                         {sub.label}
                       </button>
@@ -204,14 +202,14 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
 
       {/* MOBILE MENU DROPDOWN */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b-4 border-black p-6 space-y-6 animate-fadeIn">
-          <div className="flex items-center justify-between pb-4 border-b border-gray-200">
+        <div className="md:hidden bg-[#0a1410] border-b border-emerald-900/80 p-6 space-y-6 animate-fadeIn">
+          <div className="flex items-center justify-between pb-4 border-b border-emerald-900/60">
             <button
               onClick={() => {
                 onViewChange('admin');
                 setMobileMenuOpen(false);
               }}
-              className="px-4 py-2 bg-emerald-700 text-white text-xs font-black rounded-xl"
+              className="px-4 py-2 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black rounded-xl"
             >
               🛡️ 관리자 센터
             </button>
@@ -220,7 +218,7 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
                 onOpenAuth('login');
                 setMobileMenuOpen(false);
               }}
-              className="px-4 py-2 bg-black text-white text-xs font-black rounded-xl"
+              className="px-4 py-2 bg-emerald-500 text-white text-xs font-black rounded-xl"
             >
               # LOGIN / JOIN US
             </button>
@@ -229,15 +227,15 @@ export default function Header({ currentView, onViewChange, onOpenAuth, onOpenAb
           <div className="space-y-6">
             {megaMenuItems.map((col, cIdx) => (
               <div key={cIdx} className="space-y-2">
-                <h4 className="text-sm font-black text-black border-b border-gray-300 pb-1">
+                <h4 className="text-sm font-black text-emerald-400 border-b border-emerald-900/60 pb-1">
                   {col.title}
                 </h4>
-                <div className="grid grid-cols-2 gap-2 text-xs font-bold text-gray-700 pt-1">
+                <div className="grid grid-cols-2 gap-2 text-xs font-bold text-gray-300 pt-1">
                   {col.subLinks.map((sub, sIdx) => (
                     <button
                       key={sIdx}
                       onClick={() => handleSubLinkClick(sub)}
-                      className="text-left py-1 hover:text-rose-600"
+                      className="text-left py-1 hover:text-emerald-300"
                     >
                       • {sub.label}
                     </button>
