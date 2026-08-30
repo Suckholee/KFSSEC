@@ -11,6 +11,7 @@ import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import AboutPage from './components/About/AboutPage';
 import MasterBusinessPage from './components/Master/MasterBusinessPage';
 import ConsultingPage from './components/Consulting/ConsultingPage';
+import CommunityPage from './components/Community/CommunityPage';
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminLoginModal from './components/Admin/AdminLoginModal';
 import Footer from './components/Footer';
@@ -25,6 +26,7 @@ export default function App() {
     if (path === '/about') return 'about';
     if (path === '/masters') return 'masters';
     if (path === '/consulting') return 'consulting';
+    if (path === '/community') return 'community';
     return 'landing';
   };
 
@@ -33,6 +35,7 @@ export default function App() {
   const [masterTab, setMasterTab] = useState('masters');
   const [catalogTab, setCatalogTab] = useState('courses');
   const [consultingTab, setConsultingTab] = useState('education');
+  const [communityTab, setCommunityTab] = useState('all');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
 
@@ -125,6 +128,8 @@ export default function App() {
         setCurrentView('masters');
       } else if (path === '/consulting') {
         setCurrentView('consulting');
+      } else if (path === '/community') {
+        setCurrentView('community');
       } else {
         setCurrentView('landing');
       }
@@ -188,6 +193,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleOpenCommunityTab = (tab = 'all') => {
+    setCommunityTab(tab);
+    changeView('community', '/community');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleScrollNext = () => {
     if (snapContainerRef.current) {
       const vh = snapContainerRef.current.clientHeight;
@@ -221,6 +232,7 @@ export default function App() {
         onOpenMasterTab={handleOpenMasterTab}
         onOpenCatalogTab={handleOpenCatalogTab}
         onOpenConsultingTab={handleOpenConsultingTab}
+        onOpenCommunityTab={handleOpenCommunityTab}
       />
 
       {/* Main Content Body */}
@@ -317,6 +329,13 @@ export default function App() {
             {currentView === 'consulting' && (
               <ConsultingPage
                 initialTab={consultingTab}
+                onOpenAuth={handleOpenAuth}
+              />
+            )}
+
+            {currentView === 'community' && (
+              <CommunityPage
+                initialTab={communityTab}
                 onOpenAuth={handleOpenAuth}
               />
             )}
