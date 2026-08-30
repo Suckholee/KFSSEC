@@ -1,111 +1,105 @@
 import React, { useState } from 'react';
-import { Search, Filter, Phone, CheckCircle2, Clock, XCircle, CreditCard, ChevronDown, Download, Eye, EyeOff, Shield } from 'lucide-react';
+import { Search, Filter, Phone, CheckCircle2, Clock, XCircle, CreditCard, ChevronDown, Download, Eye, EyeOff, Shield, BookOpen, Layers, Plus } from 'lucide-react';
 import { maskName, maskPhone, maskEmail, maskId } from '../../utils/security';
+import StudentCourseModal from './StudentCourseModal';
 
 export default function AdminApplications() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [privacyMode, setPrivacyMode] = useState(true);
+  const [selectedStudentForModal, setSelectedStudentForModal] = useState(null);
 
-  const [applications, setApplications] = useState([
+  // Available Master Courses Database for N:N Matching
+  const allAvailableCourses = [
+    { id: 'CRS-001', title: '외식창업 마스터 풀 패키지', categoryName: '풀 패키지', price: '1,200,000원' },
+    { id: 'CRS-002', title: '메뉴개발·원가관리 풀 패키지', categoryName: '풀 패키지', price: '980,000원' },
+    { id: 'CRS-003', title: '매장운영·서비스 풀 패키지', categoryName: '풀 패키지', price: '950,000원' },
+    { id: 'CRS-004', title: '외식마케팅·프랜차이즈 풀 패키지', categoryName: '풀 패키지', price: '1,100,000원' },
+    { id: 'CRS-005', title: '반려견 행동 이해·상담 입문', categoryName: '행동교정', price: '120,000원' },
+    { id: 'CRS-006', title: '반려동물 영양·식재료 기초', categoryName: '펫푸드', price: '120,000원' },
+    { id: 'CRS-007', title: '창업기획·사업계획 수립 마스터', categoryName: '창업전략', price: '120,000원' },
+    { id: 'CRS-008', title: '성공적인 카페 & 음료 매장 창업 마스터클래스', categoryName: '인기 클래스', price: '150,000원' },
+  ];
+
+  // N:N Students Database with Multiple Enrolled Courses
+  const [students, setStudents] = useState([
     {
       id: 'APP-2026-089',
       name: '김창업',
       phone: '010-3849-8120',
       email: 'changup.kim@gmail.com',
-      course: '외식창업 마스터 풀 패키지',
-      date: '2026-08-30 16:42',
-      price: '1,200,000원',
-      paymentMethod: '카카오페이 / 카드',
-      status: '결제완료',
+      enrolledCourses: [
+        { courseId: 'CRS-001', courseTitle: '외식창업 마스터 풀 패키지', categoryName: '풀 패키지', price: '1,200,000원', enrolledDate: '2026-08-30', status: '결제완료' },
+        { courseId: 'CRS-002', courseTitle: '메뉴개발·원가관리 풀 패키지', categoryName: '풀 패키지', price: '980,000원', enrolledDate: '2026-08-28', status: '수강중' },
+      ],
     },
     {
       id: 'APP-2026-088',
       name: '이수진',
       phone: '010-9281-3019',
       email: 'sujin.lee@naver.com',
-      course: '반려동물 영양·식재료 기초',
-      date: '2026-08-30 15:10',
-      price: '120,000원',
-      paymentMethod: '무통장 입금 대기',
-      status: '상담대기',
+      enrolledCourses: [
+        { courseId: 'CRS-006', courseTitle: '반려동물 영양·식재료 기초', categoryName: '펫푸드', price: '120,000원', enrolledDate: '2026-08-30', status: '상담대기' },
+        { courseId: 'CRS-005', courseTitle: '반려견 행동 이해·상담 입문', categoryName: '행동교정', price: '120,000원', enrolledDate: '2026-08-29', status: '결제완료' },
+        { courseId: 'CRS-007', courseTitle: '창업기획·사업계획 수립 마스터', categoryName: '창업전략', price: '120,000원', enrolledDate: '2026-08-25', status: '수강중' },
+      ],
     },
     {
       id: 'APP-2026-087',
       name: '박재민',
       phone: '010-4720-9102',
       email: 'jaemin.park@gmail.com',
-      course: '240203 정기총회 외식경영 세미나',
-      date: '2026-08-30 14:25',
-      price: '0원 (무료)',
-      paymentMethod: '무료 이벤트',
-      status: '신청완료',
+      enrolledCourses: [
+        { courseId: 'CRS-008', courseTitle: '성공적인 카페 & 음료 매장 창업 마스터클래스', categoryName: '인기 클래스', price: '150,000원', enrolledDate: '2026-08-30', status: '신청완료' },
+      ],
     },
     {
       id: 'APP-2026-086',
       name: '최명진',
       phone: '010-5821-4910',
       email: 'myungjin.choi@kakao.com',
-      course: '창업기획·사업계획 수립 마스터',
-      date: '2026-08-30 11:05',
-      price: '120,000원',
-      paymentMethod: '신용카드 결제',
-      status: '결제완료',
+      enrolledCourses: [
+        { courseId: 'CRS-007', courseTitle: '창업기획·사업계획 수립 마스터', categoryName: '창업전략', price: '120,000원', enrolledDate: '2026-08-30', status: '결제완료' },
+        { courseId: 'CRS-004', courseTitle: '외식마케팅·프랜차이즈 풀 패키지', categoryName: '풀 패키지', price: '1,100,000원', enrolledDate: '2026-08-27', status: '수강중' },
+      ],
     },
     {
       id: 'APP-2026-085',
       name: '정현우',
       phone: '010-1849-9301',
       email: 'hyunwoo.jung@naver.com',
-      course: '메뉴개발·원가관리 풀 패키지',
-      date: '2026-08-29 18:30',
-      price: '980,000원',
-      paymentMethod: '무통장 입금 대기',
-      status: '상담대기',
-    },
-    {
-      id: 'APP-2026-084',
-      name: '한소영',
-      phone: '010-7410-2819',
-      email: 'soyoung.han@gmail.com',
-      course: '수제간식·펫푸드 실전',
-      date: '2026-08-29 14:12',
-      price: '80,000원',
-      paymentMethod: '카카오페이',
-      status: '수강중',
+      enrolledCourses: [
+        { courseId: 'CRS-002', courseTitle: '메뉴개발·원가관리 풀 패키지', categoryName: '풀 패키지', price: '980,000원', enrolledDate: '2026-08-29', status: '상담대기' },
+      ],
     },
   ]);
 
-  const filteredApps = applications.filter((app) => {
+  const filteredStudents = students.filter((st) => {
     const matchesSearch =
-      app.name.includes(searchTerm) ||
-      app.phone.includes(searchTerm) ||
-      app.course.includes(searchTerm);
-    const matchesStatus = statusFilter === 'all' || app.status === statusFilter;
+      st.name.includes(searchTerm) ||
+      st.phone.includes(searchTerm) ||
+      st.enrolledCourses.some((c) => c.courseTitle.includes(searchTerm));
+    const matchesStatus =
+      statusFilter === 'all' || st.enrolledCourses.some((c) => c.status === statusFilter);
     return matchesSearch && matchesStatus;
   });
 
-  const handleStatusChange = (id, newStatus) => {
-    setApplications(
-      applications.map((app) => (app.id === id ? { ...app, status: newStatus } : app))
+  const handleUpdateStudentCourses = (studentId, updatedCourses) => {
+    setStudents(
+      students.map((st) => (st.id === studentId ? { ...st, enrolledCourses: updatedCourses } : st))
     );
+    if (selectedStudentForModal && selectedStudentForModal.id === studentId) {
+      setSelectedStudentForModal((prev) => ({ ...prev, enrolledCourses: updatedCourses }));
+    }
   };
 
-  const getStatusBadge = (status) => {
-    switch (status) {
-      case '결제완료':
-        return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
-      case '상담대기':
-        return 'bg-amber-500/20 text-amber-300 border-amber-500/40';
-      case '신청완료':
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/40';
-      case '수강중':
-        return 'bg-purple-500/20 text-purple-300 border-purple-500/40';
-      case '취소':
-        return 'bg-rose-500/20 text-rose-300 border-rose-500/40';
-      default:
-        return 'bg-gray-500/20 text-gray-300 border-gray-500/40';
-    }
+  const calculateTotalTuition = (courses) => {
+    let total = 0;
+    courses.forEach((c) => {
+      const numStr = c.price.replace(/[^0-9]/g, '');
+      if (numStr) total += parseInt(numStr, 10);
+    });
+    return total.toLocaleString() + '원';
   };
 
   return (
@@ -114,11 +108,16 @@ export default function AdminApplications() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#111c16] p-6 rounded-3xl border border-emerald-500/20 shadow-xl">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">
-            실시간 수강 신청 및 결제 관리
-          </h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl sm:text-2xl font-black text-white">
+              실시간 수강 신청 & N:N 커리큘럼 매칭 관리
+            </h2>
+            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black">
+              N:N MULTI-MATCHING
+            </span>
+          </div>
           <p className="text-xs sm:text-sm text-emerald-200/70 font-medium mt-1">
-            개인정보보호법에 의거하여 수강생 명단의 성함, 연락처, 이메일이 마스킹 처리됩니다.
+            한 수강생이 복수의 외식창업 교육과정을 병행 수강할 수 있도록 N:N 커리큘럼 매칭을 지원합니다.
           </p>
         </div>
 
@@ -138,7 +137,7 @@ export default function AdminApplications() {
           </button>
 
           <button
-            onClick={() => alert('Excel 명단 다운로드 기능이 시작됩니다.')}
+            onClick={() => alert('Excel 수강생 N:N 매칭 명단 다운로드가 진행됩니다.')}
             className="px-5 py-2.5 bg-[#162a20] hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 font-bold text-xs sm:text-sm rounded-xl shadow-lg transition-all shrink-0 cursor-pointer flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
@@ -155,7 +154,7 @@ export default function AdminApplications() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="수강생 성함, 전화번호, 신청과정 검색..."
+            placeholder="수강생 성함, 전화번호, 과목명 검색..."
             className="w-full bg-[#16241c] border border-emerald-500/30 rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm text-white placeholder-emerald-800/60 focus:outline-none focus:border-emerald-400"
           />
         </div>
@@ -178,57 +177,69 @@ export default function AdminApplications() {
         </div>
       </div>
 
-      {/* Applications Table */}
+      {/* N:N Student & Enrolled Courses Table */}
       <div className="bg-[#111c16] rounded-3xl p-6 border border-emerald-500/20 shadow-xl">
         <div className="overflow-x-auto no-scrollbar">
-          <table className="w-full text-left border-collapse min-w-[800px]">
+          <table className="w-full text-left border-collapse min-w-[850px]">
             <thead>
               <tr className="text-xs font-black text-emerald-400/80 border-b border-emerald-900/40">
-                <th className="pb-3 px-3">접수 ID</th>
+                <th className="pb-3 px-3">수강생 ID</th>
                 <th className="pb-3 px-3">수강생명</th>
                 <th className="pb-3 px-3">연락처 / 이메일</th>
-                <th className="pb-3 px-3">신청 과정명</th>
-                <th className="pb-3 px-3">신청 일시</th>
-                <th className="pb-3 px-3">결제 금액</th>
-                <th className="pb-3 px-3 text-center">상태 변경</th>
+                <th className="pb-3 px-3">N:N 매칭 수강 과목 목록</th>
+                <th className="pb-3 px-3">총 결제 금액</th>
+                <th className="pb-3 px-3 text-center">N:N 매칭 관리</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-emerald-900/30 text-xs sm:text-sm font-semibold text-gray-200">
-              {filteredApps.map((app) => (
-                <tr key={app.id} className="hover:bg-emerald-950/40 transition-colors">
+              {filteredStudents.map((st) => (
+                <tr key={st.id} className="hover:bg-emerald-950/40 transition-colors">
                   <td className="py-3.5 px-3 font-mono text-xs text-gray-400">
-                    {privacyMode ? maskId(app.id) : app.id}
+                    {privacyMode ? maskId(st.id) : st.id}
                   </td>
                   <td className="py-3.5 px-3 font-black text-white">
-                    {privacyMode ? maskName(app.name) : app.name}
+                    {privacyMode ? maskName(st.name) : st.name}
                   </td>
                   <td className="py-3.5 px-3">
                     <div className="text-xs">
                       <span className="font-bold text-emerald-300 block">
-                        {privacyMode ? maskPhone(app.phone) : app.phone}
+                        {privacyMode ? maskPhone(st.phone) : st.phone}
                       </span>
                       <span className="text-gray-400 text-[11px]">
-                        {privacyMode ? maskEmail(app.email) : app.email}
+                        {privacyMode ? maskEmail(st.email) : st.email}
                       </span>
                     </div>
                   </td>
-                  <td className="py-3.5 px-3 font-bold text-gray-200">{app.course}</td>
-                  <td className="py-3.5 px-3 text-xs text-gray-400">{app.date}</td>
-                  <td className="py-3.5 px-3 font-black text-white">{app.price}</td>
+                  
+                  {/* N:N Multiple Enrolled Courses Badges Column */}
+                  <td className="py-3.5 px-3">
+                    <div className="space-y-1.5 max-w-md">
+                      {st.enrolledCourses.map((c, cIdx) => (
+                        <div key={c.courseId} className="flex items-center gap-2">
+                          <span className="px-2.5 py-0.5 rounded-lg bg-emerald-950 text-emerald-200 border border-emerald-500/30 text-xs font-bold truncate">
+                            [{c.categoryName}] {c.courseTitle}
+                          </span>
+                          <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-black shrink-0">
+                            {c.status}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+
+                  <td className="py-3.5 px-3 font-black text-white">
+                    {calculateTotalTuition(st.enrolledCourses)}
+                  </td>
+
+                  {/* N:N Course Manager Modal Trigger */}
                   <td className="py-3.5 px-3 text-center">
-                    <select
-                      value={app.status}
-                      onChange={(e) => handleStatusChange(app.id, e.target.value)}
-                      className={`px-3 py-1 rounded-xl text-xs font-black border bg-[#122219] cursor-pointer focus:outline-none ${getStatusBadge(
-                        app.status
-                      )}`}
+                    <button
+                      onClick={() => setSelectedStudentForModal(st)}
+                      className="px-3.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-white border border-emerald-500/40 rounded-xl text-xs font-black transition-all cursor-pointer shadow-sm flex items-center gap-1.5 mx-auto"
                     >
-                      <option value="결제완료">결제완료</option>
-                      <option value="상담대기">상담대기</option>
-                      <option value="신청완료">신청완료</option>
-                      <option value="수강중">수강중</option>
-                      <option value="취소">취소</option>
-                    </select>
+                      <Layers className="w-3.5 h-3.5" />
+                      <span>수강 과목 N:N 관리 ({st.enrolledCourses.length})</span>
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -236,6 +247,16 @@ export default function AdminApplications() {
           </table>
         </div>
       </div>
+
+      {/* Interactive N:N Student Course Portfolio Modal */}
+      <StudentCourseModal
+        student={selectedStudentForModal}
+        isOpen={Boolean(selectedStudentForModal)}
+        onClose={() => setSelectedStudentForModal(null)}
+        onUpdateStudentCourses={handleUpdateStudentCourses}
+        allAvailableCourses={allAvailableCourses}
+        privacyMode={privacyMode}
+      />
 
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Search, UserCheck, Shield, User, Key, CheckCircle, Mail, MessageSquare } from 'lucide-react';
+import { Search, UserCheck, Shield, User, Key, CheckCircle, Mail, MessageSquare, Layers } from 'lucide-react';
+import { maskName, maskEmail } from '../../utils/security';
 
 export default function AdminUsers() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,7 +14,8 @@ export default function AdminUsers() {
       provider: '이메일',
       role: '이사장 / 관리자',
       joinDate: '2022-07-12',
-      status: '활성',
+      enrolledCoursesCount: 4,
+      coursesList: ['외식창업 마스터 풀 패키지', '메뉴개발·원가관리', '매장운영·서비스', '외식마케팅'],
     },
     {
       id: 'USR-1002',
@@ -22,7 +24,8 @@ export default function AdminUsers() {
       provider: '카카오톡',
       role: '수강생',
       joinDate: '2026-08-15',
-      status: '활성',
+      enrolledCoursesCount: 2,
+      coursesList: ['외식창업 마스터 풀 패키지', '메뉴개발·원가관리'],
     },
     {
       id: 'USR-1003',
@@ -31,7 +34,8 @@ export default function AdminUsers() {
       provider: '구글',
       role: '수강생',
       joinDate: '2026-08-18',
-      status: '활성',
+      enrolledCoursesCount: 3,
+      coursesList: ['반려동물 영양·식재료 기초', '반려견 행동 이해', '창업기획·사업계획'],
     },
     {
       id: 'USR-1004',
@@ -40,7 +44,8 @@ export default function AdminUsers() {
       provider: '네이버',
       role: '일반회원',
       joinDate: '2026-08-20',
-      status: '활성',
+      enrolledCoursesCount: 1,
+      coursesList: ['카페 창업 마스터클래스'],
     },
     {
       id: 'USR-1005',
@@ -49,7 +54,8 @@ export default function AdminUsers() {
       provider: '구글',
       role: '수강생',
       joinDate: '2026-08-22',
-      status: '활성',
+      enrolledCoursesCount: 2,
+      coursesList: ['창업기획 마스터', '외식마케팅 풀 패키지'],
     },
   ]);
 
@@ -70,15 +76,15 @@ export default function AdminUsers() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#111c16] p-6 rounded-3xl border border-emerald-500/20 shadow-xl">
         <div>
           <h2 className="text-xl sm:text-2xl font-black text-white">
-            등록 회원 & 권한 관리 센터
+            등록 회원 & N:N 수강 매칭 관리 센터
           </h2>
           <p className="text-xs sm:text-sm text-emerald-200/70 font-medium mt-1">
-            카카오톡, 구글, 이메일로 가입된 회원들의 권한(일반회원, 수강생, 관리자)을 설정합니다.
+            카카오톡, 구글, 이메일 가입 회원들의 권한 및 N:N 병행 수강 매칭 목록을 한눈에 관리합니다.
           </p>
         </div>
 
         <button
-          onClick={() => alert('신규 계정 초대 모달이 열립니다.')}
+          onClick={() => alert('신규 관리자 계정 초대 모달이 열립니다.')}
           className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg transition-all shrink-0 cursor-pointer flex items-center gap-2 self-start sm:self-auto"
         >
           <UserCheck className="w-4 h-4" />
@@ -119,13 +125,13 @@ export default function AdminUsers() {
       {/* Users Table */}
       <div className="bg-[#111c16] rounded-3xl p-6 border border-emerald-500/20 shadow-xl">
         <div className="overflow-x-auto no-scrollbar">
-          <table className="w-full text-left border-collapse min-w-[700px]">
+          <table className="w-full text-left border-collapse min-w-[750px]">
             <thead>
               <tr className="text-xs font-black text-emerald-400/80 border-b border-emerald-900/40">
                 <th className="pb-3 px-3">회원 ID</th>
                 <th className="pb-3 px-3">회원명</th>
                 <th className="pb-3 px-3">이메일 계정</th>
-                <th className="pb-3 px-3">소셜 로그인 방식</th>
+                <th className="pb-3 px-3">N:N 매칭 수강과목</th>
                 <th className="pb-3 px-3">가입일자</th>
                 <th className="pb-3 px-3 text-center">회원 권한</th>
               </tr>
@@ -137,11 +143,13 @@ export default function AdminUsers() {
                   <td className="py-3.5 px-3 font-black text-white">{u.name}</td>
                   <td className="py-3.5 px-3 text-emerald-200">{u.email}</td>
                   <td className="py-3.5 px-3">
-                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/30 text-xs">
-                      {u.provider}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black">
+                        {u.enrolledCoursesCount}개 과목 병행 수강
+                      </span>
+                    </div>
                   </td>
-                  <td className="py-3.5 px-3 text-xs text-gray-400">{u.joinDate}</td>
+                  <td className="py-3.5 px-3 text-xs text-gray-400 font-mono">{u.joinDate}</td>
                   <td className="py-3.5 px-3 text-center">
                     <select
                       value={u.role}
