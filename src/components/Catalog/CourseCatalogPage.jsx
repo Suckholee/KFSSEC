@@ -6,7 +6,7 @@ import CourseGrid from './CourseGrid';
 import Pagination from './Pagination';
 import CourseModal from '../CourseModal';
 import { fetchCourses } from '../../services/courseApi';
-import { getCoursesFromDB, getAcademicSchedulesFromDB, getExamSchedulesFromDB } from '../../services/courseDatabase';
+import { getCoursesFromDB, getAcademicSchedulesFromDB, getExamSchedulesFromDB, fetchCoursesFromAPI } from '../../services/courseDatabase';
 import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight, Calendar, Award, GraduationCap, CheckCircle2, Clock } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
@@ -88,10 +88,12 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
   };
 
   useEffect(() => {
-    // Reload dynamic DB whenever subTab changes
-    setDbCourses(getCoursesFromDB());
-    setAcademicSchedules(getAcademicSchedulesFromDB());
-    setExamSchedules(getExamSchedulesFromDB());
+    // Sync Real REST API DB
+    fetchCoursesFromAPI().then(() => {
+      setDbCourses(getCoursesFromDB());
+      setAcademicSchedules(getAcademicSchedulesFromDB());
+      setExamSchedules(getExamSchedulesFromDB());
+    });
 
     if (subTab === 'courses') {
       loadData();
@@ -152,12 +154,11 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
       {/* Full Width Widescreen Layout matching Header padding */}
       <div className="w-full px-6 sm:px-10 lg:px-14 space-y-6">
         
-        {/* Unified Main Layout: Left Vertical Sidebar Column (SubSidebar + Catalog Category Filters + Counseling Center) */}
+        {/* Unified Main Layout: Left Vertical Sidebar Column */}
         <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
           
           {/* Left Vertical Sidebar Column */}
           <div className="w-full md:w-56 lg:w-64 flex flex-col gap-6 shrink-0">
-            {/* 1. SubSidebar Navigation (Image 2) */}
             <SubSidebar
               title="교육·자격증"
               items={catalogSubItems}
@@ -165,7 +166,6 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               onSelectTab={(tabId) => setSubTab(tabId)}
             />
 
-            {/* 2. Catalog Category Filters & Counseling Center (Image 1 - Placed directly below SubSidebar) */}
             {subTab === 'courses' && (
               <Sidebar
                 activeCategory={activeSidebarCategory}
@@ -191,7 +191,6 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                   </h2>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-2 w-full">
-                    {/* Shape 1 */}
                     <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group w-full">
                       <img
                         src="/images/dir_2.jpg"
@@ -203,7 +202,6 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                       </div>
                     </div>
 
-                    {/* Shape 2 */}
                     <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group w-full">
                       <img
                         src="/images/dir_1.jpg"
@@ -215,7 +213,6 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                       </div>
                     </div>
 
-                    {/* Shape 3 */}
                     <div className="relative h-56 rounded-2xl overflow-hidden shadow-md bg-black group sm:col-span-2 lg:col-span-1 w-full">
                       <img
                         src="/images/dir_12.jpg"
@@ -247,7 +244,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                       >
                         <option value="latest">최신순</option>
                         <option value="popular">인기순</option>
-                        <option value="price_low">수강료 낮은순</option>
+                        <option value="price_low">수갈료 낮은순</option>
                         <option value="price_high">수강료 높은순</option>
                       </select>
 
@@ -307,16 +304,16 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               </div>
             )}
 
-            {/* SUB-TAB 2: 교육 일정 (DYNAMIC DB REAL-TIME BINDING) */}
+            {/* SUB-TAB 2: 교육 일정 (2026년 학사일정) */}
             {subTab === 'schedule' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   <div className="flex items-center justify-between border-b-2 border-black pb-3">
                     <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                      2024년 3월 학사 & 개강 일정 (DB 실시간 연동)
+                      2026년 9월 학사 & 개강 일정 (DB 실시간 연동)
                     </div>
                     <span className="text-xs font-bold text-gray-500">
-                      관리자 DB에서 수정된 개강/종강 일자가 달력에 즉시 표시됩니다.
+                      관리자 DB에서 수정된 2026년 개강/종강 일자가 달력에 즉시 표시됩니다.
                     </span>
                   </div>
 
@@ -333,8 +330,8 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
                     <div className="grid grid-cols-7 text-xs font-bold text-gray-800 divide-x divide-y divide-gray-300 bg-white">
                       {Array.from({ length: 35 }).map((_, idx) => {
-                        const dayNum = idx - 2;
-                        const isValidDay = dayNum > 0 && dayNum <= 31;
+                        const dayNum = idx - 1; // Align to 2026 Sept 1st (Tuesday)
+                        const isValidDay = dayNum > 0 && dayNum <= 30;
                         const isToday = dayNum === 15;
 
                         // Match dynamic schedules from DB
@@ -362,13 +359,13 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               </div>
             )}
 
-            {/* SUB-TAB 3: 자격 시험 (DYNAMIC DB REAL-TIME BINDING) */}
+            {/* SUB-TAB 3: 자격 시험 */}
             {subTab === 'cert_exam' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   <div className="flex items-center justify-between border-b-2 border-black pb-3">
                     <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                      사단법인 민간 자격 시험 안내 (DB 연동)
+                      2026년 사단법인 민간 자격 시험 안내 (DB 연동)
                     </div>
                     <span className="text-xs font-bold text-gray-500">
                       교육과정과 연계된 자격 시험 요강 및 검정 목록입니다.
@@ -405,13 +402,13 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
               </div>
             )}
 
-            {/* SUB-TAB 4: 시험 일정 (DYNAMIC DB REAL-TIME BINDING) */}
+            {/* SUB-TAB 4: 시험 일정 (2026년 시험달력) */}
             {subTab === 'exam_schedule' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   <div className="flex items-center justify-between border-b-2 border-black pb-3">
                     <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                      2024년 자격증 시험 및 검정 달력 (DB 실시간 연동)
+                      2026년 자격증 시험 및 검정 달력 (DB 실시간 연동)
                     </div>
                     <span className="text-xs font-bold text-gray-500">
                       관리자 DB의 자격증 시험 일자가 실시간 달력으로 자동 배치됩니다.
@@ -431,8 +428,8 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
                     <div className="grid grid-cols-7 text-xs font-bold text-gray-800 divide-x divide-y divide-gray-300 bg-white">
                       {Array.from({ length: 35 }).map((_, idx) => {
-                        const dayNum = idx - 2;
-                        const isValidDay = dayNum > 0 && dayNum <= 31;
+                        const dayNum = idx - 1;
+                        const isValidDay = dayNum > 0 && dayNum <= 30;
 
                         // Match dynamic exam schedules from DB
                         const matchedExams = examSchedules.filter((e) => e.day === dayNum);
