@@ -86,7 +86,7 @@ export default function AdminLayout({
       title: '수강생 필수 서비스 안내 결제 팝업 모달 연결 요청',
       description: '메인 랜딩페이지 결제 안내 배너 클릭 시 3 STEP 수강료 및 환불 안내 팝업 모달이 뜨도록 수정 부탁드립니다.',
       screenshot: '/images/course_menu_dev.jpg',
-      status: 'completed', // 'pending', 'in_progress', 'completed'
+      status: 'completed',
       date: '2026.08.30 19:02',
       devReply: '✓ 구현 완료: PaymentGuideModal.jsx 작성 및 BannerSection 배너 클릭 이벤트 연동 완료되었습니다.',
     },
@@ -233,14 +233,6 @@ export default function AdminLayout({
     alert('🚀 개발자 소통 창구로 문의 및 스크린샷이 성공적으로 전송되었습니다!');
   };
 
-  // Image Presets for Quick Selection
-  const imagePresets = [
-    { label: '조리 실습 / 메뉴 개발', url: '/images/course_menu_dev.jpg' },
-    { label: '특급 호텔 레스토랑', url: '/images/course_restaurant.jpg' },
-    { label: '배달 / 밀키트 포장', url: '/images/course_delivery.jpg' },
-    { label: '카페 / 바리스타 / 디저트', url: '/images/course_cafe.jpg' },
-  ];
-
   // Direct Computer Image File Upload Handler to Real Server API
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
@@ -261,36 +253,6 @@ export default function AdminLayout({
       reader.readAsDataURL(file);
     }
   };
-
-  // SmartPlace Student Reviews State
-  const [reviewsList, setReviewsList] = useState([
-    {
-      id: 1,
-      courseTitle: '전통 한식 조리 마스터 & 셰프 창업 과정',
-      studentName: '김OO 수강생',
-      rating: 5,
-      date: '2026.02.28',
-      content: '40년 조리 명장님의 1:1 발효 소스 비법 전수 덕분에 오픈 첫 달 매출이 30% 급증했습니다! 최고의 강의입니다.',
-      reply: '감사합니다! 한국외식창업교육원은 수강생 여러분의 성공 창업을 끝까지 응원하겠습니다.',
-    },
-  ]);
-
-  const [reviewReplyText, setReviewReplyText] = useState({});
-
-  const defaultInquiries = [
-    {
-      id: 1,
-      category: '문의',
-      title: '청년 외식창업 정부지원금 연계 신청 방법 문의',
-      author: '박 OOO',
-      date: '2026.02.15',
-      status: 'pending',
-      content: '만 34세 이하 예비 창업자 대상 정부 지원 정책 연계 절차 및 준비 서류 문의드립니다.',
-      reply: null,
-    },
-  ];
-
-  const [adminInquiries, setAdminInquiries] = useState(defaultInquiries);
 
   // Dedicated Course Page Save Handler
   const handleSaveCourseDetail = async (e) => {
@@ -346,9 +308,9 @@ export default function AdminLayout({
         ];
       case 'developer':
         return [
-          { id: 'dev_inquiry_list', label: '개발 문의 & 피드백' },
-          { id: 'dev_issue_track', label: '버그 제보 & 수정 요청' },
-          { id: 'dev_feature_request', label: '신규 기능 제안' },
+          { id: 'dev_inquiry_list', label: '💻 개발자 문의 & 소통' },
+          { id: 'dev_issue_track', label: '🐞 버그 제보 & 스크린샷' },
+          { id: 'dev_feature_request', label: '✨ 신규 기능 제안' },
         ];
       case 'reservations':
         return [
@@ -388,16 +350,26 @@ export default function AdminLayout({
         </div>
 
         {/* Top Quick Links */}
-        <div className="flex items-center gap-4 text-xs font-bold">
-          <span className="text-gray-400">사단법인 한국외식창업교육원 | 최고관리자</span>
+        <div className="flex items-center gap-3 text-xs font-bold">
+          {/* DIRECT DEVELOPER INQUIRY HEADER BUTTON */}
+          <button
+            onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
+            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md font-black animate-pulse"
+          >
+            <Code className="w-4 h-4 text-emerald-200" />
+            <span>💻 개발자 1:1 문의 / 스크린샷 전송</span>
+          </button>
+
           <div className="h-4 w-px bg-gray-700" />
+          
           <button
             onClick={onExitAdmin}
             className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
-            <span>메인 사이트로 이동</span>
+            <span>메인 사이트</span>
           </button>
+
           <button
             onClick={onLogout}
             className="px-3 py-1.5 bg-rose-950/80 hover:bg-rose-900 text-rose-300 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
@@ -439,16 +411,17 @@ export default function AdminLayout({
             <span className="text-[9px] font-black mt-0.5">강좌DB</span>
           </button>
 
-          {/* DEVELOPER INQUIRY CHANNEL ICON */}
+          {/* DEVELOPER INQUIRY CHANNEL ICON WITH PULSE BADGE */}
           <button
             onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer border ${
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer border relative ${
               primaryMenu === 'developer'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105 border-emerald-400'
-                : 'text-emerald-400 hover:text-white hover:bg-gray-800 border-emerald-900/50'
+                : 'text-emerald-400 hover:text-white hover:bg-gray-800 border-emerald-800/80 bg-emerald-950/40'
             }`}
-            title="개발 문의 & 소통"
+            title="개발자 1:1 소통 문의"
           >
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-black animate-ping" />
             <Code className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">개발문의</span>
           </button>
@@ -505,6 +478,20 @@ export default function AdminLayout({
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
             </h2>
             <p className="text-[10px] text-gray-500 font-bold mt-0.5">스마트 파트너 워크스페이스</p>
+          </div>
+
+          {/* QUICK SHORTCUT BUTTON TO DEVELOPER INQUIRY CHANNEL */}
+          <div className="px-1">
+            <button
+              onClick={() => switchPrimaryMenu('developer', 'dev_inquiry_list', null)}
+              className="w-full py-2 px-3 bg-emerald-900 text-emerald-100 hover:bg-black rounded-xl text-xs font-black transition-all flex items-center justify-between shadow-sm cursor-pointer border border-emerald-700"
+            >
+              <span className="flex items-center gap-1.5">
+                <Code className="w-3.5 h-3.5 text-emerald-400" />
+                <span>개발 문의 & 스크린샷</span>
+              </span>
+              <ChevronRight className="w-3.5 h-3.5 text-emerald-400" />
+            </button>
           </div>
 
           <div className="space-y-1">
