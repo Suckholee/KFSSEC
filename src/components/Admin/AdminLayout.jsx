@@ -135,7 +135,7 @@ const generate128Enrollees = () => {
       discountText: course.disc,
       paymentMethod: isPending ? '가상계좌 (입금 대기중)' : payMethods[i % payMethods.length],
       status: isPending ? 'pending' : 'completed',
-      accountStatus: isSuspended ? 'suspended' : 'active', // 'active', 'suspended'
+      accountStatus: isSuspended ? 'suspended' : 'active',
     });
   }
   return list;
@@ -155,8 +155,8 @@ export default function AdminLayout({
   // Enrollees & Reservations State (EXACTLY 128 REAL RECORDS)
   const [enrolleesList, setEnrolleesList] = useState(generate128Enrollees());
 
-  // Selected Course Filter for Enrollee List
-  const [selectedEnrolleeCourseFilter, setSelectedEnrolleeCourseFilter] = useState('all');
+  // Selected Course for Course-First Enrollee Management View
+  const [selectedCourseForEnrollees, setSelectedCourseForEnrollees] = useState(null);
   const [selectedEnrolleeModal, setSelectedEnrolleeModal] = useState(null);
 
   // Student Account Search Keyword State
@@ -316,6 +316,7 @@ export default function AdminLayout({
     setPrimaryMenu(menu);
     setSecondarySubTab(subTab);
     setSelectedCourseForEdit(course);
+    setSelectedCourseForEnrollees(null);
     updateAdminUrl(menu, subTab, course ? course.id : null);
   };
 
@@ -468,7 +469,7 @@ export default function AdminLayout({
         ];
       case 'reservations':
         return [
-          { id: 'enrollees_list', label: '수강 신청자 명단' },
+          { id: 'enrollees_list', label: '📚 강의별 수강생 관리' },
           { id: 'student_accounts', label: '👤 학생 회원 계정 관리' },
           { id: 'payment_status', label: '수강료 결제 현황' },
         ];
@@ -484,11 +485,6 @@ export default function AdminLayout({
         return [];
     }
   };
-
-  // Filtered Enrollees List for Reservations Screen
-  const filteredEnrollees = selectedEnrolleeCourseFilter === 'all'
-    ? enrolleesList
-    : enrolleesList.filter((e) => e.courseId === selectedEnrolleeCourseFilter);
 
   // Filtered Student Accounts List for Accounts Screen
   const filteredStudents = enrolleesList.filter((s) => {
@@ -698,7 +694,7 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN 1: STUDENT ACCOUNT MANAGEMENT WORKSTATION (학생 회원 계정 관리) */}
+          {/* DYNAMIC SCREEN 1: STUDENT ACCOUNT MANAGEMENT WORKSTATION */}
           {primaryMenu === 'reservations' && secondarySubTab === 'student_accounts' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
@@ -850,165 +846,276 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN 2: ENROLLEES & RESERVATION MANAGEMENT */}
+          {/* DYNAMIC SCREEN 2: COURSE-FIRST ENROLLEE MANAGEMENT WORKSTATION (강의별 수강 신청자 관리자) */}
           {primaryMenu === 'reservations' && secondarySubTab === 'enrollees_list' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
-              {/* Header Title & Top Summary Cards */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
-                <div>
-                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
-                    <UserCheck className="w-6 h-6 text-emerald-700" />
-                    <span>수강 신청자 명단 & 결제 관리자</span>
-                  </h3>
-                  <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    12개 교육과정과 동기화된 실시간 수강 신청자 명단, 결제 현황 및 정부 지원금 신청 건을 관리합니다.
-                  </p>
-                </div>
+              {/* IF SPECIFIC COURSE SELECTED: SHOW COURSE STUDENT LIST */}
+              {selectedCourseForEnrollees ? (
+                <div className="space-y-6 animate-fadeIn">
+                  
+                  {/* Top Back Navigation & Action Bar */}
+                  <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-300 shadow-sm">
+                    <button
+                      onClick={() => setSelectedCourseForEnrollees(null)}
+                      className="px-4 py-2 bg-gray-100 hover:bg-black hover:text-white text-gray-800 font-black text-xs rounded-xl transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span>⬅️ 전체 12개 강의 목록으로 돌아가기</span>
+                    </button>
 
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => alert('📥 전체 수강생 명단 및 결제 내역 엑셀(CSV) 다운로드를 시작합니다.')}
-                    className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Download className="w-4 h-4 text-emerald-400" />
-                    <span>📥 명단 엑셀 다운로드</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* KPI Summary Dashboard Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">👥 총 수강 신청자</span>
-                  <span className="text-2xl font-black text-black font-mono">{enrolleesList.length}명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">전월 대비 +14.2%</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">💰 누적 수강료 매출</span>
-                  <span className="text-2xl font-black text-emerald-950 font-mono">3억 8,450만원</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">결제 완료 96%</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">📅 2026년 9월 개강 인원</span>
-                  <span className="text-2xl font-black text-black font-mono">42명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">정원 충원율 88%</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">⏳ 결제 승인 대기</span>
-                  <span className="text-2xl font-black text-amber-800 font-mono">5명</span>
-                  <span className="text-[10px] text-amber-800 font-bold block pt-1">가상계좌 입금 대기</span>
-                </div>
-              </div>
-
-              {/* Filter by Course & Search Bar */}
-              <div className="bg-white p-4 rounded-2xl border-2 border-gray-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold">
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-700">📚 강좌별 명단 조회:</span>
-                  <select
-                    value={selectedEnrolleeCourseFilter}
-                    onChange={(e) => setSelectedEnrolleeCourseFilter(e.target.value)}
-                    className="px-3.5 py-2 bg-stone-50 border border-gray-300 rounded-xl text-black font-black focus:outline-none focus:border-black"
-                  >
-                    <option value="all">전체 12개 교육과정 종합 (128명 전체)</option>
-                    {coursesList.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        [{c.categoryName || c.industry}] {c.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <span className="text-gray-500 font-mono text-[11px]">
-                  조회 결과: 총 <strong className="text-black font-black">{filteredEnrollees.length}명</strong>
-                </span>
-              </div>
-
-              {/* ENROLLEE BOARD TABLE LIST */}
-              <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
-                <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
-                  <span>📋 수강 신청자 명단 전체 목록 (총 {filteredEnrollees.length}명 전원 목록)</span>
-                  <span className="text-emerald-400 font-mono">Real Dynamic Course Sync</span>
-                </div>
-
-                <div className="divide-y divide-gray-200 text-xs font-bold">
-                  {/* Table Header */}
-                  <div className="grid grid-cols-12 bg-gray-100 px-6 py-3 text-gray-600 font-black border-b border-gray-200">
-                    <div className="col-span-2">신청번호/일시</div>
-                    <div className="col-span-2">수강생(연락처)</div>
-                    <div className="col-span-4">신청 교육과정</div>
-                    <div className="col-span-2 text-right">결제금액 (혜택)</div>
-                    <div className="col-span-2 text-center">결제 상태 / 관리</div>
+                    <button
+                      onClick={() => alert(`[📥 명단 다운로드] ${selectedCourseForEnrollees.title} 수강생 명단을 CSV 엑셀로 다운로드합니다.`)}
+                      className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Download className="w-4 h-4 text-emerald-400" />
+                      <span>📥 이 강좌 수강생 명단 엑셀 출력</span>
+                    </button>
                   </div>
 
-                  {/* Table Rows */}
-                  {filteredEnrollees.map((item) => (
-                    <div key={item.id} className="grid grid-cols-12 px-6 py-4 items-center hover:bg-stone-50 transition-colors">
-                      <div className="col-span-2 space-y-0.5">
-                        <span className="font-mono text-black font-black block">{item.id}</span>
-                        <span className="font-mono text-gray-400 text-[11px] block">{item.date}</span>
-                      </div>
-
-                      <div className="col-span-2 space-y-0.5">
-                        <span className="text-sm font-black text-black block">{item.studentName}</span>
-                        <span className="font-mono text-gray-600 text-[11px] block flex items-center gap-1">
-                          <PhoneCall className="w-3 h-3 text-emerald-700" />
-                          {item.phone}
+                  {/* Selected Course Header Banner Card */}
+                  <div className="bg-white p-6 rounded-3xl border-2 border-black shadow-md space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-3">
+                      <div>
+                        <span className="px-3 py-1 bg-black text-white text-xs font-black rounded-full inline-block mb-1">
+                          {selectedCourseForEnrollees.categoryName || selectedCourseForEnrollees.industry}
                         </span>
+                        <h3 className="text-xl font-black text-black tracking-tight">
+                          {selectedCourseForEnrollees.title}
+                        </h3>
                       </div>
-
-                      <div className="col-span-4 space-y-1 pr-2">
-                        <div className="flex items-center gap-2">
-                          <span className="px-2 py-0.5 rounded bg-black text-white text-[10px] font-black">
-                            {item.categoryName}
-                          </span>
-                          <span className="text-emerald-800 font-mono text-[11px] font-black">
-                            📅 개강: {item.startDate}
-                          </span>
-                        </div>
-                        <h4 className="text-xs font-black text-black line-clamp-1">{item.courseTitle}</h4>
-                      </div>
-
-                      <div className="col-span-2 text-right space-y-0.5">
-                        <span className="text-sm font-black text-black font-mono block">
-                          {item.paidAmount.toLocaleString()}원
-                        </span>
-                        <span className="text-[10px] text-emerald-800 font-bold block">{item.discountText}</span>
-                      </div>
-
-                      <div className="col-span-2 text-center space-y-1.5">
-                        <span
-                          className={`px-3 py-1 rounded-full text-[10px] font-black inline-block border ${
-                            item.status === 'completed'
-                              ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                              : 'bg-amber-100 text-amber-900 border-amber-300'
-                          }`}
-                        >
-                          {item.status === 'completed' ? '✓ 결제완료' : '⏳ 승인대기'}
-                        </span>
-
-                        <div className="flex items-center justify-center gap-1.5">
-                          <button
-                            onClick={() => setSelectedEnrolleeModal(item)}
-                            className="px-2.5 py-1 bg-stone-100 hover:bg-black hover:text-white text-gray-800 text-[11px] font-black rounded-lg transition-colors cursor-pointer"
-                          >
-                            상세
-                          </button>
-                          <button
-                            onClick={() => alert(`[SMS 발송 완료] ${item.studentName} 수강생에게 개강 및 장소 안내문자를 발송했습니다.`)}
-                            className="px-2.5 py-1 bg-emerald-100 hover:bg-emerald-600 hover:text-white text-emerald-900 text-[11px] font-black rounded-lg transition-colors cursor-pointer"
-                          >
-                            SMS안내
-                          </button>
-                        </div>
+                      <div className="text-right">
+                        <span className="text-xs text-gray-500 font-bold block">📅 개강 일시</span>
+                        <span className="text-sm font-black text-emerald-900 font-mono">{selectedCourseForEnrollees.startDate}</span>
                       </div>
                     </div>
-                  ))}
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2 text-xs font-bold">
+                      <div className="bg-stone-50 p-3 rounded-xl border border-stone-300">
+                        <span className="text-gray-500 block">👥 신청 학생 수</span>
+                        <span className="text-lg font-black text-black font-mono">
+                          {enrolleesList.filter((e) => e.courseId === selectedCourseForEnrollees.id).length}명 / 15명 정원
+                        </span>
+                      </div>
+                      <div className="bg-stone-50 p-3 rounded-xl border border-stone-300">
+                        <span className="text-gray-500 block">💰 강좌 총 수강료 매출</span>
+                        <span className="text-lg font-black text-emerald-900 font-mono">
+                          {(enrolleesList.filter((e) => e.courseId === selectedCourseForEnrollees.id).length * selectedCourseForEnrollees.price).toLocaleString()}원
+                        </span>
+                      </div>
+                      <div className="bg-stone-50 p-3 rounded-xl border border-stone-300">
+                        <span className="text-gray-500 block">👨‍🏫 전담 명장 강사</span>
+                        <span className="text-sm font-black text-black">{selectedCourseForEnrollees.instructor || '안형상 이사장'}</span>
+                      </div>
+                      <div className="bg-stone-50 p-3 rounded-xl border border-stone-300">
+                        <span className="text-gray-500 block">🎓 자격시험 예정일</span>
+                        <span className="text-sm font-black text-rose-700 font-mono">{selectedCourseForEnrollees.examDate || '2026-09-30'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* COURSE SPECIFIC STUDENT TABLE LIST */}
+                  <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
+                    <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
+                      <span>📋 [{selectedCourseForEnrollees.title}] 전담 수강생 명단 ({enrolleesList.filter((e) => e.courseId === selectedCourseForEnrollees.id).length}명)</span>
+                      <span className="text-emerald-400 font-mono">Dedicated Class Roster</span>
+                    </div>
+
+                    <div className="divide-y divide-gray-200 text-xs font-bold">
+                      {/* Table Header */}
+                      <div className="grid grid-cols-12 bg-gray-100 px-6 py-3 text-gray-600 font-black border-b border-gray-200">
+                        <div className="col-span-2">신청번호/일시</div>
+                        <div className="col-span-3">수강생(성명/연락처/이메일)</div>
+                        <div className="col-span-3">결제 금액 및 혜택</div>
+                        <div className="col-span-2 text-center">결제 상태 / 수단</div>
+                        <div className="col-span-2 text-center">수강생 알림 조작</div>
+                      </div>
+
+                      {/* Table Rows for ONLY this course */}
+                      {enrolleesList
+                        .filter((e) => e.courseId === selectedCourseForEnrollees.id)
+                        .map((item) => (
+                          <div key={item.id} className="grid grid-cols-12 px-6 py-4 items-center hover:bg-stone-50 transition-colors">
+                            <div className="col-span-2 space-y-0.5">
+                              <span className="font-mono text-black font-black block">{item.id}</span>
+                              <span className="font-mono text-gray-400 text-[11px] block">{item.date}</span>
+                            </div>
+
+                            <div className="col-span-3 space-y-0.5">
+                              <span className="text-sm font-black text-black block">{item.studentName}</span>
+                              <span className="font-mono text-gray-600 text-[11px] block flex items-center gap-1">
+                                <PhoneCall className="w-3 h-3 text-emerald-700" />
+                                {item.phone}
+                              </span>
+                              <span className="font-mono text-gray-400 text-[10px] block">{item.email}</span>
+                            </div>
+
+                            <div className="col-span-3 space-y-0.5">
+                              <span className="text-sm font-black text-black font-mono block">
+                                {item.paidAmount.toLocaleString()}원
+                              </span>
+                              <span className="text-[10px] text-emerald-800 font-bold block">{item.discountText}</span>
+                            </div>
+
+                            <div className="col-span-2 text-center space-y-1">
+                              <span
+                                className={`px-3 py-1 rounded-full text-[10px] font-black inline-block border ${
+                                  item.status === 'completed'
+                                    ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                    : 'bg-amber-100 text-amber-900 border-amber-300'
+                                }`}
+                              >
+                                {item.status === 'completed' ? '✓ 결제완료' : '⏳ 승인대기'}
+                              </span>
+                              <span className="text-[10px] text-gray-500 block">{item.paymentMethod}</span>
+                            </div>
+
+                            <div className="col-span-2 text-center flex items-center justify-center gap-1.5">
+                              <button
+                                onClick={() => setSelectedEnrolleeModal(item)}
+                                className="px-2.5 py-1 bg-stone-100 hover:bg-black hover:text-white text-gray-800 text-[11px] font-black rounded-lg transition-colors cursor-pointer"
+                              >
+                                상세
+                              </button>
+                              <button
+                                onClick={() => alert(`[SMS 발송 완료] ${item.studentName} 수강생에게 개강 및 장소 안내문자를 발송했습니다.`)}
+                                className="px-2.5 py-1 bg-emerald-100 hover:bg-emerald-600 hover:text-white text-emerald-900 text-[11px] font-black rounded-lg transition-colors cursor-pointer"
+                              >
+                                SMS
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+
                 </div>
-              </div>
+              ) : (
+                /* COURSE-FIRST GRID VIEW (12개 강의 목록 카드가 먼저 보이는 뷰) */
+                <div className="space-y-6 animate-fadeIn">
+                  
+                  {/* Header Title & Top Summary Cards */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                    <div>
+                      <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                        <BookOpen className="w-6 h-6 text-emerald-700" />
+                        <span>강의별 수강 신청자 관리자 (총 12개 교육과정)</span>
+                      </h3>
+                      <p className="text-xs text-gray-500 font-bold mt-0.5">
+                        원하시는 강의 카드를 클릭하시면 해당 강의에 등록된 수강생 명단을 모아서 개별 관리하실 수 있습니다.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => alert('📥 전체 12개 강의 수강생 통합 엑셀 다운로드를 시작합니다.')}
+                        className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Download className="w-4 h-4 text-emerald-400" />
+                        <span>📥 전체 수강생 엑셀 다운로드</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* KPI Summary Dashboard Cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                      <span className="text-[11px] font-black text-gray-500 block">👥 총 수강 신청자</span>
+                      <span className="text-2xl font-black text-black font-mono">{enrolleesList.length}명</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">전월 대비 +14.2%</span>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                      <span className="text-[11px] font-black text-gray-500 block">📚 운영 개강 강좌</span>
+                      <span className="text-2xl font-black text-black font-mono">12개 과목</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">100% 충원 완료</span>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                      <span className="text-[11px] font-black text-gray-500 block">💰 누적 수강료 매출</span>
+                      <span className="text-2xl font-black text-emerald-950 font-mono">3억 8,450만원</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">결제 완료 96%</span>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                      <span className="text-[11px] font-black text-gray-500 block">📅 2026년 9월 개강 인원</span>
+                      <span className="text-2xl font-black text-black font-mono">42명</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">정원 충원율 88%</span>
+                    </div>
+                  </div>
+
+                  {/* 12 COURSES GRID LIST CARDS */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {coursesList.map((course) => {
+                      const courseEnrollees = enrolleesList.filter((e) => e.courseId === course.id);
+                      const enrolleeCount = courseEnrollees.length;
+
+                      return (
+                        <div
+                          key={course.id}
+                          onClick={() => setSelectedCourseForEnrollees(course)}
+                          className="bg-white rounded-3xl p-5 border-2 border-gray-300 shadow-md space-y-4 hover:border-black hover:scale-[1.01] transition-all cursor-pointer flex flex-col justify-between group"
+                        >
+                          <div className="space-y-3">
+                            <div className="relative h-44 rounded-2xl overflow-hidden bg-black">
+                              <img
+                                src={course.image || '/images/course_menu_dev.jpg'}
+                                alt={course.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <div className="absolute top-3 left-3 bg-black/80 text-white text-[11px] font-black px-3 py-1 rounded-full">
+                                {course.categoryName || course.industry}
+                              </div>
+
+                              <div className="absolute bottom-3 right-3 bg-emerald-500 text-black text-xs font-black px-3 py-1 rounded-full shadow-md font-mono">
+                                👥 신청: {enrolleeCount}명
+                              </div>
+                            </div>
+
+                            <h4 className="text-base font-black text-black line-clamp-2 group-hover:text-emerald-900 transition-colors">
+                              {course.title}
+                            </h4>
+
+                            <div className="space-y-1.5 text-xs text-gray-600 font-bold border-t border-gray-200 pt-3">
+                              <div className="flex items-center justify-between">
+                                <span>📅 개강 일자:</span>
+                                <span className="font-mono text-black font-black">{course.startDate}</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span>👥 수강 인원:</span>
+                                <span className="font-mono text-emerald-900 font-black">{enrolleeCount}명 / 15명 정원</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span>💰 수강료 결제 매출:</span>
+                                <span className="font-mono text-black font-black">
+                                  {(enrolleeCount * course.price).toLocaleString()}원
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="pt-3 border-t border-gray-200 flex items-center justify-between">
+                            <span className="text-xs font-black text-emerald-800 flex items-center gap-1">
+                              👥 수강생 {enrolleeCount}명 명단 보기
+                            </span>
+
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedCourseForEnrollees(course);
+                              }}
+                              className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-xl text-xs font-black transition-colors cursor-pointer flex items-center gap-1"
+                            >
+                              <span>수강생 관리 ➔</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                </div>
+              )}
 
               {/* ENROLLEE DETAIL MODAL */}
               {selectedEnrolleeModal && (
