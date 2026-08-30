@@ -48,7 +48,7 @@ export default function CourseModal({ course, onClose }) {
 
           <div className="absolute bottom-4 left-6 right-6 text-white">
             <span className="px-2.5 py-1 text-xs font-black rounded-md tracking-wider uppercase inline-block mb-2 bg-emerald-600 text-white">
-              {course.badge || '인기과정'}
+              {course.badge || course.categoryName || '인기과정'}
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               {course.title}
@@ -59,7 +59,7 @@ export default function CourseModal({ course, onClose }) {
                 <span>{course.rating || 4.9}</span>
               </div>
               <span>•</span>
-              <span>{course.instructor || '전문가 전담 직강'}</span>
+              <span>{course.instructor || '안형상 이사장 / 40년 명장'}</span>
             </div>
           </div>
         </div>
@@ -67,9 +67,9 @@ export default function CourseModal({ course, onClose }) {
         {/* Modal Content */}
         <div className="p-6 sm:p-8 space-y-6 overflow-y-auto">
           <div>
-            <h3 className="text-base font-bold text-gray-900 mb-2">과정 소개</h3>
-            <p className="text-sm text-gray-600 leading-relaxed font-medium">
-              {course.description}. 본 교육 과정은 현장에서 즉각 활용 가능한 조리 기술부터 레시피 개발, 매장 효율화, 수익성 분석까지 통합적으로 다룹니다.
+            <h3 className="text-base font-bold text-gray-900 mb-2">과정 소개 및 교육 내용</h3>
+            <p className="text-sm text-gray-700 leading-relaxed font-medium whitespace-pre-wrap bg-stone-50 p-4 rounded-2xl border border-stone-200">
+              {course.description}
             </p>
           </div>
 
@@ -78,22 +78,22 @@ export default function CourseModal({ course, onClose }) {
             <div className="flex items-center gap-2 text-gray-700">
               <Clock className="w-4 h-4 text-emerald-600" />
               <div>
-                <span className="block text-gray-400 text-xs">수강 기간</span>
-                <span className="font-bold">{course.duration}</span>
+                <span className="block text-gray-400 text-xs">개강일 / 기간</span>
+                <span className="font-bold">{course.startDate || course.duration}</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-gray-700">
               <BookOpen className="w-4 h-4 text-emerald-600" />
               <div>
-                <span className="block text-gray-400 text-xs">총 강의수</span>
-                <span className="font-bold">{course.lessons}</span>
+                <span className="block text-gray-400 text-xs">자격증</span>
+                <span className="font-bold text-[11px]">{course.certName || '자격증 검정 연계'}</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-gray-700 col-span-2 sm:col-span-1">
               <User className="w-4 h-4 text-emerald-600" />
               <div>
                 <span className="block text-gray-400 text-xs">수강인원</span>
-                <span className="font-bold">선착순 정원 모집</span>
+                <span className="font-bold">선착순 15명 정원</span>
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function CourseModal({ course, onClose }) {
             <div>
               <span className="block text-xs text-gray-400 font-medium">수강료 (재료비 포함)</span>
               <span className="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight">
-                {course.priceFormatted || course.price}
+                {course.priceFormatted || (course.price ? `${course.price.toLocaleString()}원` : '4,500,000원')}
               </span>
             </div>
             <button
