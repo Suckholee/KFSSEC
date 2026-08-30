@@ -15,6 +15,7 @@ import CommunityPage from './components/Community/CommunityPage';
 import CommunityEditorPage from './components/Community/CommunityEditorPage';
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminLoginModal from './components/Admin/AdminLoginModal';
+import PaymentGuideModal from './components/PaymentGuideModal';
 import Footer from './components/Footer';
 import AuthModal from './components/AuthModal';
 
@@ -44,6 +45,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({ name: '안형상 (회원)' });
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
+  const [paymentGuideOpen, setPaymentGuideOpen] = useState(false);
 
   // Shared Community Posts List State
   const [postsList, setPostsList] = useState([
@@ -416,6 +418,7 @@ export default function App() {
               <BannerSection
                 onOpenLogin={() => handleOpenAuth('login')}
                 onOpenCatalog={() => handleOpenCatalogTab('courses')}
+                onOpenPaymentGuide={() => setPaymentGuideOpen(true)}
                 onScrollNext={handleScrollNext}
               />
             </section>
@@ -501,6 +504,13 @@ export default function App() {
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
         initialMode={authInitialMode}
+      />
+
+      {/* Payment Guide Information Modal */}
+      <PaymentGuideModal
+        isOpen={paymentGuideOpen}
+        onClose={() => setPaymentGuideOpen(false)}
+        onGoToCatalog={() => handleOpenCatalogTab('courses')}
       />
     </div>
   );
