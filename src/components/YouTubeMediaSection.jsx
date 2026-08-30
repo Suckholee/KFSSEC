@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Youtube, Play, ExternalLink, ChevronDown } from 'lucide-react';
 import YouTubeModal from './YouTubeModal';
 
-export default function YouTubeMediaSection({ onScrollNext }) {
+export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  const videos = [
+  const defaultVideos = [
     {
       id: 'ZDZFUpS0fFE',
       title: '240203 한국외식창업교육원 정기총회',
@@ -26,6 +26,21 @@ export default function YouTubeMediaSection({ onScrollNext }) {
     },
   ];
 
+  const title = youtubeData?.title || '한국외식창업교육원 미디어';
+  const subtitle = youtubeData?.subtitle || '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.';
+  const channelUrl = youtubeData?.channelUrl || 'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88';
+  const rawVideos = youtubeData?.videos && youtubeData.videos.length > 0 ? youtubeData.videos : defaultVideos;
+
+  const videos = rawVideos.map((v) => ({
+    id: v.videoId || v.id,
+    title: v.title,
+    subtitle: v.subtitle || '사단법인 한국외식창업교육원 영상',
+    channel: v.channel || '한국외식창업교육원 공식 채널',
+    categoryBadge: v.categoryBadge || v.category || '공식 영상',
+    badgeColor: v.badgeColor || 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+    thumbnail: v.thumbnail || `https://img.youtube.com/vi/${v.videoId || v.id}/hqdefault.jpg`,
+  }));
+
   return (
     <section className="relative py-12 lg:py-16 bg-[#08100d] text-white min-h-full flex flex-col justify-center border-b border-emerald-950">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-8 max-w-7xl mx-auto">
@@ -38,15 +53,15 @@ export default function YouTubeMediaSection({ onScrollNext }) {
               <span>YOUTUBE OFFICIAL</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              한국외식창업교육원 미디어
+              {title}
             </h2>
             <p className="text-sm text-emerald-200/70 font-medium mt-1">
-              사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.
+              {subtitle}
             </p>
           </div>
           
           <a
-            href="https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88"
+            href={channelUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all shrink-0 whitespace-nowrap self-start sm:self-auto cursor-pointer"
@@ -99,44 +114,44 @@ export default function YouTubeMediaSection({ onScrollNext }) {
                       {video.channel}
                     </span>
                   </div>
-                  
-                  <h3 className="text-base sm:text-lg font-black text-white leading-snug group-hover:text-emerald-300 transition-colors line-clamp-2">
+                  <h3 className="text-base sm:text-lg font-black text-white group-hover:text-emerald-300 transition-colors leading-snug line-clamp-2">
                     {video.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-400 font-medium mt-2 leading-relaxed line-clamp-2">
+                  <p className="text-xs sm:text-sm text-gray-400 font-medium line-clamp-2 mt-1">
                     {video.subtitle}
                   </p>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
 
       </div>
 
-      {/* Fullscreen Video Modal */}
-      <YouTubeModal
-        isOpen={!!selectedVideo}
-        onClose={() => setSelectedVideo(null)}
-        videoId={selectedVideo?.id}
-        videoTitle={selectedVideo?.title}
-      />
-
       {/* Subtle Scroll Down Indicator Bar */}
       {onScrollNext && (
         <button
           onClick={onScrollNext}
-          className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 group cursor-pointer"
-          aria-label="아래로 스크롤"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-emerald-400/80 hover:text-emerald-300 transition-colors group cursor-pointer"
+          aria-label="다음 섹션으로 이동"
         >
-          <span className="text-[10px] sm:text-[11px] font-black tracking-[0.25em] uppercase text-emerald-400/70 group-hover:text-emerald-300 transition-colors">
+          <span className="text-[10px] font-black tracking-widest uppercase opacity-80 group-hover:opacity-100">
             SCROLL DOWN
           </span>
-          <div className="w-7 h-7 rounded-full bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-300 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-xs animate-bounce">
-            <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+          <div className="w-7 h-7 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center group-hover:bg-emerald-500/20 group-hover:border-emerald-400 transition-all">
+            <ChevronDown className="w-4 h-4 animate-bounce" />
           </div>
         </button>
+      )}
+
+      {/* Interactive YouTube Video Modal */}
+      {selectedVideo && (
+        <YouTubeModal
+          videoId={selectedVideo.id}
+          title={selectedVideo.title}
+          isOpen={Boolean(selectedVideo)}
+          onClose={() => setSelectedVideo(null)}
+        />
       )}
     </section>
   );

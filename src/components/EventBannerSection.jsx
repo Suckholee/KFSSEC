@@ -1,10 +1,16 @@
 import React from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Sparkles } from 'lucide-react';
 
-export default function EventBannerSection({ onEventClick, onScrollNext }) {
+export default function EventBannerSection({ bannerData, onEventClick, onScrollNext }) {
+  if (bannerData && bannerData.active === false) {
+    return null;
+  }
+
+  const bannerText = bannerData?.title || '지금 진행 중인 외식창업 이벤트를 만나보세요! 신규 수강 50% 할인부터 무료 특강, 창업 패키지까지 다양한 이벤트 진행 중';
+
   return (
-    <section className="relative py-12 lg:py-16 bg-[#0c1015] text-white h-full flex flex-col justify-center border-b border-gray-800">
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+    <section className="relative py-12 lg:py-16 bg-[#0c1015] text-white h-full flex flex-col justify-center border-b border-gray-800 animate-fadeIn">
+      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-4">
         
         {/* Main 50% Event Banner Graphic */}
         <div
@@ -13,9 +19,25 @@ export default function EventBannerSection({ onEventClick, onScrollNext }) {
         >
           <img
             src="/images/banner_event_strip.png"
-            alt="지금 진행 중인 외식창업 이벤트를 만나보세요! 신규 수강 50% 할인부터 무료 특강, 창업 패키지까지 다양한 이벤트 진행 중"
+            alt={bannerText}
             className="w-full h-auto object-cover group-hover:brightness-105 transition-all duration-500"
           />
+          
+          {/* Text Overlay if updated by Admin */}
+          {bannerData?.title && (
+            <div className="absolute inset-x-0 bottom-0 bg-black/80 backdrop-blur-md px-6 py-3 border-t border-emerald-500/40 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-black text-white">
+                <span className="px-2 py-0.5 bg-rose-500 text-white rounded text-[10px] uppercase font-mono">
+                  EVENT
+                </span>
+                <span>{bannerText}</span>
+              </div>
+              <span className="text-xs font-black text-emerald-400 underline">
+                상세 혜택 신청하기 ➔
+              </span>
+            </div>
+          )}
+
           {/* Glossy Overlay Highlight */}
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-white/5 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
         </div>

@@ -1,45 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Youtube, Image as ImageIcon, Save, CheckCircle2, Play, ExternalLink, Plus, Trash2, Eye, Edit3, Layout, Layers } from 'lucide-react';
 
-export default function AdminContent() {
-  const [youtubeTitle, setYoutubeTitle] = useState('한국외식창업교육원 미디어');
+export default function AdminContent({ siteData, onUpdateSiteData }) {
+  const [youtubeTitle, setYoutubeTitle] = useState(
+    siteData?.youtube?.title || '한국외식창업교육원 미디어'
+  );
   const [youtubeSubtitle, setYoutubeSubtitle] = useState(
-    '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.'
+    siteData?.youtube?.subtitle || '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.'
   );
   const [youtubeChannelUrl, setYoutubeChannelUrl] = useState(
-    'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88'
+    siteData?.youtube?.channelUrl ||
+      'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88'
   );
 
-  // 2 Real Official YouTube Videos Matching Actual Landing Page
-  const [youtubeVideos, setYoutubeVideos] = useState([
-    {
-      id: 'v1',
-      videoId: 'ZDZFUpS0fFE',
-      title: '240203 한국외식창업교육원 정기총회',
-      subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
-      channel: '한국외식창업교육원 공식 채널',
-      categoryBadge: '공식 채널 영상',
-      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-    },
-    {
-      id: 'v2',
-      videoId: 'E_WgebIP_SY',
-      title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
-      subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
-      channel: '아시아창의방송 (actv) 언론 보도',
-      categoryBadge: '언론 보도 영상',
-      badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30',
-    },
-  ]);
+  const [youtubeVideos, setYoutubeVideos] = useState(
+    siteData?.youtube?.videos || [
+      {
+        id: 'v1',
+        videoId: 'ZDZFUpS0fFE',
+        title: '240203 한국외식창업교육원 정기총회',
+        subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
+        channel: '한국외식창업교육원 공식 채널',
+        categoryBadge: '공식 채널 영상',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+      },
+      {
+        id: 'v2',
+        videoId: 'E_WgebIP_SY',
+        title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
+        subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
+        channel: '아시아창의방송 (actv) 언론 보도',
+        categoryBadge: '언론 보도 영상',
+        badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30',
+      },
+    ]
+  );
 
   const [activeViewMode, setActiveViewMode] = useState('visual'); // 'visual' | 'edit'
-  const [editingVideoId, setEditingVideoId] = useState(null);
   const [newVideoId, setNewVideoId] = useState('');
   const [newVideoTitle, setNewVideoTitle] = useState('');
   const [newVideoCategory, setNewVideoCategory] = useState('공식 채널 영상');
-  const [bannerActive, setBannerActive] = useState(true);
-  const [bannerTitle, setBannerTitle] = useState('240203 한국외식창업교육원 정기총회 세미나');
+
+  const [bannerActive, setBannerActive] = useState(
+    siteData?.banner?.active !== false
+  );
+  const [bannerTitle, setBannerTitle] = useState(
+    siteData?.banner?.title || '240203 한국외식창업교육원 정기총회 세미나'
+  );
+
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  useEffect(() => {
+    if (siteData) {
+      if (siteData.youtube?.title) setYoutubeTitle(siteData.youtube.title);
+      if (siteData.youtube?.subtitle) setYoutubeSubtitle(siteData.youtube.subtitle);
+      if (siteData.youtube?.channelUrl) setYoutubeChannelUrl(siteData.youtube.channelUrl);
+      if (siteData.youtube?.videos) setYoutubeVideos(siteData.youtube.videos);
+      if (siteData.banner?.active !== undefined) setBannerActive(siteData.banner.active);
+      if (siteData.banner?.title) setBannerTitle(siteData.banner.title);
+    }
+  }, [siteData]);
 
   const handleAddVideo = (e) => {
     e.preventDefault();
@@ -58,9 +78,22 @@ export default function AdminContent() {
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
     };
 
-    setYoutubeVideos([...youtubeVideos, newVideo]);
+    const updatedVideos = [...youtubeVideos, newVideo];
+    setYoutubeVideos(updatedVideos);
     setNewVideoId('');
     setNewVideoTitle('');
+
+    if (onUpdateSiteData) {
+      onUpdateSiteData({
+        youtube: {
+          title: youtubeTitle,
+          subtitle: youtubeSubtitle,
+          channelUrl: youtubeChannelUrl,
+          videos: updatedVideos,
+        },
+        banner: { active: bannerActive, title: bannerTitle },
+      });
+    }
   };
 
   const handleDeleteVideo = (id) => {
@@ -69,24 +102,74 @@ export default function AdminContent() {
       return;
     }
     if (window.confirm('이 유튜브 영상을 미디어 노출 목록에서 삭제하시겠습니까?')) {
-      setYoutubeVideos(youtubeVideos.filter((v) => v.id !== id));
+      const updatedVideos = youtubeVideos.filter((v) => v.id !== id);
+      setYoutubeVideos(updatedVideos);
+      if (onUpdateSiteData) {
+        onUpdateSiteData({
+          youtube: {
+            title: youtubeTitle,
+            subtitle: youtubeSubtitle,
+            channelUrl: youtubeChannelUrl,
+            videos: updatedVideos,
+          },
+          banner: { active: bannerActive, title: bannerTitle },
+        });
+      }
     }
   };
 
   const handleUpdateVideoTitle = (id, newTitle) => {
-    setYoutubeVideos(
-      youtubeVideos.map((v) => (v.id === id ? { ...v, title: newTitle } : v))
+    const updatedVideos = youtubeVideos.map((v) =>
+      v.id === id ? { ...v, title: newTitle } : v
     );
+    setYoutubeVideos(updatedVideos);
+    if (onUpdateSiteData) {
+      onUpdateSiteData({
+        youtube: {
+          title: youtubeTitle,
+          subtitle: youtubeSubtitle,
+          channelUrl: youtubeChannelUrl,
+          videos: updatedVideos,
+        },
+        banner: { active: bannerActive, title: bannerTitle },
+      });
+    }
   };
 
   const handleUpdateVideoId = (id, newVid) => {
-    setYoutubeVideos(
-      youtubeVideos.map((v) => (v.id === id ? { ...v, videoId: newVid } : v))
+    const updatedVideos = youtubeVideos.map((v) =>
+      v.id === id ? { ...v, videoId: newVid } : v
     );
+    setYoutubeVideos(updatedVideos);
+    if (onUpdateSiteData) {
+      onUpdateSiteData({
+        youtube: {
+          title: youtubeTitle,
+          subtitle: youtubeSubtitle,
+          channelUrl: youtubeChannelUrl,
+          videos: updatedVideos,
+        },
+        banner: { active: bannerActive, title: bannerTitle },
+      });
+    }
   };
 
   const handleSave = (e) => {
     e.preventDefault();
+    if (onUpdateSiteData) {
+      onUpdateSiteData({
+        youtube: {
+          title: youtubeTitle,
+          subtitle: youtubeSubtitle,
+          channelUrl: youtubeChannelUrl,
+          videos: youtubeVideos,
+        },
+        banner: {
+          active: bannerActive,
+          title: bannerTitle,
+        },
+      });
+    }
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   };
@@ -141,7 +224,7 @@ export default function AdminContent() {
 
       <form onSubmit={handleSave} className="space-y-8">
         
-        {/* VIEW MODE 1: LIVE VISUAL LANDING PAGE EDITOR (실제 랜딩페이지와 100% 동일한 시각적 편집기) */}
+        {/* VIEW MODE 1: LIVE VISUAL LANDING PAGE EDITOR */}
         {activeViewMode === 'visual' ? (
           <div className="space-y-6">
             <div className="bg-[#08100d] rounded-3xl p-6 sm:p-10 border border-emerald-500/30 shadow-2xl space-y-8 relative overflow-hidden">
@@ -160,12 +243,26 @@ export default function AdminContent() {
                   {/* Direct Editable Title */}
                   <div className="space-y-1">
                     <label className="text-[11px] text-emerald-400 font-extrabold block">
-                      [클릭하여 제목 수정 가능]
+                      [클릭하여 랜딩페이지 제목 실시간 수정 가능]
                     </label>
                     <input
                       type="text"
                       value={youtubeTitle}
-                      onChange={(e) => setYoutubeTitle(e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setYoutubeTitle(val);
+                        if (onUpdateSiteData) {
+                          onUpdateSiteData({
+                            youtube: {
+                              title: val,
+                              subtitle: youtubeSubtitle,
+                              channelUrl: youtubeChannelUrl,
+                              videos: youtubeVideos,
+                            },
+                            banner: { active: bannerActive, title: bannerTitle },
+                          });
+                        }
+                      }}
                       className="w-full bg-[#12241b] border border-emerald-500/40 rounded-xl px-4 py-2 text-2xl sm:text-3xl font-black text-white focus:outline-none focus:border-emerald-400"
                     />
                   </div>
@@ -174,7 +271,21 @@ export default function AdminContent() {
                   <input
                     type="text"
                     value={youtubeSubtitle}
-                    onChange={(e) => setYoutubeSubtitle(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setYoutubeSubtitle(val);
+                      if (onUpdateSiteData) {
+                        onUpdateSiteData({
+                          youtube: {
+                            title: youtubeTitle,
+                            subtitle: val,
+                            channelUrl: youtubeChannelUrl,
+                            videos: youtubeVideos,
+                          },
+                          banner: { active: bannerActive, title: bannerTitle },
+                        });
+                      }
+                    }}
                     className="w-full bg-[#12241b] border border-emerald-500/30 rounded-xl px-4 py-1.5 text-xs sm:text-sm text-emerald-200/80 font-medium focus:outline-none focus:border-emerald-400"
                   />
                 </div>
@@ -201,7 +312,6 @@ export default function AdminContent() {
                       key={video.id}
                       className="bg-[#0f1f18] rounded-3xl border border-emerald-500/30 overflow-hidden shadow-xl hover:border-emerald-400/80 transition-all flex flex-col justify-between group"
                     >
-                      {/* Real Official YouTube Thumbnail Preview with Play Icon */}
                       <div className="relative aspect-video w-full bg-black overflow-hidden">
                         <img
                           src={thumbnailUrl}
@@ -213,7 +323,6 @@ export default function AdminContent() {
                         />
                         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
 
-                        {/* Large Red YouTube Play Icon */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="w-16 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
                             <Play className="w-7 h-7 fill-current ml-1" />
@@ -227,7 +336,6 @@ export default function AdminContent() {
                         </div>
                       </div>
 
-                      {/* In-place Editable Title & Video ID */}
                       <div className="p-5 sm:p-6 space-y-3 flex-1 flex flex-col justify-between bg-[#0f1f18]">
                         <div className="space-y-2">
                           <div className="flex items-center justify-between gap-2">
@@ -237,7 +345,6 @@ export default function AdminContent() {
                             <span className="text-xs font-bold text-gray-400">{video.channel}</span>
                           </div>
 
-                          {/* Editable Title */}
                           <textarea
                             value={video.title}
                             onChange={(e) => handleUpdateVideoTitle(video.id, e.target.value)}
@@ -246,7 +353,6 @@ export default function AdminContent() {
                           />
                         </div>
 
-                        {/* Editable Video ID & Action Buttons */}
                         <div className="pt-3 border-t border-emerald-900/60 flex items-center justify-between gap-3 text-xs">
                           <div className="flex items-center gap-1.5 flex-1">
                             <span className="text-gray-400 font-bold shrink-0">ID:</span>
@@ -373,7 +479,21 @@ export default function AdminContent() {
               <input
                 type="checkbox"
                 checked={bannerActive}
-                onChange={(e) => setBannerActive(e.target.checked)}
+                onChange={(e) => {
+                  const val = e.target.checked;
+                  setBannerActive(val);
+                  if (onUpdateSiteData) {
+                    onUpdateSiteData({
+                      youtube: {
+                        title: youtubeTitle,
+                        subtitle: youtubeSubtitle,
+                        channelUrl: youtubeChannelUrl,
+                        videos: youtubeVideos,
+                      },
+                      banner: { active: val, title: bannerTitle },
+                    });
+                  }
+                }}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
@@ -389,7 +509,21 @@ export default function AdminContent() {
               <input
                 type="text"
                 value={bannerTitle}
-                onChange={(e) => setBannerTitle(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setBannerTitle(val);
+                  if (onUpdateSiteData) {
+                    onUpdateSiteData({
+                      youtube: {
+                        title: youtubeTitle,
+                        subtitle: youtubeSubtitle,
+                        channelUrl: youtubeChannelUrl,
+                        videos: youtubeVideos,
+                      },
+                      banner: { active: bannerActive, title: val },
+                    });
+                  }
+                }}
                 className="w-full bg-[#16241c] border border-emerald-500/30 rounded-xl px-4 py-2.5 text-white font-bold focus:outline-none focus:border-emerald-400"
               />
             </div>
@@ -421,7 +555,7 @@ export default function AdminContent() {
           {savedSuccess ? (
             <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm animate-fadeIn">
               <CheckCircle2 className="w-5 h-5" />
-              <span>유튜브 미디어 및 배너 설정이 성공적으로 저장되었습니다!</span>
+              <span>유튜브 미디어 및 배너 설정이 성공적으로 저장 및 홈페이지에 즉각 반영되었습니다!</span>
             </div>
           ) : <div />}
 
@@ -430,7 +564,7 @@ export default function AdminContent() {
             className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm rounded-xl shadow-lg transition-all cursor-pointer flex items-center gap-2"
           >
             <Save className="w-4 h-4" />
-            <span>설정 저장하기</span>
+            <span>홈페이지에 즉각 저장 및 반영하기</span>
           </button>
         </div>
 

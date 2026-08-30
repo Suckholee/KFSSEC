@@ -29,13 +29,69 @@ export default function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
 
+  // Central Dynamic Site Data Store with localStorage Persistence
+  const [siteData, setSiteData] = useState(() => {
+    const saved = localStorage.getItem('kfssec_site_data');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse saved site data:', e);
+      }
+    }
+    return {
+      youtube: {
+        title: '한국외식창업교육원 미디어',
+        subtitle: '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.',
+        channelUrl:
+          'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88',
+        videos: [
+          {
+            id: 'v1',
+            videoId: 'ZDZFUpS0fFE',
+            title: '240203 한국외식창업교육원 정기총회',
+            subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
+            channel: '한국외식창업교육원 공식 채널',
+            categoryBadge: '공식 채널 영상',
+            badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+          },
+          {
+            id: 'v2',
+            videoId: 'E_WgebIP_SY',
+            title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
+            subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
+            channel: '아시아창의방송 (actv) 언론 보도',
+            categoryBadge: '언론 보도 영상',
+            badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30',
+          },
+        ],
+      },
+      banner: {
+        active: true,
+        title: '240203 한국외식창업교육원 정기총회 세미나',
+      },
+    };
+  });
+
+  const handleUpdateSiteData = (newPart) => {
+    setSiteData((prev) => {
+      const updated = {
+        ...prev,
+        ...newPart,
+        youtube: newPart.youtube ? { ...prev.youtube, ...newPart.youtube } : prev.youtube,
+        banner: newPart.banner ? { ...prev.banner, ...newPart.banner } : prev.banner,
+      };
+      localStorage.setItem('kfssec_site_data', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   // Admin Security Authentication State
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
     return localStorage.getItem('kfssec_admin_auth') === 'true';
   });
 
   const [adminLoginModalOpen, setAdminLoginModalOpen] = useState(false);
-
   const snapContainerRef = useRef(null);
 
   // Sync View to URL Pathname & Handle Popstate Navigation
@@ -112,6 +168,8 @@ export default function App() {
   if (currentView === 'admin' && isAdminAuthenticated) {
     return (
       <AdminLayout
+        siteData={siteData}
+        onUpdateSiteData={handleUpdateSiteData}
         onExitAdmin={() => changeView('landing', '/')}
         onLogout={handleAdminLogout}
       />
@@ -150,6 +208,7 @@ export default function App() {
             {/* Section 2: Event Strip Banner */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#0c1015]">
               <EventBannerSection
+                bannerData={siteData.banner}
                 onEventClick={() => handleOpenAuth('login')}
                 onScrollNext={handleScrollNext}
               />
@@ -163,9 +222,12 @@ export default function App() {
               />
             </section>
 
-            {/* Section 4: YouTube Media Section */}
+            {/* Section 4: YouTube Media Section with Instant Dynamic SiteData Sync */}
             <section className="scroll-snap-section flex flex-col justify-center bg-[#08100d]">
-              <YouTubeMediaSection onScrollNext={handleScrollNext} />
+              <YouTubeMediaSection
+                youtubeData={siteData.youtube}
+                onScrollNext={handleScrollNext}
+              />
             </section>
 
             {/* Section 5: Full Package Courses Section */}
