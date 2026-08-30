@@ -21,6 +21,39 @@ import AuthModal from './components/AuthModal';
 import YouTubeModal from './components/YouTubeModal';
 import PaymentGuideModal from './components/PaymentGuideModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
+import { ChevronUp } from 'lucide-react';
+
+function ScrollToTopButton() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisible = () => {
+      if (window.scrollY > 300) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    };
+    window.addEventListener('scroll', toggleVisible);
+    return () => window.removeEventListener('scroll', toggleVisible);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (!visible) return null;
+
+  return (
+    <button
+      onClick={scrollToTop}
+      aria-label="페이지 맨 위로 이동"
+      className="fixed bottom-6 right-6 z-40 p-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-full shadow-2xl transition-all cursor-pointer border border-[#C5A059] flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+    >
+      <ChevronUp className="w-5 h-5 text-[#D4AF37] group-hover:-translate-y-0.5 transition-transform" />
+    </button>
+  );
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -359,7 +392,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white overflow-x-hidden">
       {/* Top Main Navigation Header */}
       <Header
         activeTab={activeTab}
@@ -451,6 +484,8 @@ export default function App() {
         isOpen={isPaymentGuideOpen}
         onClose={() => setIsPaymentGuideOpen(false)}
       />
+
+      <ScrollToTopButton />
     </div>
   );
 }

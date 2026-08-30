@@ -13,7 +13,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
       channel: '한국외식창업교육원 공식 채널',
       categoryBadge: '공식 채널 영상',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-      thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/hqdefault.jpg',
+      thumbnail: '/images/yt_thumb_1.jpg',
     },
     {
       id: 'E_WgebIP_SY',
@@ -22,7 +22,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
       channel: '아시아창의방송 (actv) 언론 보도',
       categoryBadge: '언론 보도 영상',
       badgeColor: 'bg-red-500/20 text-red-300 border-red-500/30',
-      thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/hqdefault.jpg',
+      thumbnail: '/images/yt_thumb_2.jpg',
     },
   ];
 
@@ -31,31 +31,38 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
   const channelUrl = youtubeData?.channelUrl || 'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88';
   const rawVideos = youtubeData?.videos && youtubeData.videos.length > 0 ? youtubeData.videos : defaultVideos;
 
-  const videos = rawVideos.map((v) => ({
+  const videos = rawVideos.map((v, idx) => ({
     id: v.videoId || v.id,
     title: v.title,
     subtitle: v.subtitle || '사단법인 한국외식창업교육원 영상',
     channel: v.channel || '한국외식창업교육원 공식 채널',
     categoryBadge: v.categoryBadge || v.category || '공식 영상',
     badgeColor: v.badgeColor || 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-    thumbnail: v.thumbnail || `https://img.youtube.com/vi/${v.videoId || v.id}/hqdefault.jpg`,
+    thumbnail: v.thumbnail || (idx === 0 ? '/images/yt_thumb_1.jpg' : '/images/yt_thumb_2.jpg'),
   }));
 
+  const handleKeyPress = (e, video) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setSelectedVideo(video);
+    }
+  };
+
   return (
-    <section className="relative py-12 lg:py-16 bg-[#08100d] text-white min-h-full flex flex-col justify-center border-b border-emerald-950">
+    <section className="relative py-12 lg:py-16 bg-[#0A1410] text-white min-h-full flex flex-col justify-center border-b border-emerald-950">
       <div className="w-full px-4 sm:px-8 lg:px-12 space-y-8 max-w-7xl mx-auto">
         
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-black mb-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-bold mb-3">
               <Youtube className="w-4 h-4 fill-current shrink-0" />
               <span>YOUTUBE OFFICIAL</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {title}
             </h2>
-            <p className="text-sm text-emerald-200/70 font-medium mt-1">
+            <p className="text-xs sm:text-sm text-emerald-100/70 font-semibold mt-1">
               {subtitle}
             </p>
           </div>
@@ -64,10 +71,11 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
             href={channelUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg hover:shadow-red-600/30 transition-all shrink-0 whitespace-nowrap self-start sm:self-auto cursor-pointer"
+            className="inline-flex items-center gap-2.5 px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg transition-all shrink-0 whitespace-nowrap self-start sm:self-auto cursor-pointer min-h-[44px] focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:outline-none"
+            aria-label="한국외식창업교육원 공식 유튜브 채널 새 창에서 이동"
           >
             <Youtube className="w-4 h-4 fill-current shrink-0" />
-            <span>한국외식창업교육원 채널</span>
+            <span>공식 유튜브 채널</span>
             <ExternalLink className="w-4 h-4 shrink-0 stroke-[2.2]" />
           </a>
         </div>
@@ -75,16 +83,24 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
         {/* 2-Column Responsive YouTube Video Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {videos.map((video) => (
-            <div
+            <article
               key={video.id}
               onClick={() => setSelectedVideo(video)}
-              className="bg-[#0f1f18] rounded-3xl border border-emerald-500/20 overflow-hidden shadow-xl hover:shadow-2xl hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+              onKeyDown={(e) => handleKeyPress(e, video)}
+              tabIndex={0}
+              role="button"
+              aria-label={`유튜브 영상 재생: ${video.title}`}
+              className="bg-[#111C16] rounded-3xl border border-emerald-500/20 overflow-hidden shadow-lg hover:shadow-2xl hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
             >
               {/* YouTube Thumbnail Box with Large Red Play Button */}
               <div className="relative aspect-video w-full bg-black overflow-hidden">
                 <img
                   src={video.thumbnail}
                   alt={video.title}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/images/yt_thumb_1.jpg';
+                  }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 brightness-95"
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
@@ -107,42 +123,26 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
               <div className="p-5 sm:p-6 space-y-2 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className={`px-2.5 py-0.5 rounded-full border text-[11px] font-black ${video.badgeColor}`}>
+                    <span className={`px-2.5 py-0.5 rounded-full border text-[11px] font-bold ${video.badgeColor}`}>
                       {video.categoryBadge}
                     </span>
-                    <span className="text-xs font-bold text-gray-400">
+                    <span className="text-xs font-bold text-gray-300">
                       {video.channel}
                     </span>
                   </div>
                   <h3 className="text-base sm:text-lg font-black text-white group-hover:text-emerald-300 transition-colors leading-snug line-clamp-2">
                     {video.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-400 font-medium line-clamp-2 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-300 font-medium line-clamp-2 mt-1">
                     {video.subtitle}
                   </p>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
 
       </div>
-
-      {/* Subtle Scroll Down Indicator Bar */}
-      {onScrollNext && (
-        <button
-          onClick={onScrollNext}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-emerald-400/80 hover:text-emerald-300 transition-colors group cursor-pointer"
-          aria-label="다음 섹션으로 이동"
-        >
-          <span className="text-[10px] font-black tracking-widest uppercase opacity-80 group-hover:opacity-100">
-            SCROLL DOWN
-          </span>
-          <div className="w-7 h-7 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center group-hover:bg-emerald-500/20 group-hover:border-emerald-400 transition-all">
-            <ChevronDown className="w-4 h-4 animate-bounce" />
-          </div>
-        </button>
-      )}
 
       {/* Interactive YouTube Video Modal */}
       {selectedVideo && (
