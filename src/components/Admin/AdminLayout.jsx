@@ -86,7 +86,7 @@ export default function AdminLayout({
   // Courses Database State
   const [coursesList, setCoursesList] = useState(getCoursesFromDB());
 
-  // Enrollees & Reservations State (Bound to our 12 courses)
+  // Enrollees & Reservations State
   const [enrolleesList, setEnrolleesList] = useState([
     {
       id: 'R2026-0829-01',
@@ -102,7 +102,7 @@ export default function AdminLayout({
       paidAmount: 2925000,
       discountText: '35% 정부/사단법인 지원',
       paymentMethod: '신용카드 (KB국민 12개월)',
-      status: 'completed', // 'completed', 'pending', 'cancelled'
+      status: 'completed',
     },
     {
       id: 'R2026-0828-04',
@@ -478,9 +478,9 @@ export default function AdminLayout({
     : enrolleesList.filter((e) => e.courseId === selectedEnrolleeCourseFilter);
 
   return (
-    <div className="min-h-screen bg-[#f4f6f8] text-gray-900 flex flex-col font-sans selection:bg-emerald-200 selection:text-emerald-900">
+    <div className="h-screen w-screen bg-[#f4f6f8] text-gray-900 flex flex-col font-sans overflow-hidden select-none">
       
-      {/* Top Header Bar */}
+      {/* FIXED TOP HEADER BAR (h-16 = 64px) */}
       <header className="bg-[#1e2329] text-white h-16 px-6 flex items-center justify-between shadow-md shrink-0 z-50">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -532,11 +532,11 @@ export default function AdminLayout({
         </div>
       </header>
 
-      {/* Main Container with 2-Tier Dual Left Sidebar */}
-      <div className="flex-1 flex overflow-hidden">
+      {/* FIXED CONTAINER BELOW HEADER (h-[calc(100vh-64px)]) */}
+      <div className="flex-1 flex overflow-hidden h-[calc(100vh-64px)]">
         
-        {/* TIER 1: Far Left Narrow Icon Bar */}
-        <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-4 shrink-0 z-20">
+        {/* TIER 1: Far Left Narrow Icon Bar (Fixed) */}
+        <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-4 shrink-0 z-20 h-full overflow-y-auto">
           <button
             onClick={() => switchPrimaryMenu('home', 'visual_editor', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
@@ -603,8 +603,8 @@ export default function AdminLayout({
           </button>
         </nav>
 
-        {/* TIER 2: Secondary Expanding Sub-Panel */}
-        <aside className="w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10">
+        {/* TIER 2: Secondary Expanding Sub-Panel (Fixed) */}
+        <aside className="w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10 h-full overflow-y-auto">
           <div className="px-2 border-b border-gray-200 pb-3">
             <h2 className="text-sm font-black text-black tracking-tight">
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
@@ -660,8 +660,8 @@ export default function AdminLayout({
           </div>
         </aside>
 
-        {/* MAIN WORKSTATION CANVAS AREA */}
-        <main className="flex-1 p-6 overflow-y-auto bg-[#f4f6f8] space-y-6">
+        {/* MAIN WORKSTATION CANVAS AREA (ONLY THIS AREA SCROLLS!) */}
+        <main className="flex-1 h-full p-6 overflow-y-auto bg-[#f4f6f8] space-y-6 scroll-smooth select-text">
           
           {/* Notification Alert for Saved Changes */}
           {isSavedNotice && (
@@ -673,7 +673,7 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN: ENROLLEES & RESERVATION MANAGEMENT (수강 신청자 명단 & 수강료 결제 현황) */}
+          {/* DYNAMIC SCREEN: ENROLLEES & RESERVATION MANAGEMENT */}
           {primaryMenu === 'reservations' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
@@ -807,7 +807,7 @@ export default function AdminLayout({
                           className={`px-3 py-1 rounded-full text-[10px] font-black inline-block border ${
                             item.status === 'completed'
                               ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                              : 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
+                              : 'bg-amber-100 text-amber-900 border-amber-300'
                           }`}
                         >
                           {item.status === 'completed' ? '✓ 결제완료' : '⏳ 승인대기'}
