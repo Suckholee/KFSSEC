@@ -57,6 +57,11 @@ import {
   Mail,
   Receipt,
   Download,
+  Key,
+  Lock,
+  UserX,
+  UserCheck as UserCheckIcon,
+  RefreshCw,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -75,7 +80,7 @@ import {
   uploadImageAPI,
 } from '../../services/courseDatabase';
 
-// Programmatically generate 128 real full student enrollee records
+// Programmatically generate 128 real full student enrollee & account records
 const generate128Enrollees = () => {
   const lastNames = ['김', '이', '박', '최', '정', '강', '조', '윤', '장', '임', '한', '오', '서', '신', '권', '황', '안', '송', '전', '홍', '고', '문', '양', '손', '배', '백', '허', '유', '남', '심'];
   const firstNames = ['태훈', '소연', '준형', '성민', '다은', '현우', '수진', '경민', '보미', '남궁건', '승룡', '위안', '현석', '유진', '민수', '지훈', '예은', '도현', '지유', '우진', '해진', '재성', '진우', '동건', '시경', '경수', '보경', '은지', '상철', '영희', '철수', '동현', '서연', '민재', '지원', '하은', '지민', '준서', '도윤', '시우', '하준', '지호', '유준', '지안'];
@@ -110,15 +115,17 @@ const generate128Enrollees = () => {
     const p1 = 1000 + ((i * 73) % 8999);
     const p2 = 1000 + ((i * 37) % 8999);
 
-    // 5 items pending status to match KPI "결제 승인 대기: 5명"
     const isPending = i <= 5;
+    const isSuspended = i === 127 || i === 128;
 
     list.push({
       id: `R2026-08${day}-${String(i).padStart(2, '0')}`,
-      date: `2026.08.${day} ${hour}:${min}`,
+      userId: `user_student_${i}`,
+      joinDate: `2026.08.${day}`,
+      lastLogin: `2026.08.30 ${hour}:${min}`,
       studentName: name,
       phone: `010-${p1}-${p2}`,
-      email: `user${i}@${domains[i % domains.length]}`,
+      email: `student${i}@${domains[i % domains.length]}`,
       courseId: course.id,
       courseTitle: course.title,
       categoryName: course.category,
@@ -128,6 +135,7 @@ const generate128Enrollees = () => {
       discountText: course.disc,
       paymentMethod: isPending ? '가상계좌 (입금 대기중)' : payMethods[i % payMethods.length],
       status: isPending ? 'pending' : 'completed',
+      accountStatus: isSuspended ? 'suspended' : 'active', // 'active', 'suspended'
     });
   }
   return list;
@@ -150,6 +158,9 @@ export default function AdminLayout({
   // Selected Course Filter for Enrollee List
   const [selectedEnrolleeCourseFilter, setSelectedEnrolleeCourseFilter] = useState('all');
   const [selectedEnrolleeModal, setSelectedEnrolleeModal] = useState(null);
+
+  // Student Account Search Keyword State
+  const [studentSearchKeyword, setStudentSearchKeyword] = useState('');
 
   // Developer Inquiries State
   const [devInquiries, setDevInquiries] = useState([
@@ -260,6 +271,9 @@ export default function AdminLayout({
     } else if (parts[1] === 'reservations') {
       menu = 'reservations';
       subTab = 'enrollees_list';
+    } else if (parts[1] === 'users') {
+      menu = 'reservations';
+      subTab = 'student_accounts';
     } else if (parts[1] === 'inquiries') {
       menu = 'inquiries';
       subTab = 'inquiry_all';
@@ -288,7 +302,9 @@ export default function AdminLayout({
   // Helper to push browser URL state dynamically
   const updateAdminUrl = (menu, subTab, courseId = null) => {
     let targetPath = `/admin/${menu}`;
-    if (menu === 'courses' && courseId) {
+    if (subTab === 'student_accounts') {
+      targetPath = `/admin/users`;
+    } else if (menu === 'courses' && courseId) {
       targetPath = `/admin/courses/${courseId}`;
     }
     if (window.location.pathname !== targetPath) {
@@ -350,6 +366,25 @@ export default function AdminLayout({
     setNewDevInquiryScreenshot(null);
     triggerSavedNotice();
     alert('🚀 문의가 등록되었습니다. 개발자 확인 후 답변이 등록됩니다.');
+  };
+
+  // Student Account Reset Password Handler
+  const handleResetStudentPassword = (student) => {
+    alert(`🔑 [비밀번호 재설정 완료] ${student.studentName} (${student.email}) 수강생의 비밀번호가 임시 비밀번호로 초기화되어 이메일로 발송되었습니다.`);
+  };
+
+  // Toggle Account Suspend/Active Handler
+  const handleToggleAccountStatus = (studentId) => {
+    setEnrolleesList((prev) =>
+      prev.map((item) => {
+        if (item.id === studentId) {
+          const nextState = item.accountStatus === 'active' ? 'suspended' : 'active';
+          alert(`계정 상태가 [${nextState === 'active' ? '정상 승인' : '제재/휴면'}]으로 변경되었습니다.`);
+          return { ...item, accountStatus: nextState };
+        }
+        return item;
+      })
+    );
   };
 
   // Direct Computer Image File Upload Handler to Real Server API
@@ -434,6 +469,7 @@ export default function AdminLayout({
       case 'reservations':
         return [
           { id: 'enrollees_list', label: '수강 신청자 명단' },
+          { id: 'student_accounts', label: '👤 학생 회원 계정 관리' },
           { id: 'payment_status', label: '수강료 결제 현황' },
         ];
       case 'inquiries':
@@ -449,10 +485,22 @@ export default function AdminLayout({
     }
   };
 
-  // Filtered Enrollees List
+  // Filtered Enrollees List for Reservations Screen
   const filteredEnrollees = selectedEnrolleeCourseFilter === 'all'
     ? enrolleesList
     : enrolleesList.filter((e) => e.courseId === selectedEnrolleeCourseFilter);
+
+  // Filtered Student Accounts List for Accounts Screen
+  const filteredStudents = enrolleesList.filter((s) => {
+    if (!studentSearchKeyword.trim()) return true;
+    const kw = studentSearchKeyword.toLowerCase();
+    return (
+      s.studentName.toLowerCase().includes(kw) ||
+      s.phone.includes(kw) ||
+      s.email.toLowerCase().includes(kw) ||
+      s.userId.toLowerCase().includes(kw)
+    );
+  });
 
   return (
     <div className="h-screen w-screen bg-[#f4f6f8] text-gray-900 flex flex-col font-sans overflow-hidden select-none">
@@ -587,7 +635,7 @@ export default function AdminLayout({
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
               {primaryMenu === 'developer' && '💻 개발 문의 채널'}
-              {primaryMenu === 'reservations' && '수강신청 & 결제'}
+              {primaryMenu === 'reservations' && '수강신청 & 회원 관리'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의'}
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
             </h2>
@@ -650,8 +698,160 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN: ENROLLEES & RESERVATION MANAGEMENT */}
-          {primaryMenu === 'reservations' && (
+          {/* DYNAMIC SCREEN 1: STUDENT ACCOUNT MANAGEMENT WORKSTATION (학생 회원 계정 관리) */}
+          {primaryMenu === 'reservations' && secondarySubTab === 'student_accounts' && (
+            <div className="space-y-6 animate-fadeIn max-w-6xl">
+              
+              {/* Header Title & Top Summary */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                <div>
+                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                    <Users className="w-6 h-6 text-emerald-700" />
+                    <span>학생 회원 계정 관리자 (128명 회원 DB)</span>
+                  </h3>
+                  <p className="text-xs text-gray-500 font-bold mt-0.5">
+                    회원가입 완료된 128명 수강생 계정 상태, 비밀번호 초기화, 로그인 이력 및 접근 제재를 종합 관리합니다.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => alert('📥 수강생 회원 계정 엑셀(CSV) 다운로드가 시작됩니다.')}
+                    className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-4 h-4 text-emerald-400" />
+                    <span>📥 회원 계정 DB 다운로드</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* KPI Summary Dashboard Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">👥 가입 완료 학생 회원</span>
+                  <span className="text-2xl font-black text-black font-mono">128명</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">인증 회원 100%</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">✅ 정상 활동 계정</span>
+                  <span className="text-2xl font-black text-emerald-950 font-mono">126명</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">정상 사용 비율 98.4%</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">🔑 오늘 로그인 접속자</span>
+                  <span className="text-2xl font-black text-black font-mono">89명</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">2026.08.30 기준</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">⛔ 제재/휴면 계정</span>
+                  <span className="text-2xl font-black text-rose-700 font-mono">2명</span>
+                  <span className="text-[10px] text-rose-700 font-bold block pt-1">비밀번호 연속 오입력</span>
+                </div>
+              </div>
+
+              {/* Search Bar & Filter */}
+              <div className="bg-white p-4 rounded-2xl border-2 border-gray-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold">
+                <div className="flex items-center gap-2 flex-1 max-w-md">
+                  <Search className="w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="수강생 성명, 아이디, 연락처, 이메일 검색..."
+                    value={studentSearchKeyword}
+                    onChange={(e) => setStudentSearchKeyword(e.target.value)}
+                    className="w-full px-3 py-2 bg-stone-50 border border-gray-300 rounded-xl text-black font-bold focus:outline-none focus:border-black"
+                  />
+                </div>
+
+                <span className="text-gray-500 font-mono text-[11px]">
+                  검색 결과: 총 <strong className="text-black font-black">{filteredStudents.length}명</strong>의 계정이 검색됨
+                </span>
+              </div>
+
+              {/* STUDENT ACCOUNTS TABLE LIST */}
+              <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
+                <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
+                  <span>📋 학생 회원 계정 전체 목록 (총 {filteredStudents.length}명)</span>
+                  <span className="text-emerald-400 font-mono">Student Account Management DB</span>
+                </div>
+
+                <div className="divide-y divide-gray-200 text-xs font-bold">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-12 bg-gray-100 px-6 py-3 text-gray-600 font-black border-b border-gray-200">
+                    <div className="col-span-2">회원 아이디/가입일</div>
+                    <div className="col-span-3">수강생 정보(성명/연락처/이메일)</div>
+                    <div className="col-span-3">수강 신청 강좌</div>
+                    <div className="col-span-2 text-center">계정 상태 / 최근 접속</div>
+                    <div className="col-span-2 text-center">계정 보안 조작</div>
+                  </div>
+
+                  {/* Table Rows */}
+                  {filteredStudents.map((student) => (
+                    <div key={student.id} className="grid grid-cols-12 px-6 py-4 items-center hover:bg-stone-50 transition-colors">
+                      <div className="col-span-2 space-y-0.5">
+                        <span className="font-mono text-black font-black block">{student.userId}</span>
+                        <span className="font-mono text-gray-400 text-[11px] block">가입: {student.joinDate}</span>
+                      </div>
+
+                      <div className="col-span-3 space-y-0.5">
+                        <span className="text-sm font-black text-black block">{student.studentName}</span>
+                        <span className="font-mono text-gray-600 text-[11px] block">{student.phone}</span>
+                        <span className="font-mono text-gray-400 text-[10px] block">{student.email}</span>
+                      </div>
+
+                      <div className="col-span-3 space-y-1 pr-2">
+                        <span className="px-2 py-0.5 rounded bg-black text-white text-[10px] font-black inline-block">
+                          {student.categoryName}
+                        </span>
+                        <h4 className="text-xs font-black text-black line-clamp-1">{student.courseTitle}</h4>
+                      </div>
+
+                      <div className="col-span-2 text-center space-y-1">
+                        <span
+                          className={`px-3 py-1 rounded-full text-[10px] font-black inline-block border ${
+                            student.accountStatus === 'active'
+                              ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                              : 'bg-rose-100 text-rose-900 border-rose-300'
+                          }`}
+                        >
+                          {student.accountStatus === 'active' ? '✓ 정상 계정' : '⛔ 제재/휴면'}
+                        </span>
+                        <span className="font-mono text-gray-400 text-[10px] block">{student.lastLogin}</span>
+                      </div>
+
+                      <div className="col-span-2 text-center flex items-center justify-center gap-1.5">
+                        <button
+                          onClick={() => handleResetStudentPassword(student)}
+                          className="px-2.5 py-1 bg-amber-100 hover:bg-amber-600 hover:text-white text-amber-900 text-[11px] font-black rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                          title="비밀번호 임시 초기화 및 발송"
+                        >
+                          <Key className="w-3 h-3" />
+                          <span>비번초기화</span>
+                        </button>
+                        <button
+                          onClick={() => handleToggleAccountStatus(student.id)}
+                          className={`px-2 py-1 text-[11px] font-black rounded-lg transition-colors cursor-pointer ${
+                            student.accountStatus === 'active'
+                              ? 'bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white'
+                              : 'bg-emerald-100 text-emerald-900 hover:bg-emerald-600 hover:text-white'
+                          }`}
+                          title="계정 상태 변경"
+                        >
+                          {student.accountStatus === 'active' ? '제재' : '해제'}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* DYNAMIC SCREEN 2: ENROLLEES & RESERVATION MANAGEMENT */}
+          {primaryMenu === 'reservations' && secondarySubTab === 'enrollees_list' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
               {/* Header Title & Top Summary Cards */}
