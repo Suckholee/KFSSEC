@@ -234,6 +234,25 @@ const DEFAULT_COURSES = [
 
 // Fetch all courses from Real REST API Backend DB with fallback
 export async function fetchCoursesFromAPI() {
+  // 1. Prioritize user's saved/edited courses in localStorage so refreshing (F5) NEVER overwrites edits!
+  const saved = localStorage.getItem('kfssec_courses_db');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (
+        Array.isArray(parsed) &&
+        parsed.length > 0 &&
+        !parsed[0].title.includes('전통 한식 조리 마스터') &&
+        !parsed[0].title.includes('일식 횟집')
+      ) {
+        return parsed;
+      }
+    } catch (e) {
+      console.error('Failed to parse saved courses:', e);
+    }
+  }
+
+  // 2. Only if localStorage is empty or uninitialized, fetch from REST API
   try {
     const res = await fetch('/api/courses');
     if (res.ok) {
@@ -273,6 +292,16 @@ export function getCoursesFromDB() {
     }
   }
   localStorage.setItem('kfssec_courses_db', JSON.stringify(DEFAULT_COURSES));
+  return DEFAULT_COURSES;
+}
+
+export function resetCoursesToDefault() {
+  localStorage.setItem('kfssec_courses_db', JSON.stringify(DEFAULT_COURSES));
+  try {
+    window.dispatchEvent(new Event('kfssec_courses_updated'));
+  } catch (e) {
+    // Ignore
+  }
   return DEFAULT_COURSES;
 }
 

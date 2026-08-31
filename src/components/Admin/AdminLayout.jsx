@@ -58,6 +58,7 @@ import {
   Receipt,
   Download,
   Key,
+  RotateCcw,
   Lock,
   UserX,
   UserCheck as UserCheckIcon,
@@ -79,6 +80,7 @@ import {
   updateCourseAPI,
   deleteCourseAPI,
   uploadImageAPI,
+  resetCoursesToDefault,
 } from '../../services/courseDatabase';
 import { DevInquiryBoard } from './DevInquiryBoard';
 
@@ -1822,33 +1824,49 @@ export default function AdminLayout({
                     </p>
                   </div>
 
-                  <button
-                    onClick={() => {
-                      const newBlank = {
-                        title: '',
-                        category: 'hansik',
-                        categoryName: '한식',
-                        industry: '한식',
-                        stage: '창업 준비',
-                        format: '오프라인',
-                        price: 4500000,
-                        discountRate: 30,
-                        duration: '4주 과정',
-                        startDate: new Date().toISOString().split('T')[0],
-                        endDate: '',
-                        examDate: '',
-                        certName: '한식 조리기능장 및 지도사 1급',
-                        instructor: '안형상 이사장 / 40년 명장',
-                        image: '/images/course_menu_dev.jpg',
-                        description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
-                      };
-                      switchPrimaryMenu('courses', 'course_add', newBlank);
-                    }}
-                    className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4 text-emerald-400" />
-                    <span>➕ 신규 강좌 DB 등록</span>
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => {
+                        if (window.confirm('정말로 강좌 DB를 초기 12개 실전 교육과정 데이터로 리셋(초기화)하시겠습니까?')) {
+                          const resetData = resetCoursesToDefault();
+                          setCoursesList(resetData);
+                          alert('🎉 강좌 DB가 초기 12개 실전 교육과정 데이터셋으로 안전하게 리셋되었습니다.');
+                        }
+                      }}
+                      className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-black text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer border border-stone-300"
+                    >
+                      <RotateCcw className="w-4 h-4 text-stone-700" />
+                      <span>🔄 DB 초기화</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        const newBlank = {
+                          title: '',
+                          category: 'hansik',
+                          categoryName: '한식',
+                          industry: '한식',
+                          stage: '창업 준비',
+                          format: '오프라인',
+                          price: 4500000,
+                          discountRate: 30,
+                          duration: '4주 과정',
+                          startDate: new Date().toISOString().split('T')[0],
+                          endDate: '',
+                          examDate: '',
+                          certName: '한식 조리기능장 및 지도사 1급',
+                          instructor: '안형상 이사장 / 40년 명장',
+                          image: '/images/course_menu_dev.jpg',
+                          description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
+                        };
+                        switchPrimaryMenu('courses', 'course_add', newBlank);
+                      }}
+                      className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4 text-emerald-400" />
+                      <span>➕ 신규 강좌 DB 등록</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Visual SmartPlace Course Cards Grid */}
