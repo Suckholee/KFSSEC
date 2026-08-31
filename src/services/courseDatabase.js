@@ -232,27 +232,11 @@ const DEFAULT_COURSES = [
   },
 ];
 
+const DB_VERSION = 'v2_real_landing_courses_20260831';
+
 // Fetch all courses from Real REST API Backend DB with fallback
 export async function fetchCoursesFromAPI() {
-  // 1. Prioritize user's saved/edited courses in localStorage so refreshing (F5) NEVER overwrites edits!
-  const saved = localStorage.getItem('kfssec_courses_db');
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      if (
-        Array.isArray(parsed) &&
-        parsed.length > 0 &&
-        !parsed[0].title.includes('전통 한식 조리 마스터') &&
-        !parsed[0].title.includes('일식 횟집')
-      ) {
-        return parsed;
-      }
-    } catch (e) {
-      console.error('Failed to parse saved courses:', e);
-    }
-  }
-
-  // 2. Only if localStorage is empty or uninitialized, fetch from REST API
+  // Always retrieve authoritative synced DB (auto-purging old legacy mock cache)
   try {
     const res = await fetch('/api/courses');
     if (res.ok) {
@@ -260,8 +244,15 @@ export async function fetchCoursesFromAPI() {
       if (contentType && contentType.includes('application/json')) {
         const json = await res.json();
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          saveCoursesToDB(json.data);
-          return json.data;
+          const hasLegacy = json.data.some(
+            (c) =>
+              c.title.includes('전통 한식 조리 마스터') ||
+              c.title.includes('일식 횟집')
+          );
+          if (!hasLegacy) {
+            saveCoursesToDB(json.data);
+            return json.data;
+          }
         }
       }
     }
@@ -269,33 +260,39 @@ export async function fetchCoursesFromAPI() {
     console.warn('[REAL DB CLIENT] Real REST API server offline, fallback to localStorage:', err);
   }
 
-  // Fallback to localStorage or default
   return getCoursesFromDB();
 }
 
 export function getCoursesFromDB() {
+  const version = localStorage.getItem('kfssec_courses_version');
   const saved = localStorage.getItem('kfssec_courses_db');
-  if (saved) {
+
+  if (version === DB_VERSION && saved) {
     try {
       const parsed = JSON.parse(saved);
-      // Invalidate legacy mockup courses (e.g., "전통 한식 조리 마스터") and require 12 real courses dataset
-      if (
-        Array.isArray(parsed) &&
-        parsed.length > 0 &&
-        !parsed[0].title.includes('전통 한식 조리 마스터') &&
-        !parsed[0].title.includes('일식 횟집')
-      ) {
+      const hasLegacyMock = parsed.some(
+        (c) =>
+          c.title.includes('전통 한식 조리 마스터') ||
+          c.title.includes('일식 횟집') ||
+          c.title.includes('파스타 & 파인다이닝') ||
+          c.title.includes('대박 분식집')
+      );
+      if (Array.isArray(parsed) && parsed.length > 0 && !hasLegacyMock) {
         return parsed;
       }
     } catch (e) {
       console.error('Failed to parse courses DB from localStorage:', e);
     }
   }
+
+  // Force auto-purge any old dummy cache & enforce 12 real landing page courses dataset
+  localStorage.setItem('kfssec_courses_version', DB_VERSION);
   localStorage.setItem('kfssec_courses_db', JSON.stringify(DEFAULT_COURSES));
   return DEFAULT_COURSES;
 }
 
 export function resetCoursesToDefault() {
+  localStorage.setItem('kfssec_courses_version', DB_VERSION);
   localStorage.setItem('kfssec_courses_db', JSON.stringify(DEFAULT_COURSES));
   try {
     window.dispatchEvent(new Event('kfssec_courses_updated'));
