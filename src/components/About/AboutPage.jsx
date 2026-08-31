@@ -36,15 +36,17 @@ import {
   ChevronUp as ScrollTopIcon,
 } from 'lucide-react';
 
-export default function AboutPage({ initialTab = 'greetings' }) {
-  const [activeTab, setActiveTab] = useState(initialTab);
+export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'greetings' }) {
+  const defaultSub = initialSubTab || initialTab || 'greetings';
+  const [activeTab, setActiveTab] = useState(defaultSub);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
-    if (initialTab) {
-      setActiveTab(initialTab);
+    const target = initialSubTab || initialTab;
+    if (target) {
+      setActiveTab(target);
     }
-  }, [initialTab]);
+  }, [initialSubTab, initialTab]);
 
   useEffect(() => {
     const handleScroll = () => {

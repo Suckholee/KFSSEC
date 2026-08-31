@@ -407,7 +407,10 @@ export default function App() {
       <main className="flex-1">
         {activeTab === 'home' && (
           <div className="space-y-0">
-            <Hero onExploreClick={() => handleTabChange('catalog')} />
+            <Hero
+              onExploreClick={() => handleTabChange('catalog')}
+              onAboutClick={() => handleTabChange('about', 'greetings')}
+            />
             <EventBannerSection
               bannerData={siteData.banner}
               onEventClick={() => setIsPaymentGuideOpen(true)}

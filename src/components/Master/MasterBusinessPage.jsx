@@ -3,14 +3,16 @@ import SubSidebar from '../common/SubSidebar';
 import { Award, Utensils, CheckCircle2, ChevronRight, Scale, Sparkles, ShieldCheck } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
-export default function MasterBusinessPage({ initialTab = 'masters' }) {
-  const [activeTab, setActiveTab] = useState(initialTab);
+export default function MasterBusinessPage({ initialSubTab = 'masters', initialTab = 'masters' }) {
+  const defaultSub = initialSubTab || initialTab || 'masters';
+  const [activeTab, setActiveTab] = useState(defaultSub);
 
   useEffect(() => {
-    if (initialTab) {
-      setActiveTab(initialTab);
+    const target = initialSubTab || initialTab;
+    if (target) {
+      setActiveTab(target);
     }
-  }, [initialTab]);
+  }, [initialSubTab, initialTab]);
 
   const masterSubItems = [
     { id: 'masters', label: '명인 사업단' },

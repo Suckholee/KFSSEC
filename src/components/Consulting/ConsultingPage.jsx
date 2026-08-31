@@ -3,15 +3,17 @@ import SubSidebar from '../common/SubSidebar';
 import { Rocket, Shield, HelpCircle, CheckSquare, ChevronRight, ArrowLeft, FileText, CheckCircle2 } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
-export default function ConsultingPage({ initialTab = 'education', onOpenAuth }) {
-  const [activeTab, setActiveTab] = useState(initialTab);
+export default function ConsultingPage({ initialSubTab = 'education', initialTab = 'education', onOpenAuth }) {
+  const defaultSub = initialSubTab || initialTab || 'education';
+  const [activeTab, setActiveTab] = useState(defaultSub);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
   useEffect(() => {
-    if (initialTab) {
-      setActiveTab(initialTab);
+    const target = initialSubTab || initialTab;
+    if (target) {
+      setActiveTab(target);
     }
-  }, [initialTab]);
+  }, [initialSubTab, initialTab]);
 
   const consultingSubItems = [
     { id: 'education', label: '창업 교육' },
