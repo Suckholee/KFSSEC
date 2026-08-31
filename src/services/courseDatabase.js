@@ -259,8 +259,13 @@ export function getCoursesFromDB() {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      // Force refresh if old mock title exists
-      if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].title.includes('성공전략 마스터')) {
+      // Invalidate legacy mockup courses (e.g., "전통 한식 조리 마스터") and require 12 real courses dataset
+      if (
+        Array.isArray(parsed) &&
+        parsed.length > 0 &&
+        !parsed[0].title.includes('전통 한식 조리 마스터') &&
+        !parsed[0].title.includes('일식 횟집')
+      ) {
         return parsed;
       }
     } catch (e) {
