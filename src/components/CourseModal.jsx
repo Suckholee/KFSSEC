@@ -150,25 +150,42 @@ export default function CourseModal({ course, onClose }) {
             </ul>
           </div>
 
-          {/* Pricing & Register Action */}
-          <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-4">
+          {/* Pricing & YouTube / 1:1 Inquiry Actions */}
+          <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <span className="block text-xs text-gray-400 font-medium">수강료 (재료비 포함)</span>
-              <span className="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight">
+              <span className="block text-xs text-gray-400 font-medium">수강료 안내</span>
+              <span className="text-xl sm:text-2xl font-black text-[#0B3C26] tracking-tight">
                 {course.priceFormatted || (course.price ? `${course.price.toLocaleString()}원` : '4,500,000원')}
               </span>
             </div>
-            <button
-              onClick={() => setApplied(true)}
-              disabled={applied}
-              className={`px-6 py-3 rounded-xl text-base font-bold transition-all shadow-md cursor-pointer ${
-                applied
-                  ? 'bg-emerald-700 text-white cursor-default'
-                  : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20'
-              }`}
-            >
-              {applied ? '수강 신청 완료!' : '수강 신청하기'}
-            </button>
+
+            <div className="flex items-center gap-2">
+              <a
+                href={course.youtubeUrl || "https://www.youtube.com/@KFSSEC"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>📺 유튜브 맛보기</span>
+              </a>
+
+              <button
+                onClick={() => {
+                  setApplied(true);
+                  setTimeout(() => {
+                    alert(`🎉 [${course.title}] 1:1 수강 문의 접수가 완료되었습니다.\n담당 명장 선생님이 빠른 시간 내 안내 연락을 드립니다.`);
+                  }, 300);
+                }}
+                disabled={applied}
+                className={`px-5 py-3 rounded-xl text-xs sm:text-sm font-black transition-all shadow-md cursor-pointer flex items-center gap-1.5 ${
+                  applied
+                    ? 'bg-[#0B3C26] text-white cursor-default'
+                    : 'bg-[#0B3C26] hover:bg-[#072819] text-white border border-[#C5A059]'
+                }`}
+              >
+                <span>{applied ? '✓ 1:1 문의 접수 완료' : '⚡ 1:1 수강 문의 접수'}</span>
+              </button>
+            </div>
           </div>
         </div>
 

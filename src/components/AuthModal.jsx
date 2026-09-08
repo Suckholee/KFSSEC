@@ -100,8 +100,11 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                   <path d="M12 3C6.477 3 2 6.477 2 10.772c0 2.766 1.83 5.19 4.606 6.55-.202.753-.732 2.723-.837 3.138-.13.518.19.512.4.373.164-.109 2.62-1.782 3.678-2.5.703.1 1.433.153 2.153.153 5.523 0 10-3.477 10-7.714C22 6.477 17.523 3 12 3z" />
                 </svg>
-                <span>카카오톡으로 시작하기</span>
+                <span>💬 카카오 계정 1초 간편 로그인</span>
               </button>
+              <p className="text-[10px] text-amber-800 text-center font-bold bg-amber-50 py-1 rounded-md border border-amber-200">
+                ※ 사업자 카카오비즈니스 채널 및 카카오 계정 간편 연동 지원
+              </p>
 
               {/* Google / Gmail Login */}
               <button

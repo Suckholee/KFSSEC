@@ -15,7 +15,7 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
   }, [initialSubTab, initialTab]);
 
   const masterSubItems = [
-    { id: 'masters', label: '명인 사업단' },
+    { id: 'masters', label: '명인·명장 사업단' },
     { id: 'dishes', label: '명인 요리' },
   ];
 

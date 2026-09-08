@@ -68,8 +68,19 @@ export default function Footer({ onOpenAbout }) {
 
         </div>
 
+        {/* External Partner Sites Banner Bar */}
+        <div className="py-4 border-t border-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-300 font-bold">
+          <span className="text-[#C5A059] font-black">🌐 관련 기관 & 글로벌 외식 정보 사이트:</span>
+          <div className="flex flex-wrap items-center gap-4 text-xs font-medium">
+            <a href="https://www.sbiz.or.kr" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 underline underline-offset-2">소상공인시장진흥공단</a>
+            <a href="https://www.mafra.go.kr" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 underline underline-offset-2">농림축산식품부</a>
+            <a href="https://www.gangnam.go.kr" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 underline underline-offset-2">강남구청 소상공인관</a>
+            <a href="https://www.youtube.com/@KFSSEC" target="_blank" rel="noopener noreferrer" className="hover:text-rose-400 underline underline-offset-2 text-rose-300">📺 글로벌 외식뉴스 방송</a>
+          </div>
+        </div>
+
         {/* Bottom copyright */}
-        <div className="pt-6 border-t border-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 font-medium">
+        <div className="pt-4 border-t border-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 font-medium">
           <p>© 2026 사단법인 한국외식창업교육원. All Rights Reserved.</p>
           <div className="flex gap-4">
             <button onClick={onOpenAbout} className="hover:text-white cursor-pointer">기관 정보</button>

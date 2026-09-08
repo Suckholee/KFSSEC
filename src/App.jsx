@@ -11,10 +11,12 @@ import NoticePostSection from './components/NoticePostSection';
 import BannerSection from './components/BannerSection';
 import Footer from './components/Footer';
 import MobileQuickBar from './components/common/MobileQuickBar';
+import VisitorChatbotWidget from './components/common/VisitorChatbotWidget';
 import AboutPage from './components/About/AboutPage';
 import MasterBusinessPage from './components/Master/MasterBusinessPage';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import ConsultingPage from './components/Consulting/ConsultingPage';
+import GangnamSohoPage from './components/Gangnam/GangnamSohoPage';
 import CommunityPage from './components/Community/CommunityPage';
 import CommunityEditorPage from './components/Community/CommunityEditorPage';
 import AdminLayout from './components/Admin/AdminLayout';
@@ -301,7 +303,7 @@ export default function App() {
       const mainRoute = parts[0];
       const subRoute = parts[1] || null;
 
-      if (['about', 'master', 'catalog', 'consulting', 'community', 'admin'].includes(mainRoute)) {
+      if (['about', 'master', 'catalog', 'consulting', 'gangnam', 'community', 'admin'].includes(mainRoute)) {
         setActiveTab(mainRoute);
         setSubTab(subRoute);
       } else {
@@ -448,6 +450,10 @@ export default function App() {
           />
         )}
 
+        {activeTab === 'gangnam' && (
+          <GangnamSohoPage initialSubTab={subTab || 'intro'} />
+        )}
+
         {activeTab === 'community' && subTab === 'editor' && (
           <CommunityEditorPage
             currentUser={currentUser}
@@ -473,6 +479,9 @@ export default function App() {
         onGoToConsulting={() => handleTabChange('consulting', 'apply')}
         onOpenEnrollment={() => handleTabChange('catalog', 'courses')}
       />
+
+      {/* Visitor Button-based AI Assistant Chatbot */}
+      <VisitorChatbotWidget onNavigate={handleTabChange} />
 
       {/* Footer Component */}
       <Footer onTabChange={handleTabChange} />
