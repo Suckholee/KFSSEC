@@ -83,6 +83,7 @@ import {
   resetCoursesToDefault,
 } from '../../services/courseDatabase';
 import { DevInquiryBoard } from './DevInquiryBoard';
+import CertificateModal from './CertificateModal';
 
 // Programmatically generate 128 real full student enrollee & account records
 const generate128Enrollees = () => {
@@ -162,6 +163,7 @@ export default function AdminLayout({
   // Selected Course for Course-First Enrollee Management View
   const [selectedCourseForEnrollees, setSelectedCourseForEnrollees] = useState(null);
   const [selectedEnrolleeModal, setSelectedEnrolleeModal] = useState(null);
+  const [selectedCertificateData, setSelectedCertificateData] = useState(null);
 
   // Student Account Search Keyword State
   const [studentSearchKeyword, setStudentSearchKeyword] = useState('');
@@ -1093,6 +1095,26 @@ export default function AdminLayout({
                                 상세
                               </button>
                               <button
+                                onClick={() => {
+                                  setSelectedCertificateData({
+                                    type: '수료증',
+                                    certNo: `KFSSEC-2026-${String(item.id).replace(/\D/g, '').padStart(4, '0') || '0915'}`,
+                                    studentName: item.studentName,
+                                    birthDate: '1988년 05월 14일',
+                                    courseTitle: selectedCourseForEnrollees.title,
+                                    categoryName: selectedCourseForEnrollees.categoryName || selectedCourseForEnrollees.industry,
+                                    startDate: selectedCourseForEnrollees.startDate || '2026-09-05',
+                                    endDate: selectedCourseForEnrollees.endDate || '2026-10-03',
+                                    hours: selectedCourseForEnrollees.duration || '60시간 이수',
+                                    certName: selectedCourseForEnrollees.certName || '지도사 1급',
+                                    issueDate: new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }),
+                                  });
+                                }}
+                                className="px-2.5 py-1 bg-[#0B3C26] hover:bg-[#072819] text-white text-[11px] font-black rounded-lg transition-colors cursor-pointer border border-[#C5A059]"
+                              >
+                                📜 수료증
+                              </button>
+                              <button
                                 onClick={() => alert(`[SMS 발송 완료] ${item.studentName} 수강생에게 개강 및 장소 안내문자를 발송했습니다.`)}
                                 className="px-2.5 py-1 bg-emerald-100 hover:bg-emerald-600 hover:text-white text-emerald-900 text-[11px] font-black rounded-lg transition-colors cursor-pointer"
                               >
@@ -1954,6 +1976,14 @@ export default function AdminLayout({
 
       </div>
 
+      {/* Official Certificate Modal */}
+      {selectedCertificateData && (
+        <CertificateModal
+          isOpen={Boolean(selectedCertificateData)}
+          certData={selectedCertificateData}
+          onClose={() => setSelectedCertificateData(null)}
+        />
+      )}
     </div>
   );
 }

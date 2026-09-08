@@ -6,6 +6,7 @@ import CourseGrid from './CourseGrid';
 import Pagination from './Pagination';
 import CourseModal from '../CourseModal';
 import CalendarDateCoursesModal from './CalendarDateCoursesModal';
+import CertExamGuideModal from './CertExamGuideModal';
 import { fetchCourses } from '../../services/courseApi';
 import { getCoursesFromDB, getAcademicSchedulesFromDB, getExamSchedulesFromDB, fetchCoursesFromAPI } from '../../services/courseDatabase';
 import { BookOpenText, LayoutGrid, ListFilter, Home, ChevronRight, Calendar, Award, GraduationCap, CheckCircle2, Clock, Search, X, MousePointerClick } from 'lucide-react';
@@ -57,6 +58,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
 
   // Interactive Calendar Day Selection Modal State
   const [selectedCalendarDayData, setSelectedCalendarDayData] = useState(null);
+  const [selectedCertExamCourse, setSelectedCertExamCourse] = useState(null);
 
   const handleCalendarDayClick = (dayNum) => {
     if (!dayNum || dayNum < 1 || dayNum > 30) return;
@@ -455,10 +457,11 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
                         </p>
 
                         <button
-                          onClick={() => alert(`"${c.certName}" 자격시험 응시 요강을 확인합니다.`)}
-                          className="px-4 py-2 bg-black text-white text-xs font-black rounded-xl hover:bg-gray-800 transition-colors cursor-pointer"
+                          onClick={() => setSelectedCertExamCourse(c)}
+                          className="px-4 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs font-extrabold rounded-xl transition-all shadow-md cursor-pointer border border-[#C5A059] flex items-center gap-1.5"
                         >
-                          응시 요강 보기 ➔
+                          <span>📋 자격시험 응시 요강 & 평가표 보기</span>
+                          <ChevronRight className="w-3.5 h-3.5 text-[#D4AF37]" />
                         </button>
                       </div>
                     ))}
@@ -559,6 +562,15 @@ export default function CourseCatalogPage({ initialSubTab = 'courses' }) {
           allCourses={dbCourses}
           onClose={() => setSelectedCalendarDayData(null)}
           onSelectCourseForModal={(course) => setModalCourse(course)}
+        />
+      )}
+
+      {/* Qualification License Exam Guide Modal */}
+      {selectedCertExamCourse && (
+        <CertExamGuideModal
+          isOpen={Boolean(selectedCertExamCourse)}
+          course={selectedCertExamCourse}
+          onClose={() => setSelectedCertExamCourse(null)}
         />
       )}
     </div>

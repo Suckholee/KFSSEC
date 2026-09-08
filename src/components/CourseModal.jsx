@@ -98,6 +98,40 @@ export default function CourseModal({ course, onClose }) {
             </div>
           </div>
 
+          {/* Weekly Detailed Curriculum Accordion */}
+          <div className="space-y-3">
+            <h3 className="text-base font-black text-gray-900 flex items-center justify-between">
+              <span>주차별 상세 실습 커리큘럼</span>
+              <span className="text-xs font-bold text-[#0B3C26] bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
+                100% 현장 실무 전수
+              </span>
+            </h3>
+
+            <div className="space-y-2 text-xs sm:text-sm font-bold">
+              {[
+                { week: '1주차', title: '창업 기획 & 메뉴판 원가율 설계', desc: '식자재 마진 계산, 원가 산정 excel 표준 레시피북 수여 및 대표 메뉴 확정' },
+                { week: '2주차', title: '시그니처 레시피 & 조리 테크닉 전수', desc: '특제 100년 발효 소스 염지법, 불맛 웍 조리법 및 핵심 비법 기술 1:1 도제식 전수' },
+                { week: '3주차', title: '주방 동선 설계 & 동선 효율화', desc: '주방 설비 인허가 규정, 최단 동선 배치 및 수강생 매장 실전 동선 컨설팅' },
+                { week: '4주차', title: '네이버 플레이스 공략 & 실기 심사', desc: '지역 상권 키워드 마케팅, 오픈 마케팅 바이럴 전수 및 사단법인 자격 실기 검정' },
+              ].map((item, idx) => (
+                <details key={idx} className="group bg-stone-50 rounded-xl border border-stone-200 overflow-hidden text-gray-800">
+                  <summary className="p-3 font-black flex items-center justify-between cursor-pointer hover:bg-emerald-50/50 transition-colors select-none">
+                    <span className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 bg-[#0B3C26] text-white text-[10px] font-black rounded">
+                        {item.week}
+                      </span>
+                      <span className="text-gray-900">{item.title}</span>
+                    </span>
+                    <span className="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+                  </summary>
+                  <div className="p-3 pt-1 text-xs text-gray-600 font-medium leading-relaxed bg-white border-t border-stone-200">
+                    {item.desc}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+
           {/* Curriculum Checklist */}
           <div>
             <h3 className="text-base font-bold text-gray-900 mb-3">핵심 수강 혜택</h3>
@@ -109,7 +143,7 @@ export default function CourseModal({ course, onClose }) {
                 '실습 레시피북 및 원가 계산 excel 템플릿 기본 제공',
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
               ))}

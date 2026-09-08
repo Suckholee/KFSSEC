@@ -10,6 +10,7 @@ import CategoryFocusSection from './components/CategoryFocusSection';
 import NoticePostSection from './components/NoticePostSection';
 import BannerSection from './components/BannerSection';
 import Footer from './components/Footer';
+import MobileQuickBar from './components/common/MobileQuickBar';
 import AboutPage from './components/About/AboutPage';
 import MasterBusinessPage from './components/Master/MasterBusinessPage';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
@@ -466,6 +467,12 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Mobile 375px Floating Quick Action Bar */}
+      <MobileQuickBar
+        onGoToConsulting={() => handleTabChange('consulting', 'apply')}
+        onOpenEnrollment={() => handleTabChange('catalog', 'courses')}
+      />
 
       {/* Footer Component */}
       <Footer onTabChange={handleTabChange} />
