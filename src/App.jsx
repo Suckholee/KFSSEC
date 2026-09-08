@@ -72,9 +72,15 @@ export default function App() {
   // Payment Guide Modal State
   const [isPaymentGuideOpen, setIsPaymentGuideOpen] = useState(false);
 
-  // Sync REST API Backend DB on Mount
+  // Sync REST API Backend DB & Saved User Session on Mount
   useEffect(() => {
     fetchCoursesFromAPI();
+    const savedUser = localStorage.getItem('kfssec_user');
+    if (savedUser) {
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (e) {}
+    }
   }, []);
 
   // Shared Community Posts List State populated with 128 Real Student Dataset
@@ -340,6 +346,7 @@ export default function App() {
 
   const handleLoginSuccess = (userObj) => {
     setCurrentUser(userObj);
+    localStorage.setItem('kfssec_user', JSON.stringify(userObj));
     handleCloseAuth();
     if (userObj.role === 'admin') {
       handleTabChange('admin');
@@ -348,6 +355,7 @@ export default function App() {
 
   const handleLogout = () => {
     setCurrentUser(null);
+    localStorage.removeItem('kfssec_user');
     handleTabChange('home');
     alert('로그아웃 되었습니다.');
   };
