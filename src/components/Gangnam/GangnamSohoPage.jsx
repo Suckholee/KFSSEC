@@ -14,6 +14,12 @@ export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 
     }
   }, [initialSubTab, initialTab]);
 
+  const handleTabChange = (id) => {
+    setActiveTab(id);
+    window.history.pushState({}, '', `/gangnam/${id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const gangnamSubItems = [
     { id: 'intro', label: '조직 및 연합 소개' },
     { id: 'benefits', label: '회원 가입 혜택' },
@@ -54,7 +60,7 @@ export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 
               title="강남구 소상공인"
               items={gangnamSubItems}
               activeTab={activeTab}
-              onTabChange={(id) => setActiveTab(id)}
+              onTabChange={handleTabChange}
             />
           </div>
 
