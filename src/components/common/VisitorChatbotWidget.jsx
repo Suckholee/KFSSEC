@@ -48,56 +48,57 @@ export default function VisitorChatbotWidget({ onNavigate }) {
   };
 
   return (
-    <div className="fixed bottom-20 right-4 sm:right-6 z-50 animate-fadeIn">
-      {/* Trigger Button */}
+    <div className="fixed bottom-20 right-3 sm:right-6 z-50 animate-fadeIn">
+      {/* Large Floating Trigger Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="px-4 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-xs sm:text-sm rounded-full shadow-2xl transition-all border-2 border-[#C5A059] flex items-center gap-2 cursor-pointer group"
+          className="px-5 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm sm:text-base rounded-full shadow-2xl transition-all border-2 border-[#C5A059] flex items-center gap-2.5 cursor-pointer group hover:scale-105"
           aria-label="AI 챗봇 도우미 열기"
         >
-          <div className="w-8 h-8 rounded-full bg-[#C5A059] text-white flex items-center justify-center font-black">
+          <div className="w-9 h-9 rounded-full bg-[#C5A059] text-white flex items-center justify-center font-black shadow-xs">
             <Bot className="w-5 h-5 text-[#0B3C26]" />
           </div>
           <span>💬 AI 안내 챗봇</span>
         </button>
       )}
 
-      {/* Chatbot Window */}
+      {/* Expanded Large Chatbot Window */}
       {isOpen && (
-        <div className="bg-white rounded-3xl max-w-sm w-80 sm:w-96 shadow-2xl border-2 border-[#0B3C26] overflow-hidden flex flex-col h-[480px]">
+        <div className="bg-white rounded-3xl w-[92vw] sm:w-[460px] max-w-[480px] shadow-2xl border-2 border-[#0B3C26] overflow-hidden flex flex-col h-[560px] sm:h-[620px] transition-all">
           {/* Header */}
-          <div className="bg-[#0B3C26] text-white p-4 px-5 flex items-center justify-between border-b border-[#C5A059]">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-[#C5A059] flex items-center justify-center text-[#0B3C26]">
-                <Bot className="w-5 h-5" />
+          <div className="bg-[#0B3C26] text-white p-4 px-6 flex items-center justify-between border-b-2 border-[#C5A059] shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#C5A059] flex items-center justify-center text-[#0B3C26] shadow-sm">
+                <Bot className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="font-extrabold text-sm text-white leading-tight">한국외식창업교육원 챗봇</h4>
-                <span className="text-[10px] text-emerald-200 font-bold">● 24시간 실시간 질문 도우미</span>
+                <h4 className="font-black text-base sm:text-lg text-white leading-tight">한국외식창업교육원 챗봇</h4>
+                <span className="text-xs text-emerald-200 font-bold">● 24시간 실시간 질문 도우미</span>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="w-7 h-7 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center transition-colors cursor-pointer"
+              title="닫기"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Messages Log */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#FDFBF7] text-xs font-bold">
+          {/* Messages Log with Increased Font Size & Spacing */}
+          <div className="flex-1 p-4 sm:p-5 overflow-y-auto space-y-4 bg-[#FDFBF7] text-sm sm:text-base font-bold">
             {chatLog.map((msg, idx) => (
               <div
                 key={idx}
                 className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
               >
                 <div
-                  className={`max-w-[85%] p-3 rounded-2xl leading-relaxed shadow-xs ${
+                  className={`max-w-[88%] p-3.5 sm:p-4 rounded-2xl leading-relaxed shadow-xs text-sm sm:text-base ${
                     msg.sender === 'user'
-                      ? 'bg-[#0B3C26] text-white rounded-tr-none'
-                      : 'bg-white text-gray-800 border border-gray-200 rounded-tl-none'
+                      ? 'bg-[#0B3C26] text-white font-extrabold rounded-tr-none'
+                      : 'bg-white text-gray-900 font-bold border border-stone-200 rounded-tl-none'
                   }`}
                 >
                   {msg.text}
@@ -109,28 +110,30 @@ export default function VisitorChatbotWidget({ onNavigate }) {
                       if (onNavigate) onNavigate(msg.targetTab, msg.targetSub);
                       setIsOpen(false);
                     }}
-                    className="mt-1.5 px-3 py-1.5 bg-[#C5A059] hover:bg-[#B38F48] text-white text-[11px] font-black rounded-lg transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+                    className="mt-2 px-4 py-2 bg-[#C5A059] hover:bg-[#B38F48] text-white text-xs sm:text-sm font-black rounded-xl transition-all shadow-sm flex items-center gap-1.5 cursor-pointer border border-[#D4AF37]"
                   >
                     <span>해당 페이지로 바로 이동</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    <ChevronRight className="w-4 h-4 text-white" />
                   </button>
                 )}
               </div>
             ))}
           </div>
 
-          {/* Quick Option Selection Buttons (Designed for Middle-aged Users) */}
-          <div className="p-3 bg-white border-t border-gray-200 space-y-1.5">
-            <span className="text-[11px] font-extrabold text-gray-500 block px-1">원하시는 문의를 선택해주세요:</span>
-            <div className="grid grid-cols-1 gap-1.5 max-h-36 overflow-y-auto pr-1">
+          {/* Quick Option Selection Buttons (Larger & Clearer for All Ages) */}
+          <div className="p-4 bg-white border-t-2 border-stone-200 space-y-2 shrink-0">
+            <span className="text-xs sm:text-sm font-black text-gray-700 block px-1">
+              원하시는 문의 항목을 아래에서 선택하세요:
+            </span>
+            <div className="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-1">
               {quickQuestions.map((q) => (
                 <button
                   key={q.id}
                   onClick={() => handleSelectQuestion(q)}
-                  className="w-full text-left p-2.5 bg-stone-50 hover:bg-emerald-50 text-gray-900 font-extrabold text-xs rounded-xl border border-stone-200 hover:border-emerald-500 transition-all flex items-center justify-between cursor-pointer"
+                  className="w-full text-left p-3 sm:p-3.5 bg-[#F8F6F0] hover:bg-emerald-50 text-gray-900 font-extrabold text-xs sm:text-sm rounded-2xl border border-stone-300 hover:border-[#0B3C26] transition-all flex items-center justify-between cursor-pointer shadow-2xs group"
                 >
-                  <span>{q.label}</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+                  <span className="group-hover:text-[#0B3C26]">{q.label}</span>
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#0B3C26] group-hover:translate-x-0.5 transition-transform" />
                 </button>
               ))}
             </div>
