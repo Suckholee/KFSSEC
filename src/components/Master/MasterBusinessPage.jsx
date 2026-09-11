@@ -226,6 +226,7 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
   const defaultSub = initialSubTab || initialTab || 'masters';
   const [activeTab, setActiveTab] = useState(defaultSub);
   const [selectedMaster, setSelectedMaster] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
     const target = initialSubTab || initialTab;
@@ -369,20 +370,20 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                         onClick={() => setSelectedMaster(m)}
                         className="bg-white rounded-3xl p-5 border-2 border-stone-200 shadow-md hover:border-[#0B3C26] transition-all cursor-pointer group space-y-4"
                       >
-                        <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-[#C5A059] shrink-0 shadow-sm bg-stone-900">
-                            <img src={m.image} alt={m.name} className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500" />
+                        <div className="flex items-start gap-4">
+                          <div className="w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden border-2 border-[#C5A059] shrink-0 shadow-sm bg-stone-900">
+                            <img src={m.image} alt={m.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
                           </div>
-                          <div>
-                            <span className="text-[11px] font-black text-[#0B3C26] bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 inline-block mb-1">
+                          <div className="space-y-1">
+                            <span className="text-[11px] font-black text-[#0B3C26] bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 inline-block">
                               {m.category}
                             </span>
                             <h4 className="text-lg font-black text-gray-900 group-hover:text-[#0B3C26] transition-colors">{m.name}</h4>
-                            <p className="text-xs text-gray-500 font-bold line-clamp-1">{m.title}</p>
+                            <p className="text-xs text-gray-600 font-extrabold">{m.title}</p>
                           </div>
                         </div>
 
-                        <p className="text-xs text-gray-600 font-medium line-clamp-2 leading-relaxed bg-[#F8F6F0] p-3 rounded-xl border border-stone-200">
+                        <p className="text-xs text-gray-700 font-medium leading-relaxed bg-[#F8F6F0] p-3 rounded-xl border border-stone-200">
                           {m.intro}
                         </p>
 
@@ -398,7 +399,7 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
               </div>
             )}
 
-            {/* SUB-TAB 2: 대한민국 명인·명장 프로필 (Full 12 Masters with Luxury Editorial Grid) */}
+            {/* SUB-TAB 2: 대한민국 명인·명장 프로필 (Full 12 Masters with Spacious Untruncated Layout) */}
             {activeTab === 'profiles' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 
@@ -407,14 +408,14 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                   <div className="border-b-2 border-[#0B3C26] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                       <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#0B3C26] text-[#D4AF37] border border-[#C5A059] text-xs font-black">
-                        <Star className="w-3.5 h-3.5 text-[#D4AF37]" />
-                        <span>EDITORIAL MASTER DIRECTORY</span>
+                        <Award className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <span>KFSSEC MASTER DIRECTORY</span>
                       </div>
-                      <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2 font-serif">
+                      <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2">
                         대한민국 명인·명장 전당
                       </h2>
                     </div>
-                    <span className="text-xs font-bold text-gray-500 bg-stone-100 px-3.5 py-1.5 rounded-xl border border-stone-200">
+                    <span className="text-xs font-bold text-gray-600 bg-stone-100 px-3.5 py-2 rounded-xl border border-stone-200">
                       사단법인 한국외식창업교육원 공식 검증 12인 최고 조리 명인·명장
                     </span>
                   </div>
@@ -431,7 +432,7 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                       <button
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat.id)}
-                        className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
+                        className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border ${
                           selectedCategory === cat.id
                             ? 'bg-[#0B3C26] text-white border-[#C5A059] shadow-md scale-102'
                             : 'bg-white text-gray-700 hover:bg-stone-100 border-stone-300'
@@ -443,8 +444,8 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                   </div>
                 </div>
 
-                {/* Luxury Magazine Editorial Profile Cards Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 pt-2 w-full">
+                {/* Spacious 2-Column Master Profile Cards (Large Photos & Full Untruncated Text) */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2 w-full">
                   {masterProfilesList
                     .filter((m) => {
                       if (selectedCategory === 'all') return true;
@@ -455,61 +456,74 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                       return true;
                     })
                     .map((m, idx) => (
-                      <ScrollReveal key={m.id} direction="up" delay={idx * 40}>
+                      <ScrollReveal key={m.id} direction="up" delay={idx * 30}>
                         <div
                           onClick={() => setSelectedMaster(m)}
-                          className="bg-white rounded-3xl p-5 border-2 border-stone-200 shadow-md hover:shadow-2xl hover:border-[#0B3C26] transition-all duration-500 cursor-pointer group space-y-4 h-full flex flex-col justify-between hover:-translate-y-1.5"
+                          className="bg-white rounded-3xl p-6 border-2 border-stone-200 shadow-md hover:shadow-xl hover:border-[#0B3C26] transition-all duration-300 cursor-pointer group flex flex-col md:flex-row gap-6 items-stretch h-full justify-between"
                         >
-                          <div className="space-y-4">
-                            {/* Magazine Cover Photo Frame */}
-                            <div className="relative h-72 sm:h-80 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-md bg-[#F8F6F0] shrink-0">
-                              <img
-                                src={m.image}
-                                alt={m.name}
-                                className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700"
-                              />
-                              <div className="absolute top-3 left-3 bg-[#0B3C26]/90 text-[#D4AF37] font-black text-[11px] px-3 py-1 rounded-full border border-[#C5A059]/40 backdrop-blur-md shadow-sm">
-                                {m.category}
-                              </div>
-                              <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[#0B3C26] font-black text-[10px] px-2.5 py-1 rounded-lg border border-stone-200 shadow-xs">
-                                OFFICIAL MASTER
-                              </div>
-                            </div>
-
-                            {/* Name & Official Title */}
-                            <div className="space-y-1.5">
-                              <div className="inline-block bg-[#F2ECE0] text-[#0B3C26] text-[11px] font-black px-3 py-0.5 rounded-full border border-[#D4C5B0]">
-                                {m.badge}
-                              </div>
-                              <h3 className="text-xl sm:text-2xl font-black text-gray-900 group-hover:text-[#0B3C26] transition-colors font-serif">
-                                {m.name}
-                              </h3>
-                              <p className="text-xs text-gray-500 font-extrabold leading-tight">
-                                {m.title}
-                              </p>
-                            </div>
-
-                            {/* Key Achievements Bullet Chips */}
-                            <div className="space-y-1.5 pt-1">
-                              {m.awards.slice(0, 2).map((awd, i) => (
-                                <div key={i} className="flex items-center gap-2 text-xs text-gray-700 font-bold bg-[#F8F6F0] p-2 rounded-xl border border-stone-200 line-clamp-1">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0" />
-                                  <span className="truncate">{awd}</span>
-                                </div>
-                              ))}
+                          {/* Large Portrait Photo Frame (No Small Images) */}
+                          <div className="w-full md:w-56 lg:w-60 h-80 md:h-auto min-h-[300px] rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-md bg-stone-900 shrink-0 relative">
+                            <img
+                              src={m.image}
+                              alt={m.name}
+                              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute top-3 left-3 bg-[#0B3C26]/95 text-[#D4AF37] font-black text-[11px] px-3 py-1 rounded-full border border-[#C5A059] shadow-md">
+                              {m.category}
                             </div>
                           </div>
 
-                          {/* Action Button */}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedMaster(m);
-                            }}
-                            className="w-full py-3 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 border border-[#C5A059] group-hover:bg-[#C5A059] group-hover:text-black group-hover:border-[#0B3C26]"
-                          >
-                            <span>📋 명인 상세 프로필 & 특허 ➔</span>
-                          </button>
+                          {/* Details & Full Untruncated Credentials */}
+                          <div className="flex-1 flex flex-col justify-between space-y-4">
+                            <div className="space-y-3">
+                              
+                              {/* Master Badge */}
+                              <div className="inline-block bg-[#F2ECE0] text-[#0B3C26] text-xs font-black px-3 py-1 rounded-lg border border-[#D4C5B0]">
+                                🏆 {m.badge}
+                              </div>
+
+                              {/* Master Name & Title */}
+                              <div>
+                                <h3 className="text-2xl font-black text-gray-900 group-hover:text-[#0B3C26] transition-colors">
+                                  {m.name}
+                                </h3>
+                                <p className="text-xs text-gray-600 font-extrabold mt-1 leading-snug">
+                                  {m.title}
+                                </p>
+                              </div>
+
+                              {/* Full Intro (No Line Clamp) */}
+                              <p className="text-xs sm:text-sm text-gray-700 font-medium leading-relaxed bg-[#F8F6F0] p-3.5 rounded-2xl border border-stone-200">
+                                {m.intro}
+                              </p>
+
+                              {/* Full Awards & Achievements List (No Truncation) */}
+                              <div className="space-y-2 pt-1">
+                                <span className="text-[11px] font-black text-[#0B3C26] uppercase tracking-wider block">
+                                  주요 경력 및 수상이력
+                                </span>
+                                {m.awards.slice(0, 4).map((awd, i) => (
+                                  <div key={i} className="flex items-start gap-2 text-xs text-gray-800 font-bold">
+                                    <CheckCircle2 className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
+                                    <span className="leading-tight">{awd}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                            </div>
+
+                            {/* Detailed Action Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedMaster(m);
+                              }}
+                              className="w-full py-3 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-2 border border-[#C5A059] cursor-pointer group-hover:bg-[#C5A059] group-hover:text-black group-hover:border-[#0B3C26] mt-2"
+                            >
+                              <span>명인 전체 약력 및 특허 상세 보기 →</span>
+                            </button>
+
+                          </div>
                         </div>
                       </ScrollReveal>
                     ))}
