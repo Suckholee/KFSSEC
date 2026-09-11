@@ -23,11 +23,11 @@ export default function OrganizationSection() {
       <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-300 shadow-xl overflow-x-auto no-scrollbar">
         <div className="min-w-[900px] max-w-6xl mx-auto space-y-8">
           
-          {/* LEVEL 1: TOP EXECUTIVE CHAIRMAN (원장 안형상) */}
+          {/* LEVEL 1: TOP EXECUTIVE CHAIRMAN (이사장 안형상) */}
           <div className="flex justify-center">
             <div className="w-72 bg-white border-2 border-black rounded-2xl p-5 text-center shadow-lg hover:shadow-2xl transition-all">
               <span className="text-xs font-black text-gray-500 block uppercase tracking-wider">사단법인 수장</span>
-              <h3 className="text-2xl font-black text-black mt-1">원 장</h3>
+              <h3 className="text-2xl font-black text-black mt-1">이 사 장</h3>
               <p className="text-xl font-black text-emerald-800 mt-1">안 형 상</p>
             </div>
           </div>

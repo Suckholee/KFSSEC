@@ -67,8 +67,8 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
 
   const aboutSubItems = [
     { id: 'greetings', label: '교육원 소개' },
-    { id: 'speech', label: '원장 인사말' },
-    { id: 'profile', label: '원장 프로필' },
+    { id: 'speech', label: '이사장 인사말' },
+    { id: 'profile', label: '이사장 프로필' },
     { id: 'organization', label: '조직도' },
     { id: 'location', label: '교육원 사무국' },
   ];
@@ -129,7 +129,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
                       </li>
                       <li className="flex items-center gap-3">
                         <UserCheck className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                        <span><strong className="text-[#D4AF37] font-black">대표자 :</strong> 원장 안형상 이사장</span>
+                        <span><strong className="text-[#D4AF37] font-black">대표자 :</strong> 안형상 이사장</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <UtensilsCrossed className="w-4 h-4 text-[#D4AF37] shrink-0" />
