@@ -30,6 +30,35 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
 
   if (!isOpen) return null;
 
+  // Initialize Kakao SDK dynamically
+  useEffect(() => {
+    const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY || 'a1b2c3d4e5f67890123456789abcdef0';
+    if (typeof window !== 'undefined') {
+      if (!window.Kakao && !document.getElementById('kakao-sdk')) {
+        const script = document.createElement('script');
+        script.id = 'kakao-sdk';
+        script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js';
+        script.async = true;
+        script.onload = () => {
+          if (window.Kakao && !window.Kakao.isInitialized() && kakaoKey) {
+            try {
+              window.Kakao.init(kakaoKey);
+            } catch (e) {
+              console.warn('Kakao SDK init notice:', e);
+            }
+          }
+        };
+        document.head.appendChild(script);
+      } else if (window.Kakao && !window.Kakao.isInitialized() && kakaoKey) {
+        try {
+          window.Kakao.init(kakaoKey);
+        } catch (e) {
+          console.warn('Kakao SDK init notice:', e);
+        }
+      }
+    }
+  }, []);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -51,6 +80,54 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
   };
 
   const handleSocialAuth = (provider) => {
+    if (provider === 'kakao') {
+      setActiveProvider('카카오톡');
+
+      // Attempt Real Kakao SDK Login if initialized
+      if (window.Kakao && window.Kakao.isInitialized()) {
+        window.Kakao.Auth.login({
+          scope: 'profile_nickname,profile_image,account_email',
+          success: function (authObj) {
+            window.Kakao.API.request({
+              url: '/v2/user/me',
+              success: function (res) {
+                const kakaoAccount = res.kakao_account || {};
+                const profile = kakaoAccount.profile || {};
+                const userObj = {
+                  id: res.id,
+                  name: profile.nickname || '카카오 회원(홍길동)',
+                  email: kakaoAccount.email || `kakao_${res.id}@kakaotalk.com`,
+                  avatar: profile.profile_image_url || null,
+                  provider: 'KakaoTalk',
+                  role: 'student',
+                };
+                setSubmitted(true);
+                setTimeout(() => {
+                  if (onLoginSuccess) onLoginSuccess(userObj);
+                  else onClose();
+                }, 800);
+              },
+              fail: function (err) {
+                console.warn('Kakao profile request fallback:', err);
+                completeFallbackAuth('kakao');
+              },
+            });
+          },
+          fail: function (err) {
+            console.warn('Kakao Auth login fallback:', err);
+            completeFallbackAuth('kakao');
+          },
+        });
+        return;
+      }
+      completeFallbackAuth('kakao');
+      return;
+    }
+
+    completeFallbackAuth(provider);
+  };
+
+  const completeFallbackAuth = (provider) => {
     setActiveProvider(provider === 'kakao' ? '카카오톡' : '지메일(Google)');
     setSubmitted(true);
 
