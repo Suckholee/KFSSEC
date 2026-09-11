@@ -294,54 +294,54 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
             
             {/* SUB-TAB 1: 명인 사업단 */}
             {activeTab === 'masters' && (
-              <div className="space-y-8 animate-fadeIn w-full">
+              <div className="space-y-6 animate-fadeIn w-full">
                 
-                {/* Header Card Box with Logo & Title */}
-                <div className="relative bg-[#0B3C26] text-white rounded-3xl p-6 sm:p-8 border-2 border-[#C5A059] shadow-xl grid grid-cols-1 sm:grid-cols-12 gap-6 items-center w-full overflow-hidden">
-                  <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-[#C5A059]/15 rounded-full blur-3xl pointer-events-none" />
+                {/* Sleek Compact Header Card */}
+                <div className="relative bg-[#0B3C26] text-white rounded-2xl p-5 sm:p-6 border border-[#C5A059] shadow-md flex flex-col sm:flex-row items-center justify-between gap-4 w-full overflow-hidden">
+                  <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-[#C5A059]/15 rounded-full blur-2xl pointer-events-none" />
 
-                  <div className="sm:col-span-5 bg-white p-6 rounded-2xl border-2 border-[#C5A059] flex items-center justify-center shadow-md">
-                    <img
-                      src="/images/logo.png"
-                      alt="사단법인 한국외식창업교육원"
-                      className="w-full max-w-xs h-auto object-contain"
-                    />
-                  </div>
-
-                  <div className="sm:col-span-7 flex flex-col items-center sm:items-start justify-center space-y-2 z-10">
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#D4AF37] text-xs font-black rounded-full">
-                      <Award className="w-4 h-4 text-[#D4AF37]" />
+                  <div className="flex flex-col items-center sm:items-start justify-center space-y-1.5 z-10">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#D4AF37] text-xs font-bold rounded-full">
+                      <Award className="w-3.5 h-3.5 text-[#D4AF37]" />
                       <span>사단법인 한국외식창업교육원 명장 그룹</span>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight flex items-center gap-3">
+                    <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2">
                       <span>명인·명장 사업단</span>
-                      <span className="text-[#D4AF37] text-xl font-bold hidden lg:inline">| KFSSEC Master Group</span>
+                      <span className="text-[#D4AF37] text-base font-bold hidden lg:inline">| KFSSEC Master Group</span>
                     </h2>
-                    <p className="text-xs sm:text-sm text-emerald-100/80 font-bold">
+                    <p className="text-xs text-emerald-100/80 font-medium">
                       대한민국 외식 조리 명인·장인 및 펫창업 전문가로 구성된 검증된 실무 사업단입니다.
                     </p>
                   </div>
+
+                  <div className="bg-white/95 px-4 py-2 rounded-xl border border-[#C5A059] shadow-sm shrink-0 flex items-center justify-center z-10">
+                    <img
+                      src="/images/logo.png"
+                      alt="사단법인 한국외식창업교육원"
+                      className="h-9 w-auto object-contain"
+                    />
+                  </div>
                 </div>
 
-                {/* Purpose & Content Box */}
-                <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-gray-200 shadow-lg space-y-6 w-full">
-                  <h3 className="text-xl font-black text-gray-900 border-b-2 border-[#0B3C26] pb-3 flex items-center gap-2">
-                    <Scale className="w-5 h-5 text-[#0B3C26]" />
+                {/* Sleek Compact Establishment Purpose (설립목적) */}
+                <div className="bg-white rounded-2xl p-4 sm:p-5 border border-stone-200 shadow-sm space-y-3 w-full">
+                  <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b border-stone-200 pb-2">
+                    <Scale className="w-4 h-4 text-[#0B3C26]" />
                     <span>설립목적</span>
                   </h3>
                   
-                  <div className="space-y-5 text-xs sm:text-sm text-gray-800 font-bold leading-relaxed">
-                    <div className="flex items-start gap-3 bg-emerald-50/70 p-4.5 rounded-2xl border border-emerald-200">
-                      <CheckCircle2 className="w-5 h-5 text-[#0B3C26] shrink-0 mt-0.5" />
-                      <p>
-                        본원은 <span className="text-[#0B3C26] font-black">[민법] 제32조 (비영리법인의 설립과 허가)</span> 및 농림축산식품부 장관 및 그 소속 청장소관 비영리법인의 설립 및 감독에 관한규칙 제 5조의 규정에 의하여 설립됨.
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-700 font-bold">
+                    <div className="flex items-start gap-2.5 bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
+                      <CheckCircle2 className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
+                      <p className="leading-snug">
+                        본원은 <span className="text-[#0B3C26] font-black">[민법] 제32조</span> 및 농림축산식품부 소관 비영리법인의 설립 및 감독에 관한 규칙 제5조에 따라 공식 설립됨.
                       </p>
                     </div>
 
-                    <div className="flex items-start gap-3 bg-stone-50 p-4.5 rounded-2xl border border-stone-200">
-                      <CheckCircle2 className="w-5 h-5 text-[#0B3C26] shrink-0 mt-0.5" />
-                      <p>
-                        본원은 <span className="text-[#0B3C26] font-black">농수축산물을 활용한 외식산업 발전</span>과 <span className="text-gray-900 font-black">외식 및 펫창업 전문 교육</span>을 통해 외식산업 경쟁력에 기여함으로써, 국내 및 국외 외식산업을 발전시키는 것.
+                    <div className="flex items-start gap-2.5 bg-stone-50 p-3 rounded-xl border border-stone-200">
+                      <CheckCircle2 className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
+                      <p className="leading-snug">
+                        <span className="text-[#0B3C26] font-black">농수축산물 외식산업 발전</span>과 <span className="text-gray-900 font-black">외식·펫창업 전문 교육</span>을 통해 외식산업 경쟁력 강화 및 산업 발전에 기여함.
                       </p>
                     </div>
                   </div>
