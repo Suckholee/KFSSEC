@@ -398,74 +398,121 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
               </div>
             )}
 
-            {/* SUB-TAB 2: 대한민국 명인·명장 프로필 (Full 12 Masters) */}
+            {/* SUB-TAB 2: 대한민국 명인·명장 프로필 (Full 12 Masters with Luxury Editorial Grid) */}
             {activeTab === 'profiles' && (
               <div className="space-y-8 animate-fadeIn w-full">
                 
-                <div className="border-b-2 border-[#0B3C26] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B3C26] text-[#D4AF37] border border-[#C5A059] text-xs font-black">
-                      <Star className="w-3.5 h-3.5 text-[#D4AF37]" />
-                      <span>KFSSEC MASTER CHEF PROFILES</span>
+                {/* Header Title & Filter Bar */}
+                <div className="space-y-6">
+                  <div className="border-b-2 border-[#0B3C26] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#0B3C26] text-[#D4AF37] border border-[#C5A059] text-xs font-black">
+                        <Star className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <span>EDITORIAL MASTER DIRECTORY</span>
+                      </div>
+                      <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2 font-serif">
+                        대한민국 명인·명장 전당
+                      </h2>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2">
-                      대한민국 명인·명장 프로필
-                    </h2>
+                    <span className="text-xs font-bold text-gray-500 bg-stone-100 px-3.5 py-1.5 rounded-xl border border-stone-200">
+                      사단법인 한국외식창업교육원 공식 검증 12인 최고 조리 명인·명장
+                    </span>
                   </div>
-                  <span className="text-xs font-bold text-gray-500">
-                    사단법인 한국외식창업교육원 검증 12인 최고 조리 명인·명장 교수진
-                  </span>
+
+                  {/* Filter Buttons */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {[
+                      { id: 'all', label: '전체 12인 명장' },
+                      { id: 'hansik', label: '한식·전통음식' },
+                      { id: 'bakery', label: '제과·제빵 기능장' },
+                      { id: 'chinese', label: '중화요리' },
+                      { id: 'western', label: '서양조리·외식경영' },
+                    ].map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.id)}
+                        className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
+                          selectedCategory === cat.id
+                            ? 'bg-[#0B3C26] text-white border-[#C5A059] shadow-md scale-102'
+                            : 'bg-white text-gray-700 hover:bg-stone-100 border-stone-300'
+                        }`}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2 w-full">
-                  {masterProfilesList.map((m, idx) => (
-                    <ScrollReveal key={m.id} direction="up" delay={idx * 50}>
-                      <div
-                        onClick={() => setSelectedMaster(m)}
-                        className="bg-white rounded-3xl p-5 border-2 border-stone-200 shadow-md hover:shadow-2xl hover:border-[#0B3C26] transition-all duration-300 cursor-pointer group space-y-4 h-full flex flex-col justify-between"
-                      >
-                        <div className="space-y-4">
-                          <div className="relative h-64 sm:h-72 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-sm bg-[#F8F6F0] shrink-0">
-                            <img
-                              src={m.image}
-                              alt={m.name}
-                              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <div className="absolute top-3 left-3 bg-[#0B3C26]/90 text-[#D4AF37] font-black text-[11px] px-3 py-1 rounded-full border border-[#C5A059]/40 backdrop-blur-xs">
-                              {m.category}
-                            </div>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <div className="inline-block bg-stone-100 text-stone-800 text-[11px] font-black px-2.5 py-0.5 rounded border border-stone-300">
-                              {m.badge}
-                            </div>
-                            <h3 className="text-xl font-black text-gray-900 group-hover:text-[#0B3C26] transition-colors">
-                              {m.name}
-                            </h3>
-                            <p className="text-xs text-gray-500 font-bold leading-tight">
-                              {m.title}
-                            </p>
-                          </div>
-
-                          <p className="text-xs text-gray-600 font-medium leading-relaxed bg-[#F8F6F0] p-3 rounded-xl border border-stone-200 line-clamp-3">
-                            {m.intro}
-                          </p>
-                        </div>
-
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedMaster(m);
-                          }}
-                          className="w-full py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs font-black rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 border border-[#C5A059]"
+                {/* Luxury Magazine Editorial Profile Cards Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 pt-2 w-full">
+                  {masterProfilesList
+                    .filter((m) => {
+                      if (selectedCategory === 'all') return true;
+                      if (selectedCategory === 'hansik') return m.category.includes('한식') || m.category.includes('전통');
+                      if (selectedCategory === 'bakery') return m.category.includes('제과') || m.category.includes('디저트');
+                      if (selectedCategory === 'chinese') return m.category.includes('중화') || m.category.includes('중식');
+                      if (selectedCategory === 'western') return m.category.includes('서양') || m.category.includes('경영');
+                      return true;
+                    })
+                    .map((m, idx) => (
+                      <ScrollReveal key={m.id} direction="up" delay={idx * 40}>
+                        <div
+                          onClick={() => setSelectedMaster(m)}
+                          className="bg-white rounded-3xl p-5 border-2 border-stone-200 shadow-md hover:shadow-2xl hover:border-[#0B3C26] transition-all duration-500 cursor-pointer group space-y-4 h-full flex flex-col justify-between hover:-translate-y-1.5"
                         >
-                          <span>📋 상세 이력 및 수상 정보 보기</span>
-                          <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
-                        </button>
-                      </div>
-                    </ScrollReveal>
-                  ))}
+                          <div className="space-y-4">
+                            {/* Magazine Cover Photo Frame */}
+                            <div className="relative h-72 sm:h-80 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-md bg-[#F8F6F0] shrink-0">
+                              <img
+                                src={m.image}
+                                alt={m.name}
+                                className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700"
+                              />
+                              <div className="absolute top-3 left-3 bg-[#0B3C26]/90 text-[#D4AF37] font-black text-[11px] px-3 py-1 rounded-full border border-[#C5A059]/40 backdrop-blur-md shadow-sm">
+                                {m.category}
+                              </div>
+                              <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md text-[#0B3C26] font-black text-[10px] px-2.5 py-1 rounded-lg border border-stone-200 shadow-xs">
+                                OFFICIAL MASTER
+                              </div>
+                            </div>
+
+                            {/* Name & Official Title */}
+                            <div className="space-y-1.5">
+                              <div className="inline-block bg-[#F2ECE0] text-[#0B3C26] text-[11px] font-black px-3 py-0.5 rounded-full border border-[#D4C5B0]">
+                                {m.badge}
+                              </div>
+                              <h3 className="text-xl sm:text-2xl font-black text-gray-900 group-hover:text-[#0B3C26] transition-colors font-serif">
+                                {m.name}
+                              </h3>
+                              <p className="text-xs text-gray-500 font-extrabold leading-tight">
+                                {m.title}
+                              </p>
+                            </div>
+
+                            {/* Key Achievements Bullet Chips */}
+                            <div className="space-y-1.5 pt-1">
+                              {m.awards.slice(0, 2).map((awd, i) => (
+                                <div key={i} className="flex items-center gap-2 text-xs text-gray-700 font-bold bg-[#F8F6F0] p-2 rounded-xl border border-stone-200 line-clamp-1">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0" />
+                                  <span className="truncate">{awd}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Action Button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedMaster(m);
+                            }}
+                            className="w-full py-3 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 border border-[#C5A059] group-hover:bg-[#C5A059] group-hover:text-black group-hover:border-[#0B3C26]"
+                          >
+                            <span>📋 명인 상세 프로필 & 특허 ➔</span>
+                          </button>
+                        </div>
+                      </ScrollReveal>
+                    ))}
                 </div>
 
               </div>
