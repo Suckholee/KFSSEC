@@ -425,11 +425,11 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                         className="bg-white rounded-3xl p-5 border-2 border-stone-200 shadow-md hover:shadow-2xl hover:border-[#0B3C26] transition-all duration-300 cursor-pointer group space-y-4 h-full flex flex-col justify-between"
                       >
                         <div className="space-y-4">
-                          <div className="relative h-64 sm:h-72 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-sm bg-black shrink-0">
+                          <div className="relative h-64 sm:h-72 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-sm bg-[#F8F6F0] shrink-0">
                             <img
                               src={m.image}
                               alt={m.name}
-                              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                             />
                             <div className="absolute top-3 left-3 bg-[#0B3C26]/90 text-[#D4AF37] font-black text-[11px] px-3 py-1 rounded-full border border-[#C5A059]/40 backdrop-blur-xs">
                               {m.category}

@@ -24,11 +24,11 @@ export default function MasterDetailModal({ isOpen, master, onClose }) {
           </button>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-md bg-stone-900 shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-md bg-white shrink-0">
               <img
                 src={master.image}
                 alt={master.name}
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-center"
               />
             </div>
 
