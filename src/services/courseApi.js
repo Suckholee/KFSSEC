@@ -25,26 +25,10 @@ export async function fetchCourses(params = {}) {
   const dbCourses = getCoursesFromDB();
 
   // Normalize dbCourses for public catalog rendering
-  const normalizedCourses = dbCourses.map((c, idx) => ({
-    id: c.id || idx + 1,
-    industry: c.industry || c.categoryName || '한식',
-    categoryName: c.categoryName || c.industry || '한식',
-    stage: c.stage || '창업 준비',
-    format: c.format || '오프라인',
-    badge: c.badge || (idx === 0 ? 'BEST' : idx === 1 ? 'BEST' : idx === 2 ? 'HOT' : null),
-    title: c.title,
-    description: c.description || '특급호텔 40년 경력 명장이 직접 전수하는 시그니처 레시피 및 창업 현장 실무 커리큘럼입니다.',
-    image: c.image || '/images/course_menu_dev.jpg',
-    duration: c.duration || '4주 과정',
-    lessons: c.lessons || '20강',
-    price: c.price || 4500000,
-    priceFormatted: `${(c.price || 4500000).toLocaleString()}원`,
-    rating: c.rating || (4.95 - (idx * 0.02)).toFixed(2),
-    views: c.views || (1500 - idx * 70),
-    createdAt: c.startDate || '2026-09-05',
-    startDate: c.startDate || '2026-09-05',
-    instructor: c.instructor || '안형상 이사장 / 40년 명장',
-    certName: c.certName || '한식 조리기능장 및 지도사 1급',
+  const normalizedCourses = dbCourses.map(c => ({
+    ...c,
+    priceFormatted: c.price == null ? '수강료 문의' : `${Number(c.price).toLocaleString()}원`,
+    createdAt: c.startDate || '',
   }));
 
   let filtered = [...normalizedCourses];

@@ -14,7 +14,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
     {
       id: 'courses',
       label: '💬 어떤 교육과정이 있나요?',
-      reply: '저희 교육원에는 외식창업 성공전략, 상권·입지 분석, 메뉴개발과 원가관리, 매장 운영·서비스 관리 등 12개 실전 교육과정이 준비되어 있습니다.',
+      reply: '외식창업지도사 2급, 외식창업실무사 2급, 한국음식능력(K-FOOD) 2급 온라인 과정이 있습니다. 수강 기간은 4주 이내이며 수강료와 일정은 교육원에 문의해 주세요.',
       actionTab: 'catalog',
       actionSubTab: 'courses',
     },
@@ -30,12 +30,12 @@ export default function VisitorChatbotWidget({ onNavigate }) {
       label: '👨‍🍳 명인·명장 정보를 보고 싶어요.',
       reply: '40년 경력의 안형상 이사장님을 비롯한 대한민국 조리 명인·명장 사업단에서 특제 레시피와 노하우를 직접 전수합니다.',
       actionTab: 'master',
-      actionSubTab: 'intro',
+      actionSubTab: 'masters',
     },
     {
       id: 'contact',
       label: '📞 1:1 문의 및 입학 상담은 어떻게 하나요?',
-      reply: '대표전화 02-511-8484로 즉시 전화 연결하시거나, 1:1 창업컨설팅 신청 페이지에서 문의글을 남기실 수 있습니다.',
+      reply: '대표전화 010-7244-6796로 즉시 전화 연결하시거나, 1:1 창업컨설팅 신청 페이지에서 문의글을 남기실 수 있습니다.',
       actionTab: 'consulting',
       actionSubTab: 'apply',
     },

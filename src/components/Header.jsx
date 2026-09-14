@@ -14,7 +14,7 @@ export default function Header({
 
   const mainMenuItems = [
     { title: '교육원 소개', key: 'about', defaultSubTab: 'greetings' },
-    { title: '명인·명장 사업단', key: 'master', defaultSubTab: 'intro' },
+    { title: '명인·명장 사업단', key: 'master', defaultSubTab: 'masters' },
     { title: '교육·자격증', key: 'catalog', defaultSubTab: 'courses' },
     { title: '창업컨설팅', key: 'consulting', defaultSubTab: 'apply' },
     { title: '강남구 소상공인', key: 'gangnam', defaultSubTab: 'intro' },

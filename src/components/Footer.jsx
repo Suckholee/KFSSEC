@@ -1,7 +1,7 @@
 import React from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
 
-export default function Footer({ onOpenAbout }) {
+export default function Footer({ onTabChange }) {
   return (
     <footer className="bg-[#0D1512] text-gray-300 text-sm border-t border-emerald-950 pt-12 pb-8 font-sans">
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto">
@@ -22,7 +22,7 @@ export default function Footer({ onOpenAbout }) {
               분야: 외식·펫 창업 실무 교육 및 전문 자격증 발급
             </p>
             <button
-              onClick={onOpenAbout}
+              onClick={() => onTabChange?.('about', 'greetings')}
               className="text-xs font-bold text-emerald-400 hover:text-emerald-300 underline underline-offset-4 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none min-h-[44px] flex items-center"
               aria-label="교육원 상세 조직 및 이사장 인사말 보기"
             >
@@ -34,10 +34,7 @@ export default function Footer({ onOpenAbout }) {
           <div>
             <h4 className="text-sm font-black text-white mb-3 tracking-tight">주요 교육과정</h4>
             <ul className="space-y-2.5 text-xs text-gray-300 font-medium">
-              <li><button onClick={onOpenAbout} className="hover:text-emerald-400 transition-colors cursor-pointer text-left">외식창업 성공전략 마스터</button></li>
-              <li><button onClick={onOpenAbout} className="hover:text-emerald-400 transition-colors cursor-pointer text-left">메뉴개발 & 원가관리 실전</button></li>
-              <li><button onClick={onOpenAbout} className="hover:text-emerald-400 transition-colors cursor-pointer text-left">펫푸드 & 수제간식 제조 과정</button></li>
-              <li><button onClick={onOpenAbout} className="hover:text-emerald-400 transition-colors cursor-pointer text-left">반려견 행동교정 자격증</button></li>
+              {['외식창업지도사 2급', '외식창업실무사 2급', '한국음식능력(K-FOOD) 2급'].map(name => <li key={name}><button onClick={() => onTabChange?.('catalog', 'courses')} className="hover:text-emerald-400 transition-colors text-left">{name}</button></li>)}
             </ul>
           </div>
 
@@ -47,7 +44,7 @@ export default function Footer({ onOpenAbout }) {
             <div className="space-y-2.5 text-xs">
               <div className="flex items-center gap-2 text-white font-black text-base">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>02-511-8484</span>
+                <span>010-7244-6796</span>
               </div>
               <p className="text-gray-300 font-medium">평일 09:00 - 18:00 (주말/공휴일 휴무)</p>
               <div className="flex items-center gap-2 text-gray-300 font-medium pt-1">
@@ -83,9 +80,9 @@ export default function Footer({ onOpenAbout }) {
         <div className="pt-4 border-t border-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 font-medium">
           <p>© 2026 사단법인 한국외식창업교육원. All Rights Reserved.</p>
           <div className="flex gap-4">
-            <button onClick={onOpenAbout} className="hover:text-white cursor-pointer">기관 정보</button>
-            <button onClick={onOpenAbout} className="hover:text-white cursor-pointer">개인정보처리방침</button>
-            <button onClick={onOpenAbout} className="hover:text-white cursor-pointer">이용약관</button>
+            <button onClick={() => onTabChange?.('about', 'greetings')} className="hover:text-white cursor-pointer">기관 정보</button>
+            <button onClick={() => onTabChange?.('about', 'greetings')} className="hover:text-white cursor-pointer">개인정보처리방침</button>
+            <button onClick={() => onTabChange?.('about', 'greetings')} className="hover:text-white cursor-pointer">이용약관</button>
           </div>
         </div>
       </div>

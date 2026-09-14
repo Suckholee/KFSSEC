@@ -81,10 +81,10 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
                       <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                     </div>
                     <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
-                      12,345명
+                      온라인
                     </span>
                     <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
-                      누적 수강생
+                      2급 자격과정
                     </span>
                   </div>
 
@@ -94,10 +94,10 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
                       <Award className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                     </div>
                     <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
-                      98.7%
+                      4주 이내
                     </span>
                     <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
-                      수강생 만족도
+                      수강 기간
                     </span>
                   </div>
 
@@ -107,10 +107,10 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
                       <Building2 className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                     </div>
                     <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
-                      1,200건+
+                      3개 과정
                     </span>
                     <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
-                      창업 성공 사례
+                      창업·한국음식
                     </span>
                   </div>
 

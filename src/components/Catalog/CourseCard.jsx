@@ -18,6 +18,10 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
     return (
       <div
         onClick={onClick}
+        role="button"
+        tabIndex={0}
+        aria-label={`${course.title} 상세 보기`}
+        onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onClick?.(); } }}
         className="group bg-white rounded-2xl border border-emerald-100 p-4 sm:p-5 flex flex-col sm:flex-row gap-5 shadow-sm hover:shadow-md transition-all cursor-pointer"
       >
         <div className="relative sm:w-64 aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 shrink-0">
@@ -40,7 +44,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
                 {course.industry}
               </span>
               <button
-                onClick={handleBookmarkClick}
+                aria-label={`${course.title} 관심 과정 ${bookmarked ? '해제' : '등록'}`} onClick={handleBookmarkClick}
                 className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-emerald-600 transition-colors"
               >
                 <Bookmark className={`w-5 h-5 ${bookmarked ? 'fill-emerald-600 text-emerald-600' : ''}`} />
@@ -77,6 +81,10 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
   return (
     <div
       onClick={onClick}
+        role="button"
+        tabIndex={0}
+        aria-label={`${course.title} 상세 보기`}
+        onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onClick?.(); } }}
       className="group bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer"
     >
       {/* Image Container */}
@@ -96,7 +104,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
         )}
 
         <button
-          onClick={handleBookmarkClick}
+          aria-label={`${course.title} 관심 과정 ${bookmarked ? '해제' : '등록'}`} onClick={handleBookmarkClick}
           className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center backdrop-blur-sm transition-colors"
         >
           <Bookmark className={`w-4 h-4 ${bookmarked ? 'fill-white text-white' : ''}`} />

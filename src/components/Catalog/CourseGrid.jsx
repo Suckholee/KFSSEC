@@ -15,7 +15,7 @@ export default function CourseGrid({
       <div
         className={
           viewMode === 'grid'
-            ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6'
+            ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
             : 'space-y-4'
         }
       >
@@ -47,10 +47,10 @@ export default function CourseGrid({
         </div>
         <div>
           <h3 className="text-lg font-extrabold text-gray-900">
-            해당 카테고리의 준비된 교육이 없습니다
+            검색 결과가 없습니다
           </h3>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            다른 업종이나 창업 단계 필터를 선택해 보시거나 조건 검색을 초기화해 보세요.
+            과정명 또는 교수명을 다시 입력해 주세요.
           </p>
         </div>
         <button
@@ -67,7 +67,7 @@ export default function CourseGrid({
     <div
       className={
         viewMode === 'grid'
-          ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6'
+          ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
           : 'space-y-4'
       }
     >

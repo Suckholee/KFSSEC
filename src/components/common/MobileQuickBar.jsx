@@ -6,7 +6,7 @@ export default function MobileQuickBar({ onGoToConsulting, onOpenEnrollment }) {
     <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[#0B3C26] text-white px-3 py-2.5 border-t-2 border-[#C5A059] shadow-2xl flex items-center justify-between gap-2 backdrop-blur-md bg-opacity-98 animate-fadeIn">
       {/* Call Button */}
       <a
-        href="tel:02-511-8484"
+        href="tel:01072446796"
         className="flex-1 py-2.5 bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs rounded-xl border border-white/20 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
         aria-label="입학 상담 전화 걸기"
       >

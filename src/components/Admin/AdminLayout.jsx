@@ -1914,7 +1914,7 @@ export default function AdminLayout({
                           </div>
                           <div className="flex items-center justify-between">
                             <span>💰 정가 수강료:</span>
-                            <span className="font-mono text-emerald-900 font-black">{c.price.toLocaleString()}원</span>
+                            <span className="font-mono text-emerald-900 font-black">{c.price == null ? '수강료 문의' : `${c.price.toLocaleString()}원`}</span>
                           </div>
                         </div>
                       </div>

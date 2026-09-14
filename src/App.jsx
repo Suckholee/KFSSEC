@@ -1,14 +1,9 @@
+import { QualificationHighlights } from './components/Catalog/QualificationGuide';
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import EventBannerSection from './components/EventBannerSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
-import NetflixCoursesSection from './components/NetflixCoursesSection';
-import FullPackageCoursesSection from './components/FullPackageCoursesSection';
-import CategoryCourseSection from './components/CategoryCourseSection';
-import CategoryFocusSection from './components/CategoryFocusSection';
 import NoticePostSection from './components/NoticePostSection';
-import BannerSection from './components/BannerSection';
 import Footer from './components/Footer';
 import MobileQuickBar from './components/common/MobileQuickBar';
 import VisitorChatbotWidget from './components/common/VisitorChatbotWidget';
@@ -422,20 +417,13 @@ export default function App() {
               onExploreClick={() => handleTabChange('catalog')}
               onAboutClick={() => handleTabChange('about', 'greetings')}
             />
-            <EventBannerSection
-              bannerData={siteData.banner}
-              onEventClick={() => setIsPaymentGuideOpen(true)}
-            />
+            <QualificationHighlights onExplore={() => handleTabChange('catalog', 'courses')} />
             <YouTubeMediaSection
               youtubeData={siteData.youtube}
               onPlayVideo={handleOpenVideo}
             />
-            <NetflixCoursesSection onCourseClick={() => handleTabChange('catalog')} />
-            <FullPackageCoursesSection onCourseClick={() => handleTabChange('catalog')} />
-            <CategoryCourseSection onCategoryClick={() => handleTabChange('catalog')} />
-            <CategoryFocusSection onCategoryClick={() => handleTabChange('catalog')} />
             <NoticePostSection onScrollNext={() => scrollToSection('footer')} />
-            <BannerSection onConsultingClick={() => setIsPaymentGuideOpen(true)} />
+
           </div>
         )}
 
@@ -444,7 +432,7 @@ export default function App() {
         )}
 
         {activeTab === 'master' && (
-          <MasterBusinessPage initialSubTab={subTab || 'intro'} />
+          <MasterBusinessPage initialSubTab={subTab || 'masters'} />
         )}
 
         {activeTab === 'catalog' && (

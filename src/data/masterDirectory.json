@@ -1,0 +1,317 @@
+[
+  {
+    "name": "안형상",
+    "image": "/images/masters/image11.png",
+    "group": "expert"
+  },
+  {
+    "name": "이상정",
+    "image": "/images/masters/image15.png",
+    "group": "master"
+  },
+  {
+    "name": "권영복",
+    "image": "/images/masters/image1.png",
+    "group": "expert"
+  },
+  {
+    "name": "장동석",
+    "image": "/images/masters/image16.png",
+    "group": "expert"
+  },
+  {
+    "name": "전병규",
+    "image": "/images/masters/image17.png",
+    "group": "expert"
+  },
+  {
+    "name": "곡국진",
+    "image": "/images/masters/image10.png",
+    "group": "expert"
+  },
+  {
+    "name": "김순열",
+    "image": "/images/masters/image3.png",
+    "group": "expert"
+  },
+  {
+    "name": "윤병세",
+    "image": "/images/masters/image14.png",
+    "group": "expert"
+  },
+  {
+    "name": "김문경",
+    "image": "/images/masters/image2.png",
+    "group": "expert"
+  },
+  {
+    "name": "주정자",
+    "image": "/images/masters/image18.png",
+    "group": "expert"
+  },
+  {
+    "name": "오순",
+    "image": "/images/masters/image12.png",
+    "group": "expert"
+  },
+  {
+    "name": "오창구",
+    "image": "/images/masters/image13.png",
+    "group": "expert"
+  },
+  {
+    "name": "구본신",
+    "image": "/images/profile-directory/image1.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김근혜",
+    "image": "/images/profile-directory/image2.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김민지",
+    "image": "/images/profile-directory/image3.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김병섭",
+    "image": "/images/profile-directory/image4.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김시영",
+    "image": "/images/profile-directory/image5.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김영례",
+    "image": "/images/profile-directory/image6.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김흥기",
+    "image": "/images/profile-directory/image7.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김희순",
+    "image": "/images/profile-directory/image8.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "문동혁",
+    "image": "/images/profile-directory/image9.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박동명",
+    "image": "/images/profile-directory/image10.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박부석",
+    "image": "/images/profile-directory/image11.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박선심",
+    "image": "/images/profile-directory/image12.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박성준",
+    "image": "/images/profile-directory/image13.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박정근",
+    "image": "/images/profile-directory/image14.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박종기",
+    "image": "/images/profile-directory/image15.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박창원",
+    "image": "/images/profile-directory/image16.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "박하원",
+    "image": "/images/profile-directory/image17.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "성미진",
+    "image": "/images/profile-directory/image18.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "송영원",
+    "image": "/images/profile-directory/image19.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "신재복",
+    "image": "/images/profile-directory/image20.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "신진우",
+    "image": "/images/profile-directory/image21.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "심상현",
+    "image": "/images/profile-directory/image22.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "심용환",
+    "image": "/images/profile-directory/image23.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "심호식",
+    "image": "/images/profile-directory/image24.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "여남주",
+    "image": "/images/profile-directory/image25.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "오문석",
+    "image": "/images/profile-directory/image26.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "윤지현",
+    "image": "/images/profile-directory/image27.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이명숙",
+    "image": "/images/profile-directory/image28.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이상희",
+    "image": "/images/profile-directory/image29.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이성우",
+    "image": "/images/profile-directory/image30.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이수연",
+    "image": "/images/profile-directory/image31.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이은희",
+    "image": "/images/profile-directory/image32.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이진주",
+    "image": "/images/profile-directory/image33.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이창수",
+    "image": "/images/profile-directory/image34.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이하늘",
+    "image": "/images/profile-directory/image35.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "이희승",
+    "image": "/images/profile-directory/image36.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "장현호",
+    "image": "/images/profile-directory/image37.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "전은희",
+    "image": "/images/profile-directory/image38.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "정종호",
+    "image": "/images/profile-directory/image39.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "정지인",
+    "image": "/images/profile-directory/image40.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "조선례",
+    "image": "/images/profile-directory/image41.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "조원희",
+    "image": "/images/profile-directory/image42.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "주성환",
+    "image": "/images/profile-directory/image43.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "최미자",
+    "image": "/images/profile-directory/image44.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "최재원",
+    "image": "/images/profile-directory/image45.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "최희왕",
+    "image": "/images/profile-directory/image46.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "허연웅",
+    "image": "/images/profile-directory/image47.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "홍성열",
+    "image": "/images/profile-directory/image48.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "최재홍",
+    "image": "/images/profile-directory/image49.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "김봉애",
+    "image": "/images/profile-directory/image50.jpg",
+    "group": "expert"
+  },
+  {
+    "name": "한성균",
+    "image": "/images/profile-directory/image51.jpg",
+    "group": "expert"
+  }
+]
