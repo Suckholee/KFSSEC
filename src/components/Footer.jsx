@@ -9,11 +9,11 @@ export default function Footer({ onTabChange }) {
           
           {/* Col 1: Official Brand Info */}
           <div className="space-y-3.5 md:col-span-1">
-            <div className="bg-white/95 p-3 rounded-2xl inline-block shadow-sm">
+            <div className="inline-block py-2">
               <img
-                src="/images/official_logo.png"
+                src="/images/logo-transparent.svg"
                 alt="사단법인 한국외식창업교육원"
-                className="h-10 w-auto object-contain"
+                className="h-20 w-auto object-contain brightness-0 invert"
               />
             </div>
             <p className="text-xs leading-relaxed text-gray-300 font-medium">

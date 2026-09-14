@@ -169,7 +169,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
         {/* Modal Header */}
         <div className="text-center space-y-1">
           <img
-            src="/images/logo.png"
+            src="/images/logo-transparent.svg"
             alt="사단법인 한국외식창업교육원"
             className="h-10 sm:h-12 w-auto object-contain mx-auto mb-2"
           />

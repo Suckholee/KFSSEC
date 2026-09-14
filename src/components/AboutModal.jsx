@@ -17,7 +17,7 @@ export default function AboutModal({ onClose }) {
         {/* Modal Header */}
         <div className="flex items-center gap-4 border-b border-gray-100 pb-5">
           <img
-            src="/images/official_logo.png"
+            src="/images/logo-transparent.svg"
             alt="사단법인 한국외식창업교육원"
             className="h-14 w-auto object-contain"
           />

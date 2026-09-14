@@ -35,9 +35,9 @@ export default function Header({
           aria-label="한국외식창업교육원 메인 홈으로 이동"
         >
           <img
-            src="/images/logo.png"
+            src="/images/logo-transparent.svg"
             alt="사단법인 한국외식창업교육원"
-            className="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform"
+            className="h-14 sm:h-16 w-auto object-contain"
           />
         </button>
 

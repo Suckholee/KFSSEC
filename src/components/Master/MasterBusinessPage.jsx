@@ -101,11 +101,11 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                     </p>
                   </div>
 
-                  <div className="bg-white/95 px-4 py-2 rounded-xl border border-[#C5A059] shadow-sm shrink-0 flex items-center justify-center z-10">
+                  <div className="px-2 py-2 shrink-0 flex items-center justify-center z-10">
                     <img
-                      src="/images/logo.png"
+                      src="/images/logo-transparent.svg"
                       alt="사단법인 한국외식창업교육원"
-                      className="h-9 w-auto object-contain"
+                      className="h-16 w-auto object-contain brightness-0 invert"
                     />
                   </div>
                 </div>

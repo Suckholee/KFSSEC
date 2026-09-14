@@ -105,7 +105,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
                   {/* Left Logo Card */}
                   <div className="lg:col-span-5 bg-white p-6 rounded-2xl border-2 border-[#C5A059] flex items-center justify-center shadow-md">
                     <img
-                      src="/images/logo.png"
+                      src="/images/logo-transparent.svg"
                       alt="사단법인 한국외식창업교육원"
                       className="w-full max-w-xs h-auto object-contain"
                     />
