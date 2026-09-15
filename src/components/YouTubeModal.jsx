@@ -1,7 +1,9 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useEffect } from 'react';
 import { X, Youtube } from 'lucide-react';
 
 export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle }) {
+  const { tr, language } = useLanguage();
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -32,13 +34,13 @@ export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle }) {
               <Youtube className="w-5 h-5 fill-current" />
             </div>
             <h3 className="text-base sm:text-lg font-extrabold text-white line-clamp-1">
-              {videoTitle || '유튜브 동영상 시청'}
+              {tr(videoTitle || '유튜브 동영상 시청')}
             </h3>
           </div>
           <button
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-            aria-label="닫기"
+            aria-label={tr("닫기")}
           >
             <X className="w-5 h-5" />
           </button>
@@ -48,7 +50,7 @@ export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle }) {
         <div className="relative aspect-video w-full bg-black">
           <iframe
             src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-            title={videoTitle}
+            title={tr(videoTitle)}
             className="w-full h-full border-0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

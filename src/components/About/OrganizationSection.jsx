@@ -1,34 +1,191 @@
-import React from 'react';
-import { Users, Shield, Award, Building2, UserCheck, CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
+import React, { useState } from 'react';
+import { Users, Shield, Award, Building2, UserCheck, CheckCircle2, LayoutGrid, Network } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
 export default function OrganizationSection() {
+  const { t } = useLanguage();
+  const [mobileView, setMobileView] = useState('cards'); // 'cards' | 'diagram'
   return (
-    <div className="space-y-10 animate-fadeIn font-sans text-gray-900">
+    <div className="space-y-8 sm:space-y-10 animate-fadeIn font-sans text-gray-900 break-keep">
       
       {/* Header Banner */}
-      <div className="text-center max-w-4xl mx-auto space-y-3">
-        <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-3.5 py-1 rounded-full uppercase tracking-wider">
+      <div className="text-center max-w-4xl mx-auto space-y-2.5 px-2">
+        <span className="text-[11px] sm:text-xs font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full uppercase tracking-wider">
           ORGANIZATION CHART
         </span>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight">
-          사단법인 한국외식창업교육원 <span className="text-emerald-700">조직도</span>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight leading-snug">
+          {t("사단법인 한국외식창업교육원")}{' '}<span className="text-emerald-700">{t("조직도")}</span>
         </h2>
-        <p className="text-xs sm:text-sm text-gray-600 font-medium max-w-2xl mx-auto">
-          외식 산업 발전과 전문 인재 양성을 선도하는 한국외식창업교육원의 체계적인 조직 체계입니다.
+        <p className="text-xs sm:text-sm text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed">
+          {t("외식 산업 발전과 전문 인재 양성을 선도하는 한국외식창업교육원의 체계적인 조직 체계입니다.")}{' '}
         </p>
+
+        {/* Mobile View Toggle (Visible on < lg) */}
+        <div className="lg:hidden inline-flex items-center p-1 bg-stone-100 rounded-xl border border-stone-200 mt-2">
+          <button
+            onClick={() => setMobileView('cards')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 ${
+              mobileView === 'cards'
+                ? 'bg-[#0B3C26] text-white shadow-xs'
+                : 'text-stone-600 hover:text-stone-900'
+            }`}
+          >
+            <LayoutGrid className="w-3.5 h-3.5" />
+            <span>{t("모바일 요약 보기")}</span>
+          </button>
+          <button
+            onClick={() => setMobileView('diagram')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 ${
+              mobileView === 'diagram'
+                ? 'bg-[#0B3C26] text-white shadow-xs'
+                : 'text-stone-600 hover:text-stone-900'
+            }`}
+          >
+            <Network className="w-3.5 h-3.5" />
+            <span>{t("전체 다이어그램")}</span>
+          </button>
+        </div>
       </div>
 
-      {/* Interactive Official Diagram (Matching Image 4) */}
-      <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-300 shadow-xl overflow-x-auto no-scrollbar">
+      {/* MOBILE COMPACT HIERARCHY CARDS (Visible on < lg when mobileView === 'cards') */}
+      {mobileView === 'cards' && (
+        <div className="lg:hidden space-y-4">
+          {/* Level 1: Chairman Card */}
+          <div className="bg-gradient-to-br from-[#0B3C26] to-[#062417] text-white rounded-2xl p-5 shadow-lg border-2 border-[#C5A059] text-center space-y-1">
+            <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest block">{t("사단법인 수장")}</span>
+            <h3 className="text-xl font-black text-white">{t("이 사 장")}</h3>
+            <p className="text-2xl font-black text-[#D4AF37] pt-0.5">{t("안 형 상")}</p>
+          </div>
+
+          {/* Level 2: Advisory Groups */}
+          <div className="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-3">
+            <div className="flex items-center gap-2 border-b border-stone-100 pb-2">
+              <Shield className="w-4 h-4 text-emerald-700" />
+              <h4 className="text-sm font-black text-stone-900">{t("정책 및 실무 자문단")}</h4>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                <span className="text-[10px] text-stone-500 font-bold block">{t("고문단")}</span>
+                <span className="text-stone-900 font-black text-[11px] leading-tight block mt-0.5">{t("이득식, 김동승, 황광해")}</span>
+              </div>
+              <div className="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                <span className="text-[10px] text-stone-500 font-bold block">{t("교수자문단")}</span>
+                <span className="text-stone-900 font-black text-[11px] leading-tight block mt-0.5">{t("안성규 외 13명")}</span>
+              </div>
+              <div className="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                <span className="text-[10px] text-stone-500 font-bold block">{t("사업 기획단")}</span>
+                <span className="text-stone-900 font-black text-[11px] leading-tight block mt-0.5">{t("지기철, 트라이경영")}</span>
+              </div>
+              <div className="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                <span className="text-[10px] text-stone-500 font-bold block">{t("전국협력교육기관")}</span>
+                <span className="text-emerald-800 font-black text-[11px] leading-tight block mt-0.5">{t("전국 12개소")}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Level 3: Secretariat */}
+          <div className="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-3">
+            <div className="flex items-center gap-2 border-b border-stone-100 pb-2">
+              <Building2 className="w-4 h-4 text-emerald-700" />
+              <h4 className="text-sm font-black text-stone-900">{t("사무국 & 협력법인")}</h4>
+            </div>
+            <div className="grid grid-cols-3 gap-2 text-center text-xs">
+              <div className="bg-stone-50 p-2 rounded-xl border border-stone-200">
+                <span className="text-[10px] text-stone-500 font-bold block">{t("사무국장")}</span>
+                <span className="text-stone-900 font-black text-xs mt-0.5 block">{t("이원웅")}</span>
+              </div>
+              <div className="bg-stone-50 p-2 rounded-xl border border-stone-200">
+                <span className="text-[10px] text-stone-500 font-bold block">{t("감사")}</span>
+                <span className="text-stone-900 font-black text-xs mt-0.5 block">{t("박경옥")}</span>
+              </div>
+              <div className="bg-stone-50 p-2 rounded-xl border border-stone-200">
+                <span className="text-[10px] text-stone-500 font-bold block">{t("사무장")}</span>
+                <span className="text-stone-900 font-black text-xs mt-0.5 block">{t("김근혜")}</span>
+              </div>
+            </div>
+            <div className="bg-emerald-50 rounded-xl p-3 border border-emerald-200 space-y-1">
+              <span className="text-[10px] font-black text-emerald-900 block uppercase tracking-wider">{t("협업 법인단체")}</span>
+              <p className="text-[11px] font-bold text-emerald-950 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span>{t("사)한국문화관광평가연구원 (문화관광부)")}</span>
+              </p>
+              <p className="text-[11px] font-bold text-emerald-950 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span>{t("사)글로벌푸드연구소 (해양수산부)")}</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Level 4: Culinary Masters Committee */}
+          <div className="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-3">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-2">
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-emerald-700" />
+                <h4 className="text-sm font-black text-stone-900">{t("조리 명인 분과 위원회")}</h4>
+              </div>
+              <span className="text-[10px] font-bold bg-stone-100 px-2 py-0.5 rounded-md text-stone-600">{t("14개 분야")}</span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+              {[
+                { title: t("양식"), name: t("김철우") },
+                { title: t("중식"), name: t("송창수") },
+                { title: t("한식"), name: t("방선배") },
+                { title: t("일식"), name: t("김태완") },
+                { title: t("생활요리"), name: t("김봉예") },
+                { title: t("발효음식"), name: t("성경자") },
+                { title: t("사찰요리"), name: t("전은희") },
+                { title: t("퓨전요리"), name: t("허연웅") },
+                { title: t("실버요리"), name: t("신재복") },
+                { title: t("아시안푸드"), name: t("박부석") },
+                { title: t("전통음식"), name: t("강귀녀") },
+                { title: t("베이커리디저트"), name: t("장현호") },
+                { title: t("떡 & 한과"), name: t("전은희") },
+                { title: t("식음료개발"), name: t("김명선") },
+              ].map((item, idx) => (
+                <div key={idx} className="bg-stone-50 border border-stone-200 rounded-lg p-2 flex items-center justify-between">
+                  <span className="text-stone-500 text-[11px] font-bold">{item.title}</span>
+                  <span className="text-stone-900 font-black text-xs">{item.name}</span>
+                </div>
+              ))}
+            </div>
+            <div className="pt-2 border-t border-stone-100">
+              <span className="text-[10px] font-black text-stone-500 block mb-1.5">{t("5대 운영 분과")}</span>
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5 text-center text-xs">
+                {[
+                  { title: t("기획&행사"), name: t("최제홍") },
+                  { title: t("연회서비스"), name: t("강기숙") },
+                  { title: t("커피"), name: t("김미숙") },
+                  { title: t("칵테일"), name: t("심재학") },
+                  { title: 'R&D', name: t("이재훈") },
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-[#0B3C26] text-white rounded-lg p-1.5">
+                    <span className="text-emerald-300 block text-[9px] font-medium">{item.title}</span>
+                    <span className="font-black text-[11px]">{item.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Interactive Official Diagram (Visible on lg:block OR when mobileView === 'diagram') */}
+      <div className={`bg-white rounded-3xl p-6 sm:p-10 border border-gray-300 shadow-xl overflow-x-auto no-scrollbar ${
+        mobileView === 'diagram' ? 'block' : 'hidden lg:block'
+      }`}>
+        {/* Mobile scroll helper hint */}
+        <p className="lg:hidden text-center text-xs text-stone-500 font-bold mb-4 flex items-center justify-center gap-1">
+          <span>👈</span> {t("화면을 좌우로 스크롤하여 전체 조직도를 확인하세요")} <span>👉</span>
+        </p>
         <div className="min-w-[900px] max-w-6xl mx-auto space-y-8">
           
           {/* LEVEL 1: TOP EXECUTIVE CHAIRMAN (이사장 안형상) */}
           <div className="flex justify-center">
             <div className="w-72 bg-white border-2 border-black rounded-2xl p-5 text-center shadow-lg hover:shadow-2xl transition-all">
-              <span className="text-xs font-black text-gray-500 block uppercase tracking-wider">사단법인 수장</span>
-              <h3 className="text-2xl font-black text-black mt-1">이 사 장</h3>
-              <p className="text-xl font-black text-emerald-800 mt-1">안 형 상</p>
+              <span className="text-xs font-black text-gray-500 block uppercase tracking-wider">{t("사단법인 수장")}</span>
+              <h3 className="text-2xl font-black text-black mt-1">{t("이 사 장")}</h3>
+              <p className="text-xl font-black text-emerald-800 mt-1">{t("안 형 상")}</p>
             </div>
           </div>
 
@@ -46,44 +203,40 @@ export default function OrganizationSection() {
               
               {/* Policy Advisory Group */}
               <div className="bg-gray-50 rounded-2xl border border-gray-300 p-4 space-y-3 shadow-sm">
-                <div className="bg-white border border-black rounded-xl py-2 px-4 text-center font-black text-sm text-black shadow-xs">
-                  정책 자문단
-                </div>
+                <div className="bg-white border border-black rounded-xl py-2 px-4 text-center font-black text-sm text-black shadow-xs">{t("정책 자문단")}{' '}</div>
 
                 <div className="grid grid-cols-3 gap-2 text-center text-xs">
                   <div className="bg-white p-2.5 rounded-xl border border-gray-300">
-                    <span className="font-black text-gray-900 block text-xs">고문단</span>
-                    <span className="text-gray-600 font-bold text-[11px]">이득식, 김동승, 황광해</span>
+                    <span className="font-black text-gray-900 block text-xs">{t("고문단")}</span>
+                    <span className="text-gray-600 font-bold text-[11px]">{t("이득식, 김동승, 황광해")}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-xl border border-gray-300">
-                    <span className="font-black text-gray-900 block text-xs">교수자문단</span>
-                    <span className="text-gray-600 font-bold text-[11px]">안성규 외 13명</span>
+                    <span className="font-black text-gray-900 block text-xs">{t("교수자문단")}</span>
+                    <span className="text-gray-600 font-bold text-[11px]">{t("안성규 외 13명")}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-xl border border-gray-300">
-                    <span className="font-black text-gray-900 block text-xs">사업 기획단</span>
-                    <span className="text-gray-600 font-bold text-[11px]">지기철, 트라이경영연구소</span>
+                    <span className="font-black text-gray-900 block text-xs">{t("사업 기획단")}</span>
+                    <span className="text-gray-600 font-bold text-[11px]">{t("지기철, 트라이경영연구소")}</span>
                   </div>
                 </div>
               </div>
 
               {/* Practice Advisory Group */}
               <div className="bg-gray-50 rounded-2xl border border-gray-300 p-4 space-y-3 shadow-sm">
-                <div className="bg-white border border-black rounded-xl py-2 px-4 text-center font-black text-sm text-black shadow-xs">
-                  실무 자문단
-                </div>
+                <div className="bg-white border border-black rounded-xl py-2 px-4 text-center font-black text-sm text-black shadow-xs">{t("실무 자문단")}{' '}</div>
 
                 <div className="grid grid-cols-3 gap-2 text-center text-xs">
                   <div className="bg-white p-2.5 rounded-xl border border-gray-300">
-                    <span className="font-black text-gray-900 block text-xs">전국협력교육기관</span>
-                    <span className="text-emerald-700 font-black text-[11px]">12곳</span>
+                    <span className="font-black text-gray-900 block text-xs">{t("전국협력교육기관")}</span>
+                    <span className="text-emerald-700 font-black text-[11px]">{t("12곳")}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-xl border border-gray-300">
-                    <span className="font-black text-gray-900 block text-xs">법률자문</span>
-                    <span className="text-gray-600 font-bold text-[11px]">노무사, 세무사, 변호사</span>
+                    <span className="font-black text-gray-900 block text-xs">{t("법률자문")}</span>
+                    <span className="text-gray-600 font-bold text-[11px]">{t("노무사, 세무사, 변호사")}</span>
                   </div>
                   <div className="bg-white p-2.5 rounded-xl border border-gray-300">
-                    <span className="font-black text-gray-900 block text-xs">창업 협력업체</span>
-                    <span className="text-gray-600 font-bold text-[11px]">설비, 인테리어 등</span>
+                    <span className="font-black text-gray-900 block text-xs">{t("창업 협력업체")}</span>
+                    <span className="text-gray-600 font-bold text-[11px]">{t("설비, 인테리어 등")}</span>
                   </div>
                 </div>
               </div>
@@ -95,44 +248,42 @@ export default function OrganizationSection() {
               
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white border border-black rounded-xl p-3 text-center shadow-xs">
-                  <span className="text-xs font-bold text-gray-500 block">사무국장</span>
-                  <span className="font-black text-sm text-black">이원웅</span>
+                  <span className="text-xs font-bold text-gray-500 block">{t("사무국장")}</span>
+                  <span className="font-black text-sm text-black">{t("이원웅")}</span>
                 </div>
                 <div className="bg-white border border-black rounded-xl p-3 text-center shadow-xs">
-                  <span className="text-xs font-bold text-gray-500 block">감사</span>
-                  <span className="font-black text-sm text-black">박경옥</span>
+                  <span className="text-xs font-bold text-gray-500 block">{t("감사")}</span>
+                  <span className="font-black text-sm text-black">{t("박경옥")}</span>
                 </div>
               </div>
 
               <div className="bg-white border border-black rounded-xl p-3 text-center shadow-xs">
-                <span className="text-xs font-bold text-gray-500 block">사무장</span>
-                <span className="font-black text-sm text-black">김근혜</span>
+                <span className="text-xs font-bold text-gray-500 block">{t("사무장")}</span>
+                <span className="font-black text-sm text-black">{t("김근혜")}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white border border-black rounded-xl p-3 text-center shadow-xs">
-                  <span className="text-xs font-bold text-gray-500 block">사무국 대리</span>
-                  <span className="font-black text-sm text-black">장희은</span>
+                  <span className="text-xs font-bold text-gray-500 block">{t("사무국 대리")}</span>
+                  <span className="font-black text-sm text-black">{t("장희은")}</span>
                 </div>
                 <div className="bg-white border border-black rounded-xl p-3 text-center shadow-xs">
-                  <span className="text-xs font-bold text-gray-500 block">사무국 주임</span>
-                  <span className="font-black text-sm text-black">모영주</span>
+                  <span className="text-xs font-bold text-gray-500 block">{t("사무국 주임")}</span>
+                  <span className="font-black text-sm text-black">{t("모영주")}</span>
                 </div>
               </div>
 
               {/* Green Box: Collaborating Legal Entities (협업 법인단체 - Image 4 Green Card) */}
               <div className="bg-emerald-100/80 border-2 border-emerald-500 rounded-2xl p-4 space-y-2 shadow-sm">
-                <span className="text-xs font-black text-emerald-900 block text-center uppercase tracking-wider">
-                  협업 법인단체
-                </span>
+                <span className="text-xs font-black text-emerald-900 block text-center uppercase tracking-wider">{t("협업 법인단체")}{' '}</span>
                 <ul className="text-xs font-extrabold text-emerald-950 space-y-1">
                   <li className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                    <span>사)한국문화관광평가연구원 (문화관광부)</span>
+                    <span>{t("사)한국문화관광평가연구원 (문화관광부)")}</span>
                   </li>
                   <li className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                    <span>사)글로벌푸드연구소 (해양수산부)</span>
+                    <span>{t("사)글로벌푸드연구소 (해양수산부)")}</span>
                   </li>
                 </ul>
               </div>
@@ -147,27 +298,25 @@ export default function OrganizationSection() {
           {/* LEVEL 3: COMMITTEE CHAIR & 14 CULINARY MASTER CATEGORIES (위원장 & 분야별 조리 명인) */}
           <div className="space-y-4">
             
-            <div className="w-64 bg-white border-2 border-black rounded-xl py-3 px-6 mx-auto text-center font-black text-lg text-black shadow-md">
-              위 원 장
-            </div>
+            <div className="w-64 bg-white border-2 border-black rounded-xl py-3 px-6 mx-auto text-center font-black text-lg text-black shadow-md">{t("위 원 장")}{' '}</div>
 
             {/* 14 Culinary Master Categories Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5 text-center text-xs font-extrabold">
               {[
-                { title: '양식', name: '김철우' },
-                { title: '중식', name: '송창수' },
-                { title: '한식', name: '방선배' },
-                { title: '일식', name: '김태완' },
-                { title: '생활요리', name: '김봉예' },
-                { title: '발효음식', name: '성경자' },
-                { title: '사찰요리', name: '전은희' },
-                { title: '퓨전요리', name: '허연웅' },
-                { title: '실버요리', name: '신재복' },
-                { title: '아시안푸드', name: '박부석' },
-                { title: '전통음식', name: '강귀녀' },
-                { title: '베이커리디저트', name: '장현호' },
-                { title: '떡 & 한과', name: '전은희' },
-                { title: '식음료개발', name: '김명선' },
+                { title: t("양식"), name: t("김철우") },
+                { title: t("중식"), name: t("송창수") },
+                { title: t("한식"), name: t("방선배") },
+                { title: t("일식"), name: t("김태완") },
+                { title: t("생활요리"), name: t("김봉예") },
+                { title: t("발효음식"), name: t("성경자") },
+                { title: t("사찰요리"), name: t("전은희") },
+                { title: t("퓨전요리"), name: t("허연웅") },
+                { title: t("실버요리"), name: t("신재복") },
+                { title: t("아시안푸드"), name: t("박부석") },
+                { title: t("전통음식"), name: t("강귀녀") },
+                { title: t("베이커리디저트"), name: t("장현호") },
+                { title: t("떡 & 한과"), name: t("전은희") },
+                { title: t("식음료개발"), name: t("김명선") },
               ].map((item, idx) => (
                 <div key={idx} className="bg-gray-50 border border-gray-300 rounded-xl p-2 hover:border-emerald-500 hover:bg-emerald-50 transition-all">
                   <span className="text-gray-500 block text-[11px]">{item.title}</span>
@@ -179,11 +328,11 @@ export default function OrganizationSection() {
             {/* 5 Operational Divisions Grid */}
             <div className="grid grid-cols-5 gap-2.5 text-center text-xs font-extrabold pt-1">
               {[
-                { title: '기획&행사', name: '최제홍' },
-                { title: '연회서비스', name: '강기숙' },
-                { title: '커피', name: '김미숙' },
-                { title: '칵테일', name: '심재학' },
-                { title: 'R&D', name: '이재훈' },
+                { title: t("기획&행사"), name: t("최제홍") },
+                { title: t("연회서비스"), name: t("강기숙") },
+                { title: t("커피"), name: t("김미숙") },
+                { title: t("칵테일"), name: t("심재학") },
+                { title: 'R&D', name: t("이재훈") },
               ].map((item, idx) => (
                 <div key={idx} className="bg-emerald-950 text-white rounded-xl p-2 border border-emerald-700">
                   <span className="text-emerald-300 block text-[10px]">{item.title}</span>

@@ -1,7 +1,9 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState } from 'react';
 import { ChevronRight, Bell, Calendar, ChevronDown } from 'lucide-react';
 
 export default function NoticePostSection({ onScrollNext }) {
+  const { t } = useLanguage();
   const [activeSlide, setActiveSlide] = useState(0);
 
   const posts = [
@@ -39,11 +41,9 @@ export default function NoticePostSection({ onScrollNext }) {
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold rounded-full flex items-center gap-1">
               <Bell className="w-3.5 h-3.5" />
-              <span>공지사항 & 소식</span>
+              <span>{t("공지사항 & 소식")}</span>
             </span>
-            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-              교육원 주요 소식
-            </h2>
+            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">{' '}{t("교육원 주요 소식")}{' '}</h2>
           </div>
 
           {/* Dots Carousel Indicator */}
@@ -52,7 +52,7 @@ export default function NoticePostSection({ onScrollNext }) {
               <button
                 key={idx}
                 onClick={() => setActiveSlide(idx)}
-                aria-label={`공지 소식 슬라이드 ${idx + 1} 보기`}
+                aria-label={`${t('교육원 주요 소식')} ${idx + 1}`}
                 className={`w-3.5 h-3.5 rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none ${
                   activeSlide === idx ? 'bg-[#D4AF37] scale-125' : 'bg-emerald-900/60 hover:bg-emerald-700'
                 }`}
@@ -68,36 +68,34 @@ export default function NoticePostSection({ onScrollNext }) {
           <div className="w-full md:w-1/2 relative h-56 sm:h-64 rounded-2xl overflow-hidden shadow-lg border border-emerald-500/30 bg-black group shrink-0">
             <img
               src={currentPost.image}
-              alt={currentPost.title}
+              alt={t(currentPost.title)}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
             />
-            <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-emerald-300 font-bold text-xs px-3 py-1 rounded-lg border border-emerald-500/30">
-              사)한국외식창업교육원 공지
-            </div>
+            <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-emerald-300 font-bold text-xs px-3 py-1 rounded-lg border border-emerald-500/30">{' '}{t("사)한국외식창업교육원 공지")}{' '}</div>
           </div>
 
           {/* Right Info Text & Slide Title */}
           <div className="w-full md:w-1/2 space-y-4 md:pl-2">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold">
               <Calendar className="w-3.5 h-3.5" />
-              <span>{currentPost.date}</span>
+              <span>{t(currentPost.date)}</span>
             </div>
 
             <h3 className="text-xl sm:text-2xl font-black text-white leading-snug">
-              {currentPost.title}
+              {t(currentPost.title)}
             </h3>
 
             <p className="text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">
-              {currentPost.subtitle}
+              {t(currentPost.subtitle)}
             </p>
 
             <div className="pt-2">
               <button
-                onClick={() => alert(`"${currentPost.title}" 상세 공지사항 보기`)}
+                onClick={() => alert(t(currentPost.title))}
                 className="px-5 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md transition-all cursor-pointer inline-flex items-center gap-2 border border-[#C5A059] min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
-                aria-label={`${currentPost.title} 전문 읽기`}
+                aria-label={`${t(currentPost.title)} — ${t("게시글 전문 읽기")}`}
               >
-                <span>게시글 전문 읽기</span>
+                <span>{t("게시글 전문 읽기")}</span>
                 <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
               </button>
             </div>

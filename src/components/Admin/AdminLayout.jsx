@@ -84,6 +84,7 @@ import {
 } from '../../services/courseDatabase';
 import { DevInquiryBoard } from './DevInquiryBoard';
 import CertificateModal from './CertificateModal';
+import AdminMasters from './AdminMasters';
 
 // Programmatically generate 128 real full student enrollee & account records
 const generate128Enrollees = () => {
@@ -369,6 +370,9 @@ export default function AdminLayout({
     if (parts[1] === 'home') {
       menu = 'home';
       subTab = 'visual_editor';
+    } else if (parts[1] === 'masters') {
+      menu = 'masters';
+      subTab = 'profile_list';
     } else if (parts[1] === 'developer') {
       menu = 'developer';
       subTab = 'dev_inquiry_list';
@@ -565,6 +569,8 @@ export default function AdminLayout({
   // Sub-menu definitions
   const getSecondaryMenus = () => {
     switch (primaryMenu) {
+      case 'masters':
+        return [{ id: 'profile_list', label: '명장·명인 프로필 목록' }];
       case 'home':
         return [
           { id: 'visual_editor', label: '홈화면 라이브 에디터' },
@@ -689,6 +695,15 @@ export default function AdminLayout({
           </button>
 
           <button
+            onClick={() => switchPrimaryMenu('masters', 'profile_list')}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${primaryMenu === 'masters' ? 'bg-emerald-500 text-black' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}
+            title="명장·명인 프로필 관리"
+          >
+            <Award className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">명장·명인</span>
+          </button>
+
+          <button
             onClick={() => switchPrimaryMenu('courses', 'course_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'courses'
@@ -742,9 +757,10 @@ export default function AdminLayout({
         </nav>
 
         {/* TIER 2: Secondary Expanding Sub-Panel */}
-        <aside className="w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10 h-full overflow-y-auto">
+        <aside className="hidden md:block w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10 h-full overflow-y-auto">
           <div className="px-2 border-b border-gray-200 pb-3">
             <h2 className="text-sm font-black text-black tracking-tight">
+              {primaryMenu === 'masters' && '명장·명인 프로필 관리'}
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
               {primaryMenu === 'developer' && '💻 개발 문의 채널'}
@@ -799,8 +815,10 @@ export default function AdminLayout({
         </aside>
 
         {/* MAIN WORKSTATION CANVAS AREA */}
-        <main className="flex-1 h-full p-6 overflow-y-auto bg-[#f4f6f8] space-y-6 scroll-smooth select-text">
+        <main className="flex-1 min-w-0 h-full p-3 sm:p-6 overflow-y-auto bg-[#f4f6f8] space-y-6 scroll-smooth select-text">
           
+          {primaryMenu === 'masters' && <AdminMasters />}
+
           {/* Notification Alert for Saved Changes */}
           {isSavedNotice && (
             <div className="bg-emerald-100 border-2 border-emerald-500 text-emerald-950 p-4 rounded-2xl flex items-center gap-3 animate-fadeIn shadow-md">
@@ -1194,17 +1212,17 @@ export default function AdminLayout({
                           className="bg-white rounded-3xl p-5 border-2 border-gray-300 shadow-md space-y-4 hover:border-black hover:scale-[1.01] transition-all cursor-pointer flex flex-col justify-between group"
                         >
                           <div className="space-y-3">
-                            <div className="relative h-44 rounded-2xl overflow-hidden bg-black">
+                            <div className="rounded-2xl overflow-hidden bg-stone-50 border border-stone-100">
                               <img
                                 src={course.image || '/images/course_menu_dev.jpg'}
                                 alt={course.title}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                className="block w-full h-56 object-contain"
                               />
-                              <div className="absolute top-3 left-3 bg-black/80 text-white text-[11px] font-black px-3 py-1 rounded-full">
+                              <div className="inline-flex m-2 bg-stone-200 text-stone-700 text-[11px] font-black px-3 py-1 rounded-full">
                                 {course.categoryName || course.industry}
                               </div>
 
-                              <div className="absolute bottom-3 right-3 bg-emerald-500 text-black text-xs font-black px-3 py-1 rounded-full shadow-md font-mono">
+                              <div className="inline-flex m-2 bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-full font-mono">
                                 👥 신청: {enrolleeCount}명
                               </div>
                             </div>
@@ -1676,11 +1694,11 @@ export default function AdminLayout({
                       />
                     </div>
 
-                    <div className="relative h-52 rounded-2xl overflow-hidden border-2 border-emerald-600 bg-black group shadow-md">
+                    <div className="rounded-2xl overflow-hidden border border-emerald-200 bg-white p-3 shadow-sm">
                       <img
                         src={selectedCourseForEdit.image || '/images/course_menu_dev.jpg'}
                         alt="강의 커버 프리뷰"
-                        className="w-full h-full object-cover"
+                        className="block w-full h-auto max-h-[480px] object-contain"
                       />
                     </div>
 
@@ -1793,16 +1811,16 @@ export default function AdminLayout({
                     </div>
 
                     <div className="bg-stone-50 rounded-2xl overflow-hidden border border-stone-300 shadow-sm space-y-3 p-4">
-                      <div className="relative h-48 rounded-xl overflow-hidden bg-black">
+                      <div className="rounded-xl overflow-hidden bg-white">
                         <img
                           src={selectedCourseForEdit.image || '/images/course_menu_dev.jpg'}
                           alt="실시간 미리보기"
-                          className="w-full h-full object-cover"
+                          className="block w-full h-auto object-contain"
                         />
-                        <span className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
-                          {selectedCourseForEdit.categoryName || selectedCourseForEdit.industry || '한식'}
-                        </span>
                       </div>
+                      <span className="inline-flex bg-stone-200 text-stone-700 text-[10px] font-black px-2.5 py-1 rounded-full">
+                        {selectedCourseForEdit.categoryName || selectedCourseForEdit.industry || '한식'}
+                      </span>
 
                       <h4 className="text-base font-black text-black leading-snug">
                         {selectedCourseForEdit.title || '강의명을 입력하세요'}
@@ -1884,13 +1902,13 @@ export default function AdminLayout({
                       className="bg-white rounded-3xl p-5 border-2 border-gray-300 shadow-md space-y-4 hover:border-black hover:scale-[1.01] transition-all cursor-pointer flex flex-col justify-between group"
                     >
                       <div className="space-y-3">
-                        <div className="relative h-44 rounded-2xl overflow-hidden bg-black">
+                        <div className="rounded-2xl overflow-hidden bg-stone-50 border border-stone-100">
                           <img
                             src={c.image || '/images/course_menu_dev.jpg'}
                             alt={c.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="block w-full h-56 object-contain"
                           />
-                          <div className="absolute top-3 left-3 bg-black/80 text-white text-[11px] font-black px-3 py-1 rounded-full">
+                          <div className="inline-flex m-2 bg-stone-200 text-stone-700 text-[11px] font-black px-3 py-1 rounded-full">
                             {c.categoryName || c.industry}
                           </div>
                         </div>

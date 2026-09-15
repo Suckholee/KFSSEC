@@ -1,7 +1,8 @@
-import masterProfilesList from '../../data/masterDirectory.json';
+import { useLanguage } from '../../i18n/LanguageContext';
+import useMasterProfiles from '../../hooks/useMasterProfiles';
 import MasterDirectory from './MasterDirectory';
+import { flushSync } from 'react-dom';
 import React, { useState, useEffect } from 'react';
-import SubSidebar from '../common/SubSidebar';
 import { Award, CheckCircle2, ChevronRight, Scale, Sparkles, UserCheck } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 import MasterPhotoGrid from './MasterPhotoGrid';
@@ -9,6 +10,9 @@ import MasterPhotoGrid from './MasterPhotoGrid';
 const normalizeTab = tab => tab;
 
 export default function MasterBusinessPage({ initialSubTab = 'masters', initialTab = 'masters' }) {
+  const { tr, language } = useLanguage();
+  const { profiles, error: profileError } = useMasterProfiles();
+  const masterProfilesList = profiles.filter(profile => profile.published);
   const defaultSub = normalizeTab(initialSubTab || initialTab || 'masters');
   const [activeTab, setActiveTab] = useState(defaultSub);
 
@@ -19,10 +23,21 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
     }
   }, [initialSubTab, initialTab]);
 
+  const selectTab = id => {
+    if (id === activeTab) return;
+    const update = () => {
+      setActiveTab(id);
+      window.history.pushState({}, '', `/master/${id}`);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    };
+    if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.startViewTransition(() => flushSync(update));
+    } else update();
+  };
   const masterSubItems = [
-    { id: 'masters', label: '명인·명장 사업단' },
-    { id: 'directory', label: '명인' },
+    { id: 'masters', label: '명장·명인 사업단' },
     { id: 'profiles', label: '명장' },
+    { id: 'directory', label: '명인' },
     { id: 'dishes', label: '명인 요리' },
   ];
 
@@ -58,24 +73,36 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
   ];
 
   return (
-    <div className="bg-gray-50 min-h-screen py-6 font-sans text-gray-900">
+    <div className="bg-white min-h-screen py-8 sm:py-12 font-sans text-gray-900">
       
       {/* Full Width Flush Layout matching Header margins */}
-      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-6">
+      <div className="w-full max-w-[1520px] mx-auto px-4 sm:px-8 lg:px-12 space-y-6">
         
         {/* Main Content Layout: Left SubSidebar + Right Main Content */}
-        <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
+        <div className="flex flex-col gap-8 items-stretch">
           
           {/* Left Vertical SubSidebar Menu */}
-          <SubSidebar
-            title="명인 사업단"
-            items={masterSubItems}
-            activeId={activeTab}
-            onSelectTab={(tabId) => setActiveTab(tabId)}
-          />
+          <div className="space-y-7">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-[11px] tracking-[0.22em] font-semibold text-emerald-700 mb-3">KFSSEC · PEOPLE</p>
+                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{tr("명장·명인")}</h1>
+              </div>
+              <p className="text-sm text-gray-500">{tr("외식의 깊이를 더하는 사람들")}</p>
+            </div>
+            <nav aria-label={tr("명장·명인 메뉴")} className="master-profile-tabs grid grid-cols-4 border-b border-gray-800" style={{ '--active-tab': Math.max(0, masterSubItems.findIndex(item => item.id === activeTab)) }}>
+              {masterSubItems.map(item => (
+                <button key={item.id} type="button" aria-current={activeTab === item.id ? 'page' : undefined}
+                  onClick={() => selectTab(item.id)}
+                  className={`min-h-14 px-2 py-3 sm:text-base text-xs border border-b-0 -mb-px font-semibold transition-colors ${activeTab === item.id ? 'relative bg-white border-gray-800 text-gray-950' : 'bg-gray-50 border-gray-200 text-gray-500 hover:text-emerald-800'}`}>
+                  {tr(item.label)}
+                </button>
+              ))}
+            </nav>
+          </div>
 
           {/* Right Main Content Panel */}
-          <div className="flex-1 w-full space-y-6 min-w-0">
+          <div className="master-profile-content flex-1 w-full space-y-6 min-w-0">
             
             {activeTab === 'directory' && <MasterDirectory key="expert" group="expert" />}
             {activeTab === 'profiles' && <MasterDirectory key="master" group="master" />}
@@ -90,21 +117,19 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                   <div className="flex flex-col items-center sm:items-start justify-center space-y-1.5 z-10">
                     <div className="inline-flex items-center gap-1.5 px-3 py-0.5 bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#D4AF37] text-xs font-bold rounded-full">
                       <Award className="w-3.5 h-3.5 text-[#D4AF37]" />
-                      <span>사단법인 한국외식창업교육원 명장 그룹</span>
+                      <span>{tr("사단법인 한국외식창업교육원 명장 그룹")}</span>
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2">
-                      <span>명인·명장 사업단</span>
+                      <span>{tr("명장·명인 사업단")}</span>
                       <span className="text-[#D4AF37] text-base font-bold hidden lg:inline">| KFSSEC Master Group</span>
                     </h2>
-                    <p className="text-xs text-emerald-100/80 font-medium">
-                      대한민국 외식 조리 명인·장인 및 펫창업 전문가로 구성된 검증된 실무 사업단입니다.
-                    </p>
+                    <p className="text-xs text-emerald-100/80 font-medium">{tr(" 대한민국 외식 조리 명인·장인 및 펫창업 전문가로 구성된 검증된 실무 사업단입니다. ")}</p>
                   </div>
 
                   <div className="px-2 py-2 shrink-0 flex items-center justify-center z-10">
                     <img
                       src="/images/logo-transparent.svg"
-                      alt="사단법인 한국외식창업교육원"
+                      alt={tr("사단법인 한국외식창업교육원")}
                       className="h-16 w-auto object-contain brightness-0 invert"
                     />
                   </div>
@@ -114,22 +139,19 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                 <div className="bg-white rounded-2xl p-4 sm:p-5 border border-stone-200 shadow-sm space-y-3 w-full">
                   <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b border-stone-200 pb-2">
                     <Scale className="w-4 h-4 text-[#0B3C26]" />
-                    <span>설립목적</span>
+                    <span>{tr("설립목적")}</span>
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-700 font-bold">
                     <div className="flex items-start gap-2.5 bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
                       <CheckCircle2 className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
-                      <p className="leading-snug">
-                        본원은 <span className="text-[#0B3C26] font-black">[민법] 제32조</span> 및 농림축산식품부 소관 비영리법인의 설립 및 감독에 관한 규칙 제5조에 따라 공식 설립됨.
-                      </p>
+                      <p className="leading-snug">{tr(" 본원은 ")}<span className="text-[#0B3C26] font-black">{tr("[민법] 제32조")}</span>{tr(" 및 농림축산식품부 소관 비영리법인의 설립 및 감독에 관한 규칙 제5조에 따라 공식 설립됨. ")}</p>
                     </div>
 
                     <div className="flex items-start gap-2.5 bg-stone-50 p-3 rounded-xl border border-stone-200">
                       <CheckCircle2 className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
                       <p className="leading-snug">
-                        <span className="text-[#0B3C26] font-black">농수축산물 외식산업 발전</span>과 <span className="text-gray-900 font-black">외식·펫창업 전문 교육</span>을 통해 외식산업 경쟁력 강화 및 산업 발전에 기여함.
-                      </p>
+                        <span className="text-[#0B3C26] font-black">{tr("농수축산물 외식산업 발전")}</span>{tr("과 ")}<span className="text-gray-900 font-black">{tr("외식·펫창업 전문 교육")}</span>{tr("을 통해 외식산업 경쟁력 강화 및 산업 발전에 기여함. ")}</p>
                     </div>
                   </div>
                 </div>
@@ -139,17 +161,22 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                   <div className="flex items-center justify-between border-b-2 border-[#0B3C26] pb-3">
                     <h3 className="text-2xl font-black text-gray-900 flex items-center gap-2">
                       <UserCheck className="w-6 h-6 text-[#0B3C26]" />
-                      <span>대한민국 명인·명장 교수진</span>
+                      <span>{tr("대한민국 명장·명인 교수진")}</span>
                     </h3>
                     <button
-                      onClick={() => setActiveTab('directory')}
+                      onClick={() => {
+                        setActiveTab('profiles');
+                        window.history.pushState({}, '', '/master/profiles');
+                        window.dispatchEvent(new PopStateEvent('popstate'));
+                      }}
                       className="text-xs font-black text-[#0B3C26] hover:underline flex items-center gap-1 cursor-pointer"
                     >
-                      <span>명인 보기</span>
+                      <span>{tr("명장 보기")}</span>
                       <ChevronRight className="w-4 h-4 text-[#C5A059]" />
                     </button>
                   </div>
 
+                  {profileError && <p role="alert" className="text-red-700">{tr(profileError)}</p>}
                   <MasterPhotoGrid profiles={masterProfilesList.slice(0, 6)} />
                 </div>
 
@@ -166,13 +193,9 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                       <Sparkles className="w-3.5 h-3.5" />
                       <span>MASTER SIGNATURE DISHES</span>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2">
-                      명인 요리
-                    </h2>
+                    <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mt-2">{tr(" 명인 요리 ")}</h2>
                   </div>
-                  <span className="text-xs font-bold text-gray-500 hidden sm:inline">
-                    대한민국 외식업 분야별 명인 셰프 시그니처 레시피
-                  </span>
+                  <span className="text-xs font-bold text-gray-500 hidden sm:inline">{tr(" 대한민국 외식업 분야별 명인 셰프 시그니처 레시피 ")}</span>
                 </div>
 
                 {/* Slanted High Quality Food Dish Photos Grid */}
@@ -184,26 +207,26 @@ export default function MasterBusinessPage({ initialSubTab = 'masters', initialT
                         <div className="relative h-60 sm:h-64 rounded-2xl overflow-hidden shadow-md bg-black transform -skew-x-4 group-hover:skew-x-0 transition-transform duration-500 shrink-0">
                           <img
                             src={dish.image}
-                            alt={dish.title}
+                            alt={tr(dish.title)}
                             className="w-full h-full object-cover transform skew-x-4 group-hover:skew-x-0 group-hover:scale-108 transition-transform duration-700"
                           />
                           <div className="absolute top-3 left-3 bg-black/85 text-[#D4AF37] font-black text-[11px] px-3 py-1 rounded-full transform skew-x-4 border border-[#C5A059]/40">
-                            {dish.category}
+                            {tr(dish.category)}
                           </div>
                         </div>
 
                         <div className="space-y-2 px-1 pb-1 flex-1 flex flex-col justify-between">
                           <div>
                             <h3 className="text-base font-black text-gray-900 group-hover:text-[#0B3C26] transition-colors leading-snug">
-                              {dish.title}
+                              {tr(dish.title)}
                             </h3>
                             <p className="text-xs text-gray-600 font-medium leading-relaxed mt-1.5">
-                              {dish.desc}
+                              {tr(dish.desc)}
                             </p>
                           </div>
 
                           <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#0B3C26]">
-                            <span>명인 레시피 과정</span>
+                            <span>{tr("명인 레시피 과정")}</span>
                             <ChevronRight className="w-4 h-4 text-[#D4AF37] group-hover:translate-x-1 transition-transform" />
                           </div>
                         </div>

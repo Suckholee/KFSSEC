@@ -1,3 +1,4 @@
+import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import {
   ArrowLeft,
@@ -23,6 +24,7 @@ import {
 } from 'lucide-react';
 
 export default function CommunityEditorPage({ onPublishPost, onCancel, currentUser }) {
+  const { tr, language } = useLanguage();
   const [category, setCategory] = useState('문의');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -68,11 +70,11 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) {
-      alert('게시글 제목을 입력해 주세요.');
+      alert(tr('게시글 제목을 입력해 주세요.'));
       return;
     }
     if (!content.trim()) {
-      alert('게시글 본문 내용을 작성해 주세요.');
+      alert(tr('게시글 본문 내용을 작성해 주세요.'));
       return;
     }
 
@@ -111,7 +113,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
               type="button"
               onClick={onCancel}
               className="p-2.5 bg-gray-100 hover:bg-black hover:text-white rounded-2xl transition-all cursor-pointer"
-              title="게시판으로 돌아가기"
+              title={tr("게시판으로 돌아가기")}
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
@@ -119,9 +121,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
               <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full uppercase">
                 COMMUNITY BLOG EDITOR
               </span>
-              <h1 className="text-2xl font-black text-black tracking-tight mt-1">
-                새 게시글 작성
-              </h1>
+              <h1 className="text-2xl font-black text-black tracking-tight mt-1">{tr(" 새 게시글 작성 ")}</h1>
             </div>
           </div>
 
@@ -129,8 +129,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
             {/* Draft Save Status Indicator */}
             {isDraftSaved && (
               <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1 animate-fadeIn">
-                <CheckCircle2 className="w-4 h-4" /> 임시 저장 완료!
-              </span>
+                <CheckCircle2 className="w-4 h-4" />{tr(" 임시 저장 완료! ")}</span>
             )}
 
             {/* Toggle Preview Mode */}
@@ -144,7 +143,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
               }`}
             >
               {previewMode ? <Edit3 className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              <span>{previewMode ? '편집기로 변경' : '미리보기'}</span>
+              <span>{tr(previewMode ? '편집기로 변경' : '미리보기')}</span>
             </button>
 
             {/* Save Draft */}
@@ -154,7 +153,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
               className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <Save className="w-4 h-4 text-gray-600" />
-              <span>임시저장</span>
+              <span>{tr("임시저장")}</span>
             </button>
 
             {/* Publish Post Button */}
@@ -164,7 +163,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
               className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer"
             >
               <Send className="w-4 h-4 text-emerald-400" />
-              <span>게시글 발행</span>
+              <span>{tr("게시글 발행")}</span>
             </button>
           </div>
 
@@ -178,7 +177,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
             
             {/* Category Dropdown */}
             <div className="sm:col-span-4 space-y-2">
-              <label className="block text-xs font-black text-gray-700">게시판 카테고리 선택</label>
+              <label className="block text-xs font-black text-gray-700">{tr("게시판 카테고리 선택")}</label>
               <select
                 value={category}
                 onChange={(e) => {
@@ -188,16 +187,16 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 }}
                 className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-300 rounded-2xl text-sm font-black text-black focus:outline-none focus:border-black shadow-xs cursor-pointer"
               >
-                <option value="문의">문의하기</option>
-                <option value="갤러리">갤러리</option>
-                <option value="요리대회">요리대회</option>
-                <option value="공지 사항">공지 사항 (상단 고정)</option>
+                <option value="문의">{tr("문의하기")}</option>
+                <option value="갤러리">{tr("갤러리")}</option>
+                <option value="요리대회">{tr("요리대회")}</option>
+                <option value="공지 사항">{tr("공지 사항 (상단 고정)")}</option>
               </select>
             </div>
 
             {/* Top Pin Toggle Button */}
             <div className="sm:col-span-3 space-y-2">
-              <label className="block text-xs font-black text-gray-700">상단 고정 여부</label>
+              <label className="block text-xs font-black text-gray-700">{tr("상단 고정 여부")}</label>
               <button
                 type="button"
                 onClick={() => setIsPinned(!isPinned)}
@@ -208,7 +207,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 }`}
               >
                 <Pin className={`w-4 h-4 ${isPinned ? 'fill-rose-500 text-rose-600' : ''}`} />
-                <span>{isPinned ? '📌 상단 고정 설정됨' : '상단 고정 안함'}</span>
+                <span>{tr(isPinned ? '📌 상단 고정 설정됨' : '상단 고정 안함')}</span>
               </button>
             </div>
 
@@ -216,7 +215,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
             <div className="sm:col-span-5 space-y-2">
               <label className="block text-xs font-black text-gray-700 flex items-center gap-1">
                 <ImageIcon className="w-4 h-4 text-emerald-700" />
-                <span>대표 커버 이미지 선택</span>
+                <span>{tr("대표 커버 이미지 선택")}</span>
               </label>
               <div className="flex flex-wrap items-center gap-2">
                 {presetCoverImages.map((img, idx) => (
@@ -230,7 +229,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                         : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
                     }`}
                   >
-                    <span>🖼️ {img.label}</span>
+                    <span>🖼️ {tr(img.label)}</span>
                     {coverImage === img.url && <span className="text-emerald-400">✓</span>}
                   </button>
                 ))}
@@ -244,16 +243,14 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
             <div className="relative h-48 sm:h-64 rounded-2xl overflow-hidden shadow-md bg-black border-2 border-black group">
               <img
                 src={coverImage}
-                alt="대표 커버 사진"
+                alt={tr("대표 커버 사진")}
                 className="w-full h-full object-cover"
               />
               <button
                 type="button"
                 onClick={() => setCoverImage('')}
                 className="absolute top-3 right-3 bg-black/80 hover:bg-rose-600 text-white font-black text-xs px-3 py-1.5 rounded-xl border border-white/20 cursor-pointer"
-              >
-                커버 사진 제거 ✕
-              </button>
+              >{tr(" 커버 사진 제거 ✕ ")}</button>
             </div>
           )}
 
@@ -261,7 +258,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
           <div className="pt-2">
             <input
               type="text"
-              placeholder="제목을 입력하세요 (예: 1:1 수강생 커리큘럼 매칭 문의드립니다)"
+              placeholder={tr("제목을 입력하세요 (예: 1:1 수강생 커리큘럼 매칭 문의드립니다)")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full text-2xl sm:text-4xl font-black text-black placeholder:text-gray-300 border-b-2 border-stone-300 pb-3 focus:outline-none focus:border-black transition-colors"
@@ -272,7 +269,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
           <div className="flex flex-wrap items-center gap-2 pt-1 pb-4">
             <div className="flex items-center gap-1.5 text-xs font-black text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
               <Tag className="w-3.5 h-3.5" />
-              <span>태그</span>
+              <span>{tr("태그")}</span>
             </div>
 
             {tags.map((tag, idx) => (
@@ -280,15 +277,15 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 key={idx}
                 className="bg-stone-100 hover:bg-stone-200 text-stone-900 font-bold text-xs px-3 py-1.5 rounded-xl border border-stone-300 flex items-center gap-1.5 cursor-pointer"
                 onClick={() => handleRemoveTag(tag)}
-                title="태그 삭제"
+                title={tr("태그 삭제")}
               >
-                #{tag} <span className="text-gray-400 hover:text-rose-600">✕</span>
+                #{tr(tag)} <span className="text-gray-400 hover:text-rose-600">✕</span>
               </span>
             ))}
 
             <input
               type="text"
-              placeholder="태그 입력 후 Enter (예: 외식창업)"
+              placeholder={tr("태그 입력 후 Enter (예: 외식창업)")}
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleAddTag}
@@ -303,7 +300,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 type="button"
                 onClick={() => handleInsertFormat('###')}
                 className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs flex items-center gap-1 cursor-pointer"
-                title="제목 1"
+                title={tr("제목 1")}
               >
                 <Heading1 className="w-4 h-4" />
               </button>
@@ -311,7 +308,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 type="button"
                 onClick={() => handleInsertFormat('####')}
                 className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs flex items-center gap-1 cursor-pointer"
-                title="제목 2"
+                title={tr("제목 2")}
               >
                 <Heading2 className="w-4 h-4" />
               </button>
@@ -322,7 +319,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 type="button"
                 onClick={() => handleInsertFormat('**굵게**')}
                 className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title="굵게"
+                title={tr("굵게")}
               >
                 <Bold className="w-4 h-4" />
               </button>
@@ -330,7 +327,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 type="button"
                 onClick={() => handleInsertFormat('*기울임*')}
                 className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title="기울임"
+                title={tr("기울임")}
               >
                 <Italic className="w-4 h-4" />
               </button>
@@ -341,7 +338,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 type="button"
                 onClick={() => handleInsertFormat('> 인용구')}
                 className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title="인용구"
+                title={tr("인용구")}
               >
                 <Quote className="w-4 h-4" />
               </button>
@@ -349,7 +346,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 type="button"
                 onClick={() => handleInsertFormat('- ')}
                 className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title="글머리 기호"
+                title={tr("글머리 기호")}
               >
                 <List className="w-4 h-4" />
               </button>
@@ -360,7 +357,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
                 type="button"
                 onClick={() => handleInsertFormat('```\n코드\n```')}
                 className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title="코드 블록"
+                title={tr("코드 블록")}
               >
                 <Code className="w-4 h-4" />
               </button>
@@ -371,7 +368,7 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
           {!previewMode ? (
             <textarea
               rows="14"
-              placeholder="내용을 마음껏 작성해주세요. (질문, 후기, 메뉴 레시피, 창업 문의 등)"
+              placeholder={tr("내용을 마음껏 작성해주세요. (질문, 후기, 메뉴 레시피, 창업 문의 등)")}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="w-full p-6 bg-stone-50 border-2 border-stone-300 rounded-3xl text-sm sm:text-base font-medium text-black focus:outline-none focus:border-black resize-none leading-relaxed shadow-inner"
@@ -381,18 +378,16 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
               <div className="border-b border-stone-300 pb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-black text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
-                    {category}
+                    {tr(category)}
                   </span>
                   {isPinned && (
-                    <span className="text-xs font-black text-white bg-rose-600 px-2.5 py-0.5 rounded-md flex items-center gap-1">
-                      📌 상단고정
-                    </span>
+                    <span className="text-xs font-black text-white bg-rose-600 px-2.5 py-0.5 rounded-md flex items-center gap-1">{tr(" 📌 상단고정 ")}</span>
                   )}
                 </div>
-                <h2 className="text-2xl font-black text-black pt-2">{title || '제목 없음'}</h2>
+                <h2 className="text-2xl font-black text-black pt-2">{tr(title || '제목 없음')}</h2>
               </div>
               <div className="text-sm font-medium text-gray-800 whitespace-pre-wrap leading-relaxed">
-                {content || '본문 내용이 없습니다.'}
+                {tr(content || '본문 내용이 없습니다.')}
               </div>
             </div>
           )}
@@ -401,9 +396,9 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
           <div className="pt-4 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-gray-500 font-bold gap-2">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>작성자: <strong className="text-black font-black">{currentUser?.name || '수강생 회원'}</strong> (로그인 세션 인증 완료)</span>
+              <span>{tr("작성자: ")}<strong className="text-black font-black">{tr(currentUser?.name || '수강생 회원')}</strong>{tr(" (로그인 세션 인증 완료)")}</span>
             </div>
-            <span>사단법인 한국외식창업교육원 운영 정책 준수</span>
+            <span>{tr("사단법인 한국외식창업교육원 운영 정책 준수")}</span>
           </div>
 
         </div>

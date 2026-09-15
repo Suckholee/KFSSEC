@@ -1,110 +1,24 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
-import { ChevronRight, Sparkles, ChevronDown } from 'lucide-react';
+import { ArrowRight, Layers } from 'lucide-react';
+import { qualifications } from '../data/qualifications';
 
-export default function FullPackageCoursesSection({ onSelectPackage, onScrollNext }) {
-  const packages = [
-    {
-      id: 'pkg-1',
-      title: '외식창업 마스터 풀 패키지',
-      subtitle: '창업 준비의 모든 것, 한 번에!',
-      tags: ['창업기획', '사업계획', '상권분석', '인허가'],
-      image: '/images/package_card_1.png',
-    },
-    {
-      id: 'pkg-2',
-      title: '메뉴개발·원가관리 풀 패키지',
-      subtitle: '수익을 만드는 메뉴의 모든 것!',
-      tags: ['메뉴기획', '레시피 표준화', '원가가산', '가격전략'],
-      image: '/images/package_card_2.png',
-    },
-    {
-      id: 'pkg-3',
-      title: '매장운영·서비스 풀 패키지',
-      subtitle: '오래 사랑받는 매장 운영의 기본!',
-      tags: ['인력관리', '고객응대', '위생관리', '매출관리'],
-      image: '/images/package_card_3.png',
-    },
-    {
-      id: 'pkg-4',
-      title: '외식마케팅·프랜차이즈 풀 패키지',
-      subtitle: '매출 성장과 확장을 한 번에!',
-      tags: ['브랜딩', '온라인 마케팅', '배달 플랫폼', '가맹사업'],
-      image: '/images/package_card_4.png',
-    },
-  ];
+const packages = [
+  { title: '외식창업 마스터 풀 패키지', subtitle: '창업 준비의 모든 것, 한 번에', tags: ['창업기획', '사업계획', '상권분석', '인허가'], courses: ['advisor', 'practice'] },
+  { title: '메뉴개발·원가관리 풀 패키지', subtitle: '메뉴와 한국음식 역량을 함께', tags: ['메뉴기획', '레시피 표준화', '원가관리', '가격전략'], courses: ['kfood', 'practice'] },
+  { title: '매장운영·서비스 풀 패키지', subtitle: '오래 사랑받는 매장 운영의 기본', tags: ['인력관리', '고객응대', '위생관리', '매출관리'], courses: ['practice', 'advisor'] },
+  { title: '외식마케팅·프랜차이즈 풀 패키지', subtitle: '매출 성장과 확장을 위한 준비', tags: ['브랜딩', '온라인 마케팅', '배달 플랫폼', '가맹사업'], courses: ['advisor', 'practice'] },
+];
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onSelectPackage();
-    }
-  };
-
-  return (
-    <section className="relative py-12 lg:py-16 bg-[#0A1410] text-white min-h-full flex flex-col justify-center border-b border-emerald-950">
-      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-8 max-w-7xl mx-auto">
-        
-        {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] fill-current" />
-              <span>SPECIAL ALL-IN-ONE PACKAGES</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              외식 & 펫 창업 풀 패키지 추천
-            </h2>
-            <p className="text-xs sm:text-sm text-emerald-100/70 font-semibold mt-1">
-              창업 준비부터 메뉴 개발, 매장 운영, 마케팅까지 한 번에 완성하는 통합 패키지
-            </p>
-          </div>
-          
-          <button
-            onClick={onSelectPackage}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xl transition-all shrink-0 whitespace-nowrap self-start sm:self-auto cursor-pointer border border-[#C5A059] min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
-            aria-label="외식 및 펫 창업 전체 패키지 신청 페이지로 이동"
-          >
-            <span>전체 올인원 패키지 신청하기</span>
-            <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
-          </button>
-        </div>
-
-        {/* 4-Column Responsive Vertical Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {packages.map((pkg) => (
-            <article
-              key={pkg.id}
-              onClick={onSelectPackage}
-              onKeyDown={handleKeyPress}
-              tabIndex={0}
-              role="button"
-              aria-label={`${pkg.title} 상세 보기, ${pkg.subtitle}`}
-              className="group relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl border border-emerald-500/20 hover:border-emerald-400/60 transition-all duration-300 cursor-pointer bg-[#111C16] flex flex-col hover:-translate-y-2 focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
-            >
-              {/* Package Card Graphic Image */}
-              <div className="relative aspect-[3/4] w-full overflow-hidden bg-black">
-                <img
-                  src={pkg.image}
-                  alt={pkg.title}
-                  className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111C16] via-transparent to-transparent opacity-60 pointer-events-none" />
-              </div>
-
-              {/* Bottom Interactive Action Banner */}
-              <div className="p-4 bg-[#111C16] border-t border-emerald-500/20 flex items-center justify-between group-hover:bg-[#0B3C26] transition-colors">
-                <span className="text-xs font-black text-emerald-300 group-hover:text-white transition-colors">
-                  수강 및 1:1 상담 신청
-                </span>
-                <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-300 group-hover:bg-[#D4AF37] group-hover:text-black flex items-center justify-center transition-all">
-                  <ChevronRight className="w-4 h-4" />
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
+export default function FullPackageCoursesSection({ onSelectPackage }) {
+  const { t } = useLanguage();
+  return <section className="py-12 lg:py-16 bg-[#0A1410] text-white border-b border-emerald-950"><div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+    <p className="text-[#D4AF37] font-bold text-sm">ALL-IN-ONE PACKAGES</p>
+    <div className="flex flex-wrap justify-between items-end gap-4 mt-2 mb-8"><div><h2 className="text-2xl sm:text-3xl font-black">{t("외식창업 풀 패키지 상담")}</h2><p className="mt-3 text-sm text-emerald-100/70">{t("창업 목표에 맞춰 실제 자격과정과 함께 상담하세요. 패키지 구성·일정·비용은 상담 시 안내합니다.")}</p></div><button onClick={onSelectPackage} className="rounded-xl border border-[#C5A059] px-5 py-3 font-bold text-sm">{t("패키지 상담 신청")}</button></div>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">{packages.map((pkg,index) => <article key={t(pkg.title)} className="rounded-3xl border border-emerald-500/30 bg-[#111C16] overflow-hidden flex flex-col">
+      <div className="p-6 bg-gradient-to-br from-[#174f38] to-[#111C16] min-h-56"><div className="flex justify-between text-[#D4AF37]"><Layers size={28}/><span className="font-bold">0{index+1}</span></div><h3 className="text-2xl font-black mt-7 leading-snug">{t(pkg.title)}</h3><p className="text-sm text-emerald-100/70 mt-3">{t(pkg.subtitle)}</p></div>
+      <div className="p-5 flex-1"><p className="text-xs text-gray-400 mb-3">{t("상담 주제")}</p><div className="flex flex-wrap gap-2">{pkg.tags.map(tag=><span key={t(tag)} className="rounded-full px-2.5 py-1 bg-emerald-500/10 text-xs text-emerald-200">{t(tag)}</span>)}</div><p className="mt-6 mb-2 text-xs text-gray-400">{t("관련 자격과정")}</p>{pkg.courses.map(id=><p key={id} className="text-sm leading-7">{t(qualifications.find(q=>q.id===id).name)}{' '}{t("2급")}</p>)}</div>
+      <button onClick={onSelectPackage} className="p-5 border-t border-emerald-900 flex justify-between items-center text-emerald-300 text-sm font-bold" aria-label={`${t(pkg.title)} — ${t("패키지 상담 신청")}`}>{t("수강 및 1:1 상담 신청")}{' '}<ArrowRight size={18}/></button>
+    </article>)}</div>
+  </div></section>;
 }

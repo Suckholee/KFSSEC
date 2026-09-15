@@ -333,9 +333,10 @@ export default function AdminContent({ siteData, onUpdateSiteData }) {
                         <img
                           src={thumbnailUrl}
                           alt={video.title}
+                          onLoad={(e) => { e.target.style.visibility = 'visible'; }}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 brightness-95"
                           onError={(e) => {
-                            e.target.src = '/images/hero_bg.jpg';
+                            e.target.style.visibility = 'hidden';
                           }}
                         />
                         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />

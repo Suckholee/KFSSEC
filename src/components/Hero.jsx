@@ -1,7 +1,9 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { ChevronRight, GraduationCap, Award, Building2, ChevronDown } from 'lucide-react';
 
 export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
+  const { t } = useLanguage();
   return (
     <section className="relative overflow-hidden bg-gradient-to-r from-[#FDFBF7] via-[#F8F6F0] to-[#EFEBE4] min-h-[640px] flex items-center py-10 lg:py-16 pb-20 lg:pb-16 border-b-2 border-[#E7E2D8]">
       
@@ -10,7 +12,7 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
         <div className="relative w-full lg:w-[65%] h-full ml-auto">
           <img
             src="/images/hero_bg.jpg?v=3"
-            alt="2024 대한민국 자랑스러운 명인·장인·명장 인물대상 시상식"
+            alt={t("2024 대한민국 자랑스러운 명인·장인·명장 인물대상 시상식")}
             className="w-full h-full object-cover object-center lg:object-right opacity-90 brightness-95"
           />
           {/* Multi-layer Gradient Fade */}
@@ -29,42 +31,38 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
             <div className="space-y-4">
               {/* Sub-label Badge */}
               <div className="inline-block px-4 py-1.5 bg-[#F2ECE0] border border-[#D4C5B0] rounded-full shadow-xs">
-                <span className="text-xs sm:text-sm font-extrabold text-[#0B3C26] tracking-tight">
-                  사단법인 한국외식창업교육원
-                </span>
+                <span className="text-xs sm:text-sm font-extrabold text-[#0B3C26] tracking-tight">{' '}{t("사단법인 한국외식창업교육원")}{' '}</span>
               </div>
 
               {/* Main Headline */}
               <h1 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-[#0B3C26] leading-[1.35] tracking-tight">
-                <span>꿈꾸는 외식창업</span>
-                <span className="block mt-1.5 text-[#07472A] font-extrabold">
-                  아무에게나 맡기시겠습니까?
-                </span>
+                <span>{t("꿈꾸는 외식창업")}</span>
+                <span className="block mt-1.5 text-[#07472A] font-extrabold">{' '}{t("아무에게나 맡기시겠습니까?")}{' '}</span>
               </h1>
 
               {/* Subtext */}
               <div className="text-base sm:text-lg text-[#4A4740] font-semibold leading-relaxed max-w-xl space-y-1 pt-1">
-                <p>오랜 현장실무경험과 실력을 갖춘 명인, 명장님께 맡겨주세요!</p>
-                <p className="text-[#0B3C26] font-extrabold">성공적인 창업은 저희가 책임지겠습니다</p>
+                <p>{t("오랜 현장실무경험과 실력을 갖춘 명인, 명장님께 맡겨주세요!")}</p>
+                <p className="text-[#0B3C26] font-extrabold">{t("성공적인 창업은 저희가 책임지겠습니다")}</p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-2">
                 <button
                   onClick={onExploreClick}
-                  className="px-7 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-sm sm:text-base rounded-2xl shadow-lg shadow-[#0B3C26]/20 transition-all flex items-center gap-2 group cursor-pointer border border-[#0B3C26] min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
-                  aria-label="교육과정 둘러보기 목록으로 이동"
+                  className="w-full sm:w-auto px-7 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-sm sm:text-base rounded-2xl shadow-lg shadow-[#0B3C26]/20 transition-all flex items-center justify-center gap-2 group cursor-pointer border border-[#0B3C26] min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+                  aria-label={t("교육과정 둘러보기 목록으로 이동")}
                 >
-                  <span>교육과정 둘러보기</span>
+                  <span>{t("교육과정 둘러보기")}</span>
                   <ChevronRight className="w-5 h-5 text-[#D4AF37] group-hover:translate-x-1 transition-transform" />
                 </button>
 
                 <button
                   onClick={onAboutClick}
-                  className="px-7 py-3.5 bg-white hover:bg-[#F3ECE0] border-2 border-[#0B3C26] text-[#0B3C26] font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center gap-2 group cursor-pointer shadow-sm min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
-                  aria-label="교육원 상세 소개 페이지로 이동"
+                  className="w-full sm:w-auto px-7 py-3.5 bg-white hover:bg-[#F3ECE0] border-2 border-[#0B3C26] text-[#0B3C26] font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center gap-2 group cursor-pointer shadow-sm min-h-[48px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+                  aria-label={t("교육원 상세 소개 페이지로 이동")}
                 >
-                  <span>교육원 소개</span>
+                  <span>{t("교육원 소개")}</span>
                   <ChevronRight className="w-5 h-5 text-[#0B3C26] group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
@@ -80,12 +78,8 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F2ECE0] border border-[#D4C5B0] flex items-center justify-center mb-2 text-[#0B3C26] shadow-xs">
                       <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                     </div>
-                    <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
-                      온라인
-                    </span>
-                    <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
-                      2급 자격과정
-                    </span>
+                    <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">{' '}{t("온라인")}{' '}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">{' '}{t("2급 자격과정")}{' '}</span>
                   </div>
 
                   {/* Stat 2 */}
@@ -93,12 +87,8 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F2ECE0] border border-[#D4C5B0] flex items-center justify-center mb-2 text-[#0B3C26] shadow-xs">
                       <Award className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                     </div>
-                    <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
-                      4주 이내
-                    </span>
-                    <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
-                      수강 기간
-                    </span>
+                    <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">{' '}{t("4주 이내")}{' '}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">{' '}{t("수강 기간")}{' '}</span>
                   </div>
 
                   {/* Stat 3 */}
@@ -106,12 +96,8 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F2ECE0] border border-[#D4C5B0] flex items-center justify-center mb-2 text-[#0B3C26] shadow-xs">
                       <Building2 className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                     </div>
-                    <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
-                      3개 과정
-                    </span>
-                    <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
-                      창업·한국음식
-                    </span>
+                    <span className="text-sm sm:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">{' '}{t("3개 과정")}{' '}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">{' '}{t("창업·한국음식")}{' '}</span>
                   </div>
 
                 </div>
@@ -127,7 +113,7 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
       <button
         onClick={onScrollNext}
         className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none rounded-full p-1 min-h-[44px]"
-        aria-label="아래 섹션으로 스크롤"
+        aria-label={t("아래 섹션으로 스크롤")}
       >
         <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#0B3C26] group-hover:text-[#C5A059] transition-colors">
           SCROLL DOWN

@@ -1,17 +1,20 @@
+import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import { Rocket, Shield, HelpCircle, CheckSquare, ChevronRight, ArrowLeft, FileText, CheckCircle2 } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
 export default function ConsultingPage({ initialSubTab = 'education', initialTab = 'education', onOpenAuth }) {
-  const defaultSub = initialSubTab || initialTab || 'education';
+  const { tr, language } = useLanguage();
+  const resolveTab = value => value === 'apply' ? 'consulting' : ['education', 'consulting', 'youth', 'readiness'].includes(value) ? value : 'education';
+  const defaultSub = resolveTab(initialSubTab || initialTab);
   const [activeTab, setActiveTab] = useState(defaultSub);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
   useEffect(() => {
     const target = initialSubTab || initialTab;
     if (target) {
-      setActiveTab(target);
+      setActiveTab(resolveTab(target));
     }
   }, [initialSubTab, initialTab]);
 
@@ -26,7 +29,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
     if (onOpenAuth) {
       onOpenAuth('consulting');
     } else {
-      alert(`[${type}] 신청 양식으로 이동합니다.`);
+      alert(tr`[${type}] 신청 양식으로 이동합니다.`);
     }
   };
 
@@ -39,7 +42,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
           
           {/* Left Vertical SubSidebar Menu */}
           <SubSidebar
-            title="창업컨설팅"
+            title={tr("창업컨설팅")}
             items={consultingSubItems}
             activeId={activeTab}
             onSelectTab={(tabId) => setActiveTab(tabId)}
@@ -55,18 +58,12 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-8 w-full">
                   
                   {/* Black Rounded Pill Header */}
-                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                    창업 교육 신청
-                  </div>
+                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">{tr(" 창업 교육 신청 ")}</div>
 
                   {/* Description Box */}
                   <div className="space-y-4 max-w-3xl">
-                    <h3 className="text-xl sm:text-2xl font-black text-black">
-                      창업 교육 신청 란
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-800 font-bold leading-relaxed">
-                      창업 교육론은 청년 그리고 일반으로 나누어 지고있으며, 해당하는 정부 지원 정책도 소개하고 있기에 나눴습니다. 아래 신청 버튼을 눌러서 신청하시면 됩니다.
-                    </p>
+                    <h3 className="text-xl sm:text-2xl font-black text-black">{tr(" 창업 교육 신청 란 ")}</h3>
+                    <p className="text-sm sm:text-base text-gray-800 font-bold leading-relaxed">{tr(" 창업 교육론은 청년 그리고 일반으로 나누어 지고있으며, 해당하는 정부 지원 정책도 소개하고 있기에 나눴습니다. 아래 신청 버튼을 눌러서 신청하시면 됩니다. ")}</p>
                   </div>
 
                   {/* Terms & Conditions Button (약관 ◀) */}
@@ -75,7 +72,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       onClick={() => setShowTermsModal(true)}
                       className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                     >
-                      <span>약관</span>
+                      <span>{tr("약관")}</span>
                       <span className="text-xs">◀</span>
                     </button>
                   </div>
@@ -88,19 +85,15 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
                         GOVERNMENT POLICY SUPPORT
                       </span>
-                      <h4 className="text-xl font-black text-black">
-                        청년 창업 교육
-                      </h4>
-                      <p className="text-xs text-gray-600 font-medium leading-relaxed">
-                        만 39세 이하 청년 예비 창업자를 위한 정부지원 연계 특화 창업 교육 프로그램
-                      </p>
+                      <h4 className="text-xl font-black text-black">{tr(" 청년 창업 교육 ")}</h4>
+                      <p className="text-xs text-gray-600 font-medium leading-relaxed">{tr(" 만 39세 이하 청년 예비 창업자를 위한 정부지원 연계 특화 창업 교육 프로그램 ")}</p>
                       
                       <div className="pt-2">
                         <button
                           onClick={() => handleApplyClick('청년 창업 교육')}
                           className="w-full py-3 bg-black hover:bg-gray-800 text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
-                          <span>신청</span>
+                          <span>{tr("신청")}</span>
                           <span>◀</span>
                         </button>
                       </div>
@@ -111,19 +104,15 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       <span className="text-xs font-black text-blue-800 bg-blue-100 px-3 py-1 rounded-full">
                         GENERAL STARTUP PACKAGE
                       </span>
-                      <h4 className="text-xl font-black text-black">
-                        일반 창업 교육
-                      </h4>
-                      <p className="text-xs text-gray-600 font-medium leading-relaxed">
-                        업종 전환 및 신규 외식업 창업자를 위한 실전 메뉴개발 및 매장 운영 집중 교육
-                      </p>
+                      <h4 className="text-xl font-black text-black">{tr(" 일반 창업 교육 ")}</h4>
+                      <p className="text-xs text-gray-600 font-medium leading-relaxed">{tr(" 업종 전환 및 신규 외식업 창업자를 위한 실전 메뉴개발 및 매장 운영 집중 교육 ")}</p>
                       
                       <div className="pt-2">
                         <button
                           onClick={() => handleApplyClick('일반 창업 교육')}
                           className="w-full py-3 bg-black hover:bg-gray-800 text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
-                          <span>신청</span>
+                          <span>{tr("신청")}</span>
                           <span>◀</span>
                         </button>
                       </div>
@@ -141,17 +130,11 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   
-                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                    창업 컨설팅
-                  </div>
+                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">{tr(" 창업 컨설팅 ")}</div>
 
                   <div className="space-y-4 max-w-3xl">
-                    <h3 className="text-xl sm:text-2xl font-black text-black">
-                      1:1 맞춤형 외식 창업 비즈니스 컨설팅
-                    </h3>
-                    <p className="text-sm text-gray-700 font-bold leading-relaxed">
-                      사단법인 한국외식창업교육원의 외식업 40년 명장진이 상권 분석부터 레시피 개발, 인테리어 설계, N:N 커리큘럼 매칭까지 밀착 컨설팅을 제공합니다.
-                    </p>
+                    <h3 className="text-xl sm:text-2xl font-black text-black">{tr(" 1:1 맞춤형 외식 창업 비즈니스 컨설팅 ")}</h3>
+                    <p className="text-sm text-gray-700 font-bold leading-relaxed">{tr(" 사단법인 한국외식창업교육원의 외식업 40년 명장진이 상권 분석부터 레시피 개발, 인테리어 설계, N:N 커리큘럼 매칭까지 밀착 컨설팅을 제공합니다. ")}</p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
@@ -162,8 +145,8 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                     ].map((item, idx) => (
                       <div key={idx} className="bg-stone-50 p-5 rounded-2xl border border-stone-300 space-y-2">
                         <CheckCircle2 className="w-5 h-5 text-emerald-700" />
-                        <h4 className="font-black text-black text-base">{item.title}</h4>
-                        <p className="text-xs text-gray-600 font-medium">{item.desc}</p>
+                        <h4 className="font-black text-black text-base">{tr(item.title)}</h4>
+                        <p className="text-xs text-gray-600 font-medium">{tr(item.desc)}</p>
                       </div>
                     ))}
                   </div>
@@ -172,9 +155,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                     <button
                       onClick={() => handleApplyClick('1:1 창업 컨설팅')}
                       className="px-8 py-3.5 bg-black hover:bg-gray-800 text-white font-black text-sm rounded-xl shadow-md transition-all cursor-pointer"
-                    >
-                      1:1 컨설팅 신청하기
-                    </button>
+                    >{tr(" 1:1 컨설팅 신청하기 ")}</button>
                   </div>
 
                 </div>
@@ -186,17 +167,11 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-8 w-full">
                   
-                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                    청년 창업 상담 신청
-                  </div>
+                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">{tr(" 청년 창업 상담 신청 ")}</div>
 
                   <div className="space-y-4 max-w-3xl">
-                    <h3 className="text-xl sm:text-2xl font-black text-black">
-                      청년 창업 상담 신청
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-800 font-bold leading-relaxed">
-                      청년 창업 상담 신청 하는 곳입니다.
-                    </p>
+                    <h3 className="text-xl sm:text-2xl font-black text-black">{tr(" 청년 창업 상담 신청 ")}</h3>
+                    <p className="text-sm sm:text-base text-gray-800 font-bold leading-relaxed">{tr(" 청년 창업 상담 신청 하는 곳입니다. ")}</p>
                   </div>
 
                   <div className="pt-2">
@@ -204,7 +179,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       onClick={() => setShowTermsModal(true)}
                       className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                     >
-                      <span>약관</span>
+                      <span>{tr("약관")}</span>
                       <span className="text-xs">◀</span>
                     </button>
                   </div>
@@ -214,7 +189,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       onClick={() => handleApplyClick('청년 창업 상담')}
                       className="px-8 py-3.5 bg-black hover:bg-gray-800 text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                     >
-                      <span>신청</span>
+                      <span>{tr("신청")}</span>
                       <span className="text-xs">◀</span>
                     </button>
                   </div>
@@ -228,17 +203,11 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
               <div className="space-y-8 animate-fadeIn w-full">
                 <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
                   
-                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">
-                    창업 준비
-                  </div>
+                  <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">{tr(" 창업 준비 ")}</div>
 
                   <div className="space-y-4 max-w-3xl">
-                    <h3 className="text-xl sm:text-2xl font-black text-black">
-                      성공 창업을 위한 Step-by-Step 가이드라인
-                    </h3>
-                    <p className="text-sm text-gray-700 font-bold leading-relaxed">
-                      체계적인 창업 준비 프로세스로 실패 없는 외식 창업을 가꾸어 드립니다.
-                    </p>
+                    <h3 className="text-xl sm:text-2xl font-black text-black">{tr(" 성공 창업을 위한 Step-by-Step 가이드라인 ")}</h3>
+                    <p className="text-sm text-gray-700 font-bold leading-relaxed">{tr(" 체계적인 창업 준비 프로세스로 실패 없는 외식 창업을 가꾸어 드립니다. ")}</p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
@@ -250,10 +219,10 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                     ].map((step, idx) => (
                       <div key={idx} className="bg-stone-50 p-5 rounded-2xl border border-stone-300 space-y-2">
                         <span className="text-xs font-black text-white bg-black px-2.5 py-1 rounded-lg">
-                          STEP {step.step}
+                          STEP {tr(step.step)}
                         </span>
-                        <h4 className="font-black text-black text-base pt-1">{step.title}</h4>
-                        <p className="text-xs text-gray-600 font-medium">{step.desc}</p>
+                        <h4 className="font-black text-black text-base pt-1">{tr(step.title)}</h4>
+                        <p className="text-xs text-gray-600 font-medium">{tr(step.desc)}</p>
                       </div>
                     ))}
                   </div>
@@ -273,7 +242,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-black shadow-2xl space-y-4 animate-fadeIn">
             <div className="flex items-center justify-between border-b border-gray-200 pb-3">
-              <h3 className="text-lg font-black text-black">창업 교육 및 상담 이용약관</h3>
+              <h3 className="text-lg font-black text-black">{tr("창업 교육 및 상담 이용약관")}</h3>
               <button
                 onClick={() => setShowTermsModal(false)}
                 className="text-gray-400 hover:text-black font-black text-xl"
@@ -283,19 +252,17 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
             </div>
             
             <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 text-xs text-gray-700 space-y-2 max-h-60 overflow-y-auto font-medium">
-              <p className="font-bold text-black">제1조 (목적)</p>
-              <p>본 약관은 사단법인 한국외식창업교육원이 제공하는 창업 교육 및 1:1 창업 컨설팅 서비스의 이용조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
-              <p className="font-bold text-black pt-2">제2조 (개인정보 수집 동의)</p>
-              <p>신청 시 입력하신 이름, 연락처, 희망 업종 정보는 상담 및 일정 안내 목적으로만 활용됩니다.</p>
+              <p className="font-bold text-black">{tr("제1조 (목적)")}</p>
+              <p>{tr("본 약관은 사단법인 한국외식창업교육원이 제공하는 창업 교육 및 1:1 창업 컨설팅 서비스의 이용조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.")}</p>
+              <p className="font-bold text-black pt-2">{tr("제2조 (개인정보 수집 동의)")}</p>
+              <p>{tr("신청 시 입력하신 이름, 연락처, 희망 업종 정보는 상담 및 일정 안내 목적으로만 활용됩니다.")}</p>
             </div>
 
             <div className="pt-2 text-right">
               <button
                 onClick={() => setShowTermsModal(false)}
                 className="px-6 py-2.5 bg-black text-white font-black text-xs rounded-xl shadow-md hover:bg-gray-800 transition-colors"
-              >
-                확인 및 닫기
-              </button>
+              >{tr(" 확인 및 닫기 ")}</button>
             </div>
           </div>
         </div>

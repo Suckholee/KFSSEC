@@ -1,3 +1,4 @@
+import { useLanguage } from '../../i18n/LanguageContext';
 import React from 'react';
 import CourseCard from './CourseCard';
 import { SearchX } from 'lucide-react';
@@ -9,6 +10,7 @@ export default function CourseGrid({
   onSelectCourse,
   onResetFilters,
 }) {
+  const { tr, language } = useLanguage();
   // Skeleton Loader Cards (8 skeleton cards)
   if (loading) {
     return (
@@ -46,19 +48,13 @@ export default function CourseGrid({
           <SearchX className="w-8 h-8 stroke-[1.8]" />
         </div>
         <div>
-          <h3 className="text-lg font-extrabold text-gray-900">
-            검색 결과가 없습니다
-          </h3>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            과정명 또는 교수명을 다시 입력해 주세요.
-          </p>
+          <h3 className="text-lg font-extrabold text-gray-900">{tr(" 검색 결과가 없습니다 ")}</h3>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">{tr(" 과정명 또는 교수명을 다시 입력해 주세요. ")}</p>
         </div>
         <button
           onClick={onResetFilters}
           className="px-5 py-2.5 bg-[#1E2B4D] hover:bg-slate-900 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm"
-        >
-          필터 조건 초기화하기
-        </button>
+        >{tr(" 필터 조건 초기화하기 ")}</button>
       </div>
     );
   }

@@ -1,4 +1,7 @@
-import { QualificationHighlights } from './components/Catalog/QualificationGuide';
+import NetflixCoursesSection from './components/NetflixCoursesSection';
+import FullPackageCoursesSection from './components/FullPackageCoursesSection';
+import CategoryCourseSection from './components/CategoryCourseSection';
+import CategoryFocusSection from './components/CategoryFocusSection';
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -46,9 +49,9 @@ function ScrollToTopButton() {
     <button
       onClick={scrollToTop}
       aria-label="페이지 맨 위로 이동"
-      className="fixed bottom-6 right-6 z-40 p-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-full shadow-2xl transition-all cursor-pointer border border-[#C5A059] flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+      className="fixed bottom-32 sm:bottom-6 right-3 sm:right-6 z-30 p-3 sm:p-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-full shadow-2xl transition-all cursor-pointer border border-[#C5A059] flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
     >
-      <ChevronUp className="w-5 h-5 text-[#D4AF37] group-hover:-translate-y-0.5 transition-transform" />
+      <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37] group-hover:-translate-y-0.5 transition-transform" />
     </button>
   );
 }
@@ -258,7 +261,7 @@ export default function App() {
             subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
             channel: '한국외식창업교육원 공식 채널',
             categoryBadge: '공식 채널 영상',
-            thumbnail: '/images/yt_thumb_1.jpg',
+            thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/hqdefault.jpg',
             uploadDate: '2024.02.03',
           },
           {
@@ -269,7 +272,7 @@ export default function App() {
             subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
             channel: '아시아창의방송(actv) 언론 보도',
             categoryBadge: '언론 보도 영상',
-            thumbnail: '/images/yt_thumb_2.jpg',
+            thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/hqdefault.jpg',
             uploadDate: '2024.01.15',
           },
         ],
@@ -398,7 +401,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white overflow-x-clip">
       {/* Top Main Navigation Header */}
       <Header
         activeTab={activeTab}
@@ -417,11 +420,14 @@ export default function App() {
               onExploreClick={() => handleTabChange('catalog')}
               onAboutClick={() => handleTabChange('about', 'greetings')}
             />
-            <QualificationHighlights onExplore={() => handleTabChange('catalog', 'courses')} />
             <YouTubeMediaSection
               youtubeData={siteData.youtube}
               onPlayVideo={handleOpenVideo}
             />
+            <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+            <FullPackageCoursesSection onSelectPackage={() => handleTabChange('consulting', 'consulting')} />
+            <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+            <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
             <NoticePostSection onScrollNext={() => scrollToSection('footer')} />
 
           </div>
@@ -436,7 +442,10 @@ export default function App() {
         )}
 
         {activeTab === 'catalog' && (
-          <CourseCatalogPage initialSubTab={subTab || 'courses'} />
+          <CourseCatalogPage
+            initialSubTab={subTab || 'courses'}
+            onGoToConsulting={() => handleTabChange('consulting', 'consulting')}
+          />
         )}
 
         {activeTab === 'consulting' && (

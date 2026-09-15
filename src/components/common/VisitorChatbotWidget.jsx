@@ -1,7 +1,9 @@
+import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import { MessageSquare, X, Send, Bot, Sparkles, ChevronRight, PhoneCall, Building2, BookOpen, Award } from 'lucide-react';
 
 export default function VisitorChatbotWidget({ onNavigate }) {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [chatLog, setChatLog] = useState([
     {
@@ -27,8 +29,8 @@ export default function VisitorChatbotWidget({ onNavigate }) {
     },
     {
       id: 'masters',
-      label: '👨‍🍳 명인·명장 정보를 보고 싶어요.',
-      reply: '40년 경력의 안형상 이사장님을 비롯한 대한민국 조리 명인·명장 사업단에서 특제 레시피와 노하우를 직접 전수합니다.',
+      label: '👨‍🍳 명장·명인 정보를 보고 싶어요.',
+      reply: '40년 경력의 안형상 이사장님을 비롯한 대한민국 조리 명장·명인 사업단에서 특제 레시피와 노하우를 직접 전수합니다.',
       actionTab: 'master',
       actionSubTab: 'masters',
     },
@@ -54,18 +56,18 @@ export default function VisitorChatbotWidget({ onNavigate }) {
         <button
           onClick={() => setIsOpen(true)}
           className="px-5 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm sm:text-base rounded-full shadow-2xl transition-all border-2 border-[#C5A059] flex items-center gap-2.5 cursor-pointer group hover:scale-105"
-          aria-label="AI 챗봇 도우미 열기"
+          aria-label={t('AI 챗봇 도우미 열기', 'Open AI guide')}
         >
           <div className="w-9 h-9 rounded-full bg-[#C5A059] text-white flex items-center justify-center font-black shadow-xs">
             <Bot className="w-5 h-5 text-[#0B3C26]" />
           </div>
-          <span>💬 AI 안내 챗봇</span>
+          <span>{t('💬 AI 안내 챗봇', '💬 AI Guide')}</span>
         </button>
       )}
 
       {/* Expanded Large Chatbot Window */}
       {isOpen && (
-        <div className="bg-white rounded-3xl w-[92vw] sm:w-[460px] max-w-[480px] shadow-2xl border-2 border-[#0B3C26] overflow-hidden flex flex-col h-[560px] sm:h-[620px] transition-all">
+        <div className="bg-white rounded-3xl w-[92vw] sm:w-[460px] max-w-[480px] shadow-2xl border-2 border-[#0B3C26] overflow-hidden flex flex-col h-[560px] sm:h-[620px] max-h-[calc(100dvh-7rem)] transition-all">
           {/* Header */}
           <div className="bg-[#0B3C26] text-white p-4 px-6 flex items-center justify-between border-b-2 border-[#C5A059] shrink-0">
             <div className="flex items-center gap-3">
@@ -73,22 +75,23 @@ export default function VisitorChatbotWidget({ onNavigate }) {
                 <Bot className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="font-black text-base sm:text-lg text-white leading-tight">한국외식창업교육원 챗봇</h4>
-                <span className="text-xs text-emerald-200 font-bold">● 24시간 실시간 질문 도우미</span>
+                <h4 className="font-black text-base sm:text-lg text-white leading-tight">{t('한국외식창업교육원 챗봇')}</h4>
+                <span className="text-xs text-emerald-200 font-bold">{t('● 24시간 실시간 질문 도우미')}</span>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
               className="w-8 h-8 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center transition-colors cursor-pointer"
-              title="닫기"
+              title={t('닫기')}
+              aria-label={t('닫기')}
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Messages Log with Increased Font Size & Spacing */}
-          <div className="flex-1 p-4 sm:p-5 overflow-y-auto space-y-4 bg-[#FDFBF7] text-sm sm:text-base font-bold">
+          <div className="flex-1 min-h-0 p-4 sm:p-5 overflow-y-auto space-y-4 bg-[#FDFBF7] text-sm sm:text-base font-bold">
             {chatLog.map((msg, idx) => (
               <div
                 key={idx}
@@ -101,7 +104,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
                       : 'bg-white text-gray-900 font-bold border border-stone-200 rounded-tl-none'
                   }`}
                 >
-                  {msg.text}
+                  {t(msg.text)}
                 </div>
 
                 {msg.targetTab && (
@@ -112,7 +115,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
                     }}
                     className="mt-2 px-4 py-2 bg-[#C5A059] hover:bg-[#B38F48] text-white text-xs sm:text-sm font-black rounded-xl transition-all shadow-sm flex items-center gap-1.5 cursor-pointer border border-[#D4AF37]"
                   >
-                    <span>해당 페이지로 바로 이동</span>
+                    <span>{t('해당 페이지로 바로 이동')}</span>
                     <ChevronRight className="w-4 h-4 text-white" />
                   </button>
                 )}
@@ -123,7 +126,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
           {/* Quick Option Selection Buttons (Larger & Clearer for All Ages) */}
           <div className="p-4 bg-white border-t-2 border-stone-200 space-y-2 shrink-0">
             <span className="text-xs sm:text-sm font-black text-gray-700 block px-1">
-              원하시는 문의 항목을 아래에서 선택하세요:
+              {t('원하시는 문의 항목을 아래에서 선택하세요:')}
             </span>
             <div className="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-1">
               {quickQuestions.map((q) => (
@@ -132,7 +135,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
                   onClick={() => handleSelectQuestion(q)}
                   className="w-full text-left p-3 sm:p-3.5 bg-[#F8F6F0] hover:bg-emerald-50 text-gray-900 font-extrabold text-xs sm:text-sm rounded-2xl border border-stone-300 hover:border-[#0B3C26] transition-all flex items-center justify-between cursor-pointer shadow-2xs group"
                 >
-                  <span className="group-hover:text-[#0B3C26]">{q.label}</span>
+                  <span className="group-hover:text-[#0B3C26]">{t(q.label)}</span>
                   <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#0B3C26] group-hover:translate-x-0.5 transition-transform" />
                 </button>
               ))}

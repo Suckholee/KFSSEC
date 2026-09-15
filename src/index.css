@@ -7,12 +7,20 @@
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     letter-spacing: -0.025em;
     word-break: keep-all;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
   }
 
   h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.03em;
     word-break: keep-all;
+  }
+}
+
+@layer utilities {
+  .overflow-x-clip {
+    overflow-x: clip;
   }
 }
 
@@ -75,3 +83,200 @@
     background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 70%, rgba(255,255,255,0.4) 100%);
   }
 }
+
+/* Instructor directory: editorial type and portrait-led cards. */
+.master-teacher-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 12px;
+}
+.master-teacher-card {
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 0.9;
+  overflow: hidden;
+  background: #f3f4f4;
+  text-align: left;
+  border: 1px solid transparent;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.master-teacher-card.is-master { background: #eff1f6; }
+.master-teacher-card:hover { border-color: #b9c9c2; box-shadow: 0 6px 20px #173f2c12; }
+.master-teacher-card:focus-visible { outline: 3px solid #187451; outline-offset: 4px; }
+.master-teacher-headline {
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+  color: #343b39;
+  font-size: clamp(13px, 1.1vw, 17px);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -.04em;
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.master-teacher-portrait {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 72%;
+  height: 73%;
+  object-fit: cover;
+  object-position: center 18%;
+  mix-blend-mode: multiply;
+  mask-image: linear-gradient(to right, transparent, black 18%);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 18%);
+}
+.master-teacher-identity {
+  position: absolute;
+  z-index: 2;
+  left: 16px;
+  bottom: 30px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 12px 12px 12px 0;
+  background: linear-gradient(90deg, #f3f4f4 65%, #f3f4f400);
+}
+.is-master .master-teacher-identity { background: linear-gradient(90deg, #eff1f6 65%, #eff1f600); }
+.master-teacher-category { color: #168060; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.is-master .master-teacher-category { color: #506eb0; }
+.master-teacher-name { color: #252a28; font-size: clamp(19px, 1.65vw, 25px); line-height: 1.25; font-weight: 700; letter-spacing: -.05em; overflow-wrap: anywhere; max-width: 5em; }
+.master-teacher-label { margin-top: 7px; color: #666d69; font-size: 11px; }
+.master-teacher-arrow {
+  position: absolute;
+  z-index: 3;
+  bottom: 14px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffffeb;
+  color: #3b5145;
+}
+.master-teacher-card:hover .master-teacher-arrow { background: #155a40; color: white; }
+@media (min-width: 640px) {
+  .master-teacher-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 18px; }
+  .master-teacher-headline { top: 22px; left: 20px; }
+  .master-teacher-identity { left: 20px; bottom: 36px; }
+}
+@media (min-width: 1024px) { .master-teacher-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .master-teacher-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px 20px; } }
+@media (prefers-reduced-motion: reduce) { .master-teacher-card { transition: none; } }
+
+/* Quiet motion for the master portfolio. */
+.master-teacher-card { background: #f5f3ee; }
+.master-teacher-card.is-master { background: #f0ede6; }
+.master-teacher-identity { background: linear-gradient(90deg, #f5f3ee 65%, #f5f3ee00); }
+.is-master .master-teacher-identity { background: linear-gradient(90deg, #f0ede6 65%, #f0ede600); }
+.is-master .master-teacher-category { color: #927442; }
+.master-teacher-portrait { transition: transform 850ms cubic-bezier(.22,1,.36,1); transform-origin: bottom center; }
+.master-teacher-headline::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 30px; height: 1px;
+  background: #b2986b; transform: scaleX(0); transform-origin: left;
+  transition: transform 450ms cubic-bezier(.22,1,.36,1);
+}
+.master-teacher-headline { padding-bottom: 9px; }
+.master-teacher-arrow { transition: background 250ms, color 250ms, transform 450ms; }
+.master-teacher-card:focus-visible .master-teacher-headline::after { transform: scaleX(1); }
+@media (hover: hover) {
+  .master-teacher-card:hover .master-teacher-portrait { transform: scale(1.03); }
+  .master-teacher-card:hover .master-teacher-headline::after { transform: scaleX(1); }
+  .master-teacher-card:hover .master-teacher-arrow { background: #292d29; transform: translate(2px,-2px); }
+}
+.master-teacher-card.awaiting-reveal { opacity: 0; transform: translateY(16px); }
+.master-teacher-card.awaiting-reveal:focus-visible { opacity: 1; transform: none; }
+.master-teacher-card.has-revealed { animation: master-card-reveal 650ms cubic-bezier(.22,1,.36,1) var(--reveal-delay, 0ms) both; }
+@keyframes master-card-reveal { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.master-profile-backdrop { animation: master-backdrop-in 260ms ease-out both; }
+@keyframes master-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+.master-profile-dialog { border-color: #bba77f; }
+.master-profile-tabs { position: relative; }
+.master-profile-tabs::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; width: 25%; height: 3px;
+  background: #b49a69; transform: translateX(calc(var(--active-tab, 0) * 100%));
+  transition: transform 400ms cubic-bezier(.22,1,.36,1); pointer-events: none;
+}
+.master-profile-content { view-transition-name: master-content; }
+::view-transition-old(master-content) { animation: master-content-out 180ms ease both; }
+::view-transition-new(master-content) { animation: master-content-in 320ms ease both; }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+@keyframes master-content-out { to { opacity: 0; } }
+@keyframes master-content-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .master-teacher-card, .master-teacher-portrait, .master-teacher-arrow,
+  .master-teacher-headline::after, .master-profile-tabs::after, .master-profile-backdrop {
+    animation: none !important; transition: none !important;
+  }
+  .master-teacher-card.awaiting-reveal { opacity: 1; transform: none; }
+  .master-teacher-card:hover .master-teacher-portrait, .master-teacher-card:hover .master-teacher-arrow { transform: none; }
+  ::view-transition-old(master-content), ::view-transition-new(master-content) { animation: none; }
+}
+
+/* English names and headlines need more horizontal space than Korean. */
+html[lang="en"] .master-teacher-headline {
+  font-size: clamp(11px, .95vw, 14px);
+  letter-spacing: -.01em;
+  line-height: 1.4;
+  -webkit-line-clamp: 3;
+}
+html[lang="en"] .master-teacher-name {
+  max-width: 9em;
+  font-size: clamp(14px, 1.2vw, 18px);
+  letter-spacing: -.02em;
+  overflow-wrap: normal;
+}
+
+/* Mobile compact typography & layout refinements (< 640px) */
+@media (max-width: 639px) {
+  .master-teacher-grid {
+    gap: 14px 10px;
+  }
+  .master-teacher-card {
+    aspect-ratio: 0.86;
+    border-radius: 18px;
+  }
+  .master-teacher-headline {
+    top: 14px;
+    left: 12px;
+    right: 12px;
+    font-size: 12px;
+    line-height: 1.35;
+    letter-spacing: -0.035em;
+    padding-bottom: 4px;
+  }
+  .master-teacher-identity {
+    left: 12px;
+    bottom: 14px;
+    padding: 6px 10px 6px 0;
+  }
+  .master-teacher-category {
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+  .master-teacher-name {
+    font-size: 15.5px;
+    letter-spacing: -0.04em;
+  }
+  .master-teacher-label {
+    display: none;
+  }
+  .master-teacher-arrow {
+    bottom: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+  }
+  .master-teacher-portrait {
+    width: 74%;
+    height: 74%;
+  }
+}
+

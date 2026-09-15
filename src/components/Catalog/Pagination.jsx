@@ -1,7 +1,9 @@
+import { useLanguage } from '../../i18n/LanguageContext';
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
+  const { tr, language } = useLanguage();
   if (totalPages <= 1) return null;
 
   const renderPageNumbers = () => {
@@ -59,7 +61,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
                 : 'bg-white text-gray-700 border border-gray-200 hover:bg-emerald-50 hover:text-emerald-800'
             }`}
           >
-            {num}
+            {tr(num)}
           </button>
         );
       })}

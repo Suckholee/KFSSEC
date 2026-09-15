@@ -1,3 +1,4 @@
+import { useLanguage } from '../../i18n/LanguageContext';
 import React from 'react';
 
 export default function FilterPanel({
@@ -8,6 +9,7 @@ export default function FilterPanel({
   selectedFormats,
   onToggleFormat,
 }) {
+  const { tr, language } = useLanguage();
   const industries = [
     '전체보기',
     '한식',
@@ -39,9 +41,7 @@ export default function FilterPanel({
       
       {/* 1. 업종별 필터 */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <span className="text-sm font-black text-gray-900 w-24 shrink-0">
-          업종별
-        </span>
+        <span className="text-sm font-black text-gray-900 w-24 shrink-0">{tr(" 업종별 ")}</span>
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
           {industries.map((item) => {
             const isActive =
@@ -58,7 +58,7 @@ export default function FilterPanel({
                     : 'bg-white text-gray-700 border border-gray-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-800'
                 }`}
               >
-                {item}
+                {tr(item)}
               </button>
             );
           })}
@@ -70,9 +70,7 @@ export default function FilterPanel({
 
       {/* 2. 창업 단계별 필터 */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <span className="text-sm font-black text-gray-900 w-24 shrink-0">
-          창업 단계별
-        </span>
+        <span className="text-sm font-black text-gray-900 w-24 shrink-0">{tr(" 창업 단계별 ")}</span>
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
           {stages.map((item) => {
             const isActive =
@@ -89,7 +87,7 @@ export default function FilterPanel({
                     : 'bg-white text-gray-700 border border-gray-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-800'
                 }`}
               >
-                {item}
+                {tr(item)}
               </button>
             );
           })}
@@ -101,9 +99,7 @@ export default function FilterPanel({
 
       {/* 3. 교육 형태 필터 (Checkboxes) */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <span className="text-sm font-black text-gray-900 w-24 shrink-0">
-          교육 형태
-        </span>
+        <span className="text-sm font-black text-gray-900 w-24 shrink-0">{tr(" 교육 형태 ")}</span>
         <div className="flex items-center gap-6 py-1">
           {formats.map((fmt) => {
             const isChecked =
@@ -122,7 +118,7 @@ export default function FilterPanel({
                   onChange={() => onToggleFormat(fmt)}
                   className="w-4 h-4 rounded text-emerald-600 border-gray-300 focus:ring-emerald-500 cursor-pointer"
                 />
-                <span>{fmt}</span>
+                <span>{tr(fmt)}</span>
               </label>
             );
           })}

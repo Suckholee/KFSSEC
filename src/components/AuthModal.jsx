@@ -1,7 +1,9 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import { X, Mail, Lock, User, Phone, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function AuthModal({ isOpen = false, initialMode = 'login', onClose, onLoginSuccess }) {
+  const { tr, language } = useLanguage();
   const [mode, setMode] = useState(initialMode);
   const [submitted, setSubmitted] = useState(false);
   const [activeProvider, setActiveProvider] = useState('');
@@ -28,10 +30,10 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
 
   // Initialize Kakao SDK dynamically
   useEffect(() => {
+    if (!isOpen) return;
     const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY || 'a1b2c3d4e5f67890123456789abcdef0';
     if (typeof window !== 'undefined') {
       if (!window.Kakao && !document.getElementById('kakao-sdk')) {
@@ -57,7 +59,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
         }
       }
     }
-  }, []);
+  }, [isOpen]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -147,6 +149,8 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
     }, 1000);
   };
 
+  if (!isOpen) return null;
+
   return (
     <div
       onClick={onClose}
@@ -161,7 +165,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
-          title="닫기 (ESC)"
+          title={tr("닫기 (ESC)")}
         >
           <X className="w-5 h-5" />
         </button>
@@ -170,15 +174,13 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
         <div className="text-center space-y-1">
           <img
             src="/images/logo-transparent.svg"
-            alt="사단법인 한국외식창업교육원"
+            alt={tr("사단법인 한국외식창업교육원")}
             className="h-10 sm:h-12 w-auto object-contain mx-auto mb-2"
           />
           <h2 className="text-2xl font-black text-[#0B3C26] tracking-tight">
-            {mode === 'login' ? '로그인' : '회원가입'}
+            {tr(mode === 'login' ? '로그인' : '회원가입')}
           </h2>
-          <p className="text-xs text-gray-600 font-bold">
-            (사)한국외식창업교육원 통합 회원 서비스
-          </p>
+          <p className="text-xs text-gray-600 font-bold">{tr(" (사)한국외식창업교육원 통합 회원 서비스 ")}</p>
         </div>
 
         {submitted ? (
@@ -187,11 +189,9 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
               <CheckCircle2 className="w-10 h-10 text-[#0B3C26]" />
             </div>
             <h3 className="text-xl font-black text-[#0B3C26]">
-              {activeProvider ? `${activeProvider} 간편 계정 ${mode === 'login' ? '로그인' : '회원가입'} 완료!` : (mode === 'login' ? '성공적으로 로그인되었습니다.' : '가입이 정상 완료되었습니다!')}
+              {tr(activeProvider ? tr`${activeProvider} 간편 계정 ${mode === 'login' ? '로그인' : '회원가입'} 완료!` : (mode === 'login' ? '성공적으로 로그인되었습니다.' : '가입이 정상 완료되었습니다!'))}
             </h3>
-            <p className="text-xs text-gray-600 font-bold">
-              한국외식창업교육원 수강 관리 페이지로 이동합니다.
-            </p>
+            <p className="text-xs text-gray-600 font-bold">{tr(" 한국외식창업교육원 수강 관리 페이지로 이동합니다. ")}</p>
           </div>
         ) : (
           <div className="space-y-5">
@@ -207,11 +207,9 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
                 <svg className="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
                   <path d="M12 3C6.477 3 2 6.477 2 10.772c0 2.766 1.83 5.19 4.606 6.55-.202.753-.732 2.723-.837 3.138-.13.518.19.512.4.373.164-.109 2.62-1.782 3.678-2.5.703.1 1.433.153 2.153.153 5.523 0 10-3.477 10-7.714C22 6.477 17.523 3 12 3z" />
                 </svg>
-                <span>💬 카카오톡 1초 간편 {mode === 'login' ? '로그인' : '회원가입'}</span>
+                <span>{tr("💬 카카오톡 1초 간편 ")}{tr(mode === 'login' ? '로그인' : '회원가입')}</span>
               </button>
-              <p className="text-[10px] text-amber-900 text-center font-black bg-amber-50 py-1.5 rounded-lg border border-amber-200">
-                ※ 사업자 카카오비즈니스 채널 및 대표자 계정 간편 연동 지원
-              </p>
+              <p className="text-[10px] text-amber-900 text-center font-black bg-amber-50 py-1.5 rounded-lg border border-amber-200">{tr(" ※ 사업자 카카오비즈니스 채널 및 대표자 계정 간편 연동 지원 ")}</p>
 
               {/* Gmail / Google Easy Sign up & Login */}
               <button
@@ -236,7 +234,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                   />
                 </svg>
-                <span>지메일(Google) {mode === 'login' ? '로그인' : '회원가입'}</span>
+                <span>{tr("지메일(Google) ")}{tr(mode === 'login' ? '로그인' : '회원가입')}</span>
               </button>
 
             </div>
@@ -244,8 +242,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
             {/* Divider Line */}
             <div className="relative flex items-center justify-center my-4">
               <div className="border-t border-gray-200 w-full" />
-              <span className="bg-white px-3 text-xs font-bold text-gray-400 shrink-0">
-                또는 이메일로 {mode === 'login' ? '로그인' : '회원가입'}
+              <span className="bg-white px-3 text-xs font-bold text-gray-400 shrink-0">{tr(" 또는 이메일로 ")}{tr(mode === 'login' ? '로그인' : '회원가입')}
               </span>
             </div>
 
@@ -253,7 +250,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
             <form onSubmit={handleFormSubmit} className="space-y-3.5">
               {mode === 'signup' && (
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">성명</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">{tr("성명")}</label>
                   <div className="relative">
                     <User className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
                     <input
@@ -261,7 +258,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="성함을 입력해 주세요"
+                      placeholder={tr("성함을 입력해 주세요")}
                       className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#0B3C26] focus:bg-white transition-all font-bold"
                     />
                   </div>
@@ -269,7 +266,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
               )}
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">이메일 주소</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1">{tr("이메일 주소")}</label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
                   <input
@@ -284,7 +281,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">비밀번호</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1">{tr("비밀번호")}</label>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
                   <input
@@ -300,7 +297,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
 
               {mode === 'signup' && (
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">연락처</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">{tr("연락처")}</label>
                   <div className="relative">
                     <Phone className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
                     <input
@@ -319,31 +316,25 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
                 type="submit"
                 className="w-full py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer border border-[#C5A059] mt-1"
               >
-                {mode === 'login' ? '이메일 로그인' : '이메일 회원가입 완료'}
+                {tr(mode === 'login' ? '이메일 로그인' : '이메일 회원가입 완료')}
               </button>
             </form>
 
             {/* Bottom Mode Switch Link */}
             <div className="text-center pt-2 border-t border-gray-100">
               {mode === 'login' ? (
-                <p className="text-xs text-gray-600 font-bold">
-                  아직 계정이 없으신가요?{' '}
+                <p className="text-xs text-gray-600 font-bold">{tr(" 아직 계정이 없으신가요?")}{tr(' ')}
                   <button
                     onClick={() => setMode('signup')}
                     className="text-[#0B3C26] font-black hover:underline cursor-pointer ml-1"
-                  >
-                    회원가입하기
-                  </button>
+                  >{tr(" 회원가입하기 ")}</button>
                 </p>
               ) : (
-                <p className="text-xs text-gray-600 font-bold">
-                  이미 계정이 있으신가요?{' '}
+                <p className="text-xs text-gray-600 font-bold">{tr(" 이미 계정이 있으신가요?")}{tr(' ')}
                   <button
                     onClick={() => setMode('login')}
                     className="text-[#0B3C26] font-black hover:underline cursor-pointer ml-1"
-                  >
-                    로그인하기
-                  </button>
+                  >{tr(" 로그인하기 ")}</button>
                 </p>
               )}
             </div>

@@ -2,316 +2,551 @@
   {
     "name": "안형상",
     "image": "/images/masters/image11.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "호텔 주방 40년\n창업의 답을 전하다",
+    "title": "호텔 조리·외식창업 교육",
+    "intro": "40년의 호텔 조리 경력과 교육 경험을 바탕으로 조리 기술과 외식창업 실무를 전합니다.",
+    "awards": [
+      "웨스틴 조선·리츠칼튼·풀만 앰버서더호텔 경력",
+      "소상공인지원단 전담교수",
+      "고급서양조리 등 저서 및 조리 심사 활동"
+    ]
   },
   {
     "name": "이상정",
     "image": "/images/masters/image15.png",
-    "group": "master"
+    "group": "master",
+    "headline": "서양조리의 정석\n명장의 손에서",
+    "title": "서양조리·호텔 조리",
+    "intro": "특급호텔 조리부를 총괄한 경험을 바탕으로 대학에서 조리이론과 서양조리를 가르쳐 온 조리명장입니다.",
+    "awards": [
+      "그랜드 하얏트·스위스그랜드·리츠칼튼·JW 메리어트호텔 경력",
+      "2002 대한민국 조리명장 선정",
+      "청운대학교 등 서양조리 강의"
+    ]
   },
   {
     "name": "권영복",
     "image": "/images/masters/image1.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "발효를 설계하다\n빵의 결이 달라지다",
+    "title": "제과·제빵 연구개발",
+    "intro": "호텔 베이커리와 제과 기업 연구소에서 쌓은 경험을 바탕으로 발효와 제빵 기술을 연구합니다.",
+    "awards": [
+      "그랜드 하얏트·리츠칼튼호텔 베이커리 경력",
+      "파리크라상 식품연구소 수석연구원 및 신라명과 연구개발 이사",
+      "탕종 식빵 및 발효액종 도우 제조 특허"
+    ]
   },
   {
     "name": "장동석",
     "image": "/images/masters/image16.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "갈비 하나에\n경영의 깊이를 담다",
+    "title": "갈비·외식 경영",
+    "intro": "조리 현장에서 시작해 갈비 전문점의 운영과 경영으로 경험을 넓혀 왔습니다.",
+    "awards": [
+      "이학갈비 조리실장·조리이사",
+      "2002~2026 이학갈비 대표",
+      "2023 보건복지부 장관상"
+    ]
   },
   {
     "name": "전병규",
     "image": "/images/masters/image17.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "한 그릇의 승부\n소스에서 시작된다",
+    "title": "소스·면·곰탕 개발",
+    "intro": "냉면 양념장과 곰탕, 수출용 소스 개발을 통해 음식점의 메뉴와 브랜드를 만듭니다.",
+    "awards": [
+      "독도 얼큰이 양념장 개발 및 전수",
+      "리치푸드시스템 소스 개발",
+      "천서리막국수 수출용 양념장·면 및 백봉곰탕 브랜드 개발"
+    ]
   },
   {
-    "name": "곡국진",
+    "name": "송창수",
     "image": "/images/masters/image10.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "중식 30년의 내공\n상해루의 한 접시",
+    "title": "중식 조리",
+    "intro": "30년 이상 중식 현장에서 쌓은 경험으로 레스토랑 조리를 총괄하고 중식의 기술을 전합니다.",
+    "awards": [
+      "상해루 조리총괄이사",
+      "마산 M-hotel 중식당 총괄셰프",
+      "2012 이금기배 화서촌 왕중왕 대결 금상"
+    ]
   },
   {
     "name": "김순열",
     "image": "/images/masters/image3.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "평창의 황태\n향토의 깊은 맛",
+    "title": "황태·김치·향토음식",
+    "intro": "황태와 김치 연구, 향토음식 활동을 통해 평창의 식문화를 알립니다.",
+    "awards": [
+      "황태와 김치 연구 및 대중화 활동",
+      "한국음식관광협회 활동",
+      "향토음식문화부문 대상 수상"
+    ]
   },
   {
     "name": "윤병세",
     "image": "/images/masters/image14.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "연구실에서 매장까지\n베이커리의 완성",
+    "title": "제과·제빵",
+    "intro": "호텔과 베이커리, 식품 연구소를 거치며 제과·제빵 기술을 발전시켜 왔습니다.",
+    "awards": [
+      "SPC 연구소 수석연구원",
+      "런던베이글뮤지엄 본부장 경력",
+      "2016 제과기능장 취득"
+    ]
   },
   {
     "name": "김문경",
     "image": "/images/masters/image2.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "다식과 화과자\n작은 한 입의 미학",
+    "title": "전통 다식·화과자",
+    "intro": "다식과 화과자 체험 교육을 통해 전통 음식의 섬세한 아름다움을 전합니다.",
+    "awards": [
+      "김문경 음식연구원 원장",
+      "다식·화과자 체험수업 진행",
+      "2023 서울 세계푸드올림픽 보건복지부 장관상"
+    ]
   },
   {
     "name": "주정자",
     "image": "/images/masters/image18.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "궁금했던 한식\n기본부터 깊이 있게",
+    "title": "한식·조리 교육",
+    "intro": "한식 이론과 실기, 외식창업 교육을 이어오며 조리 인력 양성과 전통 음식 전수에 힘써 왔습니다.",
+    "awards": [
+      "국가기술 조리기능사 실기시험 심사위원",
+      "경민대학교 한식조리 이론·실기 강의",
+      "법무부 외식창업 요리 및 국방부 한식 실기 강의"
+    ]
   },
   {
     "name": "오순",
     "image": "/images/masters/image12.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "한식의 기본기\n책을 넘어 한 접시로",
+    "title": "한식 조리·실기 교육",
+    "intro": "조리 실무와 저술 활동을 통해 한식의 기본기를 전하며 국제요리대회에도 참여해 왔습니다.",
+    "awards": [
+      "2022 조리기능장 취득",
+      "2023 한식조리산업기사 실기책 공동저술",
+      "2022 대한민국 챌린지컵 금상·2023 이스탄불 국제요리대회 은상"
+    ]
   },
   {
     "name": "오창구",
     "image": "/images/masters/image13.png",
-    "group": "expert"
+    "group": "master",
+    "headline": "짬뽕 한 그릇\n중식의 내공을 담다",
+    "title": "중식·짬뽕",
+    "intro": "중식당 운영과 조리 실무를 오래 이어오며 짬뽕을 비롯한 중식 메뉴를 선보입니다.",
+    "awards": [
+      "청마루·희래등 조리실장",
+      "만짜우·짬뽕명가 운영 및 조리",
+      "백년짬뽕 운영 및 조리"
+    ]
   },
   {
     "name": "구본신",
     "image": "/images/profile-directory/image1.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "약선의 지혜\n요리에 깊이를 더하다"
   },
   {
     "name": "김근혜",
     "image": "/images/profile-directory/image2.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "특별한 날의 요리\n연회의 격을 높이다"
   },
   {
     "name": "김민지",
     "image": "/images/profile-directory/image3.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "돼지국밥 한 그릇\n든든함의 진심"
   },
   {
     "name": "김병섭",
     "image": "/images/profile-directory/image4.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "호텔에서 쌓은 손맛\n냉면으로 이어지다"
   },
   {
     "name": "김시영",
     "image": "/images/profile-directory/image5.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "전통 간식의 매력\n오늘의 식탁에 닿다"
   },
   {
     "name": "김영례",
     "image": "/images/profile-directory/image6.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "폐백과 한과\n마음을 빚는 손끝"
   },
   {
     "name": "김흥기",
     "image": "/images/profile-directory/image7.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "중식의 깊은 내공\n야래향의 한 접시"
   },
   {
     "name": "김희순",
     "image": "/images/profile-directory/image8.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "전통을 익히고\n한식의 길을 열다"
   },
   {
     "name": "문동혁",
     "image": "/images/profile-directory/image9.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "한정식의 균형\n한 상에 담아내다"
   },
   {
     "name": "박동명",
     "image": "/images/profile-directory/image10.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "갈비찜부터 밀면까지\n한식의 폭을 넓히다"
   },
   {
     "name": "박부석",
     "image": "/images/profile-directory/image11.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "38년 일식의 길\n스시로 답하다"
   },
   {
     "name": "박선심",
     "image": "/images/profile-directory/image12.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "매일 먹는 반찬\n매번 새로운 정성"
   },
   {
     "name": "박성준",
     "image": "/images/profile-directory/image13.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "호텔 일식의 감각\n식탁의 기준이 되다"
   },
   {
     "name": "박정근",
     "image": "/images/profile-directory/image14.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "맛의 가능성을\n비즈니스로 연결하다"
   },
   {
     "name": "박종기",
     "image": "/images/profile-directory/image15.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "풍성한 뷔페\n치밀한 주방의 설계"
   },
   {
     "name": "박창원",
     "image": "/images/profile-directory/image16.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "일본의 식탁 위에\n한식의 길을 내다"
   },
   {
     "name": "박하원",
     "image": "/images/profile-directory/image17.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "빵에서 브런치까지\n맛의 경계를 넓히다"
   },
   {
     "name": "성미진",
     "image": "/images/profile-directory/image18.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "요리로 배우고\n함께 자라는 시간"
   },
   {
     "name": "송영원",
     "image": "/images/profile-directory/image19.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "연회를 이끄는 힘\n총주방장의 시선"
   },
   {
     "name": "신재복",
     "image": "/images/profile-directory/image20.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "한식 창업의 무대\n도쿄까지 넓히다"
   },
   {
     "name": "신진우",
     "image": "/images/profile-directory/image21.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "궁중의 맛을 잇다\n한국의집에서"
   },
   {
     "name": "심상현",
     "image": "/images/profile-directory/image22.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "웍 앞에서 완성하는\n중식의 한 끗"
   },
   {
     "name": "심용환",
     "image": "/images/profile-directory/image23.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "호텔의 손끝으로\n든든한 한 끼를"
   },
   {
     "name": "심호식",
     "image": "/images/profile-directory/image24.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "중식 23년\n한 접시에 쌓인 시간"
   },
   {
     "name": "여남주",
     "image": "/images/profile-directory/image25.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "먹는 즐거움에\n돌봄의 마음을 더하다"
   },
   {
     "name": "오문석",
     "image": "/images/profile-directory/image26.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "뉴욕에서 하노이까지\n중식의 무대를 넓히다"
   },
   {
     "name": "윤지현",
     "image": "/images/profile-directory/image27.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "호텔의 감각을\n베이커리의 일상으로"
   },
   {
     "name": "이명숙",
     "image": "/images/profile-directory/image28.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "매일의 반찬에도\n기준이 있다"
   },
   {
     "name": "이상희",
     "image": "/images/profile-directory/image29.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "많은 이의 한 끼\n연회의 흐름을 읽다"
   },
   {
     "name": "이성우",
     "image": "/images/profile-directory/image30.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "중식의 손끝에\n개발의 감각을 더하다"
   },
   {
     "name": "이수연",
     "image": "/images/profile-directory/image31.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "한식의 실력\n가르침으로 이어지다"
   },
   {
     "name": "이은희",
     "image": "/images/profile-directory/image32.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "한결같은 고집\n외식의 색이 되다"
   },
   {
     "name": "이진주",
     "image": "/images/profile-directory/image33.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "한 입의 여운\n맛의 이야기를 열다"
   },
   {
     "name": "이창수",
     "image": "/images/profile-directory/image34.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "고기와 면 사이\n맛의 접점을 찾다"
   },
   {
     "name": "이하늘",
     "image": "/images/profile-directory/image35.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "호텔에서 다진 중식\n한 접시의 밀도"
   },
   {
     "name": "이희승",
     "image": "/images/profile-directory/image36.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "호텔의 섬세함\n한 끼에 스며들다"
   },
   {
     "name": "장현호",
     "image": "/images/profile-directory/image37.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "현미빵부터 초콜릿까지\n제과를 탐구하다"
   },
   {
     "name": "전은희",
     "image": "/images/profile-directory/image38.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "쌀로 빚는 아름다움\n전통 병과의 새 얼굴"
   },
   {
     "name": "정종호",
     "image": "/images/profile-directory/image39.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "손으로 빚은 떡갈비\n한식의 정성을 잇다"
   },
   {
     "name": "정지인",
     "image": "/images/profile-directory/image40.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "조리와 경영 사이\n배움의 길을 잇다"
   },
   {
     "name": "조선례",
     "image": "/images/profile-directory/image41.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "좋은 김치의 시작\n절임부터 다르게"
   },
   {
     "name": "조원희",
     "image": "/images/profile-directory/image42.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "손끝에서 뽑아내는\n수타의 리듬"
   },
   {
     "name": "주성환",
     "image": "/images/profile-directory/image43.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "국경을 넘어\n한식의 자리를 넓히다"
   },
   {
     "name": "최미자",
     "image": "/images/profile-directory/image44.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "텃밭에서 식탁까지\n자연을 요리하다"
   },
   {
     "name": "최재원",
     "image": "/images/profile-directory/image45.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "벽제갈비 20년\n시간이 만든 기본기"
   },
   {
     "name": "최희왕",
     "image": "/images/profile-directory/image46.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "페이스트리의 결\n디저트의 디테일"
   },
   {
     "name": "허연웅",
     "image": "/images/profile-directory/image47.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "한식과 일식의 만남\n퓨전의 감각을 깨우다"
   },
   {
     "name": "홍성열",
     "image": "/images/profile-directory/image48.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "발효의 시간을\n한정식에 더하다"
   },
   {
     "name": "최재홍",
     "image": "/images/profile-directory/image49.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "복어를 다루는 기술\n기본부터 정교하게"
   },
   {
     "name": "김봉애",
     "image": "/images/profile-directory/image50.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "차와 음식 사이\n전통의 향을 펼치다"
   },
   {
     "name": "한성균",
     "image": "/images/profile-directory/image51.jpg",
-    "group": "expert"
+    "group": "expert",
+    "headline": "맛으로 시작하는\n새로운 만남"
+  },
+  {
+    "name": "김태완",
+    "image": "/images/masters/image4.png",
+    "group": "master",
+    "headline": "초밥 한 점에서\n매장의 혁신까지",
+    "title": "초밥 브랜드·주방 운영",
+    "intro": "초밥 브랜드 운영에서 배달 품질과 주방 자동화까지, 매장의 조리 시스템을 발전시켜 왔습니다.",
+    "awards": [
+      "2011 김태완스시 브랜드 론칭",
+      "초밥 보냉 배달 시스템 도입",
+      "식재료 전처리 위탁 및 초밥 제조 기계 도입"
+    ]
+  },
+  {
+    "name": "김현식",
+    "image": "/images/masters/image5.png",
+    "group": "master",
+    "headline": "주방을 넘어\n외식 경영의 중심으로",
+    "title": "외식 경영",
+    "intro": "식품 사업과 음식점 운영을 바탕으로 외식 경영과 지역사회 활동을 이어갑니다.",
+    "awards": [
+      "도영푸드피아 대표",
+      "구끼구끼 호원점·민락본점 대표",
+      "신한대학교 평생교육원 총동문회장 역임"
+    ]
+  },
+  {
+    "name": "라연화",
+    "image": "/images/masters/image6.png",
+    "group": "master",
+    "headline": "발효의 지혜로\n추어탕을 새롭게",
+    "title": "전통 발효·추어탕",
+    "intro": "전통 발효식초와 장류를 연구하며 추어탕과 전통 음식의 맛을 발전시킵니다.",
+    "awards": [
+      "천연 발효식초 제조방법 특허",
+      "발효식초를 활용한 추어탕 제조방법 특허",
+      "2022 조리기능장 취득"
+    ]
+  },
+  {
+    "name": "박해금",
+    "image": "/images/masters/image7.png",
+    "group": "master",
+    "headline": "일식의 비법\n현장에서 전하다",
+    "title": "일식·비법 전수",
+    "intro": "호텔 일식과 오마카세 경력을 바탕으로 조리 교육과 소상공인 기술 전수에 힘씁니다.",
+    "awards": [
+      "신라호텔·라마다 르네상스호텔 일식 경력",
+      "우송대학교·한라대학교 일본조리 강의",
+      "소상공인 비법 전수 및 위생 컨설팅"
+    ]
+  },
+  {
+    "name": "방선배",
+    "image": "/images/masters/image8.png",
+    "group": "master",
+    "headline": "현장의 조리 기술\n청년의 창업 실력으로",
+    "title": "한식 실무·창업 교육",
+    "intro": "외식 현장에서 쌓은 조리 경험을 청년 상인의 실무 교육과 창업 지도로 이어갑니다.",
+    "awards": [
+      "가든파티 총괄조리이사",
+      "청년육성재단 조리실무 지도강사",
+      "2014·2015 한국국제요리대회 문화체육관광부 장관상"
+    ]
+  },
+  {
+    "name": "송수익",
+    "image": "/images/masters/image9.png",
+    "group": "master",
+    "headline": "호텔의 주방에서\n다음 셰프의 교실로",
+    "title": "서양조리·셰프 교육",
+    "intro": "호텔 주방과 교육 현장을 잇는 서양조리 전문가로, 조리 실무와 이론을 함께 전합니다.",
+    "awards": [
+      "리츠칼튼 서울호텔 웨스턴조리팀장",
+      "라마다 플라자 청주호텔 총주방장",
+      "한국글로벌셰프고등학교 교장 및 대학 교수 경력"
+    ]
+  },
+  {
+    "name": "김유태",
+    "image": "",
+    "group": "master",
+    "headline": "맛으로 이어갈\n다음 이야기",
+    "published": false,
+    "title": "",
+    "intro": "",
+    "awards": []
   }
 ]
