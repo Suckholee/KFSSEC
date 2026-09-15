@@ -2,7 +2,6 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import GreetingsSection from './GreetingsSection';
-import LocationSection from './LocationSection';
 import OrganizationSection from './OrganizationSection';
 import ScrollReveal from '../common/ScrollReveal';
 import {
@@ -39,14 +38,16 @@ import {
 
 export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'greetings' }) {
   const { t } = useLanguage();
-  const defaultSub = initialSubTab || initialTab || 'greetings';
+  const validSubTabs = ['greetings', 'speech', 'profile', 'organization'];
+  const resolveTab = (val) => (validSubTabs.includes(val) ? val : 'greetings');
+  const defaultSub = resolveTab(initialSubTab || initialTab);
   const [activeTab, setActiveTab] = useState(defaultSub);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const target = initialSubTab || initialTab;
     if (target) {
-      setActiveTab(target);
+      setActiveTab(resolveTab(target));
     }
   }, [initialSubTab, initialTab]);
 
@@ -72,7 +73,6 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
     { id: 'speech', label: t("이사장 인사말") },
     { id: 'profile', label: t("이사장 프로필") },
     { id: 'organization', label: t("조직도") },
-    { id: 'location', label: t("교육원 사무국") },
   ];
 
   return (
@@ -173,11 +173,6 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
             {/* SUB-TAB 4: 조직도 */}
             {activeTab === 'organization' && (
               <OrganizationSection />
-            )}
-
-            {/* SUB-TAB 5: 교육원 사무국 */}
-            {activeTab === 'location' && (
-              <LocationSection />
             )}
 
           </div>
