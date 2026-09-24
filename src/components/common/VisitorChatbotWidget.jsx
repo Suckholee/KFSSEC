@@ -55,6 +55,20 @@ export default function VisitorChatbotWidget({ onNavigate }) {
     return () => window.removeEventListener('kfssec_open_chatbot', handleExternalOpen);
   }, []);
 
+  // Close on Escape key press when chatbot is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   // Show floating nudge tooltip after delay
   useEffect(() => {
     if (!isOpen) {
