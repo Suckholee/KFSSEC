@@ -471,7 +471,7 @@ export default function App() {
 
         {activeTab === 'consulting' && (
           <ConsultingPage
-            initialSubTab={subTab || 'apply'}
+            initialSubTab={subTab || 'consulting'}
             onGoToApply={() => handleTabChange('consulting', 'apply')}
           />
         )}

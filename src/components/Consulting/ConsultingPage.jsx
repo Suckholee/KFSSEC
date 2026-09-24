@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import { Rocket, Shield, HelpCircle, CheckSquare, ChevronRight, ArrowLeft, FileText, CheckCircle2 } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
+import JinIkjunProfileSection from './JinIkjunProfileSection';
 
 export default function ConsultingPage({ initialSubTab = 'education', initialTab = 'education', onOpenAuth }) {
   const { tr, language } = useLanguage();
-  const resolveTab = value => value === 'apply' ? 'consulting' : ['education', 'consulting', 'youth', 'readiness'].includes(value) ? value : 'education';
+  const resolveTab = value => value === 'apply' ? 'consulting' : ['education', 'consulting', 'professor', 'youth', 'readiness'].includes(value) ? value : 'education';
   const defaultSub = resolveTab(initialSubTab || initialTab);
   const [activeTab, setActiveTab] = useState(defaultSub);
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -21,6 +22,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
   const consultingSubItems = [
     { id: 'education', label: '창업 교육' },
     { id: 'consulting', label: '창업 컨설팅' },
+    { id: 'professor', label: '교수 프로필' },
     { id: 'youth', label: '청년 창업 상담' },
     { id: 'readiness', label: '창업 준비' },
   ];
@@ -239,6 +241,11 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
 
                 </div>
               </div>
+            )}
+
+            {/* SUB-TAB: 교수 프로필 (진익준 교수 소개 및 프랜차이즈 사례) */}
+            {activeTab === 'professor' && (
+              <JinIkjunProfileSection onConsultClick={handleApplyClick} />
             )}
 
             {/* SUB-TAB 3: 청년 창업 상담 */}
