@@ -103,7 +103,7 @@ export default function AdminMasters() {
     <section className="mx-auto max-w-6xl space-y-6">
       <header ref={headingRef} className="flex flex-wrap items-center justify-between gap-4">
         <div><h1 className="text-2xl font-bold flex items-center gap-2"><Award className="text-emerald-700" />명장·명인 프로필 관리</h1><p className="mt-2 text-sm text-gray-500">사진과 소개, 경력, 공개 여부를 관리합니다.</p></div>
-        {!draft && <button disabled={!!readError} className={`${buttonClass} bg-emerald-800 text-white`} onClick={() => edit({ id: crypto.randomUUID(), headline: '', name: '', group: 'expert', image: '', title: '', intro: '', awards: [], published: true, order: Math.max(0, ...profiles.map(p => p.order)) + 1 })}><Plus size={16} />프로필 등록</button>}
+        {!draft && <button disabled={!!readError} className={`${buttonClass} bg-emerald-800 text-white`} onClick={() => edit({ id: crypto.randomUUID(), headline: '', name: '', group: 'expert', image: '', title: '', intro: '', awards: [], blogUrl: '', youtubeUrl: '', instagramUrl: '', published: true, order: Math.max(0, ...profiles.map(p => p.order)) + 1 })}><Plus size={16} />프로필 등록</button>}
       </header>
       <p className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">현재 변경 사항은 이 브라우저에 저장됩니다. 다른 기기에는 공유되지 않으며 브라우저 데이터 삭제 시 초기화됩니다.</p>
       {(error || readError) && <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">{error || readError}</p>}
@@ -117,6 +117,29 @@ export default function AdminMasters() {
           </div>
           <label className="block text-sm font-bold">카드 소개 문구<span className="ml-2 text-xs text-gray-500">짧게 두 줄로 입력</span><textarea rows={2} maxLength={60} className={inputClass} value={draft.headline || ''} onChange={e => change('headline', e.target.value)} placeholder="전문 분야와 개성을 담은 한마디" /></label>
           <label className="block text-sm font-bold">직함 · 전문 분야<input className={inputClass} maxLength={200} value={draft.title} onChange={e => change('title', e.target.value)} placeholder="예: 한식 조리 / 전통 발효 전문가" /></label>
+          
+          {/* SNS Links (블로그, 유튜브, 인스타그램) */}
+          <div className="space-y-3 rounded-xl border border-emerald-100 bg-emerald-50/50 p-4">
+            <p className="text-sm font-bold text-emerald-950 flex items-center gap-1.5">
+              <span>🔗 SNS 및 외부 채널 연동</span>
+              <span className="text-xs font-normal text-emerald-700">(선택 사항)</span>
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <label className="text-xs font-bold text-gray-700">
+                네이버 블로그 / 홈페이지
+                <input className={inputClass} value={draft.blogUrl || ''} onChange={e => change('blogUrl', e.target.value)} placeholder="https://blog.naver.com/..." />
+              </label>
+              <label className="text-xs font-bold text-gray-700">
+                유튜브 채널
+                <input className={inputClass} value={draft.youtubeUrl || ''} onChange={e => change('youtubeUrl', e.target.value)} placeholder="https://youtube.com/@..." />
+              </label>
+              <label className="text-xs font-bold text-gray-700">
+                인스타그램
+                <input className={inputClass} value={draft.instagramUrl || ''} onChange={e => change('instagramUrl', e.target.value)} placeholder="https://instagram.com/..." />
+              </label>
+            </div>
+          </div>
+
           <ProfileImageEditor key={draft.id} value={draft.image} original={originalRef.current?.image || ''} onChange={value => change('image', value)} onStatus={setImageStatus} disabled={saving} />
           <label className="block text-sm font-bold">소개<textarea rows={4} maxLength={5000} className={inputClass} value={draft.intro} onChange={e => change('intro', e.target.value)} /></label>
           <label className="block text-sm font-bold">주요 경력 · 수상 내역<span className="ml-2 text-xs text-gray-500">한 줄에 하나씩 입력</span><textarea rows={6} maxLength={10000} className={inputClass} value={draft.awardsText} onChange={e => change('awardsText', e.target.value)} /></label>

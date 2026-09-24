@@ -23,7 +23,7 @@ import {
   Pin,
 } from 'lucide-react';
 
-export default function CommunityEditorPage({ onPublishPost, onCancel, currentUser }) {
+export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCancel, currentUser }) {
   const { tr, language } = useLanguage();
   const [category, setCategory] = useState('문의');
   const [title, setTitle] = useState('');
@@ -34,6 +34,20 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
   const [isPinned, setIsPinned] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
   const [isDraftSaved, setIsDraftSaved] = useState(false);
+
+  // Check for auto-draft from AI Chatbot bridge
+  useEffect(() => {
+    try {
+      const savedInquiry = localStorage.getItem('kfssec_inquiry_draft');
+      if (savedInquiry) {
+        const parsed = JSON.parse(savedInquiry);
+        if (parsed.title) setTitle(parsed.title);
+        if (parsed.content) setContent(parsed.content);
+        setCategory('문의');
+        localStorage.removeItem('kfssec_inquiry_draft');
+      }
+    } catch (e) {}
+  }, []);
 
   // Preset cover image choices for quick selection
   const presetCoverImages = [
@@ -98,7 +112,11 @@ export default function CommunityEditorPage({ onPublishPost, onCancel, currentUs
       views: 1,
     };
 
-    onPublishPost(newPost);
+    if (onSubmitPost) {
+      onSubmitPost(newPost);
+    } else if (onPublishPost) {
+      onPublishPost(newPost);
+    }
   };
 
   return (

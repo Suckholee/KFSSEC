@@ -15,6 +15,8 @@ import MasterBusinessPage from './components/Master/MasterBusinessPage';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import ConsultingPage from './components/Consulting/ConsultingPage';
 import GangnamSohoPage from './components/Gangnam/GangnamSohoPage';
+import GalleryPage from './components/Gallery/GalleryPage';
+import PartnersPage from './components/Partners/PartnersPage';
 import CommunityPage from './components/Community/CommunityPage';
 import CommunityEditorPage from './components/Community/CommunityEditorPage';
 import AdminLayout from './components/Admin/AdminLayout';
@@ -22,6 +24,7 @@ import AuthModal from './components/AuthModal';
 import YouTubeModal from './components/YouTubeModal';
 import PaymentGuideModal from './components/PaymentGuideModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
+import { generateAIInquiryDraft, getChatbotConfig } from './services/chatbotConfig';
 import { ChevronUp } from 'lucide-react';
 
 function ScrollToTopButton() {
@@ -378,13 +381,31 @@ export default function App() {
 
   // Handle New Post Submission from Editor
   const handleCreatePost = (newPostData) => {
+    let reply = newPostData.reply || null;
+    let status = newPostData.status || (newPostData.category === '문의' ? 'pending' : undefined);
+
+    const botConfig = getChatbotConfig();
+    if (newPostData.category === '문의' && botConfig.autoReplyAiDraft !== false) {
+      const aiContent = generateAIInquiryDraft(newPostData.title, newPostData.content);
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      reply = {
+        date: dateStr,
+        content: aiContent,
+        isAI: true,
+      };
+      status = 'completed';
+    }
+
     const createdPost = {
       ...newPostData,
       id: postsList.length + 1,
       date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+      reply,
+      status,
     };
     setPostsList([createdPost, ...postsList]);
-    handleTabChange('community', 'all');
+    handleTabChange('community', newPostData.category === '문의' ? 'inquiry' : 'all');
   };
 
   if (activeTab === 'admin') {
@@ -455,8 +476,16 @@ export default function App() {
           />
         )}
 
+        {activeTab === 'gallery' && (
+          <GalleryPage initialSubTab={subTab || 'all'} />
+        )}
+
+        {activeTab === 'partners' && (
+          <PartnersPage />
+        )}
+
         {activeTab === 'gangnam' && (
-          <GangnamSohoPage initialSubTab={subTab || 'intro'} />
+          <PartnersPage />
         )}
 
         {activeTab === 'community' && subTab === 'editor' && (

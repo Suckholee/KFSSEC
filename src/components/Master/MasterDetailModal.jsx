@@ -119,6 +119,47 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
             </p>
           </div>
 
+          {/* SNS Channels Section */}
+          {(master.blogUrl || master.youtubeUrl || master.instagramUrl) && (
+            <div className="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 shadow-xs space-y-2">
+              <h3 className="text-xs font-black text-[#0B3C26] flex items-center gap-1.5 uppercase tracking-wider">
+                <span>공식 SNS 및 미디어 채널</span>
+              </h3>
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                {master.blogUrl && (
+                  <a
+                    href={master.blogUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+                  >
+                    <span>📗 네이버 블로그</span>
+                  </a>
+                )}
+                {master.youtubeUrl && (
+                  <a
+                    href={master.youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+                  >
+                    <span>📺 유튜브 채널</span>
+                  </a>
+                )}
+                {master.instagramUrl && (
+                  <a
+                    href={master.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-500 hover:opacity-90 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+                  >
+                    <span>📸 인스타그램</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Awards & Career Timeline List */}
           <div className="space-y-3">
             <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b-2 border-[#0B3C26] pb-2">

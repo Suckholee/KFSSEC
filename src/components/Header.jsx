@@ -11,22 +11,33 @@ export default function Header({
   onLogout,
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
   const mainMenuItems = [
-    { title: t('교육원 소개', 'About Us'), key: 'about', defaultSubTab: 'greetings' },
-    { title: t('명장·명인 사업단', 'Culinary Masters'), key: 'master', defaultSubTab: 'masters' },
-    { title: t('교육·자격증', 'Courses & Certificates'), key: 'catalog', defaultSubTab: 'courses' },
-    { title: t('창업컨설팅', 'Startup Consulting'), key: 'consulting', defaultSubTab: 'apply' },
-    { title: t('강남구 소상공인', 'Gangnam Businesses'), key: 'gangnam', defaultSubTab: 'intro' },
-    { title: t('커뮤니티', 'Community'), key: 'community', defaultSubTab: 'all' },
+    { id: 'about', title: t('교육원 소개', 'About Us'), key: 'about', defaultSubTab: 'greetings' },
+    { id: 'master_chef', title: t('명장', 'Master Chefs'), key: 'master', defaultSubTab: 'profiles' },
+    { id: 'artisan', title: t('명인', 'Culinary Artisans'), key: 'master', defaultSubTab: 'directory' },
+    { id: 'catalog', title: t('교육·자격증', 'Courses & Certificates'), key: 'catalog', defaultSubTab: 'courses' },
+    { id: 'consulting', title: t('창업컨설팅', 'Startup Consulting'), key: 'consulting', defaultSubTab: 'consulting' },
+    { id: 'gallery', title: t('갤러리', 'Gallery'), key: 'gallery', defaultSubTab: 'all' },
+    { id: 'partners', title: t('파트너사', 'Partners'), key: 'partners', defaultSubTab: 'all' },
+    { id: 'community', title: t('게시판', 'Board'), key: 'community', defaultSubTab: 'all' },
+  ];
+
+  const languages = [
+    { code: 'ko', label: '한국어 (KOR)', flag: '🇰🇷' },
+    { code: 'en', label: 'English (ENG)', flag: '🇺🇸' },
+    { code: 'ja', label: '日本語 (JPN)', flag: '🇯🇵' },
+    { code: 'zh', label: '中文 (CHN)', flag: '🇨🇳' },
+    { code: 'vi', label: 'Tiếng Việt (VIE)', flag: '🇻🇳' },
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#FDFBF7]/95 backdrop-blur-md border-b-2 border-[#E7E2D8] transition-all font-sans text-gray-900 shadow-sm">
       
       {/* Full Width Top Header Bar */}
-      <div className="w-full px-4 sm:px-8 lg:px-10 h-20 sm:h-22 flex items-center justify-between gap-4 sm:gap-6 max-w-7xl mx-auto">
+      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-center justify-between gap-3 sm:gap-4 max-w-[1600px] mx-auto">
         
         {/* Official Logo (Far Left) */}
         <button
@@ -38,24 +49,27 @@ export default function Header({
           <img
             src="/images/logo-transparent.svg"
             alt={t('사단법인 한국외식창업교육원')}
-            className="h-14 sm:h-16 w-auto object-contain"
+            className="h-12 sm:h-15 w-auto object-contain"
           />
         </button>
 
         {/* Centered Desktop Main Navigation Bar */}
-        <nav className="hidden xl:flex flex-1 items-center justify-center gap-3">
+        <nav className="hidden xl:flex flex-1 items-center justify-center gap-2 2xl:gap-3">
           {mainMenuItems.map((menu) => {
-            const isMenuActive = activeTab === menu.key;
+            const isMenuActive =
+              menu.key === 'master'
+                ? activeTab === 'master' && (menu.id === 'master_chef' ? (subTab === 'profiles' || subTab === 'masters') : (subTab === 'directory' || subTab === 'dishes'))
+                : activeTab === menu.key;
 
             return (
-              <div key={menu.key} className="relative group py-4 cursor-pointer">
+              <div key={menu.id} className="relative group py-4 cursor-pointer">
                 <button
                   onClick={() => {
                     if (onTabChange) {
                       onTabChange(menu.key, menu.defaultSubTab);
                     }
                   }}
-                  className={`text-sm font-bold tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap min-h-[44px] px-2 rounded-lg focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none ${
+                  className={`text-[13px] 2xl:text-sm font-bold tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap min-h-[44px] px-2 rounded-lg focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none ${
                     isMenuActive
                       ? 'text-[#0B3C26] font-black border-b-2 border-[#C5A059] pb-0.5 scale-105'
                       : 'text-[#2A3B32] hover:text-[#C5A059]'
@@ -69,19 +83,56 @@ export default function Header({
         </nav>
 
         {/* Right Top Utility Buttons (KOR Selector & User Auth) */}
-        <div className="hidden xl:flex items-center gap-3 shrink-0">
+        <div className="hidden xl:flex items-center gap-2.5 shrink-0">
           
-          {/* Language Selector Pill */}
+          {/* 1:1 AI Consultation & Chatbot Trigger */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'))}
+            className="px-3 py-2 bg-gradient-to-r from-[#0B3C26] to-[#164e34] hover:from-[#072819] hover:to-[#0f3a27] text-white text-xs font-black rounded-full flex items-center gap-1.5 cursor-pointer shadow-sm border border-[#C5A059] transition-all hover:scale-105 min-h-[44px]"
+            title={t('24시 실시간 1:1 AI 상담 & 챗봇 열기', 'Open 24/7 AI Guide')}
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[#D4AF37]">💬</span>
+            <span>{t('1:1 AI 상담', '1:1 AI Guide')}</span>
+          </button>
+
+          {/* Multi-Language Selector Dropdown */}
           <div className="relative">
             <button
-              onClick={() => setLanguage(language === 'ko' ? 'en' : 'ko')}
-              aria-label={language === 'ko' ? 'Switch to English' : '한국어로 변경'}
-              className="px-3.5 py-2 bg-[#F2ECE0] border border-[#D4C5B0] text-[#0B3C26] text-xs font-bold rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#EBE2D4] transition-colors focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none min-h-[44px]"
+              onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+              aria-label="언어 선택 (Language)"
+              className="px-3 py-2 bg-[#F2ECE0] border border-[#D4C5B0] text-[#0B3C26] text-xs font-bold rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#EBE2D4] transition-colors focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none min-h-[44px]"
             >
-              <span>{language === 'ko' ? 'KOR' : 'ENG'}</span>
+              <span>{language === 'ko' ? '🇰🇷 KOR' : '🇺🇸 ENG'}</span>
               <span className="text-[#C5A059]">|</span>
               <ChevronDown className="w-3.5 h-3.5 text-[#0B3C26]" />
             </button>
+
+            {langDropdownOpen && (
+              <div
+                className="absolute right-0 top-full mt-2 w-44 bg-white rounded-2xl shadow-xl border border-stone-200 py-2 z-50 animate-fadeIn"
+                onMouseLeave={() => setLangDropdownOpen(false)}
+              >
+                <div className="px-3 py-1.5 text-[10px] font-black text-stone-400 border-b border-stone-100 uppercase tracking-wider">
+                  다국어 번역 선택
+                </div>
+                {languages.map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => {
+                      setLanguage(l.code === 'ko' ? 'ko' : 'en');
+                      setLangDropdownOpen(false);
+                    }}
+                    className={`w-full px-3 py-2 text-left text-xs font-bold flex items-center justify-between hover:bg-emerald-50 transition-colors ${
+                      language === l.code ? 'text-[#0B3C26] font-black bg-emerald-50/60' : 'text-stone-700'
+                    }`}
+                  >
+                    <span>{l.flag} {l.label}</span>
+                    {language === l.code && <span className="text-[#0B3C26]">✓</span>}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* USER AUTH / LOGIN STATUS BUTTON */}
@@ -171,22 +222,41 @@ export default function Header({
             {language === 'ko' ? 'KOR · English' : 'ENG · 한국어'}
           </button>
           <div className="space-y-4">
-            {mainMenuItems.map((menu) => (
-              <button
-                key={menu.key}
-                onClick={() => {
-                  if (onTabChange) {
-                    onTabChange(menu.key, menu.defaultSubTab);
-                  }
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left py-3 text-base border-b border-[#E7E2D8] min-h-[44px] ${
-                  activeTab === menu.key ? 'text-[#0B3C26] font-black' : 'text-gray-800 font-bold hover:text-[#C5A059]'
-                }`}
-              >
-                {menu.title}
-              </button>
-            ))}
+            {mainMenuItems.map((menu) => {
+              const isMenuActive =
+                menu.key === 'master'
+                  ? activeTab === 'master' && (menu.id === 'master_chef' ? (subTab === 'profiles' || subTab === 'masters') : (subTab === 'directory' || subTab === 'dishes'))
+                  : activeTab === menu.key;
+
+              return (
+                <button
+                  key={menu.id}
+                  onClick={() => {
+                    if (onTabChange) {
+                      onTabChange(menu.key, menu.defaultSubTab);
+                    }
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full text-left py-3 text-base border-b border-[#E7E2D8] min-h-[44px] flex items-center justify-between ${
+                    isMenuActive ? 'text-[#0B3C26] font-black pl-2 border-l-4 border-l-[#C5A059]' : 'text-gray-800 font-bold hover:text-[#C5A059]'
+                  }`}
+                >
+                  <span>{menu.title}</span>
+                  {isMenuActive && <span className="text-[#C5A059]">●</span>}
+                </button>
+              );
+            })}
+
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'));
+              }}
+              className="w-full py-3 bg-[#0B3C26] text-white font-black text-sm rounded-2xl flex items-center justify-center gap-2 shadow-md border-2 border-[#C5A059] cursor-pointer mt-2"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>💬 {t('24시 실시간 1:1 AI 상담 챗봇 열기', 'Open 24/7 AI Chatbot')}</span>
+            </button>
           </div>
         </div>
       )}

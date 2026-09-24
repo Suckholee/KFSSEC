@@ -9,21 +9,31 @@ export default function MobileQuickBar({ onGoToConsulting, onOpenEnrollment }) {
       {/* Call Button */}
       <a
         href="tel:01072446796"
-        className="flex-1 py-2.5 bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs rounded-xl border border-white/20 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+        className="flex-1 py-2 bg-white/10 hover:bg-white/20 text-white font-extrabold text-[11px] rounded-xl border border-white/20 flex items-center justify-center gap-1 transition-colors cursor-pointer"
         aria-label={tr("입학 상담 전화 걸기")}
       >
-        <PhoneCall className="w-4 h-4 text-[#D4AF37]" />
+        <PhoneCall className="w-3.5 h-3.5 text-[#D4AF37]" />
         <span>{tr("전화상담")}</span>
       </a>
+
+      {/* AI Chatbot Button */}
+      <button
+        onClick={() => window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'))}
+        className="flex-1 py-2 bg-emerald-900/80 hover:bg-emerald-800 text-white font-black text-[11px] rounded-xl border border-[#C5A059] flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
+        aria-label={tr("24시 AI 상담 챗봇")}
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span>{tr("💬 AI상담")}</span>
+      </button>
 
       {/* 1:1 Quick Apply Button */}
       <button
         onClick={onGoToConsulting || onOpenEnrollment}
-        className="flex-1 py-2.5 bg-[#C5A059] hover:bg-[#B38F48] text-white font-black text-xs rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-[#D4AF37]"
+        className="flex-1 py-2 bg-[#C5A059] hover:bg-[#B38F48] text-white font-black text-[11px] rounded-xl shadow-md flex items-center justify-center gap-1 transition-all cursor-pointer border border-[#D4AF37]"
         aria-label={tr("1:1 수강 신청하기")}
       >
-        <Zap className="w-4 h-4 text-white fill-white" />
-        <span>{tr("⚡ 1:1 수강신청")}</span>
+        <Zap className="w-3.5 h-3.5 text-white fill-white" />
+        <span>{tr("⚡ 1:1신청")}</span>
       </button>
     </div>
   );

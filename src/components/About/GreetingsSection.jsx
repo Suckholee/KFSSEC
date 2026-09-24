@@ -327,6 +327,118 @@ export default function GreetingsSection({ viewMode = 'all' }) {
           );
         })}
       </div>
+
+      {/* Chairman MOU & Strategic Partnership History Section (고객 반영사항: 이사장 프로필 하단 MOU 및 협력이력 섹션 추가) */}
+      <ScrollReveal direction="up" delay={200}>
+        <div className="bg-stone-50 rounded-3xl p-6 sm:p-10 border-2 border-[#C5A059] shadow-lg space-y-8 mt-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#0B3C26] pb-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B3C26] text-white text-xs font-black mb-1.5">
+                <Building2 className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <span>MOU & STRATEGIC ALLIANCES</span>
+              </div>
+              <h4 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                {t("안형상 이사장 주요 업무협약(MOU) 및 대외 협력이력")}
+              </h4>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">
+                {t("정부 부처, 전국 지자체, 공공기관 및 10대 산학 협력기업과의 공식 협약 실적입니다.")}
+              </p>
+            </div>
+            <span className="text-xs font-black text-[#0B3C26] bg-emerald-100/80 px-3.5 py-1.5 rounded-xl shrink-0 self-start sm:self-auto">
+              공식 체결 누적 35건+
+            </span>
+          </div>
+
+          {/* MOU Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-3 hover:border-[#0B3C26] transition-colors">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md">
+                  지자체 · 소상공인 지원
+                </span>
+                <span className="text-xs font-bold text-gray-400">2024 - 2026</span>
+              </div>
+              <h5 className="font-black text-base text-gray-900">
+                {t("전국 지자체 외식창업 육성 및 소상공인 경영개선 MOU")}
+              </h5>
+              <p className="text-xs text-gray-600 leading-relaxed font-medium">
+                {t("강남구 소상공인 연합 지원, 경상남도 향토음식 R&D 연계 및 청년상인 육성재단 외식 창업 인큐베이팅 협약 체결")}
+              </p>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-3 hover:border-[#0B3C26] transition-colors">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md">
+                  산학협력 · 기업 연계
+                </span>
+                <span className="text-xs font-bold text-gray-400">2023 - 2026</span>
+              </div>
+              <h5 className="font-black text-base text-gray-900">
+                {t("10대 외식·주방·식자재 공식 협력업체 산학협력 MOU")}
+              </h5>
+              <p className="text-xs text-gray-600 leading-relaxed font-medium">
+                {t("(주)주방뱅크, (주)세진, ㈜자인, 김태완스시, 황태회관 등 10개 가족기업과 조리 실습 및 창업 지원 패키지 협약")}
+              </p>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-3 hover:border-[#0B3C26] transition-colors">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black text-purple-800 bg-purple-50 px-2.5 py-1 rounded-md">
+                  글로벌 · 명인 교류
+                </span>
+                <span className="text-xs font-bold text-gray-400">2022 - 2025</span>
+              </div>
+              <h5 className="font-black text-base text-gray-900">
+                {t("국제 약선요리협회 및 아시아 외식 조리문화 교류 협약")}
+              </h5>
+              <p className="text-xs text-gray-600 leading-relaxed font-medium">
+                {t("중국 남경시 약선요리협회, 일본 및 동남아 K-FOOD 문화 교류 및 대한민국 외식명인 글로벌 인증 파트너십 구축")}
+              </p>
+            </div>
+
+          </div>
+
+          {/* MOU Photo Highlights */}
+          <div className="pt-2">
+            <h5 className="text-xs font-black uppercase text-gray-700 tracking-wider mb-3 flex items-center gap-1.5">
+              <Award className="w-3.5 h-3.5 text-[#0B3C26]" />
+              <span>{t("업무협약 체결 및 인증 수여식 주요 현장")}</span>
+            </h5>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+              <div className="rounded-xl overflow-hidden border border-stone-200 aspect-[4/3] bg-stone-200 group">
+                <img
+                  src="/images/hero_bg.jpg"
+                  alt="MOU 협약식 1"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="rounded-xl overflow-hidden border border-stone-200 aspect-[4/3] bg-stone-200 group">
+                <img
+                  src="/images/chairman_ahn_real.jpg"
+                  alt="MOU 협약식 2"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="rounded-xl overflow-hidden border border-stone-200 aspect-[4/3] bg-stone-200 group">
+                <img
+                  src="/images/course_menu_dev.jpg"
+                  alt="MOU 협약식 3"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="rounded-xl overflow-hidden border border-stone-200 aspect-[4/3] bg-stone-200 group">
+                <img
+                  src="/images/course_restaurant.jpg"
+                  alt="MOU 협약식 4"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </ScrollReveal>
     </div>
   );
 

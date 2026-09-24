@@ -85,6 +85,8 @@ import {
 import { DevInquiryBoard } from './DevInquiryBoard';
 import CertificateModal from './CertificateModal';
 import AdminMasters from './AdminMasters';
+import AdminChatbotSettings from './AdminChatbotSettings';
+import AdminAIBlogMarketing from './AdminAIBlogMarketing';
 
 // Programmatically generate 128 real full student enrollee & account records
 const generate128Enrollees = () => {
@@ -598,11 +600,18 @@ export default function AdminLayout({
         ];
       case 'inquiries':
         return [
-          { id: 'inquiry_all', label: '1:1 수강 문의 전체' },
+          { id: 'inquiry_all', label: '📋 1:1 수강 문의 전체' },
+          { id: 'chatbot_settings', label: '🤖 AI 챗봇 & 상담 설정' },
         ];
       case 'reviews':
         return [
           { id: 'review_list', label: '수강 후기 & 별점 관리' },
+        ];
+      case 'marketing':
+        return [
+          { id: 'generator', label: '🤖 AI 블로그 원고 생성' },
+          { id: 'calendar', label: '📅 캘린더 자동 등록 검토' },
+          { id: 'banner_guide', label: '🖼️ AP 배너 가이드' },
         ];
       default:
         return [];
@@ -754,6 +763,19 @@ export default function AdminLayout({
             <Star className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">후기</span>
           </button>
+
+          <button
+            onClick={() => switchPrimaryMenu('marketing', 'generator', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'marketing'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="AI 블로그 & 마케팅"
+          >
+            <Bot className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">AI마케팅</span>
+          </button>
         </nav>
 
         {/* TIER 2: Secondary Expanding Sub-Panel */}
@@ -818,6 +840,7 @@ export default function AdminLayout({
         <main className="flex-1 min-w-0 h-full p-3 sm:p-6 overflow-y-auto bg-[#f4f6f8] space-y-6 scroll-smooth select-text">
           
           {primaryMenu === 'masters' && <AdminMasters />}
+          {primaryMenu === 'marketing' && <AdminAIBlogMarketing />}
 
           {/* Notification Alert for Saved Changes */}
           {isSavedNotice && (
@@ -1354,8 +1377,12 @@ export default function AdminLayout({
             <DevInquiryBoard />
           )}
 
-          {/* DYNAMIC SCREEN: 1:1 STUDENT INQUIRIES WORKSTATION VIEW */}
-          {primaryMenu === 'inquiries' && (
+          {/* DYNAMIC SCREEN: AI CHATBOT SETTINGS OR 1:1 INQUIRIES WORKSTATION */}
+          {primaryMenu === 'inquiries' && secondaryMenu === 'chatbot_settings' && (
+            <AdminChatbotSettings />
+          )}
+
+          {primaryMenu === 'inquiries' && secondaryMenu !== 'chatbot_settings' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
               {/* Header Title & Top Summary */}

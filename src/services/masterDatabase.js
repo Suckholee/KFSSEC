@@ -46,7 +46,18 @@ export function validateProfile(profile) {
   if (profile.published && !image) throw new Error('공개 프로필에는 사진이 필요합니다.');
   const headline = (profile.headline || '').trim();
   if (headline.length > 60 || headline.split('\n').length > 2) throw new Error('카드 소개 문구는 60자 이내, 두 줄 이하로 입력해 주세요.');
-  return { ...profile, image, headline, name: profile.name.trim(), title: (profile.title || '').trim(), intro: (profile.intro || '').trim(), order: Number(profile.order) };
+  return {
+    ...profile,
+    image,
+    headline,
+    name: profile.name.trim(),
+    title: (profile.title || '').trim(),
+    intro: (profile.intro || '').trim(),
+    order: Number(profile.order),
+    blogUrl: (profile.blogUrl || '').trim(),
+    youtubeUrl: (profile.youtubeUrl || '').trim(),
+    instagramUrl: (profile.instagramUrl || '').trim(),
+  };
 }
 
 export function saveMasterProfile(profile, expectedProfile) {
