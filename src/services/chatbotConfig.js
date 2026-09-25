@@ -46,7 +46,12 @@ export const DEFAULT_CHATBOT_CONFIG = {
     {
       id: 'faq-price',
       title: '수강료 및 결제/할인 안내',
-      keywords: ['수강료', '비용', '가격', '얼마', '결제', '할인', '카드', '할부', '금액'],
+      keywords: [
+        '수강료', '비용', '가격', '얼마', '결제', '할인', '카드', '할부', '금액',
+        'price', 'tuition', 'fee', 'cost', 'pay', 'discount',
+        '受講料', '費用', '価格', 'いくら', '決済', '割引', 'カード',
+        '学费', '费用', '价格', '多少钱', '支付', '优惠', '折扣'
+      ],
       reply: '교육과정별 수강료는 온라인 자격과정(20~26만원대) 및 1:1 실전 창업 패키지(38~45만원대)로 구성되어 있습니다. 조기 등록 시 10% 얼리버드 및 국비 지원 연계 혜택이 적용됩니다.',
       actionTab: 'catalog',
       actionSubTab: 'courses',
@@ -55,7 +60,12 @@ export const DEFAULT_CHATBOT_CONFIG = {
     {
       id: 'faq-cert',
       title: '자격증 검정 및 시험 일정',
-      keywords: ['자격증', '시험', '외식창업지도사', '외식창업실무사', 'K-FOOD', '민간자격', '합격', '응시'],
+      keywords: [
+        '자격증', '시험', '외식창업지도사', '외식창업실무사', 'K-FOOD', '민간자격', '합격', '응시',
+        'cert', 'license', 'exam', 'test', 'qualification',
+        '資格', '資格証', '試験', '検定', '合格', '受験',
+        '资格证', '资格', '证书', '考试', '考核', '合格', '报考'
+      ],
       reply: '외식창업지도사 2급, 외식창업실무사 2급, K-FOOD 자격증은 농림축산식품부 소관 등록 민간자격증입니다. 온라인 강의 80% 이상 이수 후 정기 자격 검정 시험(필기/실기)을 통해 취득하실 수 있습니다.',
       actionTab: 'catalog',
       actionSubTab: 'guide',
@@ -64,7 +74,12 @@ export const DEFAULT_CHATBOT_CONFIG = {
     {
       id: 'faq-gov',
       title: '정부지원금 및 청년 창업',
-      keywords: ['정부지원', '국비', '청년', '지원금', '소상공인', '정책자금', '5천만원', '지원사업'],
+      keywords: [
+        '정부지원', '국비', '청년', '지원금', '소상공인', '정책자금', '5천만원', '지원사업',
+        'subsidy', 'grant', 'youth', 'government', 'funding',
+        '政府支援', '国費', '青年', '支援金', '小規模事業者', '政策資金',
+        '政府补贴', '政策扶持', '资金', '青年创业', '小微商户'
+      ],
       reply: '만 39세 이하 청년 외식창업자 및 소상공인을 대상으로 최대 5,000만원 한도의 정부지원금 연계 창업 교육 및 사업계획서 1:1 맞춤 컨설팅을 지원해 드립니다.',
       actionTab: 'consulting',
       actionSubTab: 'apply',
@@ -73,7 +88,12 @@ export const DEFAULT_CHATBOT_CONFIG = {
     {
       id: 'faq-location',
       title: '교육원 위치 및 주차 안내',
-      keywords: ['위치', '주소', '어디', '찾아오는', '오시는', '길', '주차', '역삼역', '테헤란로'],
+      keywords: [
+        '위치', '주소', '어디', '찾아오는', '오시는', '길', '주차', '역삼역', '테헤란로',
+        'location', 'address', 'where', 'parking', 'map', 'directions',
+        '場所', '位置', 'どこ', 'アクセス', '住所', '駐車', '駅三駅',
+        '地址', '在哪', '交通', '停车', '路线', '位置'
+      ],
       reply: '교육원은 서울시 강남구 테헤란로(역삼역 도보 5분 거리)에 위치해 있으며, 지하 주차장 이용이 가능합니다. 상세 약도 및 대중교통 정보는 오시는 길 페이지에서 확인하실 수 있습니다.',
       actionTab: 'about',
       actionSubTab: 'location',
@@ -82,7 +102,12 @@ export const DEFAULT_CHATBOT_CONFIG = {
     {
       id: 'faq-refund',
       title: '환불 및 수강 취소 규정',
-      keywords: ['환불', '취소', '중도해지', '반환', '환불규정'],
+      keywords: [
+        '환불', '취소', '중도해지', '반환', '환불규정',
+        'refund', 'cancel', 'return',
+        '返金', 'キャンセル', '中途解約', '払い戻し',
+        '退款', '取消', '退费'
+      ],
       reply: '개강 전 취소 시 결제하신 수강료 전액이 100% 환불되며, 개강 후에는 평생교육법 및 학원법 환불 기준에 따라 잔여 수업 일수에 비례하여 신속히 환불 처리됩니다.',
       actionTab: 'catalog',
       actionSubTab: 'courses',
@@ -91,11 +116,72 @@ export const DEFAULT_CHATBOT_CONFIG = {
     {
       id: 'faq-gangnam',
       title: '강남구 소호 인큐베이팅',
-      keywords: ['강남', '소호', '인큐베이팅', '공유주방', '매장', '입주', '창업지원'],
+      keywords: [
+        '강남', '소호', '인큐베이팅', '공유주방', '매장', '입주', '창업지원',
+        'gangnam', 'soho', 'incubating', 'kitchen',
+        '江南', 'シェアキッチン', 'インキュベーション',
+        '江南区', '共享厨房', '孵化', '众创'
+      ],
       reply: '강남구 관내 외식 창업 소상공인을 위한 공유 실습 공간 및 인큐베이팅 거점 공간을 제공하여 초기 창업 설비 및 임대료 부담을 대폭 낮춰 드립니다.',
       actionTab: 'gangnam',
       actionSubTab: 'intro',
       actionLabel: '강남 소호 안내 보기',
+    },
+    {
+      id: 'faq-course-general',
+      title: '교육과정 및 커리큘럼',
+      keywords: [
+        '교육과정', '과정', '강좌', '강의', '커리큘럼', '수업',
+        'course', 'curriculum', 'class', 'program',
+        '教育課程', '課程', '講座', '講義', 'カリキュラム', '授業',
+        '课程', '培训', '教学', '研修'
+      ],
+      reply: '외식창업지도사 2급, 외식창업실무사 2급, 한국음식능력(K-FOOD) 2급 온라인 자격 과정 및 1:1 도제식 창업 마스터 과정이 개설되어 있습니다. 4주 집중 과정으로 진행됩니다.',
+      actionTab: 'catalog',
+      actionSubTab: 'courses',
+      actionLabel: '교육과정 전체보기',
+    },
+    {
+      id: 'faq-about-general',
+      title: '교육원 소개 및 이사장 인사말',
+      keywords: [
+        '교육원', '소개', '이사장', '인사말', '설립',
+        'about', 'greeting', 'chairman', 'institute',
+        '教育院', '紹介', '理事長', '挨拶',
+        '介绍', '理事长', '致辞', '机构'
+      ],
+      reply: '사단법인 한국외식창업교육원은 농림축산식품부 소관 비영리 사단법인으로 외식창업 명장 선생님들이 1:1 도제식 전수를 진행합니다.',
+      actionTab: 'about',
+      actionSubTab: 'greetings',
+      actionLabel: '교육원 소개 보기',
+    },
+    {
+      id: 'faq-masters-general',
+      title: '명장·명인 교수진 정보',
+      keywords: [
+        '명장', '명인', '교수', '교수진', '셰프', '안형상', '진익준', '신충섭',
+        'master', 'chef', 'faculty', 'professor',
+        '名匠', '名人', '教授', 'シェフ',
+        '名厨', '大师', '名家'
+      ],
+      reply: '40년 경력의 안형상 이사장님을 비롯한 대한민국 조리 명장·명인 교수진이 특제 비법 레시피와 매장 경영 노하우를 직접 전수합니다.',
+      actionTab: 'master',
+      actionSubTab: 'profiles',
+      actionLabel: '명장·명인 프로필 보기',
+    },
+    {
+      id: 'faq-contact-general',
+      title: '1:1 상담 및 문의',
+      keywords: [
+        '문의', '상담', '전화', '연락', '번호', '입학', '신청',
+        'contact', 'inquiry', 'phone', 'call', 'consult', 'ask',
+        '問合せ', '相談', '電話', '連絡', '申込み',
+        '咨询', '电话', '联系', '报名'
+      ],
+      reply: '대표전화 010-7244-6796으로 즉시 전화 연결하시거나, 1:1 온라인 문의 게시판에 글을 남겨주시면 담당 컨설턴트가 신속히 상세 상담을 도와드립니다.',
+      actionTab: 'community',
+      actionSubTab: 'inquiry',
+      actionLabel: '1:1 문의 게시판 바로가기',
     },
   ],
   fallbackReply: '질문해 주신 내용에 대해 담당 전문 컨설턴트의 1:1 심층 상담이 필요합니다. 아래 [1:1 문의 게시판 남기기] 버튼을 누르시면 교육원에서 영업일 기준 신속히 전화 및 온라인으로 맞춤 안내를 드립니다.',
@@ -150,7 +236,7 @@ export function findBotAnswer(userInput, config = null) {
     };
   }
 
-  // Check custom FAQ rules
+  // Check custom FAQ rules (including newly added multilingual keywords)
   for (const rule of currentConfig.faqRules || []) {
     const hasMatch = (rule.keywords || []).some((kw) =>
       trimmed.includes(kw.toLowerCase().trim())
