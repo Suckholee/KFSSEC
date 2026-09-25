@@ -33,10 +33,11 @@ export default function Header({
       id: 'master',
       title: t('명장·명인', 'Masters & Artisans'),
       key: 'master',
-      defaultSubTab: 'profiles',
+      defaultSubTab: 'all',
       subItems: [
-        { id: 'profiles', title: t('명장', 'Master Chefs'), subTab: 'profiles' },
-        { id: 'directory', title: t('명인', 'Culinary Artisans'), subTab: 'directory' },
+        { id: 'all', title: t('명장·명인 전체', 'All Masters & Artisans'), subTab: 'all' },
+        { id: 'profiles', title: t('대한민국 명장', 'Master Chefs'), subTab: 'profiles' },
+        { id: 'directory', title: t('조리 명인', 'Culinary Artisans'), subTab: 'directory' },
       ],
     },
     {

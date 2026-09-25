@@ -468,7 +468,7 @@ export default function App() {
         )}
 
         {activeTab === 'master' && (
-          <MasterBusinessPage initialSubTab={subTab || 'profiles'} />
+          <MasterBusinessPage initialSubTab={subTab || 'all'} />
         )}
 
         {activeTab === 'catalog' && (
