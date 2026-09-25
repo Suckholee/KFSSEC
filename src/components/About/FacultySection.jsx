@@ -16,10 +16,10 @@ import {
   FileText,
 } from 'lucide-react';
 
-export default function FacultySection() {
+export default function FacultySection({ facultyList: propFaculty }) {
   const { t } = useLanguage();
 
-  const facultyMembers = [
+  const defaultFaculty = [
     {
       id: 'prof-jin',
       name: '진익준',
@@ -125,6 +125,8 @@ export default function FacultySection() {
       ],
     },
   ];
+
+  const facultyMembers = propFaculty && propFaculty.length > 0 ? propFaculty : defaultFaculty;
 
   return (
     <div className="space-y-10 animate-fadeIn font-sans text-gray-900 w-full">

@@ -2,8 +2,17 @@ import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
 
-export default function Footer({ onTabChange }) {
+export default function Footer({ onTabChange, siteData = {} }) {
   const { t } = useLanguage();
+  const info = siteData?.institutionInfo || {};
+  const phone = info.phone || '010-7244-6796';
+  const email = info.email || 'contact@kfssec.or.kr';
+  const corpName = info.corpName || '사단법인 한국외식창업교육원';
+  const ceoName = info.ceoName || '안형상 이사장';
+  const establishedDate = info.establishedDate || '2022년 7월 29일';
+  const hours = info.operatingHours || '평일 09:00 - 18:00 (주말/공휴일 휴무)';
+  const address = info.headquartersAddress || '서울특별시 강남구 테헤란로 123 KFSSEC 빌딩 3-5층 (실습 및 검정 전용 교육장)';
+
   return (
     <footer className="bg-[#0D1512] text-gray-300 text-sm border-t border-emerald-950 pt-12 pb-24 sm:pb-8 font-sans">
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto">
@@ -18,7 +27,11 @@ export default function Footer({ onTabChange }) {
                 className="h-20 w-auto object-contain brightness-0 invert"
               />
             </div>
-            <p className="text-xs leading-relaxed text-gray-300 font-medium">{t("법인명: 사단법인 한국외식창업교육원")}<br />{t("대표자: 안형상 이사장 | 설립일: 2022년 7월 12일")}<br />{t("분야: 외식·펫 창업 실무 교육 및 전문 자격증 발급")}{' '}</p>
+            <p className="text-xs leading-relaxed text-gray-300 font-medium">
+              {t("법인명: ")}{corpName}<br />
+              {t("대표자: ")}{ceoName} | {t("설립일: ")}{establishedDate}<br />
+              {t("분야: 외식·펫 창업 실무 교육 및 전문 자격증 발급")}
+            </p>
             <button
               onClick={() => onTabChange?.('about', 'greetings')}
               className="text-xs font-bold text-emerald-400 hover:text-emerald-300 underline underline-offset-4 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none min-h-[44px] flex items-center"
@@ -54,12 +67,12 @@ export default function Footer({ onTabChange }) {
             <div className="space-y-2.5 text-xs">
               <div className="flex items-center gap-2 text-white font-black text-base">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>010-7244-6796</span>
+                <span>{phone}</span>
               </div>
-              <p className="text-gray-300 font-medium">{t("평일 09:00 - 18:00 (주말/공휴일 휴무)")}</p>
+              <p className="text-gray-300 font-medium">{hours}</p>
               <div className="flex items-center gap-2 text-gray-300 font-medium pt-1">
                 <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="font-mono text-emerald-300">contact@kfssec.or.kr</span>
+                <span className="font-mono text-emerald-300">{email}</span>
               </div>
             </div>
           </div>
@@ -69,7 +82,7 @@ export default function Footer({ onTabChange }) {
             <h4 className="text-sm font-black text-white mb-3 tracking-tight">{t("교육원 위치")}</h4>
             <div className="flex items-start gap-2 text-xs leading-relaxed text-gray-300 font-medium">
               <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <span>{t("서울특별시 강남구 테헤란로 123 KFSSEC 빌딩 3-5층 (실습 및 검정 전용 교육장)")}</span>
+              <span>{address}</span>
             </div>
           </div>
 

@@ -39,8 +39,14 @@ import {
 
 import FacultySection from './FacultySection';
 
-export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'greetings' }) {
+export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'greetings', siteData = {} }) {
   const { t } = useLanguage();
+  const info = siteData?.institutionInfo || {};
+  const corpName = info.corpName || '사단법인 한국외식창업교육원';
+  const engName = info.engName || 'Korea Food Service Startup Education Center';
+  const ceoName = info.ceoName || '안형상 이사장';
+  const establishedDate = info.establishedDate || '2022년 7월 29일';
+
   const validSubTabs = ['greetings', 'history', 'speech', 'profile', 'faculty', 'organization'];
   const resolveTab = (val) => (validSubTabs.includes(val) ? val : 'greetings');
   const defaultSub = resolveTab(initialSubTab || initialTab);
@@ -128,15 +134,15 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
                     <ul className="space-y-3 font-bold text-gray-100">
                       <li className="flex items-center gap-3">
                         <Building2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                        <span><strong className="text-[#D4AF37] font-black">{t("법인명 :")}</strong>{' '}{t("사단법인 한국외식창업교육원")}</span>
+                        <span><strong className="text-[#D4AF37] font-black">{t("법인명 :")}</strong>{' '}{corpName}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <Globe className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                        <span><strong className="text-[#D4AF37] font-black">{t("영문명 :")}</strong> Korea Food Service Startup Education Center</span>
+                        <span><strong className="text-[#D4AF37] font-black">{t("영문명 :")}</strong>{' '}{engName}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <UserCheck className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                        <span><strong className="text-[#D4AF37] font-black">{t("대표자 :")}</strong>{' '}{t("안형상 이사장")}</span>
+                        <span><strong className="text-[#D4AF37] font-black">{t("대표자 :")}</strong>{' '}{ceoName}</span>
                       </li>
                       <li className="flex items-center gap-3">
                         <UtensilsCrossed className="w-4 h-4 text-[#D4AF37] shrink-0" />
@@ -144,7 +150,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
                       </li>
                       <li className="flex items-center gap-3">
                         <Calendar className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                        <span><strong className="text-[#D4AF37] font-black">{t("설립 및 허가일자 :")}</strong>{' '}{t("2022년 7월 29일")}</span>
+                        <span><strong className="text-[#D4AF37] font-black">{t("설립 및 허가일자 :")}</strong>{' '}{establishedDate}</span>
                       </li>
                     </ul>
                   </div>
@@ -286,7 +292,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
 
             {/* SUB-TAB 2: 주요 연혁 */}
             {activeTab === 'history' && (
-              <HistorySection />
+              <HistorySection milestones={siteData?.history} />
             )}
 
             {/* SUB-TAB 3: 원장 인사말 */}
@@ -301,7 +307,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
 
             {/* SUB-TAB 4: 교수진 소개 */}
             {activeTab === 'faculty' && (
-              <FacultySection />
+              <FacultySection facultyList={siteData?.faculty} />
             )}
 
             {/* SUB-TAB 5: 조직도 */}

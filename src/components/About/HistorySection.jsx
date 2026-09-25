@@ -14,10 +14,10 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
-export default function HistorySection() {
+export default function HistorySection({ milestones: propMilestones }) {
   const { t } = useLanguage();
 
-  const milestones = [
+  const defaultMilestones = [
     {
       year: '2026',
       badge: '도약과 결실',
@@ -132,6 +132,8 @@ export default function HistorySection() {
     },
   ];
 
+  const milestones = propMilestones && propMilestones.length > 0 ? propMilestones : defaultMilestones;
+
   return (
     <div className="space-y-8 animate-fadeIn w-full">
       {/* Header Banner */}
@@ -180,7 +182,7 @@ export default function HistorySection() {
               {/* Event Cards Grid */}
               <div className="grid grid-cols-1 gap-4">
                 {milestone.events.map((evt, eIdx) => {
-                  const Icon = evt.icon;
+                  const Icon = evt.icon || Award;
                   return (
                     <div
                       key={eIdx}

@@ -21,6 +21,9 @@ import {
   Plus,
   Building2,
   Calendar,
+  Home,
+  Megaphone,
+  Settings,
 } from 'lucide-react';
 import { maskName, maskPhone, maskId } from '../../utils/security';
 
@@ -223,12 +226,22 @@ export default function AdminDashboard({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
           <button
             type="button"
-            onClick={() => onNavigateTab('partner_logos', 'logo_list')}
+            onClick={() => onNavigateTab('home', 'visual_editor')}
             className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
           >
-            <Handshake className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">MOU 로고 관리</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">인피니티 롤링 배너</span>
+            <Home className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
+            <span className="text-xs sm:text-sm font-black block">홈화면 라이브 관리</span>
+            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">행사 배너 & 유튜브</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('about', 'history_manage')}
+            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
+          >
+            <Building2 className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
+            <span className="text-xs sm:text-sm font-black block">교육원 소개 & 연혁</span>
+            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">연혁 및 교수진 관리</span>
           </button>
 
           <button
@@ -248,17 +261,47 @@ export default function AdminDashboard({
           >
             <Award className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
             <span className="text-xs sm:text-sm font-black block">명장·명인 관리</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">프로필 & SNS 연동</span>
+            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">64명 프로필 & SNS</span>
           </button>
 
           <button
             type="button"
-            onClick={() => onNavigateTab('marketing', 'generator')}
+            onClick={() => onNavigateTab('partner_logos', 'logo_list')}
             className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
           >
-            <Bot className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">AI 블로그 마케팅</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">원고 자동생성 및 배너</span>
+            <Handshake className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
+            <span className="text-xs sm:text-sm font-black block">MOU 로고 관리</span>
+            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">인피니티 롤링 배너</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('community', 'notice_list')}
+            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
+          >
+            <Megaphone className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
+            <span className="text-xs sm:text-sm font-black block">공지사항 & 게시판</span>
+            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">보도자료 & 대회공지</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('reservations', 'enrollees_list')}
+            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
+          >
+            <Users className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
+            <span className="text-xs sm:text-sm font-black block">수강생 회원 (128명)</span>
+            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">결제상태 & 수강증</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('settings', 'corp_info')}
+            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
+          >
+            <Settings className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
+            <span className="text-xs sm:text-sm font-black block">기관 대표 정보 설정</span>
+            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">대표번호 & 주소 설정</span>
           </button>
         </div>
       </div>

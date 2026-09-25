@@ -60,6 +60,21 @@ function ScrollToTopButton() {
   );
 }
 
+const DEFAULT_INSTITUTION_INFO = {
+  corpName: '사단법인 한국외식창업교육원',
+  engName: 'Korea Food Service Startup Education Center',
+  ceoName: '안형상 이사장',
+  phone: '010-7244-6796',
+  tel: '02-3474-7001',
+  fax: '02-3474-7002',
+  email: 'contact@kfssec.or.kr',
+  headquartersAddress: '서울특별시 강남구 테헤란로 123 KFSSEC 빌딩 3-5층 (실습 및 검정 전용 교육장)',
+  officeAddress: '서울특별시 서초구 사임당로 174, 강남미래타워 5층 (우: 06628)',
+  bizNumber: '114-82-10825',
+  establishedDate: '2022년 7월 29일',
+  operatingHours: '평일 09:00 - 18:00 (주말/공휴일 휴무)',
+};
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [subTab, setSubTab] = useState(null);
@@ -86,7 +101,7 @@ export default function App() {
   }, []);
 
   // Shared Community Posts List State populated with 128 Real Student Dataset
-  const [postsList, setPostsList] = useState([
+  const DEFAULT_POSTS_LIST = [
     {
       id: 1,
       category: '공지 사항',
@@ -232,7 +247,25 @@ export default function App() {
       content: '활어 오로시 및 성게알 타르타르 레시피 실습 시간표와 주말반 개설 여부가 궁금합니다.',
       reply: null,
     },
-  ]);
+  ];
+
+  const [postsList, setPostsList] = useState(() => {
+    const saved = localStorage.getItem('kfssec_posts_list');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+    return DEFAULT_POSTS_LIST;
+  });
+
+  const handleUpdatePostsList = (newList) => {
+    setPostsList(newList);
+    try {
+      localStorage.setItem('kfssec_posts_list', JSON.stringify(newList));
+    } catch (e) {}
+  };
 
   // Central Dynamic Site Data Store
   const [siteData, setSiteData] = useState(() => {
@@ -247,6 +280,9 @@ export default function App() {
           if (!parsed.partnerLogos || parsed.partnerLogos.length === 0) {
             parsed.partnerLogos = DEFAULT_PARTNER_LOGOS;
           }
+          if (!parsed.institutionInfo) {
+            parsed.institutionInfo = DEFAULT_INSTITUTION_INFO;
+          }
           return parsed;
         }
       } catch (e) {
@@ -255,6 +291,7 @@ export default function App() {
     }
     return {
       partnerLogos: DEFAULT_PARTNER_LOGOS,
+      institutionInfo: DEFAULT_INSTITUTION_INFO,
       youtube: {
         title: '한국외식창업교육원 미디어',
         subtitle: '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.',
@@ -421,7 +458,7 @@ export default function App() {
         onExitAdmin={() => handleTabChange('home')}
         onLogout={handleLogout}
         postsList={postsList}
-        setPostsList={setPostsList}
+        setPostsList={handleUpdatePostsList}
       />
     );
   }
@@ -464,7 +501,7 @@ export default function App() {
         )}
 
         {activeTab === 'about' && (
-          <AboutPage initialSubTab={subTab || 'greetings'} />
+          <AboutPage initialSubTab={subTab || 'greetings'} siteData={siteData} />
         )}
 
         {activeTab === 'master' && (
@@ -513,7 +550,7 @@ export default function App() {
             isUserLoggedIn={!!currentUser}
             onGoToEditor={() => handleTabChange('community', 'editor')}
             postsList={postsList}
-            setPostsList={setPostsList}
+            setPostsList={handleUpdatePostsList}
           />
         )}
       </main>
@@ -528,7 +565,7 @@ export default function App() {
       <VisitorChatbotWidget onNavigate={handleTabChange} />
 
       {/* Footer Component */}
-      <Footer onTabChange={handleTabChange} />
+      <Footer onTabChange={handleTabChange} siteData={siteData} />
 
       {/* Modals */}
       <AuthModal

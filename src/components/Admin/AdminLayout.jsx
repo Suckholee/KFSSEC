@@ -91,6 +91,10 @@ import AdminMasters from './AdminMasters';
 import AdminChatbotSettings from './AdminChatbotSettings';
 import AdminAIBlogMarketing from './AdminAIBlogMarketing';
 import AdminPartnerLogos from './AdminPartnerLogos';
+import AdminContent from './AdminContent';
+import AdminCommunity from './AdminCommunity';
+import AdminAbout from './AdminAbout';
+import AdminSettings from './AdminSettings';
 
 // Programmatically generate 128 real full student enrollee & account records
 const generate128Enrollees = () => {
@@ -382,6 +386,15 @@ export default function AdminLayout({
     } else if (parts[1] === 'home') {
       menu = 'home';
       subTab = 'visual_editor';
+    } else if (parts[1] === 'about') {
+      menu = 'about';
+      subTab = 'history_manage';
+    } else if (parts[1] === 'community' || parts[1] === 'posts' || parts[1] === 'notices') {
+      menu = 'community';
+      subTab = 'notice_list';
+    } else if (parts[1] === 'settings') {
+      menu = 'settings';
+      subTab = 'corp_info';
     } else if (parts[1] === 'masters') {
       menu = 'masters';
       subTab = 'profile_list';
@@ -443,14 +456,17 @@ export default function AdminLayout({
   const switchPrimaryMenu = (menu, subTab = null, course = null) => {
     const defaultSubTab = subTab || (
       menu === 'dashboard' ? 'overview' :
+      menu === 'home' ? 'visual_editor' :
+      menu === 'about' ? 'history_manage' :
+      menu === 'community' ? 'notice_list' :
+      menu === 'settings' ? 'corp_info' :
       menu === 'partner_logos' ? 'logo_list' :
       menu === 'courses' ? 'course_list' :
       menu === 'masters' ? 'profile_list' :
       menu === 'reservations' ? 'enrollees_list' :
       menu === 'inquiries' ? 'inquiry_all' :
       menu === 'reviews' ? 'review_list' :
-      menu === 'marketing' ? 'generator' :
-      menu === 'home' ? 'visual_editor' : 'dev_inquiry_list'
+      menu === 'marketing' ? 'generator' : 'dev_inquiry_list'
     );
     setPrimaryMenu(menu);
     setSecondarySubTab(defaultSubTab);
@@ -613,9 +629,23 @@ export default function AdminLayout({
         return [{ id: 'profile_list', label: '명장·명인 프로필 목록' }];
       case 'home':
         return [
-          { id: 'visual_editor', label: '홈화면 라이브 에디터' },
-          { id: 'banner_edit', label: '행사 띠배너 설정' },
-          { id: 'youtube_edit', label: '유튜브 방송 미디어' },
+          { id: 'visual_editor', label: '🖥️ 홈화면 라이브 에디터' },
+          { id: 'banner_edit', label: '📢 행사 띠배너 설정' },
+          { id: 'youtube_edit', label: '📺 유튜브 방송 미디어' },
+        ];
+      case 'about':
+        return [
+          { id: 'history_manage', label: '📅 주요 연혁 관리' },
+          { id: 'faculty_manage', label: '👨‍🏫 명문 교수진 소개' },
+          { id: 'speech_manage', label: '📜 이사장 인사말' },
+        ];
+      case 'community':
+        return [
+          { id: 'notice_list', label: '📢 공지사항 & 게시글 관리' },
+        ];
+      case 'settings':
+        return [
+          { id: 'corp_info', label: '🏢 기관 대표 정보 설정' },
         ];
       case 'courses':
         return [
@@ -727,7 +757,7 @@ export default function AdminLayout({
       <div className="flex-1 flex overflow-hidden h-[calc(100vh-64px)]">
         
         {/* TIER 1: Far Left Narrow Icon Bar */}
-        <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-3.5 shrink-0 z-20 h-full overflow-y-auto">
+        <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-3 shrink-0 z-20 h-full overflow-y-auto">
           <button
             onClick={() => switchPrimaryMenu('dashboard', 'overview', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
@@ -739,6 +769,32 @@ export default function AdminLayout({
           >
             <LayoutDashboard className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">대시보드</span>
+          </button>
+
+          <button
+            onClick={() => switchPrimaryMenu('home', 'visual_editor', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'home'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="홈화면 관리"
+          >
+            <Home className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">홈화면</span>
+          </button>
+
+          <button
+            onClick={() => switchPrimaryMenu('about', 'history_manage', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'about'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="교육원 소개 & 연혁 & 교수진"
+          >
+            <Building2 className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">교육원</span>
           </button>
 
           <button
@@ -755,6 +811,19 @@ export default function AdminLayout({
           </button>
 
           <button
+            onClick={() => switchPrimaryMenu('masters', 'profile_list')}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'masters'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="명장·명인 프로필 관리"
+          >
+            <Award className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">명장·명인</span>
+          </button>
+
+          <button
             onClick={() => switchPrimaryMenu('partner_logos', 'logo_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'partner_logos'
@@ -768,16 +837,16 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => switchPrimaryMenu('masters', 'profile_list')}
+            onClick={() => switchPrimaryMenu('community', 'notice_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'masters'
+              primaryMenu === 'community'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="명장·명인 프로필 관리"
+            title="공지사항 & 게시판 관리"
           >
-            <Award className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">명장·명인</span>
+            <Megaphone className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">게시판</span>
           </button>
 
           <button
@@ -810,19 +879,6 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => switchPrimaryMenu('reviews', 'review_list', null)}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'reviews'
-                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
-            }`}
-            title="수강후기"
-          >
-            <Star className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">후기</span>
-          </button>
-
-          <button
             onClick={() => switchPrimaryMenu('marketing', 'generator', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'marketing'
@@ -836,16 +892,16 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => switchPrimaryMenu('home', 'visual_editor', null)}
+            onClick={() => switchPrimaryMenu('settings', 'corp_info', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'home'
+              primaryMenu === 'settings'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="홈화면 관리"
+            title="기관 정보 & 시스템 설정"
           >
-            <Home className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">홈화면</span>
+            <Settings className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">설정</span>
           </button>
         </nav>
 
@@ -854,15 +910,18 @@ export default function AdminLayout({
           <div className="px-2 border-b border-gray-200 pb-3">
             <h2 className="text-sm font-black text-black tracking-tight">
               {primaryMenu === 'dashboard' && '통합 운영 대시보드'}
-              {primaryMenu === 'partner_logos' && '협약기관/MOU 로고 관리'}
-              {primaryMenu === 'masters' && '명장·명인 프로필 관리'}
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
+              {primaryMenu === 'about' && '교육원 소개 & 연혁'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
-              {primaryMenu === 'developer' && '💻 개발 문의 채널'}
+              {primaryMenu === 'masters' && '명장·명인 프로필 관리'}
+              {primaryMenu === 'partner_logos' && '협약기관/MOU 로고'}
+              {primaryMenu === 'community' && '게시판 & 공지사항 관리'}
               {primaryMenu === 'reservations' && '회원 관리 센터 (128명)'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의 & AI 챗봇'}
-              {primaryMenu === 'reviews' && '수강후기 & 별점'}
               {primaryMenu === 'marketing' && 'AI 블로그 마케팅'}
+              {primaryMenu === 'settings' && '기관 정보 & 시스템 설정'}
+              {primaryMenu === 'reviews' && '수강후기 & 별점'}
+              {primaryMenu === 'developer' && '💻 개발 문의 채널'}
             </h2>
             <p className="text-[10px] text-gray-500 font-bold mt-0.5">스마트 파트너 워크스페이스</p>
           </div>
@@ -2097,34 +2156,35 @@ export default function AdminLayout({
           )}
 
           {/* HOME MENU SCREENS */}
-          {primaryMenu === 'home' && secondarySubTab === 'partner_logos' && (
-            <AdminPartnerLogos
-              partnerLogos={siteData?.partnerLogos}
-              onUpdatePartnerLogos={(newLogos) => {
-                onUpdateSiteData({
-                  ...siteData,
-                  partnerLogos: newLogos,
-                });
-              }}
+          {primaryMenu === 'home' && (
+            <AdminContent
+              siteData={siteData}
+              onUpdateSiteData={onUpdateSiteData}
             />
           )}
 
-          {primaryMenu === 'home' && secondarySubTab !== 'partner_logos' && (
-            <div className="space-y-6 animate-fadeIn">
-              <div className="bg-white p-4 rounded-2xl border border-gray-300 flex items-center justify-between">
-                <span className="text-sm font-black text-black">
-                  🖥️ 홈화면 시각적 라이브 에디터 (실제 화면 직접 보면서 클릭 수정)
-                </span>
-              </div>
-              <div className="space-y-8 bg-white rounded-3xl p-4 sm:p-6 border-2 border-gray-300 shadow-xl text-gray-900 overflow-hidden relative">
-                <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
-                  <EventBannerSection bannerData={siteData.banner} onEventClick={() => {}} />
-                </div>
-                <div className="relative border-4 border-dashed border-emerald-500 rounded-2xl overflow-hidden group shadow-md">
-                  <YouTubeMediaSection youtubeData={siteData.youtube} />
-                </div>
-              </div>
-            </div>
+          {/* ABOUT INSTITUTION SCREENS */}
+          {primaryMenu === 'about' && (
+            <AdminAbout
+              siteData={siteData}
+              onUpdateSiteData={onUpdateSiteData}
+            />
+          )}
+
+          {/* COMMUNITY & NOTICES SCREENS */}
+          {primaryMenu === 'community' && (
+            <AdminCommunity
+              postsList={postsList}
+              setPostsList={setPostsList}
+            />
+          )}
+
+          {/* INSTITUTION SETTINGS SCREENS */}
+          {primaryMenu === 'settings' && (
+            <AdminSettings
+              siteData={siteData}
+              onUpdateSiteData={onUpdateSiteData}
+            />
           )}
 
         </main>
