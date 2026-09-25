@@ -17,8 +17,10 @@ import {
   Send,
   UserCheck,
 } from 'lucide-react';
+import AdminBannerPlanner from './AdminBannerPlanner';
+import { BANNER_SPECS } from '../../services/bannerGenerator';
 
-export default function AdminAIBlogMarketing() {
+export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData }) {
   const [activeTab, setActiveTab] = useState('generator'); // 'generator' | 'calendar' | 'banner_guide'
   
   // Blog Post Generator State
@@ -145,13 +147,14 @@ export default function AdminAIBlogMarketing() {
           </button>
           <button
             onClick={() => setActiveTab('banner_guide')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'banner_guide'
                 ? 'bg-emerald-500 text-black shadow-md'
                 : 'text-gray-400 hover:text-white'
             }`}
           >
-            AP 배너 생성 가이드
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>AI 비주얼 배너 기획 스튜디오</span>
           </button>
         </div>
       </div>
@@ -401,65 +404,66 @@ export default function AdminAIBlogMarketing() {
         </div>
       )}
 
-      {/* TAB 3: AP BANNER CREATION GUIDE & WORKFLOW */}
+      {/* TAB 3: AP BANNER CREATION STUDIO & ROLE GUIDELINES */}
       {activeTab === 'banner_guide' && (
-        <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm space-y-6">
-          <div className="border-b pb-4">
-            <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
-              <Layers className="w-5 h-5 text-emerald-600" />
-              <span>AP 배너 생성 및 향후 운영 담당자 지정 점검 가이드</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">
-              다음 미팅 시 배너 제작 프로세스 및 운영 담당자 역할 분담을 확정하기 위한 사전 가이드라인입니다.
-            </p>
-          </div>
+        <div className="space-y-8 animate-fadeIn">
+          {/* Visual Banner Planner Studio */}
+          <AdminBannerPlanner
+            siteData={siteData}
+            onUpdateSiteData={onUpdateSiteData}
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* Standard Sizes */}
-            <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-3">
-              <h3 className="font-black text-sm text-gray-900 flex items-center gap-1.5">
-                <Image className="w-4 h-4 text-emerald-600" />
-                <span>권장 배너 규격 및 포맷</span>
-              </h3>
-              <ul className="space-y-2 text-xs text-gray-700 font-bold">
-                <li className="flex items-center justify-between p-2.5 bg-white rounded-xl border border-stone-200">
-                  <span>메인 히어로 배너 (와이드)</span>
-                  <span className="font-mono text-emerald-700">1920 × 640 px (WebP / JPG)</span>
-                </li>
-                <li className="flex items-center justify-between p-2.5 bg-white rounded-xl border border-stone-200">
-                  <span>이벤트 & 프로모션 배너 (스트립)</span>
-                  <span className="font-mono text-emerald-700">1200 × 360 px</span>
-                </li>
-                <li className="flex items-center justify-between p-2.5 bg-white rounded-xl border border-stone-200">
-                  <span>모바일 팝업 & 카카오톡 알림</span>
-                  <span className="font-mono text-emerald-700">800 × 800 px (1:1 정사각형)</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Role Assignments for Meeting */}
-            <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-3">
-              <h3 className="font-black text-sm text-gray-900 flex items-center gap-1.5">
-                <UserCheck className="w-4 h-4 text-emerald-600" />
-                <span>미팅 시 확정할 운영 담당자 지정 사항</span>
-              </h3>
-              <div className="space-y-2 text-xs text-gray-700 font-medium leading-relaxed">
-                <div className="p-2.5 bg-white rounded-xl border border-stone-200 space-y-1">
-                  <strong className="text-gray-900 block font-black">① 배너 기획 및 텍스트 카피 담당</strong>
-                  <p>교육원 사무국 (개강 일정, 수강 할인율, 이벤트 정책 수립)</p>
-                </div>
-                <div className="p-2.5 bg-white rounded-xl border border-stone-200 space-y-1">
-                  <strong className="text-gray-900 block font-black">② 그래픽 디자인 및 이미지 추출 담당</strong>
-                  <p>웹 디자인/개발팀 (사전 정의된 Figma/PSD 템플릿 기반 유사 복제)</p>
-                </div>
-                <div className="p-2.5 bg-white rounded-xl border border-stone-200 space-y-1">
-                  <strong className="text-gray-900 block font-black">③ 관리자 페이지 실시간 배너 등록</strong>
-                  <p>운영 담당자 (Admin 홈화면 관리에서 1클릭 업로드 및 링크 연결)</p>
-                </div>
+          {/* Operational Role Assignments & Checkpoints */}
+          <div className="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-sm space-y-5">
+            <div className="border-b pb-3 flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
+                  <UserCheck className="w-4 h-4 text-emerald-600" />
+                  <span>배너 제작 협업 프로세스 및 역할 분담 점검표</span>
+                </h3>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  사무국, 웹 디자인팀, 사이트 운영자 간 효율적인 배너 릴리즈 파이프라인입니다.
+                </p>
               </div>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black flex items-center justify-center">
+                    1
+                  </span>
+                  <strong className="text-gray-900 font-black">기획 및 카피라이팅</strong>
+                </div>
+                <p className="text-stone-600 text-[11px] leading-relaxed">
+                  <strong>교육원 사무국</strong>: 상단 스튜디오에서 이벤트 주제와 혜택을 선택하고 AI 카피를 확정한 후 디자이너 의뢰서를 복사합니다.
+                </p>
+              </div>
+
+              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black flex items-center justify-center">
+                    2
+                  </span>
+                  <strong className="text-gray-900 font-black">비주얼 디자인 및 에셋 제작</strong>
+                </div>
+                <p className="text-stone-600 text-[11px] leading-relaxed">
+                  <strong>웹 디자인팀</strong>: 의뢰서의 규격({BANNER_SPECS.map(s => `${s.width}x${s.height}`).join(', ')})과 헤리티지 컬러 팔레트를 바탕으로 완성형 그래픽을 제작합니다.
+                </p>
+              </div>
+
+              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black flex items-center justify-center">
+                    3
+                  </span>
+                  <strong className="text-gray-900 font-black">실시간 배포 및 링크 연결</strong>
+                </div>
+                <p className="text-stone-600 text-[11px] leading-relaxed">
+                  <strong>운영 담당자</strong>: 상단의 "홈페이지 띠배너 즉시 적용" 버튼을 누르면 1초 만에 메인 사이트에 배너가 라이브 송출됩니다.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}

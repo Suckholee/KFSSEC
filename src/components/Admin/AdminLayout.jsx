@@ -997,7 +997,12 @@ export default function AdminLayout({
           )}
 
           {primaryMenu === 'masters' && <AdminMasters />}
-          {primaryMenu === 'marketing' && <AdminAIBlogMarketing />}
+          {primaryMenu === 'marketing' && (
+            <AdminAIBlogMarketing
+              siteData={siteData}
+              onUpdateSiteData={onUpdateSiteData}
+            />
+          )}
 
           {/* Notification Alert for Saved Changes */}
           {isSavedNotice && (

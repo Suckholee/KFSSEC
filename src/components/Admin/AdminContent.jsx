@@ -17,9 +17,10 @@ import {
   Layers,
 } from 'lucide-react';
 import { extractYoutubeId } from '../../utils/youtube';
+import AdminBannerPlanner from './AdminBannerPlanner';
 
 export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
-  const [activeSubTab, setActiveSubTab] = useState('visual_editor'); // 'visual_editor' | 'banner_edit' | 'youtube_edit'
+  const [activeSubTab, setActiveSubTab] = useState('visual_editor'); // 'visual_editor' | 'banner_planner' | 'banner_edit' | 'youtube_edit'
 
   // YouTube State
   const [youtubeTitle, setYoutubeTitle] = useState(
@@ -220,7 +221,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
         </div>
 
         {/* View/Subtab Switcher */}
-        <div className="flex items-center gap-1.5 bg-gray-100 p-1.5 rounded-2xl border border-gray-200 self-start md:self-auto">
+        <div className="flex flex-wrap items-center gap-1.5 bg-gray-100 p-1.5 rounded-2xl border border-gray-200 self-start md:self-auto">
           <button
             onClick={() => setActiveSubTab('visual_editor')}
             className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
@@ -232,6 +233,17 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
             🖥️ 통합 라이브 뷰
           </button>
           <button
+            onClick={() => setActiveSubTab('banner_planner')}
+            className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+              activeSubTab === 'banner_planner'
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'text-emerald-800 bg-emerald-50 hover:bg-emerald-100'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>AI 비주얼 배너 기획</span>
+          </button>
+          <button
             onClick={() => setActiveSubTab('banner_edit')}
             className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeSubTab === 'banner_edit'
@@ -239,7 +251,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            📢 행사 띠배너 설정
+            📢 띠배너 간편 설정
           </button>
           <button
             onClick={() => setActiveSubTab('youtube_edit')}
@@ -374,9 +386,50 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
         </div>
       )}
 
+      {/* SUBTAB: AI VISUAL BANNER PLANNER STUDIO */}
+      {activeSubTab === 'banner_planner' && (
+        <AdminBannerPlanner
+          siteData={siteData}
+          onUpdateSiteData={onUpdateSiteData}
+          onApplyToLiveBanner={(newBanner) => {
+            setBannerActive(newBanner.active);
+            setBannerBadgeText(newBanner.badgeText);
+            setBannerTitle(newBanner.title);
+            setBannerSubtitle(newBanner.subtitle);
+            setBannerDDay(newBanner.dDay);
+            setBannerButtonText(newBanner.buttonText);
+            syncToParent(null, newBanner);
+            setSavedSuccess(true);
+            setTimeout(() => setSavedSuccess(false), 3000);
+          }}
+        />
+      )}
+
       {/* SUBTAB 2: EVENT BANNER EDIT */}
       {activeSubTab === 'banner_edit' && (
         <form onSubmit={handleSaveAll} className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm space-y-6">
+          {/* Studio Link Callout */}
+          <div className="bg-gradient-to-r from-emerald-50 via-amber-50/50 to-emerald-50 border border-emerald-200 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-5 h-5 text-amber-500 shrink-0" />
+              <div>
+                <div className="text-xs font-black text-gray-900">
+                  AI 비주얼 배너 기획 스튜디오를 활용해 보세요
+                </div>
+                <div className="text-[11px] text-gray-600">
+                  수강생 얼리버드, 명장 세미나, 정부지원금 등 6종 핵심 테마와 규격별 실시간 프리뷰, 디자이너 의뢰서를 자동 생성합니다.
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveSubTab('banner_planner')}
+              className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black rounded-xl shrink-0 cursor-pointer self-start sm:self-auto"
+            >
+              스튜디오 열기 &gt;
+            </button>
+          </div>
+
           <div className="flex items-center justify-between border-b border-gray-100 pb-4">
             <div>
               <h3 className="text-lg font-black text-gray-900">
