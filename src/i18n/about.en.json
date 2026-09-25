@@ -99,7 +99,7 @@
   "안형상 이사장 프로필 & 주요 약력": "Ahn Hyeong-sang — Profile & Career",
   "특급호텔 40년 현장 경력과 국가 심사위원, 학술 연구를 갖춘 외식 명장의 발자취입니다.": "A culinary master's journey through 40 years in luxury hotels, national judging and academic research.",
   "외식 산업 발전과 전문 인재 양성을 선도하는 한국외식창업교육원의 체계적인 조직 체계입니다.": "Our organizational structure supports industry development and the education of food service professionals.",
-  "사단법인 수장": "Head of the Association",
+  "사단법인 수장": "Head of Association",
   "이 사 장": "Chairman",
   "안 형 상": "Ahn Hyeong-sang",
   "정책 자문단": "Policy Advisory Group",
@@ -212,7 +212,6 @@
   "메뉴 개발 & 식음료 실무": "Menu R&D & Food Service Craft",
   "전문 교육 & 자격·대회": "Professional Education & Competitions",
   "연구 개발 & 대외 협력": "R&D & Global Partnerships",
-  "사단법인 수장": "Head of Association",
   "자문위원": "Advisory Committee Member",
   "고문": "Advisor",
   "공식 협력 언론": "Official Media Partner",
@@ -222,5 +221,7 @@
   "원본 16열 펼침 보기 접기": "Collapse 16-Column Diagram",
   "제공해주신 이미지 원안과 동일한 16개 분과 가로 나열 배치입니다.": "Horizontal layout displaying the 16 divisions matching the original chart.",
   "전체 분야 (16)": "All Fields (16)",
-  "전문 실무": "Division Status"
+  "전문 실무": "Division Status",
+  "주요 연혁": "Key History",
+  "협약기관 & MOU 파트너": "Partner Institutions & MOUs"
 }

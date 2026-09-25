@@ -38,8 +38,16 @@ export default function Header({
     { code: 'en', label: 'English (ENG)', flag: '🇺🇸' },
     { code: 'ja', label: '日本語 (JPN)', flag: '🇯🇵' },
     { code: 'zh', label: '中文 (CHN)', flag: '🇨🇳' },
-    { code: 'vi', label: 'Tiếng Việt (VIE)', flag: '🇻🇳' },
   ];
+
+  const getLangBadge = (code) => {
+    switch (code) {
+      case 'en': return '🇺🇸 ENG';
+      case 'ja': return '🇯🇵 JPN';
+      case 'zh': return '🇨🇳 CHN';
+      default: return '🇰🇷 KOR';
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#FDFBF7]/95 backdrop-blur-md border-b-2 border-[#E7E2D8] transition-all font-sans text-gray-900 shadow-sm">
@@ -144,7 +152,7 @@ export default function Header({
               aria-label="언어 선택 (Language)"
               className="px-3 py-2 bg-[#F2ECE0] border border-[#D4C5B0] text-[#0B3C26] text-xs font-bold rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#EBE2D4] transition-colors focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none min-h-[44px]"
             >
-              <span>{language === 'ko' ? '🇰🇷 KOR' : '🇺🇸 ENG'}</span>
+              <span>{getLangBadge(language)}</span>
               <span className="text-[#C5A059]">|</span>
               <ChevronDown className="w-3.5 h-3.5 text-[#0B3C26]" />
             </button>
@@ -155,16 +163,16 @@ export default function Header({
                 onMouseLeave={() => setLangDropdownOpen(false)}
               >
                 <div className="px-3 py-1.5 text-[10px] font-black text-stone-400 border-b border-stone-100 uppercase tracking-wider">
-                  다국어 번역 선택
+                  다국어 번역 선택 (Language)
                 </div>
                 {languages.map((l) => (
                   <button
                     key={l.code}
                     onClick={() => {
-                      setLanguage(l.code === 'ko' ? 'ko' : 'en');
+                      setLanguage(l.code);
                       setLangDropdownOpen(false);
                     }}
-                    className={`w-full px-3 py-2 text-left text-xs font-bold flex items-center justify-between hover:bg-emerald-50 transition-colors ${
+                    className={`w-full px-3 py-2 text-left text-xs font-bold flex items-center justify-between hover:bg-emerald-50 transition-colors cursor-pointer ${
                       language === l.code ? 'text-[#0B3C26] font-black bg-emerald-50/60' : 'text-stone-700'
                     }`}
                   >
@@ -255,13 +263,25 @@ export default function Header({
             )}
           </div>
 
-          <button
-            onClick={() => setLanguage(language === 'ko' ? 'en' : 'ko')}
-            aria-label={language === 'ko' ? 'Switch to English' : '한국어로 변경'}
-            className="min-h-[44px] px-4 py-2 border border-[#C5A059] rounded-full font-bold text-[#0B3C26]"
-          >
-            {language === 'ko' ? 'KOR · English' : 'ENG · 한국어'}
-          </button>
+          <div className="space-y-1.5">
+            <p className="text-[11px] font-bold text-gray-500">언어 선택 (Select Language)</p>
+            <div className="grid grid-cols-4 gap-1.5">
+              {languages.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => setLanguage(l.code)}
+                  className={`min-h-[40px] px-2 py-1.5 text-xs rounded-xl font-bold border transition-all text-center flex flex-col items-center justify-center cursor-pointer ${
+                    language === l.code
+                      ? 'bg-[#0B3C26] text-[#D4AF37] border-[#C5A059] shadow-xs font-black'
+                      : 'bg-white border-stone-200 text-stone-700 hover:border-stone-300'
+                  }`}
+                >
+                  <span className="text-sm leading-none">{l.flag}</span>
+                  <span className="text-[10px] mt-0.5 truncate">{l.code.toUpperCase()}</span>
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="space-y-4">
             {mainMenuItems.map((menu) => {
               const isMenuActive = activeTab === menu.key;
