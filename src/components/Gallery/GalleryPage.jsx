@@ -24,6 +24,19 @@ export default function GalleryPage({ initialSubTab = 'all' }) {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
+  // Close modal on Escape key press
+  React.useEffect(() => {
+    if (!selectedPhoto) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedPhoto(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhoto]);
+
+
   const galleryCategories = [
     { id: 'all', label: t('전체 갤러리') },
     { id: 'competition', label: t('요리대회') },

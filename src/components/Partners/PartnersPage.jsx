@@ -18,9 +18,36 @@ import {
   Maximize2,
 } from 'lucide-react';
 
-export default function PartnersPage() {
+export default function PartnersPage({ initialSubTab = 'all' }) {
   const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  // Close modal on Escape key press
+  React.useEffect(() => {
+    if (!selectedPhoto) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedPhoto(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhoto]);
+
+  // Smooth scroll based on sub-tab navigation
+  React.useEffect(() => {
+    if (initialSubTab === 'mou') {
+      const el = document.getElementById('partners-mou');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (initialSubTab === 'inquiry') {
+      const el = document.getElementById('partners-inquiry');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (initialSubTab === 'all') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [initialSubTab]);
+
+
 
   // 10 Official Partner Companies
   const partnersList = [
@@ -237,7 +264,8 @@ export default function PartnersPage() {
         </div>
 
         {/* SECTION 2: MOU SIGNING PHOTOS (고객 반영사항: 업무협약 관련 사진 등록) */}
-        <div className="space-y-6">
+        <div id="partners-mou" className="space-y-6 scroll-mt-28">
+
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#0B3C26] pb-3">
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-100 text-[#0B3C26] text-xs font-black mb-1">
@@ -346,7 +374,8 @@ export default function PartnersPage() {
         </div>
 
         {/* SECTION 4: PARTNERSHIP INQUIRY BANNER */}
-        <div className="bg-[#0B3C26] text-white rounded-3xl p-6 sm:p-10 border-2 border-[#C5A059] shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div id="partners-inquiry" className="bg-[#0B3C26] text-white rounded-3xl p-6 sm:p-10 border-2 border-[#C5A059] shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 scroll-mt-28">
+
           <div className="space-y-2 text-center md:text-left">
             <h3 className="text-xl sm:text-2xl font-black">
               사단법인 한국외식창업교육원과 함께할 협력기업을 모십니다

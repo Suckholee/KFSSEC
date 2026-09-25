@@ -12,6 +12,19 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
   const [activeTab, setActiveTab] = useState(defaultSub);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
+  // Close terms modal on Escape key press
+  useEffect(() => {
+    if (!showTermsModal) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowTermsModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showTermsModal]);
+
+
   useEffect(() => {
     const target = initialSubTab || initialTab;
     if (target) {
@@ -384,8 +397,15 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
 
       {/* Terms & Conditions Modal */}
       {showTermsModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-black shadow-2xl space-y-4 animate-fadeIn">
+        <div
+          onClick={() => setShowTermsModal(false)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-black shadow-2xl space-y-4 animate-fadeIn cursor-default"
+          >
+
             <div className="flex items-center justify-between border-b border-gray-200 pb-3">
               <h3 className="text-lg font-black text-black">{tr("창업 교육 및 상담 이용약관")}</h3>
               <button

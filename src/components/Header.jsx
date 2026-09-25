@@ -15,7 +15,20 @@ export default function Header({
   const { language, setLanguage, t } = useLanguage();
 
   const mainMenuItems = [
-    { id: 'about', title: t('교육원 소개', 'About Us'), key: 'about', defaultSubTab: 'greetings' },
+    {
+      id: 'about',
+      title: t('교육원 소개', 'About Us'),
+      key: 'about',
+      defaultSubTab: 'greetings',
+      subItems: [
+        { id: 'greetings', title: t('교육원 소개 & 방향', 'About KFSSEC'), subTab: 'greetings' },
+        { id: 'history', title: t('주요 연혁', 'History'), subTab: 'history' },
+        { id: 'speech', title: t('이사장 인사말', "Chairman's Greeting"), subTab: 'speech' },
+        { id: 'profile', title: t('이사장 프로필 & MOU', 'Chairman Profile & MOU'), subTab: 'profile' },
+        { id: 'faculty', title: t('교수진 소개', 'Faculty'), subTab: 'faculty' },
+        { id: 'organization', title: t('조직도', 'Organization'), subTab: 'organization' },
+      ],
+    },
     {
       id: 'master',
       title: t('명장·명인', 'Masters & Artisans'),
@@ -26,12 +39,69 @@ export default function Header({
         { id: 'directory', title: t('명인', 'Culinary Artisans'), subTab: 'directory' },
       ],
     },
-    { id: 'catalog', title: t('교육·자격증', 'Courses & Certificates'), key: 'catalog', defaultSubTab: 'courses' },
-    { id: 'consulting', title: t('창업컨설팅', 'Startup Consulting'), key: 'consulting', defaultSubTab: 'consulting' },
-    { id: 'gallery', title: t('갤러리', 'Gallery'), key: 'gallery', defaultSubTab: 'all' },
-    { id: 'partners', title: t('파트너사', 'Partners'), key: 'partners', defaultSubTab: 'all' },
-    { id: 'community', title: t('게시판', 'Board'), key: 'community', defaultSubTab: 'all' },
+    {
+      id: 'catalog',
+      title: t('교육·자격증', 'Courses & Certificates'),
+      key: 'catalog',
+      defaultSubTab: 'courses',
+      subItems: [
+        { id: 'courses', title: t('교육 과정', 'Courses'), subTab: 'courses' },
+        { id: 'guide', title: t('자격과정 안내', 'Certification Guide'), subTab: 'guide' },
+        { id: 'schedule', title: t('교육 일정', 'Course Schedule'), subTab: 'schedule' },
+        { id: 'cert_exam', title: t('자격 시험', 'Qualification Exam'), subTab: 'cert_exam' },
+      ],
+    },
+    {
+      id: 'consulting',
+      title: t('창업컨설팅', 'Startup Consulting'),
+      key: 'consulting',
+      defaultSubTab: 'education',
+      subItems: [
+        { id: 'education', title: t('창업 교육', 'Startup Education'), subTab: 'education' },
+        { id: 'consulting', title: t('창업 컨설팅', 'Startup Consulting'), subTab: 'consulting' },
+        { id: 'professor', title: t('교수 프로필', 'Professor Profile'), subTab: 'professor' },
+        { id: 'youth', title: t('청년 창업 상담', 'Youth Startup Inquiry'), subTab: 'youth' },
+        { id: 'readiness', title: t('창업 준비', 'Startup Preparation'), subTab: 'readiness' },
+      ],
+    },
+    {
+      id: 'gallery',
+      title: t('갤러리', 'Gallery'),
+      key: 'gallery',
+      defaultSubTab: 'all',
+      subItems: [
+        { id: 'all', title: t('전체 갤러리', 'All Photos'), subTab: 'all' },
+        { id: 'ceremony', title: t('시상식 & 인증패', 'Awards & Ceremonies'), subTab: 'ceremony' },
+        { id: 'competition', title: t('요리대회', 'Cooking Contests'), subTab: 'competition' },
+        { id: 'consulting', title: t('지자체 컨설팅', 'Municipality Consulting'), subTab: 'consulting' },
+        { id: 'training', title: t('조리 실습 현장', 'Culinary Training'), subTab: 'training' },
+      ],
+    },
+    {
+      id: 'partners',
+      title: t('파트너사', 'Partners'),
+      key: 'partners',
+      defaultSubTab: 'all',
+      subItems: [
+        { id: 'all', title: t('협력기업 네트워크', 'Partner Network'), subTab: 'all' },
+        { id: 'mou', title: t('MOU 체결 현장', 'MOU Archives'), subTab: 'mou' },
+        { id: 'inquiry', title: t('제휴·협력 문의', 'Partnership Inquiry'), subTab: 'inquiry' },
+      ],
+    },
+    {
+      id: 'community',
+      title: t('게시판', 'Board'),
+      key: 'community',
+      defaultSubTab: 'all',
+      subItems: [
+        { id: 'all', title: t('전체 게시판', 'All Board'), subTab: 'all' },
+        { id: 'notice', title: t('공지사항', 'Announcements'), subTab: 'notice' },
+        { id: 'faq', title: t('자주 묻는 질문 (FAQ)', 'FAQ'), subTab: 'faq' },
+        { id: 'inquiry', title: t('1:1 온라인 문의', '1:1 Inquiry'), subTab: 'inquiry' },
+      ],
+    },
   ];
+
 
   const languages = [
     { code: 'ko', label: '한국어 (KOR)', flag: '🇰🇷' },
@@ -98,7 +168,8 @@ export default function Header({
                 {/* Submenu Dropdown if present */}
                 {hasSub && (
                   <div className="absolute left-1/2 -translate-x-1/2 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#C5A059]/30 py-1.5 min-w-[130px] animate-fadeIn">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#C5A059]/30 py-1.5 min-w-[170px] whitespace-nowrap animate-fadeIn">
+
                       {menu.subItems.map((sub) => {
                         const isSubActive =
                           isMenuActive &&

@@ -10,6 +10,19 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPost, setSelectedPost] = useState(null);
 
+  // Close post modal on Escape key press
+  useEffect(() => {
+    if (!selectedPost) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedPost(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPost]);
+
+
   useEffect(() => {
     if (initialTab) {
       setActiveTab(initialTab);
@@ -393,8 +406,15 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
 
       {/* Public Post View Modal (Public View - Clean Answer Card Display) */}
       {selectedPost && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-5 animate-fadeIn max-h-[90vh] overflow-y-auto">
+        <div
+          onClick={() => setSelectedPost(null)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-5 animate-fadeIn max-h-[90vh] overflow-y-auto cursor-default"
+          >
+
             
             {/* Modal Header */}
             <div className="flex items-start justify-between border-b border-gray-200 pb-4">

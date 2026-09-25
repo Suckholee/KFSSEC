@@ -490,12 +490,13 @@ export default function App() {
         )}
 
         {activeTab === 'partners' && (
-          <PartnersPage />
+          <PartnersPage initialSubTab={subTab || 'all'} />
         )}
 
         {activeTab === 'gangnam' && (
-          <PartnersPage />
+          <PartnersPage initialSubTab="gangnam" />
         )}
+
 
         {activeTab === 'community' && subTab === 'editor' && (
           <CommunityEditorPage

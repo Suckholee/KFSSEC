@@ -6,7 +6,20 @@ export default function CertExamGuideModal({ isOpen, course, onClose, onApplyExa
   const { tr, language } = useLanguage();
   const [applied, setApplied] = useState(false);
 
+  // Close modal on Escape key press
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !course) return null;
+
 
   const handleApply = () => {
     setApplied(true);
