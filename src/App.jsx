@@ -311,7 +311,7 @@ export default function App() {
       const mainRoute = parts[0];
       const subRoute = parts[1] || null;
 
-      if (['about', 'master', 'catalog', 'consulting', 'gangnam', 'community', 'admin'].includes(mainRoute)) {
+      if (['about', 'master', 'catalog', 'consulting', 'gallery', 'partners', 'gangnam', 'community', 'admin'].includes(mainRoute)) {
         setActiveTab(mainRoute);
         setSubTab(subRoute);
       } else {
@@ -464,7 +464,7 @@ export default function App() {
         )}
 
         {activeTab === 'master' && (
-          <MasterBusinessPage initialSubTab={subTab || 'masters'} />
+          <MasterBusinessPage initialSubTab={subTab || 'profiles'} />
         )}
 
         {activeTab === 'catalog' && (

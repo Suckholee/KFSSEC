@@ -16,8 +16,16 @@ export default function Header({
 
   const mainMenuItems = [
     { id: 'about', title: t('교육원 소개', 'About Us'), key: 'about', defaultSubTab: 'greetings' },
-    { id: 'master_chef', title: t('명장', 'Master Chefs'), key: 'master', defaultSubTab: 'profiles' },
-    { id: 'artisan', title: t('명인', 'Culinary Artisans'), key: 'master', defaultSubTab: 'directory' },
+    {
+      id: 'master',
+      title: t('명장·명인', 'Masters & Artisans'),
+      key: 'master',
+      defaultSubTab: 'profiles',
+      subItems: [
+        { id: 'profiles', title: t('명장', 'Master Chefs'), subTab: 'profiles' },
+        { id: 'directory', title: t('명인', 'Culinary Artisans'), subTab: 'directory' },
+      ],
+    },
     { id: 'catalog', title: t('교육·자격증', 'Courses & Certificates'), key: 'catalog', defaultSubTab: 'courses' },
     { id: 'consulting', title: t('창업컨설팅', 'Startup Consulting'), key: 'consulting', defaultSubTab: 'consulting' },
     { id: 'gallery', title: t('갤러리', 'Gallery'), key: 'gallery', defaultSubTab: 'all' },
@@ -54,29 +62,62 @@ export default function Header({
         </button>
 
         {/* Centered Desktop Main Navigation Bar */}
-        <nav className="hidden xl:flex flex-1 items-center justify-center gap-2 2xl:gap-3">
+        <nav className="hidden xl:flex flex-1 items-center justify-center gap-1.5 2xl:gap-3">
           {mainMenuItems.map((menu) => {
-            const isMenuActive =
-              menu.key === 'master'
-                ? activeTab === 'master' && (menu.id === 'master_chef' ? (subTab === 'profiles' || subTab === 'masters') : (subTab === 'directory' || subTab === 'dishes'))
-                : activeTab === menu.key;
+            const isMenuActive = activeTab === menu.key;
+            const hasSub = Boolean(menu.subItems);
 
             return (
-              <div key={menu.id} className="relative group py-4 cursor-pointer">
+              <div key={menu.id} className="relative group py-4">
                 <button
                   onClick={() => {
                     if (onTabChange) {
                       onTabChange(menu.key, menu.defaultSubTab);
                     }
                   }}
-                  className={`text-[13px] 2xl:text-sm font-bold tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap min-h-[44px] px-2 rounded-lg focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none ${
+                  className={`text-[13px] 2xl:text-sm font-bold tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap min-h-[44px] px-2.5 rounded-lg focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none ${
                     isMenuActive
                       ? 'text-[#0B3C26] font-black border-b-2 border-[#C5A059] pb-0.5 scale-105'
                       : 'text-[#2A3B32] hover:text-[#C5A059]'
                   }`}
                 >
                   <span>{menu.title}</span>
+                  {hasSub && (
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#0B3C26] group-hover:rotate-180 transition-transform duration-200" />
+                  )}
                 </button>
+
+                {/* Submenu Dropdown if present */}
+                {hasSub && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#C5A059]/30 py-1.5 min-w-[130px] animate-fadeIn">
+                      {menu.subItems.map((sub) => {
+                        const isSubActive =
+                          isMenuActive &&
+                          (subTab === sub.subTab || (!subTab && sub.subTab === menu.defaultSubTab));
+                        return (
+                          <button
+                            key={sub.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (onTabChange) {
+                                onTabChange(menu.key, sub.subTab);
+                              }
+                            }}
+                            className={`w-full px-4 py-2.5 text-left text-xs font-bold transition-all flex items-center justify-between gap-3 ${
+                              isSubActive
+                                ? 'bg-[#0B3C26] text-[#D4AF37] font-black'
+                                : 'text-stone-800 hover:bg-emerald-50 hover:text-[#0B3C26]'
+                            }`}
+                          >
+                            <span>{sub.title}</span>
+                            {isSubActive && <span className="text-[#D4AF37]">●</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -223,27 +264,56 @@ export default function Header({
           </button>
           <div className="space-y-4">
             {mainMenuItems.map((menu) => {
-              const isMenuActive =
-                menu.key === 'master'
-                  ? activeTab === 'master' && (menu.id === 'master_chef' ? (subTab === 'profiles' || subTab === 'masters') : (subTab === 'directory' || subTab === 'dishes'))
-                  : activeTab === menu.key;
+              const isMenuActive = activeTab === menu.key;
+              const hasSub = Boolean(menu.subItems);
 
               return (
-                <button
-                  key={menu.id}
-                  onClick={() => {
-                    if (onTabChange) {
-                      onTabChange(menu.key, menu.defaultSubTab);
-                    }
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`w-full text-left py-3 text-base border-b border-[#E7E2D8] min-h-[44px] flex items-center justify-between ${
-                    isMenuActive ? 'text-[#0B3C26] font-black pl-2 border-l-4 border-l-[#C5A059]' : 'text-gray-800 font-bold hover:text-[#C5A059]'
-                  }`}
-                >
-                  <span>{menu.title}</span>
-                  {isMenuActive && <span className="text-[#C5A059]">●</span>}
-                </button>
+                <div key={menu.id} className="border-b border-[#E7E2D8]">
+                  <button
+                    onClick={() => {
+                      if (onTabChange) {
+                        onTabChange(menu.key, menu.defaultSubTab);
+                      }
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`w-full text-left py-3 text-base min-h-[44px] flex items-center justify-between ${
+                      isMenuActive ? 'text-[#0B3C26] font-black pl-2 border-l-4 border-l-[#C5A059]' : 'text-gray-800 font-bold hover:text-[#C5A059]'
+                    }`}
+                  >
+                    <span>{menu.title}</span>
+                    {isMenuActive && <span className="text-[#C5A059]">●</span>}
+                  </button>
+
+                  {/* Mobile sub items */}
+                  {hasSub && (
+                    <div className="pl-3 pb-2 space-y-1 bg-white/70 rounded-xl mb-2 p-1.5 border border-stone-200">
+                      {menu.subItems.map((sub) => {
+                        const isSubActive =
+                          isMenuActive &&
+                          (subTab === sub.subTab || (!subTab && sub.subTab === menu.defaultSubTab));
+                        return (
+                          <button
+                            key={sub.id}
+                            onClick={() => {
+                              if (onTabChange) {
+                                onTabChange(menu.key, sub.subTab);
+                              }
+                              setMobileMenuOpen(false);
+                            }}
+                            className={`w-full text-left py-2 px-3 text-xs rounded-lg flex items-center justify-between ${
+                              isSubActive
+                                ? 'bg-[#0B3C26] text-[#D4AF37] font-black'
+                                : 'text-stone-700 font-semibold hover:bg-emerald-50'
+                            }`}
+                          >
+                            <span>└ {sub.title}</span>
+                            {isSubActive && <span className="text-[10px] text-[#D4AF37]">선택됨</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             })}
 
