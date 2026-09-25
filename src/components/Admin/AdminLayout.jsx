@@ -64,6 +64,8 @@ import {
   UserCheck as UserCheckIcon,
   RefreshCw,
   FileCode,
+  Handshake,
+  Bot,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -84,6 +86,7 @@ import {
 } from '../../services/courseDatabase';
 import { DevInquiryBoard } from './DevInquiryBoard';
 import CertificateModal from './CertificateModal';
+import AdminDashboard from './AdminDashboard';
 import AdminMasters from './AdminMasters';
 import AdminChatbotSettings from './AdminChatbotSettings';
 import AdminAIBlogMarketing from './AdminAIBlogMarketing';
@@ -366,11 +369,17 @@ export default function AdminLayout({
     const path = window.location.pathname;
     const parts = path.split('/').filter(Boolean);
     
-    let menu = 'courses';
-    let subTab = 'course_list';
+    let menu = 'dashboard';
+    let subTab = 'overview';
     let selectedCourse = null;
 
-    if (parts[1] === 'home') {
+    if (parts[1] === 'dashboard' || !parts[1]) {
+      menu = 'dashboard';
+      subTab = 'overview';
+    } else if (parts[1] === 'partner_logos' || parts[1] === 'partners') {
+      menu = 'partner_logos';
+      subTab = 'logo_list';
+    } else if (parts[1] === 'home') {
       menu = 'home';
       subTab = 'visual_editor';
     } else if (parts[1] === 'masters') {
@@ -387,12 +396,16 @@ export default function AdminLayout({
       subTab = 'student_accounts';
     } else if (parts[1] === 'inquiries') {
       menu = 'inquiries';
-      subTab = 'inquiry_all';
+      subTab = parts[2] === 'chatbot' ? 'chatbot_settings' : 'inquiry_all';
     } else if (parts[1] === 'reviews') {
       menu = 'reviews';
       subTab = 'review_list';
+    } else if (parts[1] === 'marketing') {
+      menu = 'marketing';
+      subTab = 'generator';
     } else if (parts[1] === 'courses') {
       menu = 'courses';
+      subTab = 'course_list';
       if (parts[2]) {
         const found = getCoursesFromDB().find((c) => c.id === parts[2]);
         if (found) {
@@ -413,7 +426,11 @@ export default function AdminLayout({
   // Helper to push browser URL state dynamically
   const updateAdminUrl = (menu, subTab, courseId = null) => {
     let targetPath = `/admin/${menu}`;
-    if (subTab === 'student_accounts') {
+    if (menu === 'dashboard') {
+      targetPath = `/admin`;
+    } else if (menu === 'inquiries' && subTab === 'chatbot_settings') {
+      targetPath = `/admin/inquiries/chatbot`;
+    } else if (subTab === 'student_accounts') {
       targetPath = `/admin/users`;
     } else if (menu === 'courses' && courseId) {
       targetPath = `/admin/courses/${courseId}`;
@@ -423,12 +440,23 @@ export default function AdminLayout({
     }
   };
 
-  const switchPrimaryMenu = (menu, subTab = 'course_list', course = null) => {
+  const switchPrimaryMenu = (menu, subTab = null, course = null) => {
+    const defaultSubTab = subTab || (
+      menu === 'dashboard' ? 'overview' :
+      menu === 'partner_logos' ? 'logo_list' :
+      menu === 'courses' ? 'course_list' :
+      menu === 'masters' ? 'profile_list' :
+      menu === 'reservations' ? 'enrollees_list' :
+      menu === 'inquiries' ? 'inquiry_all' :
+      menu === 'reviews' ? 'review_list' :
+      menu === 'marketing' ? 'generator' :
+      menu === 'home' ? 'visual_editor' : 'dev_inquiry_list'
+    );
     setPrimaryMenu(menu);
-    setSecondarySubTab(subTab);
+    setSecondarySubTab(defaultSubTab);
     setSelectedCourseForEdit(course);
     setSelectedCourseForEnrollees(null);
-    updateAdminUrl(menu, subTab, course ? course.id : null);
+    updateAdminUrl(menu, defaultSubTab, course ? course.id : null);
   };
 
   useEffect(() => {
@@ -572,11 +600,19 @@ export default function AdminLayout({
   // Sub-menu definitions
   const getSecondaryMenus = () => {
     switch (primaryMenu) {
+      case 'dashboard':
+        return [
+          { id: 'overview', label: '📊 통합 운영 대시보드' },
+          { id: 'quick_actions', label: '⚡ 빠른 업무 바로가기' },
+        ];
+      case 'partner_logos':
+        return [
+          { id: 'logo_list', label: '🤝 협약기관/MOU 로고 관리' },
+        ];
       case 'masters':
         return [{ id: 'profile_list', label: '명장·명인 프로필 목록' }];
       case 'home':
         return [
-          { id: 'partner_logos', label: '🤝 협약기관/MOU 로고 관리' },
           { id: 'visual_editor', label: '홈화면 라이브 에디터' },
           { id: 'banner_edit', label: '행사 띠배너 설정' },
           { id: 'youtube_edit', label: '유튜브 방송 미디어' },
@@ -691,40 +727,18 @@ export default function AdminLayout({
       <div className="flex-1 flex overflow-hidden h-[calc(100vh-64px)]">
         
         {/* TIER 1: Far Left Narrow Icon Bar */}
-        <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-4 shrink-0 z-20 h-full overflow-y-auto">
+        <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-3.5 shrink-0 z-20 h-full overflow-y-auto">
           <button
-            onClick={() => switchPrimaryMenu('home', 'visual_editor', null)}
+            onClick={() => switchPrimaryMenu('dashboard', 'overview', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'home' && secondarySubTab !== 'partner_logos'
+              primaryMenu === 'dashboard'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="홈화면 관리"
+            title="통합 대시보드"
           >
-            <Home className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">홈화면</span>
-          </button>
-
-          <button
-            onClick={() => switchPrimaryMenu('home', 'partner_logos', null)}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'home' && secondarySubTab === 'partner_logos'
-                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800'
-            }`}
-            title="협약기관/MOU 로고 관리"
-          >
-            <Handshake className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">MOU로고</span>
-          </button>
-
-          <button
-            onClick={() => switchPrimaryMenu('masters', 'profile_list')}
-            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${primaryMenu === 'masters' ? 'bg-emerald-500 text-black' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}
-            title="명장·명인 프로필 관리"
-          >
-            <Award className="w-5 h-5" />
-            <span className="text-[9px] font-black mt-0.5">명장·명인</span>
+            <LayoutDashboard className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">대시보드</span>
           </button>
 
           <button
@@ -741,13 +755,39 @@ export default function AdminLayout({
           </button>
 
           <button
+            onClick={() => switchPrimaryMenu('partner_logos', 'logo_list', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'partner_logos'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="협약기관/MOU 로고 관리"
+          >
+            <Handshake className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">MOU로고</span>
+          </button>
+
+          <button
+            onClick={() => switchPrimaryMenu('masters', 'profile_list')}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'masters'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="명장·명인 프로필 관리"
+          >
+            <Award className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">명장·명인</span>
+          </button>
+
+          <button
             onClick={() => switchPrimaryMenu('reservations', 'enrollees_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'reservations'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="회원 관리"
+            title="회원 관리 (128명)"
           >
             <UserCheck className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">회원관리</span>
@@ -760,10 +800,13 @@ export default function AdminLayout({
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="1:1 문의"
+            title="1:1 수강 문의"
           >
             <MessageSquare className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">1:1문의</span>
+            {studentInquiries.filter((i) => i.status === 'pending').length > 0 && (
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full" />
+            )}
           </button>
 
           <button
@@ -791,19 +834,35 @@ export default function AdminLayout({
             <Bot className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">AI마케팅</span>
           </button>
+
+          <button
+            onClick={() => switchPrimaryMenu('home', 'visual_editor', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'home'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="홈화면 관리"
+          >
+            <Home className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">홈화면</span>
+          </button>
         </nav>
 
         {/* TIER 2: Secondary Expanding Sub-Panel */}
         <aside className="hidden md:block w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10 h-full overflow-y-auto">
           <div className="px-2 border-b border-gray-200 pb-3">
             <h2 className="text-sm font-black text-black tracking-tight">
+              {primaryMenu === 'dashboard' && '통합 운영 대시보드'}
+              {primaryMenu === 'partner_logos' && '협약기관/MOU 로고 관리'}
               {primaryMenu === 'masters' && '명장·명인 프로필 관리'}
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
               {primaryMenu === 'developer' && '💻 개발 문의 채널'}
               {primaryMenu === 'reservations' && '회원 관리 센터 (128명)'}
-              {primaryMenu === 'inquiries' && '1:1 수강 문의'}
+              {primaryMenu === 'inquiries' && '1:1 수강 문의 & AI 챗봇'}
               {primaryMenu === 'reviews' && '수강후기 & 별점'}
+              {primaryMenu === 'marketing' && 'AI 블로그 마케팅'}
             </h2>
             <p className="text-[10px] text-gray-500 font-bold mt-0.5">스마트 파트너 워크스페이스</p>
           </div>
@@ -854,6 +913,30 @@ export default function AdminLayout({
         {/* MAIN WORKSTATION CANVAS AREA */}
         <main className="flex-1 min-w-0 h-full p-3 sm:p-6 overflow-y-auto bg-[#f4f6f8] space-y-6 scroll-smooth select-text">
           
+          {/* DYNAMIC SCREEN 0: EXECUTIVE INTEGRATED DASHBOARD */}
+          {primaryMenu === 'dashboard' && (
+            <AdminDashboard
+              onNavigateTab={(menu, subTab) => switchPrimaryMenu(menu, subTab || null)}
+              enrolleesList={enrolleesList}
+              coursesList={coursesList}
+              studentInquiries={studentInquiries}
+              siteData={siteData}
+            />
+          )}
+
+          {/* DYNAMIC SCREEN: PARTNER LOGOS WORKSTATION */}
+          {primaryMenu === 'partner_logos' && (
+            <AdminPartnerLogos
+              partnerLogos={siteData?.partnerLogos}
+              onUpdatePartnerLogos={(newLogos) => {
+                onUpdateSiteData({
+                  ...siteData,
+                  partnerLogos: newLogos,
+                });
+              }}
+            />
+          )}
+
           {primaryMenu === 'masters' && <AdminMasters />}
           {primaryMenu === 'marketing' && <AdminAIBlogMarketing />}
 
@@ -1393,11 +1476,11 @@ export default function AdminLayout({
           )}
 
           {/* DYNAMIC SCREEN: AI CHATBOT SETTINGS OR 1:1 INQUIRIES WORKSTATION */}
-          {primaryMenu === 'inquiries' && secondaryMenu === 'chatbot_settings' && (
+          {primaryMenu === 'inquiries' && secondarySubTab === 'chatbot_settings' && (
             <AdminChatbotSettings />
           )}
 
-          {primaryMenu === 'inquiries' && secondaryMenu !== 'chatbot_settings' && (
+          {primaryMenu === 'inquiries' && secondarySubTab !== 'chatbot_settings' && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
               {/* Header Title & Top Summary */}

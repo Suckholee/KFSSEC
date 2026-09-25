@@ -58,6 +58,17 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
     setShowAddModal(true);
   };
 
+  React.useEffect(() => {
+    if (!showAddModal) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowAddModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showAddModal]);
+
   const handleFileUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -294,8 +305,14 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
 
       {/* Modal for Add / Edit */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 border-2 border-[#0B3C26] shadow-2xl animate-fadeIn">
+        <div
+          onClick={() => setShowAddModal(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 border-2 border-[#0B3C26] shadow-2xl animate-fadeIn cursor-default"
+          >
             <div className="flex items-center justify-between border-b pb-3">
               <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#0B3C26]" />
