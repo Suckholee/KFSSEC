@@ -28,9 +28,9 @@ export default function LocationSection() {
             <span>{t("농림축산식품부 소관 비영리 사단법인")}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">{t("교육원 사무국 안내")}{' '}</h2>
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">{t("교육원 및 교육센터 오시는 길")}{' '}</h2>
 
-          <p className="text-emerald-100/90 text-xs sm:text-sm font-extrabold max-w-2xl leading-relaxed">{t("사단법인 한국외식창업교육원 총괄 사무국 및 입학 상담센터 기본 정보입니다.")}{' '}</p>
+          <p className="text-emerald-100/90 text-xs sm:text-sm font-extrabold max-w-2xl leading-relaxed">{t("사단법인 한국외식창업교육원 본원 및 입학상담센터 오시는 길 안내입니다.")}{' '}</p>
         </div>
       </div>
 
@@ -39,18 +39,18 @@ export default function LocationSection() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          {/* Card 1: 사무국 기본 주소 & 연락처 */}
+          {/* Card 1: 교육원 기본 주소 & 연락처 */}
           <div className="bg-[#F8F6F0] p-6 rounded-2xl border border-[#E5E0D8] space-y-4">
             <h3 className="text-base font-black text-gray-900 border-b border-[#D4C5B0] pb-3 flex items-center gap-2">
               <Building2 className="w-5 h-5 text-[#0B3C26]" />
-              <span>{t("사무국 위치 및 연락처")}</span>
+              <span>{t("교육원 위치 및 입학상담")}</span>
             </h3>
 
             <div className="space-y-3 text-xs sm:text-sm text-gray-800 font-bold leading-relaxed">
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[#0B3C26] shrink-0 mt-1" />
                 <div>
-                  <span className="text-gray-500 block text-xs">{t("사무국 소재지")}</span>
+                  <span className="text-gray-500 block text-xs">{t("교육원 소재지")}</span>
                   <span className="text-gray-900 font-black">{t("서울특별시 강남구 테헤란로 123, KFSSEC 빌딩 3~5층")}</span>
                 </div>
               </div>
@@ -85,7 +85,7 @@ export default function LocationSection() {
           <div className="bg-[#F8F6F0] p-6 rounded-2xl border border-[#E5E0D8] space-y-4">
             <h3 className="text-base font-black text-gray-900 border-b border-[#D4C5B0] pb-3 flex items-center gap-2">
               <Clock className="w-5 h-5 text-[#0B3C26]" />
-              <span>{t("사무국 운영 시간")}</span>
+              <span>{t("고객센터 운영 및 상담 시간")}</span>
             </h3>
 
             <div className="space-y-4 text-xs sm:text-sm text-gray-800 font-bold">
@@ -100,7 +100,7 @@ export default function LocationSection() {
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-100 pt-2">
                   <span className="text-gray-500 text-xs">{t("주말 및 공휴일")}</span>
-                  <span className="font-bold text-rose-600">{t("사무국 휴무 (1:1 온라인 문의 접수)")}</span>
+                  <span className="font-bold text-rose-600">{t("주말/공휴일 휴무 (1:1 온라인 문의 접수)")}</span>
                 </div>
               </div>
 
@@ -109,7 +109,7 @@ export default function LocationSection() {
                   <CheckCircle2 className="w-4 h-4 text-[#0B3C26]" />
                   <span>{t("1:1 온라인 및 챗봇 문의 24시간 연중무휴 접수")}</span>
                 </span>
-                <p className="text-xs text-gray-600 font-medium">{t("사무국 업무 시간 외 문의사항은 1:1 온라인 문의 게시판 또는 AI 상담원 챗봇에 남겨주시면 다음 영업일 오전 순차 연락드립니다.")}{' '}</p>
+                <p className="text-xs text-gray-600 font-medium">{t("업무 시간 외 문의사항은 1:1 온라인 문의 게시판 또는 AI 상담원 챗봇에 남겨주시면 다음 영업일 오전 순차 연락드립니다.")}{' '}</p>
               </div>
             </div>
           </div>

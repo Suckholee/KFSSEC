@@ -5,6 +5,7 @@ import CategoryFocusSection from './components/CategoryFocusSection';
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import AwardCeremonyBannerSection from './components/Home/AwardCeremonyBannerSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
 import NoticePostSection from './components/NoticePostSection';
 import Footer from './components/Footer';
@@ -440,6 +441,10 @@ export default function App() {
             <Hero
               onExploreClick={() => handleTabChange('catalog')}
               onAboutClick={() => handleTabChange('about', 'greetings')}
+            />
+            <AwardCeremonyBannerSection
+              onGoToGallery={() => handleTabChange('gallery', 'awards')}
+              onGoToInquiry={() => handleTabChange('community', 'inquiry')}
             />
             <YouTubeMediaSection
               youtubeData={siteData.youtube}

@@ -32,7 +32,19 @@ export default function Footer({ onTabChange }) {
           <div>
             <h4 className="text-sm font-black text-white mb-3 tracking-tight">{t("주요 교육과정")}</h4>
             <ul className="space-y-2.5 text-xs text-gray-300 font-medium">
-              {[t("외식창업지도사 2급"), t("외식창업실무사 2급"), t("한국음식능력(K-FOOD) 2급")].map(name => <li key={name}><button onClick={() => onTabChange?.('catalog', 'courses')} className="hover:text-emerald-400 transition-colors text-left">{name}</button></li>)}
+              {[
+                t("외식창업지도사 1·2급"),
+                t("외식창업실무사 1·2급"),
+                t("한국음식능력(K-FOOD) 1·2급"),
+                t("푸드테크 설계사 1·2급"),
+                t("소믈리에 파티컨설턴트")
+              ].map(name => (
+                <li key={name}>
+                  <button onClick={() => onTabChange?.('catalog', 'courses')} className="hover:text-emerald-400 transition-colors text-left cursor-pointer">
+                    {name}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 

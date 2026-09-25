@@ -346,34 +346,13 @@ export default function OrganizationSection() {
 
                 </div>
 
-                {/* ---------------- RIGHT BLOCK: 3 COLUMNS ---------------- */}
-                <div className="col-span-6 grid grid-cols-3 gap-3 relative">
-                  <div className="absolute -top-6 left-[16.6%] right-[16.6%] h-0.5 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[16.6%] w-0.5 h-6 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[50%] w-0.5 h-6 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[83.3%] w-0.5 h-6 bg-[#0B3C26]/30" />
+                {/* ---------------- RIGHT BLOCK: 2 COLUMNS (사무국 제외 및 명예임원/감사 재편) ---------------- */}
+                <div className="col-span-6 grid grid-cols-2 gap-4 relative">
+                  <div className="absolute -top-6 left-[25%] right-[25%] h-0.5 bg-[#0B3C26]/30" />
+                  <div className="absolute -top-6 left-[25%] w-0.5 h-6 bg-[#0B3C26]/30" />
+                  <div className="absolute -top-6 left-[75%] w-0.5 h-6 bg-[#0B3C26]/30" />
 
-                  {/* Col 1: 총괄 사무국 */}
-                  <div className="space-y-2">
-                    <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs flex items-center justify-center gap-1">
-                      <Building2 className="w-3.5 h-3.5 text-[#D4AF37]" />
-                      <span>{t("사무국")}</span>
-                    </div>
-                    <div className="space-y-1.5">
-                      <div className="bg-stone-50 border border-stone-200 rounded-xl py-2 px-2 text-center">
-                        <span className="text-[10px] text-stone-500 font-bold block">{t("사무국장")}</span>
-                        <span className="text-sm font-black text-stone-900">{t("김근혜")}</span>
-                      </div>
-                      <div className="bg-stone-50 border border-stone-200 rounded-xl py-2 px-2 text-center font-black text-xs text-stone-800">
-                        {t("사무장")}
-                      </div>
-                      <div className="bg-stone-50 border border-stone-200 rounded-xl py-2 px-2 text-center text-xs font-bold text-stone-700">
-                        {t("주임: 조범진")}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Col 2: 명예 임원진 */}
+                  {/* Col 1: 명예 임원진 */}
                   <div className="space-y-2">
                     <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
                       {t("명예 임원")}
@@ -390,7 +369,7 @@ export default function OrganizationSection() {
                     </div>
                   </div>
 
-                  {/* Col 3: 감사 기구 */}
+                  {/* Col 2: 감사 기구 */}
                   <div className="space-y-2">
                     <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs flex items-center justify-center gap-1">
                       <Shield className="w-3.5 h-3.5 text-[#D4AF37]" />

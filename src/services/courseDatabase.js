@@ -1,6 +1,6 @@
 import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';
 
-const DB_VERSION = 'v3_institute_courses_20260914';
+const DB_VERSION = 'v4_curriculums_expanded_20260925';
 
 // Fetch all courses from Real REST API Backend DB with fallback
 export async function fetchCoursesFromAPI() {
