@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Image as ImageIcon, Save, Upload, Sparkles, Tag, DollarSign, UserCheck, CheckCircle2, Calculator } from 'lucide-react';
 import { calculateDiscount } from '../../utils/price';
+import CoursePosterGeneratorModal from './CoursePosterGeneratorModal';
 
 export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse }) {
   const fileInputRef = useRef(null);
+  const [posterModalOpen, setPosterModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     id: '',
@@ -201,13 +203,23 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
                     accept="image/*"
                     className="hidden"
                   />
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPosterModalOpen(true)}
+                    className="px-3.5 py-2.5 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-200 text-stone-950 font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center gap-1.5 active:scale-95"
+                  >
+                    <Sparkles className="w-4 h-4 text-stone-950" />
+                    <span>🎨 AI 포스터 생성</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer flex items-center gap-2"
                   >
                     <Upload className="w-4 h-4" />
-                    <span>📁 내 PC에서 사진 업로드</span>
+                    <span>📁 내 PC에서 업로드</span>
                   </button>
                 </div>
 
@@ -343,6 +355,27 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
           </div>
 
         </form>
+
+        {/* AI Course Poster Generator Modal */}
+        <CoursePosterGeneratorModal
+          isOpen={posterModalOpen}
+          course={{
+            title: formData.title,
+            categoryName: formData.categoryName,
+            desc: formData.desc,
+            description: formData.desc,
+            instructor: formData.instructor,
+            price: priceCalc.discountedPriceStr,
+            startDate: '2026.10.05',
+          }}
+          onClose={() => setPosterModalOpen(false)}
+          onApplyPoster={(dataUrl) => {
+            setFormData((prev) => ({
+              ...prev,
+              thumbnail: dataUrl,
+            }));
+          }}
+        />
 
       </div>
     </div>

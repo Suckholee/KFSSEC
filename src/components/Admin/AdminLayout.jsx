@@ -95,6 +95,7 @@ import AdminContent from './AdminContent';
 import AdminCommunity from './AdminCommunity';
 import AdminAbout from './AdminAbout';
 import AdminSettings from './AdminSettings';
+import CoursePosterGeneratorModal from './CoursePosterGeneratorModal';
 
 // Programmatically generate 128 real full student enrollee & account records
 const generate128Enrollees = () => {
@@ -434,6 +435,7 @@ export default function AdminLayout({
   const [primaryMenu, setPrimaryMenu] = useState(initialState.menu);
   const [secondarySubTab, setSecondarySubTab] = useState(initialState.subTab);
   const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(initialState.selectedCourse);
+  const [posterModalOpen, setPosterModalOpen] = useState(false);
   const [isSavedNotice, setIsSavedNotice] = useState(false);
 
   // Helper to push browser URL state dynamically
@@ -1859,20 +1861,31 @@ export default function AdminLayout({
 
                   {/* IMAGE UPLOAD SECTION */}
                   <div className="space-y-4 bg-stone-50 p-5 rounded-2xl border-2 border-emerald-500/80 shadow-sm">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <label className="block text-xs font-black text-black flex items-center gap-2">
                         <Image className="w-4 h-4 text-emerald-700" />
-                        <span>강의 대표 커버 이미지 (서버 업로드 / URL)</span>
+                        <span>강의 대표 커버 이미지 (AI 포스터 / 파일 업로드 / URL)</span>
                       </label>
 
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current && fileInputRef.current.click()}
-                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105"
-                      >
-                        <Upload className="w-4 h-4" />
-                        <span>📁 내 컴퓨터에서 이미지 파일 선택 및 업로드</span>
-                      </button>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setPosterModalOpen(true)}
+                          className="px-3.5 py-2 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-stone-950 font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+                        >
+                          <Sparkles className="w-4 h-4 text-stone-950" />
+                          <span>🎨 AI 강좌 포스터 디자인 생성기</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                          className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer hover:scale-105"
+                        >
+                          <Upload className="w-4 h-4" />
+                          <span>📁 내 컴퓨터에서 업로드</span>
+                        </button>
+                      </div>
 
                       <input
                         ref={fileInputRef}
@@ -2036,6 +2049,19 @@ export default function AdminLayout({
                 </div>
 
               </div>
+
+              {/* AI Course Poster Generator Modal */}
+              <CoursePosterGeneratorModal
+                isOpen={posterModalOpen}
+                course={selectedCourseForEdit}
+                onClose={() => setPosterModalOpen(false)}
+                onApplyPoster={(dataUrl) => {
+                  setSelectedCourseForEdit((prev) => ({
+                    ...prev,
+                    image: dataUrl,
+                  }));
+                }}
+              />
 
             </div>
           ) : (
