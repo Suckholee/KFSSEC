@@ -2,6 +2,7 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import GreetingsSection from './GreetingsSection';
+import HistorySection from './HistorySection';
 import OrganizationSection from './OrganizationSection';
 import ScrollReveal from '../common/ScrollReveal';
 import {
@@ -40,7 +41,7 @@ import FacultySection from './FacultySection';
 
 export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'greetings' }) {
   const { t } = useLanguage();
-  const validSubTabs = ['greetings', 'speech', 'profile', 'faculty', 'organization'];
+  const validSubTabs = ['greetings', 'history', 'speech', 'profile', 'faculty', 'organization'];
   const resolveTab = (val) => (validSubTabs.includes(val) ? val : 'greetings');
   const defaultSub = resolveTab(initialSubTab || initialTab);
   const [activeTab, setActiveTab] = useState(defaultSub);
@@ -72,6 +73,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
 
   const aboutSubItems = [
     { id: 'greetings', label: t("교육원 소개 & 12대 방향") },
+    { id: 'history', label: t("연혁 & 3대 발자취") },
     { id: 'speech', label: t("이사장 인사말") },
     { id: 'profile', label: t("이사장 프로필 & MOU") },
     { id: 'faculty', label: t("교수진 소개") },
@@ -282,7 +284,12 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
               </div>
             )}
 
-            {/* SUB-TAB 2: 원장 인사말 */}
+            {/* SUB-TAB 2: 연혁 & 3대 발자취 */}
+            {activeTab === 'history' && (
+              <HistorySection />
+            )}
+
+            {/* SUB-TAB 3: 원장 인사말 */}
             {activeTab === 'speech' && (
               <GreetingsSection viewMode="speech" />
             )}

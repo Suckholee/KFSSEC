@@ -87,6 +87,7 @@ import CertificateModal from './CertificateModal';
 import AdminMasters from './AdminMasters';
 import AdminChatbotSettings from './AdminChatbotSettings';
 import AdminAIBlogMarketing from './AdminAIBlogMarketing';
+import AdminPartnerLogos from './AdminPartnerLogos';
 
 // Programmatically generate 128 real full student enrollee & account records
 const generate128Enrollees = () => {
@@ -575,6 +576,7 @@ export default function AdminLayout({
         return [{ id: 'profile_list', label: '명장·명인 프로필 목록' }];
       case 'home':
         return [
+          { id: 'partner_logos', label: '🤝 협약기관/MOU 로고 관리' },
           { id: 'visual_editor', label: '홈화면 라이브 에디터' },
           { id: 'banner_edit', label: '행사 띠배너 설정' },
           { id: 'youtube_edit', label: '유튜브 방송 미디어' },
@@ -693,7 +695,7 @@ export default function AdminLayout({
           <button
             onClick={() => switchPrimaryMenu('home', 'visual_editor', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-              primaryMenu === 'home'
+              primaryMenu === 'home' && secondarySubTab !== 'partner_logos'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
@@ -701,6 +703,19 @@ export default function AdminLayout({
           >
             <Home className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">홈화면</span>
+          </button>
+
+          <button
+            onClick={() => switchPrimaryMenu('home', 'partner_logos', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'home' && secondarySubTab === 'partner_logos'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="협약기관/MOU 로고 관리"
+          >
+            <Handshake className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">MOU로고</span>
           </button>
 
           <button
@@ -1998,8 +2013,20 @@ export default function AdminLayout({
             )
           )}
 
-          {/* OTHER MENU SCREENS */}
-          {primaryMenu === 'home' && (
+          {/* HOME MENU SCREENS */}
+          {primaryMenu === 'home' && secondarySubTab === 'partner_logos' && (
+            <AdminPartnerLogos
+              partnerLogos={siteData?.partnerLogos}
+              onUpdatePartnerLogos={(newLogos) => {
+                onUpdateSiteData({
+                  ...siteData,
+                  partnerLogos: newLogos,
+                });
+              }}
+            />
+          )}
+
+          {primaryMenu === 'home' && secondarySubTab !== 'partner_logos' && (
             <div className="space-y-6 animate-fadeIn">
               <div className="bg-white p-4 rounded-2xl border border-gray-300 flex items-center justify-between">
                 <span className="text-sm font-black text-black">

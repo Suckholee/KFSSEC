@@ -1,11 +1,11 @@
 import NetflixCoursesSection from './components/NetflixCoursesSection';
-import FullPackageCoursesSection from './components/FullPackageCoursesSection';
 import CategoryCourseSection from './components/CategoryCourseSection';
 import CategoryFocusSection from './components/CategoryFocusSection';
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import AwardCeremonyBannerSection from './components/Home/AwardCeremonyBannerSection';
+import PartnerMarqueeSection, { DEFAULT_PARTNER_LOGOS } from './components/Home/PartnerMarqueeSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
 import NoticePostSection from './components/NoticePostSection';
 import Footer from './components/Footer';
@@ -244,6 +244,9 @@ export default function App() {
         if (parsed?.youtube?.videos?.some((v) => v.videoId === 'b4wS9WvI38g')) {
           localStorage.removeItem('kfssec_site_data');
         } else {
+          if (!parsed.partnerLogos || parsed.partnerLogos.length === 0) {
+            parsed.partnerLogos = DEFAULT_PARTNER_LOGOS;
+          }
           return parsed;
         }
       } catch (e) {
@@ -251,6 +254,7 @@ export default function App() {
       }
     }
     return {
+      partnerLogos: DEFAULT_PARTNER_LOGOS,
       youtube: {
         title: '한국외식창업교육원 미디어',
         subtitle: '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.',
@@ -451,9 +455,9 @@ export default function App() {
               onPlayVideo={handleOpenVideo}
             />
             <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
-            <FullPackageCoursesSection onSelectPackage={() => handleTabChange('consulting', 'consulting')} />
             <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
             <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
+            <PartnerMarqueeSection partnerLogos={siteData.partnerLogos} />
             <NoticePostSection onScrollNext={() => scrollToSection('footer')} />
 
           </div>
