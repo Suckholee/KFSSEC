@@ -28,9 +28,9 @@ export const DEFAULT_CHATBOT_CONFIG = {
     {
       id: 'masters',
       label: '👨‍🍳 명장·명인 정보를 보고 싶어요.',
-      reply: '40년 경력의 안형상 이사장님을 비롯한 대한민국 조리 명장·명인 사업단에서 특제 비법 레시피와 매장 경영 노하우를 직접 전수합니다.',
+      reply: '40년 경력의 안형상 이사장님을 비롯한 대한민국 조리 명장·명인 교수진이 특제 비법 레시피와 매장 경영 노하우를 직접 전수합니다.',
       actionTab: 'master',
-      actionSubTab: 'masters',
+      actionSubTab: 'profiles',
       actionLabel: '명장·명인 프로필 보기',
     },
     {
@@ -197,11 +197,11 @@ export function generateAIInquiryDraft(title = '', content = '') {
   } else if (fullText.includes('자격증') || fullText.includes('시험') || fullText.includes('지도사') || fullText.includes('실무사')) {
     advice = '외식창업지도사/실무사 2급 자격 과정은 4주 온라인 강의(진도율 80% 이상) 이수 시 정기 자격 검정 응시가 가능합니다. 합격 시 농림축산식품부 등록 민간자격증이 발급됩니다.';
   } else if (fullText.includes('레시피') || fullText.includes('명장') || fullText.includes('소스') || fullText.includes('한식') || fullText.includes('카페')) {
-    advice = '대한민국 조리명장 안형상 이사장님 및 명인 사업단이 직접 전수하는 1:1 도제식 실습 코칭으로 진행됩니다. 수강생 매장의 메뉴 콘셉트와 주방 설비에 맞춘 커스텀 레시피 조정이 가능합니다.';
+    advice = '대한민국 조리명장 안형상 이사장님 및 명장·명인 교수진이 직접 전수하는 1:1 도제식 실습 코칭으로 진행됩니다. 수강생 매장의 메뉴 콘셉트와 주방 설비에 맞춘 커스텀 레시피 조정이 가능합니다.';
   } else if (fullText.includes('수강료') || fullText.includes('비용') || fullText.includes('환불') || fullText.includes('할인')) {
     advice = '과정별 수강료는 20만원대~40만원대 패키지로 다양하며, 조기 등록 얼리버드 및 수강생 우대 할인이 적용됩니다. 개강 전 취소 시 100% 전액 환불됩니다.';
   } else {
-    advice = '질문해 주신 외식 창업 및 교육과정 관련 세부 요건을 교육원 사무국에서 확인 중입니다. 맞춤형 커리큘럼 추천 및 입학 절차 안내를 위해 전문 상담사가 추가 답변을 드릴 예정입니다.';
+    advice = '질문해 주신 외식 창업 및 교육과정 관련 세부 요건을 교육원 상담실에서 확인 중입니다. 맞춤형 커리큘럼 추천 및 입학 절차 안내를 위해 전문 상담사가 추가 답변을 드릴 예정입니다.';
   }
 
   return `[사단법인 한국외식창업교육원 24시 AI 상담 실장 즉각 사전 답변]\n\n안녕하세요, 질문해 주신 내용에 대해 AI 사전 검토 결과를 먼저 안내드립니다.\n\n💡 핵심 안내:\n${advice}\n\n📞 본 답변은 AI 실시간 안내이며, 보다 정확한 안내 및 일정 확정을 위해 교육원 행정실 및 담당 명장 컨설턴트가 영업일 기준 순차적으로 확인 후 정식 답변을 보완해 드립니다. 급하신 문의는 대표전화(010-7244-6796)로 연락 주시면 즉시 안내받으실 수 있습니다.`;

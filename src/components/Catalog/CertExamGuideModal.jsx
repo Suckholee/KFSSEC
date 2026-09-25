@@ -128,7 +128,7 @@ export default function CertExamGuideModal({ isOpen, course, onClose, onApplyExa
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0" />
-                <span>{tr("외식창업 명인 심사위원 추천 및 명인 사업단 멤버십 자격 부여")}</span>
+                <span>{tr("외식창업 명인 심사위원 추천 및 명장·명인 네트워크 멤버십 자격 부여")}</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0" />

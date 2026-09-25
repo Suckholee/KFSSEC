@@ -184,7 +184,7 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
         <div className="bg-gray-100 p-4 px-6 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600 font-bold shrink-0">
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-[#0B3C26]" />
-            <span>{tr("사단법인 한국외식창업교육원 검증 명인 사업단")}</span>
+            <span>{tr("사단법인 한국외식창업교육원 검증 명장·명인")}</span>
           </span>
           <button
             onClick={requestClose}
