@@ -73,7 +73,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
 
   const aboutSubItems = [
     { id: 'greetings', label: t("교육원 소개 & 12대 방향") },
-    { id: 'history', label: t("연혁 & 3대 발자취") },
+    { id: 'history', label: t("주요 연혁") },
     { id: 'speech', label: t("이사장 인사말") },
     { id: 'profile', label: t("이사장 프로필 & MOU") },
     { id: 'faculty', label: t("교수진 소개") },
@@ -284,7 +284,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
               </div>
             )}
 
-            {/* SUB-TAB 2: 연혁 & 3대 발자취 */}
+            {/* SUB-TAB 2: 주요 연혁 */}
             {activeTab === 'history' && (
               <HistorySection />
             )}

@@ -140,14 +140,14 @@ export default function HistorySection() {
         <div className="relative z-10 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#D4AF37] text-xs font-black">
             <Calendar className="w-3.5 h-3.5" />
-            <span>KFSSEC HISTORY & FOOTSTEPS</span>
+            <span>KFSSEC HISTORY</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-black tracking-tight font-serif text-white">
-            {t('교육원 연혁 & 3대 발자취')}
+            {t('주요 연혁')}
           </h2>
           <p className="text-xs sm:text-sm text-emerald-100/90 font-medium max-w-2xl leading-relaxed">
             {t(
-              '2022년 설립 이래 농림축산식품부 인가 비영리 사단법인으로서 쌓아온 역사, 전국 지자체 협약 및 10대 산학 협력의 자랑스러운 기록입니다.'
+              '사단법인 한국외식창업교육원의 설립 이래 발전 과정과 대외 협력 성과를 담은 공식 연혁입니다.'
             )}
           </p>
         </div>
