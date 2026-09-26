@@ -1,6 +1,6 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState } from 'react';
-import { ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers, LogOut, ShieldCheck } from 'lucide-react';
+import { ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers, LogOut, ShieldCheck, ExternalLink } from 'lucide-react';
 
 export default function Header({
   activeTab = 'home',
@@ -201,6 +201,28 @@ export default function Header({
               </div>
             );
           })}
+
+          {/* Subtle Vertical Divider */}
+          <div className="h-5 w-px bg-stone-300 mx-1 2xl:mx-1.5 self-center shrink-0" />
+
+          {/* 글로벌외식정보 로고 (게시판 우측) */}
+          <div className="relative group py-4 flex items-center shrink-0">
+            <a
+              href="https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-[#D4C5B0]/80 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none group/link"
+              title={t('글로벌외식정보 외식 트렌드 바로가기 (새창 열기)', 'Go to Global Dining News - Trends (New Window)')}
+              aria-label="글로벌외식정보 외식 트렌드 바로가기 (새창)"
+            >
+              <img
+                src="/images/logo_global_dining.png"
+                alt="글로벌외식정보 (Global Dining News)"
+                className="h-8 2xl:h-9 w-auto object-contain group-hover/link:scale-105 transition-transform drop-shadow-xs"
+              />
+              <ExternalLink className="w-3.5 h-3.5 text-stone-400 group-hover/link:text-[#0B3C26] transition-colors" />
+            </a>
+          </div>
         </nav>
 
         {/* Right Top Utility Buttons (KOR Selector & User Auth) */}
@@ -354,6 +376,7 @@ export default function Header({
               ))}
             </div>
           </div>
+
           <div className="space-y-4">
             {mainMenuItems.map((menu) => {
               const isMenuActive = activeTab === menu.key;
@@ -408,6 +431,32 @@ export default function Header({
                 </div>
               );
             })}
+
+            {/* Mobile Global Dining News Card Link (게시판 바로 아래) */}
+            <a
+              href="https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between p-3.5 bg-white rounded-2xl border border-[#D4C5B0] shadow-xs hover:border-[#0B3C26] transition-all group mt-3"
+              title="글로벌외식정보 외식 트렌드 바로가기 (새창)"
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src="/images/logo_global_dining.png"
+                  alt="글로벌외식정보"
+                  className="h-10 w-auto object-contain shrink-0"
+                />
+                <div className="text-left">
+                  <div className="text-xs font-black text-stone-900 group-hover:text-[#0B3C26] flex items-center gap-1.5">
+                    <span>외식 트렌드 최신 뉴스</span>
+                    <span className="text-[10px] text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded font-bold border border-emerald-200">공식 제휴</span>
+                  </div>
+                  <div className="text-[10px] text-stone-500 font-mono mt-0.5">글로벌외식정보 바로가기 ↗</div>
+                </div>
+              </div>
+              <ExternalLink className="w-4 h-4 text-stone-400 group-hover:text-[#0B3C26] shrink-0" />
+            </a>
 
             <button
               onClick={() => {

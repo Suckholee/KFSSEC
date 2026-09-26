@@ -8,6 +8,7 @@ import AwardCeremonyBannerSection from './components/Home/AwardCeremonyBannerSec
 import PartnerMarqueeSection, { DEFAULT_PARTNER_LOGOS } from './components/Home/PartnerMarqueeSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
 import NoticePostSection from './components/NoticePostSection';
+import GlobalDiningTrendsSection from './components/Home/GlobalDiningTrendsSection';
 import Footer from './components/Footer';
 import MobileQuickBar from './components/common/MobileQuickBar';
 import VisitorChatbotWidget from './components/common/VisitorChatbotWidget';
@@ -496,6 +497,7 @@ export default function App() {
               onPlayVideo={handleOpenVideo}
             />
             <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+            <GlobalDiningTrendsSection />
             <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
             <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
             <PartnerMarqueeSection partnerLogos={siteData.partnerLogos} />

@@ -3,6 +3,7 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { GLOBAL_DINING_TRENDS, TREND_CATEGORY_INFO } from '../src/data/globalDiningTrends.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,6 +57,16 @@ app.get('/api/courses/:id', (req, res) => {
     return res.status(404).json({ success: false, message: 'Course not found' });
   }
   res.json({ success: true, data: course });
+});
+
+// REST API for Global Dining Trends
+app.get('/api/trends', (req, res) => {
+  res.json({
+    success: true,
+    info: TREND_CATEGORY_INFO,
+    count: GLOBAL_DINING_TRENDS.length,
+    data: GLOBAL_DINING_TRENDS,
+  });
 });
 
 // REST API 3: POST Create Course
