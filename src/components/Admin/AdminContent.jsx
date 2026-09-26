@@ -252,7 +252,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>🎨 AI 행사 배너 생성 스튜디오</span>
+            <span>🖼️ 메인 히어로 배너 관리 (슬라이더)</span>
           </button>
           <button
             onClick={() => handleSubTabSwitch('banner_edit')}

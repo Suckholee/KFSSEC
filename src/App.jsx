@@ -290,6 +290,42 @@ export default function App() {
       dDay: 'D-7일 마감임박',
       buttonText: '수강생 필수 서비스 안내',
     },
+    heroBanners: [
+      {
+        id: 'banner_fearless',
+        title: '외식 창업이 두려운가?',
+        subtitle: '한국외식창업교육원에서 성공으로 이끌어 드립니다.',
+        imageUrl: '/images/hero_banner_fearless.png',
+        imageOnly: true,
+        active: true,
+        overlayDim: 0,
+        buttonText: '교육과정 둘러보기',
+        buttonLink: 'catalog',
+      },
+      {
+        id: 'banner_masters_classic',
+        title: '꿈꾸는 외식창업 아무에게나 맡기시겠습니까?',
+        subtitle: '오랜 현장실무경험과 실력을 갖춘 명인, 명장님께 맡겨주세요! 성공적인 창업은 저희가 책임지겠습니다.',
+        imageUrl: '/images/main_banner_masters.png',
+        imageOnly: true,
+        active: true,
+        overlayDim: 0,
+        buttonText: '명인·명장 교수진 소개',
+        buttonLink: 'about',
+      },
+      {
+        id: 'banner_culinary_pro',
+        title: '특급호텔 40년 명장의 1:1 직강 비법 전수',
+        subtitle: '100년 전통 발효 소스부터 1인 주방 최적화 동선 설계까지 실전 창업 성공 솔루션',
+        imageUrl: '/images/chef_tossing_food.jpg',
+        imageOnly: false,
+        active: true,
+        overlayDim: 55,
+        tag: '대한민국 조리명장 제1호 직강',
+        buttonText: '1:1 맞춤 상담 신청',
+        buttonLink: 'community',
+      },
+    ],
   };
 
   const mergeSiteData = (saved) => {
@@ -339,6 +375,12 @@ export default function App() {
       ...(saved.banner || {}),
     };
 
+    // 5. Hero Banners: fallback to defaults or merge saved slides
+    const heroBanners =
+      Array.isArray(saved.heroBanners) && saved.heroBanners.length > 0
+        ? saved.heroBanners
+        : DEFAULT_SITE_DATA.heroBanners;
+
     return {
       ...DEFAULT_SITE_DATA,
       ...saved,
@@ -346,6 +388,7 @@ export default function App() {
       partnerLogos,
       youtube,
       banner,
+      heroBanners,
     };
   };
 
@@ -552,8 +595,10 @@ export default function App() {
         {activeTab === 'home' && (
           <div className="space-y-0">
             <Hero
+              heroBanners={siteData.heroBanners}
               onExploreClick={() => handleTabChange('catalog')}
               onAboutClick={() => handleTabChange('about', 'greetings')}
+              onInquiryClick={() => handleTabChange('community', 'inquiry')}
             />
             <AwardCeremonyBannerSection
               onGoToGallery={() => handleTabChange('gallery', 'awards')}

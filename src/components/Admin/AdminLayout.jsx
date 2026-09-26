@@ -696,7 +696,7 @@ export default function AdminLayout({
       case 'home':
         return [
           { id: 'visual_editor', label: '🖥️ 홈화면 라이브 에디터' },
-          { id: 'banner_planner', label: '🎨 행사 배너 AI 생성 스튜디오' },
+          { id: 'banner_planner', label: '🖼️ 메인 히어로 배너 관리 (슬라이더)' },
           { id: 'banner_edit', label: '📢 행사 띠배너 문구 설정' },
           { id: 'youtube_edit', label: '📺 유튜브 방송 미디어' },
         ];
@@ -745,7 +745,7 @@ export default function AdminLayout({
         return [
           { id: 'generator', label: '🤖 AI 블로그 원고 생성' },
           { id: 'calendar', label: '📅 캘린더 자동 등록 검토' },
-          { id: 'banner_planner', label: '🎨 행사 배너 AI 생성기' },
+          { id: 'banner_planner', label: '🖼️ 메인 히어로 배너 관리' },
         ];
       default:
         return [];
