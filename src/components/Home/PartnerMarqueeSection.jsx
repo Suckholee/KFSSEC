@@ -159,7 +159,7 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
   const marqueeList = [...activeLogos, ...activeLogos];
 
   return (
-    <section className="py-12 sm:py-16 bg-[#F8F6F0] border-t border-b border-[#E7E2D8] overflow-hidden relative font-sans">
+    <section className="py-12 sm:py-16 bg-[#FAF8F5] border-b border-stone-200/80 overflow-hidden relative font-sans">
       {/* Subtle background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-40 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -181,8 +181,8 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
       {/* Marquee Track Container with gradient fade edges */}
       <div className="relative w-full overflow-hidden group">
         {/* Left & Right Shadow Gradients */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#F8F6F0] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#F8F6F0] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#FAF8F5] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#FAF8F5] to-transparent z-10 pointer-events-none" />
 
         {/* Continuous Scrolling Row */}
         <div

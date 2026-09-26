@@ -15,7 +15,7 @@ export default function Footer({ onTabChange, siteData = {} }) {
 
   return (
     <footer className="bg-[#0D1512] text-gray-300 text-sm border-t border-emerald-950 pt-12 pb-24 sm:pb-8 font-sans">
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-[1520px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           
           {/* Col 1: Official Brand Info */}

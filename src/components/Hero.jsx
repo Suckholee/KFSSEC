@@ -24,7 +24,7 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
 
       {/* Floating Action Buttons & 3 Core Stats Overlay */}
       <div className="relative z-10 bg-gradient-to-b from-[#000000] via-[#050A07] to-[#0B150F] py-6 sm:py-8 px-4 sm:px-8 border-t border-stone-900">
-        <div className="max-w-7xl mx-auto flex flex-col items-center gap-5 sm:gap-6">
+        <div className="max-w-[1520px] mx-auto flex flex-col items-center gap-5 sm:gap-6">
           
           {/* Action Buttons Row */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
@@ -47,45 +47,45 @@ export default function Hero({ onExploreClick, onAboutClick, onScrollNext }) {
             </button>
           </div>
 
-          {/* 3 Core Stats Card */}
-          <div className="w-full max-w-2xl bg-white text-gray-900 border-2 border-[#C5A059] rounded-2xl p-4 sm:p-5 shadow-2xl">
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 divide-x divide-stone-200">
+          {/* 3 Core Stats Card - Luxury Dark Emerald Glassmorphism */}
+          <div className="w-full max-w-2xl bg-[#0B3C26]/90 backdrop-blur-md text-white border-2 border-[#C5A059] rounded-2xl p-4 sm:p-5 shadow-2xl">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 divide-x divide-emerald-700/60">
               
               {/* Stat 1: 1·2급 자격과정 */}
               <div className="flex flex-col items-center text-center px-1">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F2ECE0] border border-[#D4C5B0] flex items-center justify-center mb-1 text-[#0B3C26] shadow-xs">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#072819] border border-[#C5A059]/40 flex items-center justify-center mb-1 text-[#D4AF37] shadow-xs">
                   <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                 </div>
-                <span className="text-sm sm:text-base lg:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
+                <span className="text-sm sm:text-base lg:text-lg font-black text-white tracking-tight leading-tight">
                   {t("온·오프라인")}
                 </span>
-                <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
+                <span className="text-[11px] sm:text-xs font-bold text-emerald-100/90 mt-0.5">
                   {t("1·2급 자격과정")}
                 </span>
               </div>
 
               {/* Stat 2: 수강 기간 */}
               <div className="flex flex-col items-center text-center px-1">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F2ECE0] border border-[#D4C5B0] flex items-center justify-center mb-1 text-[#0B3C26] shadow-xs">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#072819] border border-[#C5A059]/40 flex items-center justify-center mb-1 text-[#D4AF37] shadow-xs">
                   <Award className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                 </div>
-                <span className="text-sm sm:text-base lg:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
+                <span className="text-sm sm:text-base lg:text-lg font-black text-white tracking-tight leading-tight">
                   {t("4~8주 완성")}
                 </span>
-                <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">
+                <span className="text-[11px] sm:text-xs font-bold text-emerald-100/90 mt-0.5">
                   {t("수강 기간")}
                 </span>
               </div>
 
               {/* Stat 3: 5대 전문과정 */}
               <div className="flex flex-col items-center text-center px-1">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F2ECE0] border border-[#D4C5B0] flex items-center justify-center mb-1 text-[#0B3C26] shadow-xs">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#072819] border border-[#C5A059]/40 flex items-center justify-center mb-1 text-[#D4AF37] shadow-xs">
                   <Building2 className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
                 </div>
-                <span className="text-sm sm:text-base lg:text-lg font-black text-[#0B3C26] tracking-tight leading-tight">
+                <span className="text-sm sm:text-base lg:text-lg font-black text-white tracking-tight leading-tight">
                   {t("5대 전문과정")}
                 </span>
-                <span className="text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5 truncate max-w-[120px] sm:max-w-none">
+                <span className="text-[11px] sm:text-xs font-bold text-emerald-100/90 mt-0.5 truncate max-w-[120px] sm:max-w-none">
                   {t("창업·푸드테크·와인")}
                 </span>
               </div>

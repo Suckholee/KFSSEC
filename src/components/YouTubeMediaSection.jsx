@@ -65,7 +65,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
 
   return (
     <section className="relative py-12 lg:py-16 bg-[#0A1410] text-white min-h-full flex flex-col justify-center border-b border-emerald-950">
-      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-8 max-w-7xl mx-auto">
+      <div className="w-full px-4 sm:px-8 lg:px-12 space-y-8 max-w-[1520px] mx-auto">
         
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -77,7 +77,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {t(title)}
             </h2>
-            <p className="text-xs sm:text-sm text-emerald-100/70 font-semibold mt-1">
+            <p className="text-xs sm:text-sm text-emerald-100/90 font-semibold mt-1">
               {t(subtitle)}
             </p>
           </div>

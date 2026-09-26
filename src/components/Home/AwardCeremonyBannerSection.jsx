@@ -11,7 +11,7 @@ export default function AwardCeremonyBannerSection({ onGoToGallery, onGoToInquir
       <div className="absolute -top-12 -right-12 w-64 h-64 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto relative z-10">
+      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-[1520px] mx-auto relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
           
           {/* Left: Badge & Titles */}
