@@ -66,6 +66,7 @@ import {
   FileCode,
   Handshake,
   Bot,
+  Building2,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
