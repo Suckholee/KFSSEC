@@ -250,12 +250,125 @@ export default function App() {
     },
   ];
 
+  const DEFAULT_SITE_DATA = {
+    partnerLogos: DEFAULT_PARTNER_LOGOS,
+    institutionInfo: DEFAULT_INSTITUTION_INFO,
+    youtube: {
+      title: '한국외식창업교육원 미디어',
+      subtitle: '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.',
+      channelUrl:
+        'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88',
+      videos: [
+        {
+          id: 'v1',
+          videoUrl: 'https://www.youtube.com/watch?v=ZDZFUpS0fFE',
+          videoId: 'ZDZFUpS0fFE',
+          title: '240203 한국외식창업교육원 정기총회',
+          subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
+          channel: '한국외식창업교육원 공식 채널',
+          categoryBadge: '공식 채널 영상',
+          thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/hqdefault.jpg',
+          uploadDate: '2024.02.03',
+        },
+        {
+          id: 'v2',
+          videoUrl: 'https://www.youtube.com/watch?v=E_WgebIP_SY',
+          videoId: 'E_WgebIP_SY',
+          title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
+          subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
+          channel: '아시아창의방송(actv) 언론 보도',
+          categoryBadge: '언론 보도 영상',
+          thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/hqdefault.jpg',
+          uploadDate: '2024.01.15',
+        },
+      ],
+    },
+    banner: {
+      badgeText: '사단법인 한국외식창업교육원 2026 하반기 신규 수강생 모집',
+      title: 'K-FOOD 시그니처 100년 발효 레시피 & 창업 실무 직강',
+      subtitle: '특급호텔 40년 명장이 전수하는 소상공인 창업 성공 솔루션',
+      dDay: 'D-7일 마감임박',
+      buttonText: '수강생 필수 서비스 안내',
+    },
+  };
+
+  const mergeSiteData = (saved) => {
+    if (!saved || typeof saved !== 'object') return DEFAULT_SITE_DATA;
+
+    // 1. Institution Info: merge with defaults and ensure key contacts are never blank
+    const institutionInfo = {
+      ...DEFAULT_INSTITUTION_INFO,
+      ...(saved.institutionInfo || {}),
+    };
+    ['phone', 'tel', 'headquartersAddress', 'officeAddress', 'bizNumber'].forEach((key) => {
+      if (!institutionInfo[key]) {
+        institutionInfo[key] = DEFAULT_INSTITUTION_INFO[key];
+      }
+    });
+
+    // 2. Partner Logos: ensure every default partner exists and has valid logo image
+    const savedLogos = Array.isArray(saved.partnerLogos) ? saved.partnerLogos : [];
+    const defaultLogosMerged = DEFAULT_PARTNER_LOGOS.map((def) => {
+      const existing = savedLogos.find((p) => p.id === def.id || p.name === def.name);
+      if (!existing) return def;
+      return {
+        ...def,
+        ...existing,
+        image: existing.image || def.image, // never allow empty string to overwrite default logo
+      };
+    });
+    // Preserve custom partners added by admin that are not in defaults
+    const customLogos = savedLogos.filter(
+      (p) => !DEFAULT_PARTNER_LOGOS.some((def) => def.id === p.id || def.name === p.name)
+    );
+    const partnerLogos = [...defaultLogosMerged, ...customLogos];
+
+    // 3. YouTube: fallback if missing or empty
+    const youtube = {
+      ...DEFAULT_SITE_DATA.youtube,
+      ...(saved.youtube || {}),
+      videos:
+        saved.youtube?.videos && saved.youtube.videos.length > 0
+          ? saved.youtube.videos
+          : DEFAULT_SITE_DATA.youtube.videos,
+    };
+
+    // 4. Banner: fallback if missing
+    const banner = {
+      ...DEFAULT_SITE_DATA.banner,
+      ...(saved.banner || {}),
+    };
+
+    return {
+      ...DEFAULT_SITE_DATA,
+      ...saved,
+      institutionInfo,
+      partnerLogos,
+      youtube,
+      banner,
+    };
+  };
+
   const [postsList, setPostsList] = useState(() => {
     const saved = localStorage.getItem('kfssec_posts_list');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const defaultMap = new Map(DEFAULT_POSTS_LIST.map((p) => [p.id, p]));
+          const merged = parsed.map((p) => {
+            const def = defaultMap.get(p.id);
+            if (!def) return p;
+            return {
+              ...def,
+              ...p,
+              image: p.image || def.image,
+            };
+          });
+          const existingIds = new Set(merged.map((p) => p.id));
+          const missingDefaults = DEFAULT_POSTS_LIST.filter((p) => !existingIds.has(p.id));
+          return [...merged, ...missingDefaults];
+        }
       } catch (e) {}
     }
     return DEFAULT_POSTS_LIST;
@@ -268,7 +381,7 @@ export default function App() {
     } catch (e) {}
   };
 
-  // Central Dynamic Site Data Store
+  // Central Dynamic Site Data Store with Safe Hydration
   const [siteData, setSiteData] = useState(() => {
     const saved = localStorage.getItem('kfssec_site_data');
     if (saved) {
@@ -277,68 +390,14 @@ export default function App() {
         // Force update if legacy b4wS9WvI38g video ID exists
         if (parsed?.youtube?.videos?.some((v) => v.videoId === 'b4wS9WvI38g')) {
           localStorage.removeItem('kfssec_site_data');
-        } else {
-          if (!parsed.partnerLogos || parsed.partnerLogos.length === 0) {
-            parsed.partnerLogos = DEFAULT_PARTNER_LOGOS;
-          } else {
-            parsed.partnerLogos = parsed.partnerLogos.map((p) => {
-              const def = DEFAULT_PARTNER_LOGOS.find((d) => d.id === p.id || d.name === p.name);
-              return {
-                ...p,
-                image: p.image || def?.image || '',
-              };
-            });
-          }
-          if (!parsed.institutionInfo) {
-            parsed.institutionInfo = DEFAULT_INSTITUTION_INFO;
-          }
-          return parsed;
+          return DEFAULT_SITE_DATA;
         }
+        return mergeSiteData(parsed);
       } catch (e) {
         console.error('Failed to parse saved site data:', e);
       }
     }
-    return {
-      partnerLogos: DEFAULT_PARTNER_LOGOS,
-      institutionInfo: DEFAULT_INSTITUTION_INFO,
-      youtube: {
-        title: '한국외식창업교육원 미디어',
-        subtitle: '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.',
-        channelUrl:
-          'https://www.youtube.com/@%ED%95%9C%EA%B5%AD%EC%99%B8%EC%8B%9D%EC%B0%BD%EC%97%85%EA%B5%90%EC%9C%A1%EC%9C%88',
-        videos: [
-          {
-            id: 'v1',
-            videoUrl: 'https://www.youtube.com/watch?v=ZDZFUpS0fFE',
-            videoId: 'ZDZFUpS0fFE',
-            title: '240203 한국외식창업교육원 정기총회',
-            subtitle: '한국외식창업교육원 2023년 결산 및 2024년 사업 계획에 대한 정기 총회 전체 영상',
-            channel: '한국외식창업교육원 공식 채널',
-            categoryBadge: '공식 채널 영상',
-            thumbnail: 'https://img.youtube.com/vi/ZDZFUpS0fFE/hqdefault.jpg',
-            uploadDate: '2024.02.03',
-          },
-          {
-            id: 'v2',
-            videoUrl: 'https://www.youtube.com/watch?v=E_WgebIP_SY',
-            videoId: 'E_WgebIP_SY',
-            title: '안형상 한국외식창업교육원 이사장, 정기총회서 "100세 초고령 시대 교육을 통한 글로벌 K-FOOD 시대 열어야..." 강조',
-            subtitle: '아시아창의방송(actv) 정기총회 현장 취재 및 안형상 이사장 특별 언론 보도 영상',
-            channel: '아시아창의방송(actv) 언론 보도',
-            categoryBadge: '언론 보도 영상',
-            thumbnail: 'https://img.youtube.com/vi/E_WgebIP_SY/hqdefault.jpg',
-            uploadDate: '2024.01.15',
-          },
-        ],
-      },
-      banner: {
-        badgeText: '사단법인 한국외식창업교육원 2026 하반기 신규 수강생 모집',
-        title: 'K-FOOD 시그니처 100년 발효 레시피 & 창업 실무 직강',
-        subtitle: '특급호텔 40년 명장이 전수하는 소상공인 창업 성공 솔루션',
-        dDay: 'D-7일 마감임박',
-        buttonText: '수강생 필수 서비스 안내',
-      },
-    };
+    return DEFAULT_SITE_DATA;
   });
 
   const handleUpdateSiteData = (newSiteData) => {

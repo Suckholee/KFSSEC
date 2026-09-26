@@ -18,9 +18,11 @@ export function getMasterProfiles() {
   const current = profiles.map(profile => {
     const original = initialProfiles.find(item => item.id === profile.id && (item.name === profile.name || (profile.name === '곡국진' && item.name === '송창수')));
     if (!original) return profile;
-    if (stored.version === 2) return profile;
     return {
+      ...original,
       ...profile,
+      // If saved image is empty or invalid, fallback to original verified image
+      image: profile.image || original.image,
       name: original.name,
       group: original.group,
       headline: profile.name === '곡국진' ? original.headline : (profile.headline ?? original.headline ?? ''),
@@ -29,11 +31,17 @@ export function getMasterProfiles() {
       awards: profile.awards?.length ? profile.awards : original.awards,
     };
   });
-  if (stored.version !== 2) {
-    // Only append newly supplied people; previously deleted profiles stay deleted.
-    const additions = initialProfiles.filter(p => Number(p.id.replace('master-', '')) > 63 && !current.some(item => item.id === p.id || item.name === p.name));
-    current.push(...additions);
-    localStorage.setItem(MASTER_STORAGE_KEY, JSON.stringify({ version: 2, data: current }));
+
+  // Ensure any newly added profiles in data/masterDirectory.json are seamlessly integrated
+  const missingProfiles = initialProfiles.filter(p => !current.some(c => c.id === p.id || c.name === p.name));
+  if (missingProfiles.length > 0) {
+    current.push(...missingProfiles);
+  }
+
+  if (stored.version !== 2 || missingProfiles.length > 0) {
+    try {
+      localStorage.setItem(MASTER_STORAGE_KEY, JSON.stringify({ version: 2, data: current }));
+    } catch (e) {}
   }
   return current;
 }
