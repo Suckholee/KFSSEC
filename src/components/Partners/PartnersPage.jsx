@@ -1,6 +1,7 @@
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
+import { DEFAULT_PARTNER_LOGOS } from '../Home/PartnerMarqueeSection';
 import {
   Handshake,
   Building2,
@@ -18,7 +19,7 @@ import {
   Maximize2,
 } from 'lucide-react';
 
-export default function PartnersPage({ initialSubTab = 'all' }) {
+export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [] }) {
   const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
@@ -49,89 +50,31 @@ export default function PartnersPage({ initialSubTab = 'all' }) {
 
 
 
-  // 10 Official Partner Companies
-  const partnersList = [
-    {
-      id: 1,
-      name: '(주)주방뱅크',
-      category: '주방 설비 & 설계',
-      desc: '대한민국 1위 업소용 주방기구 및 설비 토탈 컨설팅 기업으로, 수강생 대상 주방 집기 특별 할인 및 3D 도면 설계를 지원합니다.',
-      tag: '주방기구 1위',
-      logoText: 'KITCHEN BANK',
-    },
-    {
-      id: 2,
-      name: '(주)세진',
-      category: '친환경 위생 솔루션',
-      desc: 'HACCP 인증 친환경 주방 세척 및 살균 소독 시스템 전문 기업으로 안전한 위생 환경 구축을 보증합니다.',
-      tag: 'HACCP 위생',
-      logoText: 'SEJIN CORP',
-    },
-    {
-      id: 3,
-      name: '(주)비엠스 인터내셔날',
-      category: '글로벌 식자재 수입',
-      desc: '프리미엄 수입 식자재 및 해외 향신료 유통 전문 기업으로 안정적인 B2B 원가 절감 유통망을 연계합니다.',
-      tag: '글로벌 유통',
-      logoText: 'BMS INTER',
-    },
-    {
-      id: 4,
-      name: '㈜자인',
-      category: '전통 발효 & 소스 R&D',
-      desc: '100년 전통 발효 비법을 바탕으로 한 시그니처 소스 및 천연 조미 소재 개발 협력 파트너입니다.',
-      tag: '발효소스 R&D',
-      logoText: 'JAIN FOODS',
-    },
-    {
-      id: 5,
-      name: '㈜다이닝에프앤비',
-      category: '프랜차이즈 외식 본사',
-      desc: '유망 외식 프랜차이즈 브랜드 기획 및 가맹 시스템 구축, 인큐베이팅을 협업하는 전문 F&B 그룹입니다.',
-      tag: 'F&B 기획',
-      logoText: 'DINING F&B',
-    },
-    {
-      id: 6,
-      name: '김태완스시',
-      category: '일식 프랜차이즈',
-      desc: '전국 30여 개 매장을 운영 중인 초밥 전문 브랜드로, 실전 현장 인턴십 및 매장 경영 노하우를 공유합니다.',
-      tag: '스시 브랜드',
-      logoText: 'KIM TAE WAN SUSHI',
-    },
-    {
-      id: 7,
-      name: '황태회관',
-      category: '향토음식 명인 브랜드',
-      desc: '평창 50년 전통의 대표 향토음식 전문점으로, 지역 농수특산물 연계 및 명인 레시피 상품화를 함께합니다.',
-      tag: '전통 향토음식',
-      logoText: 'HWANG TAE HOE KWAN',
-    },
-    {
-      id: 8,
-      name: 'VEN60 (벤60)',
-      category: '베이커리 & 디저트 카페',
-      desc: '호텔식 고급 디저트 및 제과제빵 전문 브랜드로, 수강생을 위한 바리스타 및 베이킹 실습 환경을 지원합니다.',
-      tag: '프리미엄 베이커리',
-      logoText: 'VEN60 BAKERY',
-    },
-    {
-      id: 9,
-      name: '진도울돌목가는길',
-      category: '수산물 특산 R&D',
-      desc: '청정 남도 해역 수산물 직거래 유통 및 특산물 기반 메뉴 개발을 협업하는 산지 직송 파트너입니다.',
-      tag: '산지 수산물',
-      logoText: 'JINDO FOOD',
-    },
-    {
-      id: 10,
-      name: '닥터장 베이킹랩',
-      category: '제과제빵 기능장 연구소',
-      desc: '제과기능장의 천연효모종 발효 빵 및 쌀 베이킹 레시피를 공동 개발하고 지도하는 전문 연구소입니다.',
-      tag: '제과기능장',
-      logoText: 'DR. JANG LAB',
-    },
-  ];
+  const PARTNER_DESCRIPTIONS = {
+    '농림축산식품부': '사단법인 한국외식창업교육원의 주무관청으로서 K-외식 창업 및 전통 식문화 계승, 농수산물 외식 소비 촉진을 종합 지도합니다.',
+    '소상공인시장진흥공단': '소상공인 맞춤형 정책자금 연계, 온누리상품권 가맹 및 재도약 창업 패키지를 협력 지원하는 공공기관 파트너입니다.',
+    '강남구청': '지역 상권 활성화 및 청년·신중년 외식 창업 육성을 위해 관내 외식 상생 인큐베이팅 프로그램을 공동 운영합니다.',
+    '(주)주방뱅크': '대한민국 1위 업소용 주방기구 및 설비 토탈 컨설팅 기업으로, 수강생 대상 주방 집기 특별 할인 및 3D 도면 설계를 지원합니다.',
+    '(주)세진': 'HACCP 인증 친환경 주방 세척 및 살균 소독 시스템 전문 기업으로 안전한 위생 환경 구축을 보증합니다.',
+    '(주)비엠스 인터내셔날': '프리미엄 수입 식자재 및 해외 향신료 유통 전문 기업으로 안정적인 B2B 원가 절감 유통망을 연계합니다.',
+    '㈜자인': '100년 전통 발효 비법을 바탕으로 한 시그니처 소스 및 천연 조미 소재 개발 협력 파트너입니다.',
+    '㈜다이닝에프앤비': '유망 외식 프랜차이즈 브랜드 기획 및 가맹 시스템 구축, 인큐베이팅을 협업하는 전문 F&B 그룹입니다.',
+    '김태완스시': '전국 30여 개 매장을 운영 중인 초밥 전문 브랜드로, 실전 현장 인턴십 및 매장 경영 노하우를 공유합니다.',
+    '황태회관': '평창 50년 전통의 대표 향토음식 전문점으로, 지역 농수특산물 연계 및 명인 레시피 상품화를 함께합니다.',
+    'VEN60 (벤60)': '호텔식 고급 디저트 및 제과제빵 전문 브랜드로, 수강생을 위한 바리스타 및 베이킹 실습 환경을 지원합니다.',
+    'VEN60': '호텔식 고급 디저트 및 제과제빵 전문 브랜드로, 수강생을 위한 바리스타 및 베이킹 실습 환경을 지원합니다.',
+    '진도울돌목가는길': '청정 남도 해역 수산물 직거래 유통 및 특산물 기반 메뉴 개발을 협업하는 산지 직송 파트너입니다.',
+    '닥터장 베이킹랩': '제과기능장의 천연효모종 발효 빵 및 쌀 베이킹 레시피를 공동 개발하고 지도하는 전문 연구소입니다.',
+  };
+
+  // Dynamic Official Partner Companies from Admin or Defaults
+  const rawPartners = partnerLogos && partnerLogos.length > 0 ? partnerLogos : DEFAULT_PARTNER_LOGOS;
+  const activePartners = rawPartners.filter((p) => p.active !== false);
+  const partnersList = activePartners.map((partner, idx) => ({
+    ...partner,
+    id: partner.id || `partner-${idx}`,
+    desc: partner.desc || PARTNER_DESCRIPTIONS[partner.name] || `${partner.name}은(는) 사단법인 한국외식창업교육원의 공식 파트너사로서 수강생 외식 창업 역량 강화를 전폭 지원합니다.`,
+  }));
 
   // MOU Event Photos
   const mouPhotos = [
@@ -209,54 +152,122 @@ export default function PartnersPage({ initialSubTab = 'all' }) {
             {/* Track 1: Sliding Left */}
             <div className="overflow-hidden relative py-1">
               <div className="animate-marquee-left flex items-center gap-4">
-                {[...partnersList, ...partnersList].map((partner, idx) => (
-                  <div
-                    key={`track1-${idx}`}
-                    className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#0B3C26] hover:bg-emerald-50/50 transition-all shrink-0 shadow-2xs group cursor-default"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-[#0B3C26] text-[#D4AF37] font-black text-xs flex items-center justify-center shadow-xs">
-                      F&B
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block">
-                        {partner.category}
+                {[...partnersList, ...partnersList].map((partner, idx) => {
+                  const isClickable = Boolean(partner.linkUrl);
+                  const CardWrapper = isClickable ? 'a' : 'div';
+                  const wrapperProps = isClickable
+                    ? {
+                        href: partner.linkUrl,
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        title: `${partner.name} 공식 사이트 방문`,
+                      }
+                    : {};
+
+                  return (
+                    <CardWrapper
+                      key={`track1-${idx}`}
+                      {...wrapperProps}
+                      className="flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#0B3C26] hover:bg-emerald-50/50 transition-all shrink-0 shadow-2xs group cursor-pointer"
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-white border border-stone-200 p-1 flex items-center justify-center overflow-hidden shrink-0 shadow-xs group-hover:border-[#0B3C26] transition-colors">
+                        {partner.image ? (
+                          <img
+                            src={partner.image}
+                            alt={partner.name}
+                            className="w-full h-full object-contain"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              const fb = e.currentTarget.parentElement?.querySelector('.track1-fallback');
+                              if (fb) fb.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div
+                          className="track1-fallback w-full h-full flex flex-col items-center justify-center bg-[#0B3C26] text-[#D4AF37] rounded-lg"
+                          style={{ display: partner.image ? 'none' : 'flex' }}
+                        >
+                          <Building2 className="w-4 h-4 mb-0.5" />
+                          <span className="text-[7px] font-black font-mono leading-none truncate max-w-[36px]">
+                            {partner.logoText || 'MOU'}
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block">
+                          {partner.category}
+                        </span>
+                        <strong className="text-sm font-black text-stone-900 group-hover:text-[#0B3C26] transition-colors whitespace-nowrap">
+                          {partner.name}
+                        </strong>
+                      </div>
+                      <span className="text-[10px] font-bold bg-[#C5A059]/20 text-[#0B3C26] px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {partner.tag}
                       </span>
-                      <strong className="text-sm font-black text-stone-900 group-hover:text-[#0B3C26] transition-colors whitespace-nowrap">
-                        {partner.name}
-                      </strong>
-                    </div>
-                    <span className="text-[10px] font-bold bg-[#C5A059]/20 text-[#0B3C26] px-2 py-0.5 rounded-full whitespace-nowrap">
-                      {partner.tag}
-                    </span>
-                  </div>
-                ))}
+                    </CardWrapper>
+                  );
+                })}
               </div>
             </div>
 
             {/* Track 2: Sliding Right */}
             <div className="overflow-hidden relative py-1">
               <div className="animate-marquee-right flex items-center gap-4">
-                {[...partnersList.slice().reverse(), ...partnersList.slice().reverse()].map((partner, idx) => (
-                  <div
-                    key={`track2-${idx}`}
-                    className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#C5A059] hover:bg-amber-50/40 transition-all shrink-0 shadow-2xs group cursor-default"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-stone-800 text-white font-mono font-black text-xs flex items-center justify-center shadow-xs">
-                      MOU
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block">
-                        {partner.category}
+                {[...partnersList.slice().reverse(), ...partnersList.slice().reverse()].map((partner, idx) => {
+                  const isClickable = Boolean(partner.linkUrl);
+                  const CardWrapper = isClickable ? 'a' : 'div';
+                  const wrapperProps = isClickable
+                    ? {
+                        href: partner.linkUrl,
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                        title: `${partner.name} 공식 사이트 방문`,
+                      }
+                    : {};
+
+                  return (
+                    <CardWrapper
+                      key={`track2-${idx}`}
+                      {...wrapperProps}
+                      className="flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#C5A059] hover:bg-amber-50/40 transition-all shrink-0 shadow-2xs group cursor-pointer"
+                    >
+                      <div className="w-11 h-11 rounded-xl bg-white border border-stone-200 p-1 flex items-center justify-center overflow-hidden shrink-0 shadow-xs group-hover:border-[#C5A059] transition-colors">
+                        {partner.image ? (
+                          <img
+                            src={partner.image}
+                            alt={partner.name}
+                            className="w-full h-full object-contain"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              const fb = e.currentTarget.parentElement?.querySelector('.track2-fallback');
+                              if (fb) fb.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div
+                          className="track2-fallback w-full h-full flex flex-col items-center justify-center bg-stone-800 text-white rounded-lg"
+                          style={{ display: partner.image ? 'none' : 'flex' }}
+                        >
+                          <Building2 className="w-4 h-4 mb-0.5" />
+                          <span className="text-[7px] font-black font-mono leading-none truncate max-w-[36px]">
+                            {partner.logoText || 'MOU'}
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block">
+                          {partner.category}
+                        </span>
+                        <strong className="text-sm font-black text-stone-900 group-hover:text-[#C5A059] transition-colors whitespace-nowrap">
+                          {partner.name}
+                        </strong>
+                      </div>
+                      <span className="text-[10px] font-bold bg-stone-200 text-stone-800 px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {partner.tag || '가족기업'}
                       </span>
-                      <strong className="text-sm font-black text-stone-900 group-hover:text-[#C5A059] transition-colors whitespace-nowrap">
-                        {partner.name}
-                      </strong>
-                    </div>
-                    <span className="text-[10px] font-bold bg-stone-200 text-stone-800 px-2 py-0.5 rounded-full whitespace-nowrap">
-                      가족기업
-                    </span>
-                  </div>
-                ))}
+                    </CardWrapper>
+                  );
+                })}
               </div>
             </div>
 
@@ -322,15 +333,20 @@ export default function PartnersPage({ initialSubTab = 'all' }) {
           </div>
         </div>
 
-        {/* SECTION 3: 10 PARTNER COMPANIES DETAIL CARDS */}
+        {/* SECTION 3: PARTNER COMPANIES DETAIL CARDS */}
         <div className="space-y-6">
-          <div className="border-b-2 border-[#0B3C26] pb-3">
-            <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
-              10대 공식 협력업체 상세 네트워크
-            </h2>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium mt-1">
-              각 분야별 최고 전문성을 갖춘 파트너 기업이 교육원 수강생에게 맞춤형 창업 솔루션을 제공합니다.
-            </p>
+          <div className="border-b-2 border-[#0B3C26] pb-3 flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                공식 협력업체 및 제휴 기관 상세 네트워크
+              </h2>
+              <p className="text-xs sm:text-sm text-stone-600 font-medium mt-1">
+                각 분야별 최고 전문성을 갖춘 파트너 기업 및 주무관청이 교육원 수강생에게 맞춤형 창업 솔루션을 제공합니다.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-[#0B3C26] bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+              총 {partnersList.length}개 기관 제휴
+            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -340,16 +356,42 @@ export default function PartnersPage({ initialSubTab = 'all' }) {
                 className="bg-white rounded-2xl p-6 border border-stone-200 hover:border-[#0B3C26] shadow-xs hover:shadow-md transition-all space-y-4 flex flex-col justify-between group"
               >
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between border-b border-stone-100 pb-3">
-                    <div>
-                      <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
-                        {partner.category}
-                      </span>
-                      <h3 className="text-lg font-black text-stone-900 mt-1 group-hover:text-[#0B3C26] transition-colors">
-                        {partner.name}
-                      </h3>
+                  <div className="flex items-start justify-between border-b border-stone-100 pb-3 gap-3">
+                    <div className="flex items-center gap-3">
+                      {/* Logo Image or Fallback */}
+                      <div className="w-12 h-12 rounded-xl bg-stone-50 border border-stone-200 p-1.5 flex items-center justify-center overflow-hidden shrink-0 group-hover:border-[#0B3C26] transition-colors">
+                        {partner.image ? (
+                          <img
+                            src={partner.image}
+                            alt={partner.name}
+                            className="w-full h-full object-contain"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              const fb = e.currentTarget.parentElement?.querySelector('.card-fallback');
+                              if (fb) fb.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div
+                          className="card-fallback w-full h-full flex flex-col items-center justify-center bg-stone-100 rounded-lg text-stone-600"
+                          style={{ display: partner.image ? 'none' : 'flex' }}
+                        >
+                          <Building2 className="w-5 h-5 text-[#0B3C26]" />
+                          <span className="text-[7px] font-black font-mono leading-none mt-0.5 truncate max-w-[36px]">
+                            {partner.logoText || 'MOU'}
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
+                          {partner.category}
+                        </span>
+                        <h3 className="text-base sm:text-lg font-black text-stone-900 mt-1 group-hover:text-[#0B3C26] transition-colors">
+                          {partner.name}
+                        </h3>
+                      </div>
                     </div>
-                    <span className="text-xs font-black text-[#C5A059] bg-stone-50 px-2.5 py-1 rounded-lg border border-stone-200">
+                    <span className="text-xs font-black text-[#C5A059] bg-stone-50 px-2.5 py-1 rounded-lg border border-stone-200 shrink-0">
                       {partner.tag}
                     </span>
                   </div>
@@ -364,9 +406,21 @@ export default function PartnersPage({ initialSubTab = 'all' }) {
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>산학협력 공식 조인</span>
                   </span>
-                  <span className="text-stone-400 font-mono text-[11px]">
-                    {partner.logoText}
-                  </span>
+                  {partner.linkUrl ? (
+                    <a
+                      href={partner.linkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-700 hover:text-[#0B3C26] flex items-center gap-1 font-mono text-[11px] hover:underline"
+                    >
+                      <span>공식 사이트</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    <span className="text-stone-400 font-mono text-[11px]">
+                      {partner.logoText || 'MOU'}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}

@@ -334,7 +334,11 @@ export default function App() {
 
   const handleUpdateSiteData = (newSiteData) => {
     setSiteData(newSiteData);
-    localStorage.setItem('kfssec_site_data', JSON.stringify(newSiteData));
+    try {
+      localStorage.setItem('kfssec_site_data', JSON.stringify(newSiteData));
+    } catch (err) {
+      console.error('Failed to save to localStorage:', err);
+    }
   };
 
   // Sync state with URL path
@@ -527,11 +531,11 @@ export default function App() {
         )}
 
         {activeTab === 'partners' && (
-          <PartnersPage initialSubTab={subTab || 'all'} />
+          <PartnersPage initialSubTab={subTab || 'all'} partnerLogos={siteData.partnerLogos} />
         )}
 
         {activeTab === 'gangnam' && (
-          <PartnersPage initialSubTab="gangnam" />
+          <PartnersPage initialSubTab="gangnam" partnerLogos={siteData.partnerLogos} />
         )}
 
 

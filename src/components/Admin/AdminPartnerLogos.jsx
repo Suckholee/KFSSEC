@@ -25,10 +25,18 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
   const [showAddModal, setShowAddModal] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState(false);
 
+  // Sync state if partnerLogos prop updates
+  React.useEffect(() => {
+    if (partnerLogos && partnerLogos.length > 0) {
+      setList(partnerLogos);
+    }
+  }, [partnerLogos]);
+
   // Form State for Adding / Editing
   const [formName, setFormName] = useState('');
   const [formCategory, setFormCategory] = useState('');
   const [formTag, setFormTag] = useState('');
+  const [formDesc, setFormDesc] = useState('');
   const [formLogoText, setFormLogoText] = useState('');
   const [formImage, setFormImage] = useState('');
   const [formLinkUrl, setFormLinkUrl] = useState('');
@@ -39,6 +47,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
     setFormName('');
     setFormCategory('외식 협력 기업');
     setFormTag('MOU 협약');
+    setFormDesc('');
     setFormLogoText('');
     setFormImage('');
     setFormLinkUrl('');
@@ -51,6 +60,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
     setFormName(item.name || '');
     setFormCategory(item.category || '');
     setFormTag(item.tag || '');
+    setFormDesc(item.desc || '');
     setFormLogoText(item.logoText || '');
     setFormImage(item.image || '');
     setFormLinkUrl(item.linkUrl || '');
@@ -74,9 +84,36 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        if (event.target?.result) {
-          setFormImage(event.target.result);
-        }
+        const rawData = event.target?.result;
+        if (!rawData) return;
+
+        // Auto-compress image using canvas to max 320px
+        const img = new window.Image();
+        img.onload = () => {
+          const maxDim = 320;
+          let width = img.width;
+          let height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedData = canvas.toDataURL('image/png', 0.9);
+          setFormImage(compressedData);
+        };
+        img.onerror = () => {
+          setFormImage(rawData);
+        };
+        img.src = rawData;
       };
       reader.readAsDataURL(file);
     }
@@ -98,6 +135,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
               name: formName.trim(),
               category: formCategory.trim(),
               tag: formTag.trim(),
+              desc: formDesc.trim(),
               logoText: formLogoText.trim() || formName.trim().slice(0, 8),
               image: formImage,
               linkUrl: formLinkUrl.trim(),
@@ -111,6 +149,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
         name: formName.trim(),
         category: formCategory.trim() || '협력기관',
         tag: formTag.trim() || 'MOU',
+        desc: formDesc.trim(),
         logoText: formLogoText.trim() || formName.trim().slice(0, 8),
         image: formImage,
         linkUrl: formLinkUrl.trim(),
@@ -386,7 +425,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                   />
                   <label className="flex items-center justify-center gap-2 py-2 px-3 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl cursor-pointer transition-colors border border-stone-300">
                     <Upload className="w-3.5 h-3.5" />
-                    <span>내 컴퓨터에서 로고 파일 선택</span>
+                    <span>내 컴퓨터에서 로고 파일 선택 (자동 최적화 압축)</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -396,15 +435,35 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                   </label>
                 </div>
                 {formImage && (
-                  <div className="mt-2 p-2 bg-stone-50 rounded-xl border border-stone-200 flex items-center gap-3">
-                    <img
-                      src={formImage}
-                      alt="미리보기"
-                      className="h-10 w-auto object-contain max-w-[100px]"
-                    />
-                    <span className="text-[11px] text-gray-500 font-medium">로고 미리보기</span>
+                  <div className="mt-2 p-2 bg-stone-50 rounded-xl border border-stone-200 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={formImage}
+                        alt="미리보기"
+                        className="h-10 w-auto object-contain max-w-[100px] rounded border bg-white p-0.5"
+                      />
+                      <span className="text-[11px] text-gray-500 font-medium">로고 미리보기 (적용됨)</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFormImage('')}
+                      className="text-xs text-rose-600 hover:text-rose-800 font-bold px-2 py-1 rounded bg-rose-50 hover:bg-rose-100 transition-colors"
+                    >
+                      이미지 제거
+                    </button>
                   </div>
                 )}
+              </div>
+
+              <div>
+                <label className="block text-gray-700 mb-1">기업/기관 상세 소개 (산학협력 페이지에 노출)</label>
+                <textarea
+                  rows={3}
+                  value={formDesc}
+                  onChange={(e) => setFormDesc(e.target.value)}
+                  placeholder="예: 대한민국 1위 업소용 주방기구 및 설비 토탈 컨설팅 기업으로, 수강생 대상 주방 집기 특별 할인 및 3D 도면 설계를 지원합니다."
+                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26] resize-none text-xs"
+                />
               </div>
 
               <div>
