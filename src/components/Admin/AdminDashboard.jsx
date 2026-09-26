@@ -167,7 +167,7 @@ export default function AdminDashboard({
         )}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
         <button
           type="button"
           onClick={() => onNavigateTab('home', 'visual_editor')}
@@ -180,6 +180,20 @@ export default function AdminDashboard({
           <Home className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
           <span className="text-xs sm:text-sm font-black block">홈화면 라이브 관리</span>
           <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>행사 배너 & 유튜브</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('home', 'banner_planner')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-[#C5A059]/20 hover:bg-[#C5A059] text-[#D4AF37] hover:text-stone-950 border-[#C5A059]/40 hover:border-[#C5A059]'
+              : 'bg-amber-50 hover:bg-[#0B3C26] text-amber-900 hover:text-white border-amber-200'
+          }`}
+        >
+          <Sparkles className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-amber-600 group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">🎨 행사 배너 AI 생성기</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-emerald-100/90 group-hover:text-stone-800' : 'text-amber-700/80 group-hover:text-emerald-100/80'}`}>1920 띠배너 & 카드뉴스</span>
         </button>
 
         <button

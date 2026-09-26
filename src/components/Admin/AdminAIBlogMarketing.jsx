@@ -20,8 +20,20 @@ import {
 import AdminBannerPlanner from './AdminBannerPlanner';
 import { BANNER_SPECS } from '../../services/bannerGenerator';
 
-export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData }) {
-  const [activeTab, setActiveTab] = useState('generator'); // 'generator' | 'calendar' | 'banner_guide'
+export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData, subTab = 'generator', onSubTabChange }) {
+  const resolveTab = (t) => (t === 'banner_planner' || t === 'banner_guide' ? 'banner_guide' : t || 'generator');
+  const [activeTab, setActiveTab] = useState(resolveTab(subTab));
+
+  React.useEffect(() => {
+    if (subTab) {
+      setActiveTab(resolveTab(subTab));
+    }
+  }, [subTab]);
+
+  const handleTabChange = (t) => {
+    setActiveTab(t);
+    if (onSubTabChange) onSubTabChange(t === 'banner_guide' ? 'banner_planner' : t);
+  };
   
   // Blog Post Generator State
   const [topic, setTopic] = useState('외식창업실무지도사 자격증 취득 혜택 및 수강 안내');
@@ -126,7 +138,7 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData }
         {/* Subtabs Switcher */}
         <div className="flex items-center gap-2 bg-[#20252b] p-1.5 rounded-2xl border border-gray-700 self-start md:self-auto shrink-0">
           <button
-            onClick={() => setActiveTab('generator')}
+            onClick={() => handleTabChange('generator')}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === 'generator'
                 ? 'bg-emerald-500 text-black shadow-md'
@@ -136,7 +148,7 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData }
             AI 블로그 원고 생성기
           </button>
           <button
-            onClick={() => setActiveTab('calendar')}
+            onClick={() => handleTabChange('calendar')}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === 'calendar'
                 ? 'bg-emerald-500 text-black shadow-md'
@@ -146,7 +158,7 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData }
             캘린더 스케줄러 & 검토
           </button>
           <button
-            onClick={() => setActiveTab('banner_guide')}
+            onClick={() => handleTabChange('banner_guide')}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'banner_guide'
                 ? 'bg-emerald-500 text-black shadow-md'
@@ -154,7 +166,7 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData }
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>AI 비주얼 배너 기획 스튜디오</span>
+            <span>🎨 AI 행사 배너 생성 스튜디오</span>
           </button>
         </div>
       </div>

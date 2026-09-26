@@ -19,8 +19,19 @@ import {
 import { extractYoutubeId } from '../../utils/youtube';
 import AdminBannerPlanner from './AdminBannerPlanner';
 
-export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
-  const [activeSubTab, setActiveSubTab] = useState('visual_editor'); // 'visual_editor' | 'banner_planner' | 'banner_edit' | 'youtube_edit'
+export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab = 'visual_editor', onSubTabChange }) {
+  const [activeSubTab, setActiveSubTab] = useState(subTab || 'visual_editor');
+
+  useEffect(() => {
+    if (subTab) {
+      setActiveSubTab(subTab);
+    }
+  }, [subTab]);
+
+  const handleSubTabSwitch = (tab) => {
+    setActiveSubTab(tab);
+    if (onSubTabChange) onSubTabChange(tab);
+  };
 
   // YouTube State
   const [youtubeTitle, setYoutubeTitle] = useState(
@@ -223,7 +234,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
         {/* View/Subtab Switcher */}
         <div className="flex flex-wrap items-center gap-1.5 bg-gray-100 p-1.5 rounded-2xl border border-gray-200 self-start md:self-auto">
           <button
-            onClick={() => setActiveSubTab('visual_editor')}
+            onClick={() => handleSubTabSwitch('visual_editor')}
             className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeSubTab === 'visual_editor'
                 ? 'bg-emerald-600 text-white shadow-xs'
@@ -233,7 +244,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
             🖥️ 통합 라이브 뷰
           </button>
           <button
-            onClick={() => setActiveSubTab('banner_planner')}
+            onClick={() => handleSubTabSwitch('banner_planner')}
             className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
               activeSubTab === 'banner_planner'
                 ? 'bg-emerald-600 text-white shadow-xs'
@@ -241,10 +252,10 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>AI 비주얼 배너 기획</span>
+            <span>🎨 AI 행사 배너 생성 스튜디오</span>
           </button>
           <button
-            onClick={() => setActiveSubTab('banner_edit')}
+            onClick={() => handleSubTabSwitch('banner_edit')}
             className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeSubTab === 'banner_edit'
                 ? 'bg-emerald-600 text-white shadow-xs'
@@ -254,7 +265,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData }) {
             📢 띠배너 간편 설정
           </button>
           <button
-            onClick={() => setActiveSubTab('youtube_edit')}
+            onClick={() => handleSubTabSwitch('youtube_edit')}
             className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeSubTab === 'youtube_edit'
                 ? 'bg-emerald-600 text-white shadow-xs'
