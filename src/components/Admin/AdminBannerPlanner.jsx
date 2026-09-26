@@ -138,6 +138,8 @@ export default function AdminBannerPlanner({
   const [isGenerating, setIsGenerating] = useState(false);
   const [aiProgressText, setAiProgressText] = useState('');
   const [generatedSuccessMsg, setGeneratedSuccessMsg] = useState('');
+  const [generationError, setGenerationError] = useState('');
+  const [saveError, setSaveError] = useState('');
 
   useEffect(() => {
     if (siteData?.heroBanners && siteData.heroBanners.length > 0) {
@@ -177,9 +179,11 @@ export default function AdminBannerPlanner({
 
   // AI Generation Handler from Prompt
   const handleGenerateFromPrompt = async () => {
+    if (isGenerating) return;
     const promptToUse = aiPrompt.trim() || '특급호텔 40년 조리명장의 비법 스테이크와 와인 페어링 창업 실무';
     setIsGenerating(true);
     setGeneratedSuccessMsg('');
+    setGenerationError('');
     const modelNameDisplay = aiModel === 'gemini' ? 'Google Gemini' : 'OpenAI';
     setAiProgressText(`${modelNameDisplay} 이미지 모델 생성 중... (잠시만 기다려주세요)`);
 
@@ -206,7 +210,7 @@ export default function AdminBannerPlanner({
       };
 
       // Add to beginning of slides so it becomes the primary active slide!
-      setSlides([newSlide, ...slides]);
+      setSlides((prev) => [newSlide, ...prev]);
       setSelectedSlideId(newId);
       const usedName = result.modelUsed
         ? result.modelUsed.includes('gemini')
@@ -217,7 +221,7 @@ export default function AdminBannerPlanner({
       setTimeout(() => setGeneratedSuccessMsg(''), 5000);
     } catch (err) {
       console.error('Failed to generate banner:', err);
-      alert(`배너 생성 중 오류가 발생했습니다: ${err.message || '다시 시도해 주세요.'}`);
+      setGenerationError(`이미지 생성에 실패했습니다. ${err.message || '다시 시도해 주세요.'}`);
     } finally {
       setIsGenerating(false);
       setAiProgressText('');
@@ -300,7 +304,8 @@ export default function AdminBannerPlanner({
   const handleDownloadBannerImage = () => {
     if (!currentSlide.imageUrl) return;
     const link = document.createElement('a');
-    link.download = `kfssec_hero_banner_${currentSlide.id}.png`;
+    const extension = currentSlide.imageUrl.startsWith('data:image/jpeg') ? 'jpg' : 'png';
+    link.download = `kfssec_hero_banner_${currentSlide.id}.${extension}`;
     link.href = currentSlide.imageUrl;
     link.click();
   };
@@ -311,18 +316,19 @@ export default function AdminBannerPlanner({
       heroBanners: slides,
     };
 
-    if (onUpdateSiteData) {
-      onUpdateSiteData(updated);
-    }
-
     try {
       localStorage.setItem('kfssec_site_data', JSON.stringify(updated));
+      if (onUpdateSiteData) {
+        onUpdateSiteData(updated);
+      }
+      setSaveError('');
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
     } catch (err) {
       console.error(err);
+      setSaveSuccess(false);
+      setSaveError('저장 공간이 부족합니다. 불필요한 배너를 삭제한 뒤 다시 저장해 주세요.');
     }
-
-    setSaveSuccess(true);
-    setTimeout(() => setSaveSuccess(false), 3000);
   };
 
   const handleCanvasPrev = () => {
@@ -393,7 +399,7 @@ export default function AdminBannerPlanner({
               value={aiPrompt}
               onChange={(e) => setAiPrompt(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleGenerateFromPrompt()}
-              placeholder="생성할 배너 주제 입력 (예: 특급호텔 40년 명장의 비법 스테이크와 와인 페어링 창업 특강)"
+              placeholder="원하는 배너 장면을 설명해 주세요 (예: 양식 조리 수업, 셰프와 수강생, 따뜻한 주방 조명)"
               className="w-full pl-3.5 pr-8 py-2 bg-stone-900/90 border border-white/20 focus:border-[#C5A059] rounded-xl text-xs font-bold text-white placeholder-gray-500 focus:outline-none"
             />
             {aiPrompt && (
@@ -461,6 +467,9 @@ export default function AdminBannerPlanner({
               <CheckCircle className="w-3.5 h-3.5" />
               <span>{generatedSuccessMsg}</span>
             </span>
+          )}
+          {generationError && !isGenerating && (
+            <span role="alert" className="text-[11px] text-rose-300 font-bold">{generationError}</span>
           )}
         </div>
       </div>
@@ -546,6 +555,7 @@ export default function AdminBannerPlanner({
           </a>
         </div>
       )}
+      {saveError && <div role="alert" className="bg-rose-950 text-white px-4 py-2 rounded-xl text-xs">{saveError}</div>}
 
       {/* 3. 2-COLUMN HIGH-DENSITY SPLIT WORKSPACE */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">

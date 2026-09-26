@@ -22,49 +22,85 @@ try {
 const getOpenAiKey = () => process.env.OPENAI_API_KEY || '';
 const getGeminiKey = () => process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY || '';
 
-/**
- * Builds an enhanced cinematic photography prompt from Korean or English input
- */
+const copyPrompt = (userPrompt) => `당신은 한국외식창업교육원 웹사이트의 배너 카피라이터입니다.
+다음 입력은 배너 제작을 위한 내용 설명입니다. 입력 문장을 제목에 그대로 복사하지 마세요.
+핵심 주제와 분위기를 반영해 자연스럽고 완결된 한국어 광고 문구를 만드세요.
+headline: 공백 포함 24자 이하의 짧고 선명한 제목. 문장 중간에서 끝나지 않아야 합니다.
+subtitle: 공백 포함 52자 이하의 한 문장. 제목을 보충하고 입력 내용에 구체적으로 맞아야 합니다.
+badge: 공백 포함 18자 이하의 짧은 주제 표시.
+입력에 없는 경력, 인원, 성과, 자격, 금액 등의 사실을 지어내지 마세요.
+JSON 객체로 headline, subtitle, badge 문자열만 반환하세요.
+제작 내용: ${userPrompt}`;
+
+function parseBannerCopy(raw) {
+  const copy = JSON.parse(raw);
+  const limits = { headline: 24, subtitle: 52, badge: 18 };
+  for (const [field, maxLength] of Object.entries(limits)) {
+    if (typeof copy[field] !== 'string' || !copy[field].trim() || copy[field].trim().length > maxLength) {
+      throw new Error(`Generated banner ${field} is missing or too long.`);
+    }
+    copy[field] = copy[field].trim();
+  }
+  return { headline: copy.headline, subtitle: copy.subtitle, badge: copy.badge };
+}
+
+async function generateCopyWithGemini(prompt) {
+  const geminiKey = getGeminiKey();
+  if (!geminiKey) throw new Error('Google Gemini API 키가 설정되지 않았습니다.');
+  const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiKey },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: copyPrompt(prompt) }] }],
+      generationConfig: { responseMimeType: 'application/json' },
+    }),
+  });
+  if (!response.ok) throw new Error(`Gemini copy API error (${response.status})`);
+  const json = await response.json();
+  return parseBannerCopy(json.candidates?.[0]?.content?.parts?.find((part) => part.text)?.text || '');
+}
+
+async function generateCopyWithOpenAI(prompt) {
+  const openAiKey = getOpenAiKey();
+  if (!openAiKey) throw new Error('OpenAI API 키가 설정되지 않았습니다.');
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${openAiKey}` },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: copyPrompt(prompt) }],
+      response_format: { type: 'json_object' },
+    }),
+  });
+  if (!response.ok) throw new Error(`OpenAI copy API error (${response.status})`);
+  const json = await response.json();
+  return parseBannerCopy(json.choices?.[0]?.message?.content || '');
+}
+
+async function generateBannerCopy(prompt, model) {
+  try {
+    return await (model === 'gemini' ? generateCopyWithGemini(prompt) : generateCopyWithOpenAI(prompt));
+  } catch (error) {
+    console.warn('Selected copy model failed, trying the other provider:', error.message);
+    return await (model === 'gemini' ? generateCopyWithOpenAI(prompt) : generateCopyWithGemini(prompt));
+  }
+}
+
+/** Keep the user's subject and scene as the source of truth. The style is only art direction. */
 function enhanceBannerPrompt(userPrompt, style = 'masters') {
-  const text = (userPrompt || '').trim();
+  const styleHints = {
+    masters: 'premium editorial photography, dignified composition, subtle gold accents',
+    chef: 'dynamic cinematic lighting, vivid food detail, energetic composition',
+    sauce: 'warm artisan atmosphere, rich textures, amber lighting',
+    cafe: 'warm natural light, inviting lifestyle photography, refined colors',
+    restaurant: 'modern architectural photography, welcoming atmosphere, elegant lighting',
+  };
 
-  let contextStyle = style;
-  if (text.includes('카페') || text.includes('커피') || text.includes('바리스타') || text.includes('디저트') || text.includes('베이커리')) {
-    contextStyle = 'cafe';
-  } else if (text.includes('스테이크') || text.includes('고기') || text.includes('불쇼') || text.includes('셰프') || text.includes('구이')) {
-    contextStyle = 'chef';
-  } else if (text.includes('소스') || text.includes('발효') || text.includes('장류') || text.includes('한식') || text.includes('비법')) {
-    contextStyle = 'sauce';
-  } else if (text.includes('매장') || text.includes('창업') || text.includes('프랜차이즈') || text.includes('자금') || text.includes('식당')) {
-    contextStyle = 'restaurant';
-  } else if (text.includes('명장') || text.includes('명인') || text.includes('교수') || text.includes('두려운가')) {
-    contextStyle = 'masters';
-  }
-
-  let basePrompt = '';
-  switch (contextStyle) {
-    case 'chef':
-      basePrompt = 'A breathtaking cinematic wide-angle commercial shot of a renowned Korean culinary master chef searing a steak with dynamic golden flames in a luxury dark kitchen studio, dramatic rim lighting, embers in air, hyper-detailed, 8k resolution, award-winning culinary editorial photograph';
-      break;
-    case 'cafe':
-      basePrompt = 'A cinematic ultra-wide aesthetic photograph of an upscale boutique coffee cafe and dessert bar, barista pour-over espresso machine with delicate steam, warm golden sunlight streaming through glass, warm wood and concrete interior, 8k resolution, minimalist commercial photo';
-      break;
-    case 'sauce':
-      basePrompt = 'A cinematic wide angle shot of a Korean master culinary artisan workshop, bubbling dark rich savory sauce in a heated copper pot, traditional onggi earthenware jars in background, warm amber spotlight, steam rising, 8k photorealistic commercial quality';
-      break;
-    case 'restaurant':
-      basePrompt = 'A cinematic wide angle photograph of a prestigious fine-dining restaurant dining hall, elegant table setup with crystal wine glasses, warm ambient golden lighting, luxurious modern architectural atmosphere, shallow depth of field, 8k commercial photo';
-      break;
-    case 'masters':
-    default:
-      basePrompt = 'A cinematic ultra-wide portrait background of elite Korean culinary master chefs in clean black and white chef uniforms, prestigious luxury culinary academy kitchen background, warm golden halo rim lighting, dark moody atmospheric tones, 8k ultra sharp photography';
-      break;
-  }
-
-  if (text && text.length > 5) {
-    return `${basePrompt}. Specific theme: ${text}. Highly detailed, photorealistic, cinematic lighting, 8k, ultra-wide aspect ratio banner background.`;
-  }
-  return basePrompt;
+  return `Create an original website hero banner photograph based on this user request: ${userPrompt.trim()}.
+The user's requested subject, setting, people, objects, colors and mood take priority. Do not substitute a generic culinary scene.
+Art direction if it does not conflict with the request: ${styleHints[style] || styleHints.masters}.
+Compose an ultra-wide 2296:640 banner with the main subject clearly visible and enough space near the center for a separately added headline.
+Photorealistic, polished commercial quality. No text, letters, logos, watermarks, UI, borders or captions in the image.`;
 }
 
 /**
@@ -83,11 +119,12 @@ async function generateWithGemini(promptText) {
       {
         parts: [
           {
-            text: `Generate a high quality, ultra-wide cinematic banner background photograph for a luxury culinary business website: ${promptText}`
+            text: promptText
           }
         ]
       }
-    ]
+    ],
+    generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: '21:9' } }
   };
 
   const response = await fetch(endpoint, {
@@ -130,11 +167,12 @@ async function generateWithGeminiPro(promptText) {
       {
         parts: [
           {
-            text: `Generate a photorealistic ultra-wide banner background image: ${promptText}`
+            text: promptText
           }
         ]
       }
-    ]
+    ],
+    generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: '21:9' } }
   };
 
   const response = await fetch(endpoint, {
@@ -175,7 +213,7 @@ async function generateWithOpenAI(promptText) {
     model: 'gpt-image-1',
     prompt: promptText,
     n: 1,
-    size: '1024x1024'
+    size: '1536x1024'
   };
 
   const response = await fetch(endpoint, {
@@ -231,8 +269,16 @@ export async function handleGenerateAiImage(req, res) {
     const body = req.body || {};
     const { prompt = '', model = 'openai', style = 'masters' } = body;
 
+    if (typeof prompt !== 'string' || !prompt.trim()) {
+      return res.status(400).json({ success: false, message: '배너 내용을 입력해 주세요.' });
+    }
+    if (prompt.length > 2000) {
+      return res.status(400).json({ success: false, message: '프롬프트는 2000자 이하로 입력해 주세요.' });
+    }
+
     console.log(`[AI Image Request] Model: ${model}, Style: ${style}, Prompt: "${prompt}"`);
 
+    const bannerCopy = await generateBannerCopy(prompt, model);
     const enhancedPrompt = enhanceBannerPrompt(prompt, style);
     let imageUrl = '';
     let usedModel = model;
@@ -259,6 +305,7 @@ export async function handleGenerateAiImage(req, res) {
     return res.status(200).json({
       success: true,
       imageUrl,
+      bannerCopy,
       modelUsed: usedModel,
       prompt: prompt,
       enhancedPrompt: enhancedPrompt

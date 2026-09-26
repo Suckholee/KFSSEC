@@ -167,24 +167,24 @@ export async function renderHeroBannerCanvas({
   const analysis = analyzePromptAndGenerateCopy(prompt, style);
   let targetBgUrl = customBgUrl;
   let modelUsed = null;
+  let bannerCopy = null;
 
   // If AI generation is requested and no customBgUrl is provided, generate image via API
   if (useAiGeneration && !targetBgUrl) {
-    try {
-      const aiResult = await generateAiBannerImage({ prompt, model, style });
-      targetBgUrl = aiResult.imageUrl;
-      modelUsed = aiResult.modelUsed || model;
-    } catch (aiErr) {
-      console.warn('AI image generation failed or offline, falling back to local style background:', aiErr.message);
-      targetBgUrl = analysis.bgUrl;
+    const aiResult = await generateAiBannerImage({ prompt, model, style });
+    targetBgUrl = aiResult.imageUrl;
+    modelUsed = aiResult.modelUsed || model;
+    bannerCopy = aiResult.bannerCopy;
+    if (!bannerCopy?.headline || !bannerCopy?.subtitle || !bannerCopy?.badge) {
+      throw new Error('배너 문구 생성 결과가 올바르지 않습니다. 다시 시도해 주세요.');
     }
   } else if (!targetBgUrl) {
     targetBgUrl = analysis.bgUrl;
   }
 
-  const headline = overrideHeadline || analysis.headline;
-  const subtitle = overrideSubtitle || analysis.subtitle;
-  const badge = overrideBadge || analysis.badge;
+  const headline = overrideHeadline || bannerCopy?.headline || analysis.headline;
+  const subtitle = overrideSubtitle || bannerCopy?.subtitle || analysis.subtitle;
+  const badge = overrideBadge || bannerCopy?.badge || analysis.badge;
 
   // 1. Create native 2296 × 640 Canvas
   const canvas = document.createElement('canvas');
@@ -196,7 +196,7 @@ export async function renderHeroBannerCanvas({
     throw new Error('Canvas context not supported');
   }
 
-  // 2. Load background image
+  // 2. Load background image. A failed AI image must never become a successful text-only banner.
   try {
     const bgImage = await loadImage(targetBgUrl);
 
@@ -221,6 +221,9 @@ export async function renderHeroBannerCanvas({
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(bgImage, offsetX, offsetY, renderW, renderH);
   } catch (e) {
+    if (useAiGeneration) {
+      throw new Error('생성된 이미지를 열 수 없습니다. 다시 시도해 주세요.');
+    }
     // If background image fails, draw luxury gradient background
     const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
     bgGrad.addColorStop(0, '#050A07');
@@ -233,9 +236,9 @@ export async function renderHeroBannerCanvas({
   // 3. Cinematic Multi-Layer Lighting Vignette
   // A. Top-to-bottom dark gradient
   const vGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  vGrad.addColorStop(0, 'rgba(0, 0, 0, 0.45)');
-  vGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.60)');
-  vGrad.addColorStop(1, 'rgba(0, 0, 0, 0.88)');
+  vGrad.addColorStop(0, 'rgba(0, 0, 0, 0.18)');
+  vGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.30)');
+  vGrad.addColorStop(1, 'rgba(0, 0, 0, 0.60)');
   ctx.fillStyle = vGrad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -248,9 +251,9 @@ export async function renderHeroBannerCanvas({
     canvas.height / 2,
     canvas.width / 1.6
   );
-  rGrad.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
-  rGrad.addColorStop(0.7, 'rgba(0, 0, 0, 0.4)');
-  rGrad.addColorStop(1, 'rgba(0, 0, 0, 0.85)');
+  rGrad.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
+  rGrad.addColorStop(0.7, 'rgba(0, 0, 0, 0.18)');
+  rGrad.addColorStop(1, 'rgba(0, 0, 0, 0.45)');
   ctx.fillStyle = rGrad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -297,7 +300,7 @@ export async function renderHeroBannerCanvas({
   ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
   ctx.shadowBlur = 32;
   ctx.shadowOffsetY = 8;
-  ctx.fillText(headline, canvas.width / 2, 335);
+  ctx.fillText(headline, canvas.width / 2, 335, canvas.width - 180);
 
   // 6. Render Subtitle (Subtle, Clean)
   if (subtitle) {
@@ -306,7 +309,7 @@ export async function renderHeroBannerCanvas({
     ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
     ctx.shadowBlur = 18;
     ctx.shadowOffsetY = 4;
-    ctx.fillText(subtitle, canvas.width / 2, 425);
+    ctx.fillText(subtitle, canvas.width / 2, 425, canvas.width - 180);
   }
   ctx.restore();
 
@@ -322,7 +325,7 @@ export async function renderHeroBannerCanvas({
   ctx.restore();
 
   // 8. Export to PNG Data URL (Native 2296 × 640 Quality)
-  const dataUrl = canvas.toDataURL('image/png', 0.95);
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
 
   return {
     dataUrl,
