@@ -10,7 +10,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '정부기관',
     desc: '사단법인 한국외식창업교육원의 주무관청으로서 K-외식 창업 및 전통 식문화 계승, 농수산물 외식 소비 촉진을 종합 지도합니다.',
     logoText: 'MAFRA',
-    image: '',
+    image: '/images/partners/mafra.svg',
     linkUrl: 'https://www.mafra.go.kr',
     active: true,
   },
@@ -21,7 +21,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '정책자금 연계',
     desc: '소상공인 맞춤형 정책자금 연계, 온누리상품권 가맹 및 재도약 창업 패키지를 협력 지원하는 공공기관 파트너입니다.',
     logoText: 'SEMAS',
-    image: '',
+    image: '/images/partners/semas.svg',
     linkUrl: 'https://www.sbiz.or.kr',
     active: true,
   },
@@ -32,7 +32,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '골목상권 상생',
     desc: '지역 상권 활성화 및 청년·신중년 외식 창업 육성을 위해 관내 외식 상생 인큐베이팅 프로그램을 공동 운영합니다.',
     logoText: 'GANGNAM-GU',
-    image: '',
+    image: '/images/partners/gangnam.svg',
     linkUrl: 'https://www.gangnam.go.kr',
     active: true,
   },
@@ -43,7 +43,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '3D 주방 설계',
     desc: '대한민국 1위 업소용 주방기구 및 설비 토탈 컨설팅 기업으로, 수강생 대상 주방 집기 특별 할인 및 3D 도면 설계를 지원합니다.',
     logoText: 'KITCHEN BANK',
-    image: '',
+    image: '/images/partners/jubangbank.svg',
     linkUrl: 'https://www.jubangbank.co.kr',
     active: true,
   },
@@ -54,7 +54,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: 'HACCP 솔루션',
     desc: 'HACCP 인증 친환경 주방 세척 및 살균 소독 시스템 전문 기업으로 안전한 위생 환경 구축을 보증합니다.',
     logoText: 'SEJIN CORP',
-    image: '',
+    image: '/images/partners/sejin.svg',
     linkUrl: '',
     active: true,
   },
@@ -65,7 +65,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '식자재 B2B',
     desc: '프리미엄 수입 식자재 및 해외 향신료 유통 전문 기업으로 안정적인 B2B 원가 절감 유통망을 연계합니다.',
     logoText: 'BMS INTER',
-    image: '',
+    image: '/images/partners/bms.svg',
     linkUrl: '',
     active: true,
   },
@@ -76,7 +76,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '100년 전통 소스',
     desc: '100년 전통 발효 비법을 바탕으로 한 시그니처 소스 및 천연 조미 소재 개발 협력 파트너입니다.',
     logoText: 'JAIN FOODS',
-    image: '',
+    image: '/images/partners/jain.svg',
     linkUrl: '',
     active: true,
   },
@@ -87,7 +87,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '브랜드 인큐베이팅',
     desc: '유망 외식 프랜차이즈 브랜드 기획 및 가맹 시스템 구축, 인큐베이팅을 협업하는 전문 F&B 그룹입니다.',
     logoText: 'DINING F&B',
-    image: '',
+    image: '/images/partners/diningfnb.svg',
     linkUrl: '',
     active: true,
   },
@@ -98,7 +98,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '실전 외식 매장',
     desc: '전국 30여 개 매장을 운영 중인 초밥 전문 브랜드로, 실전 현장 인턴십 및 매장 경영 노하우를 공유합니다.',
     logoText: 'KIM TAE WAN',
-    image: '',
+    image: '/images/partners/kimtaewan.svg',
     linkUrl: '',
     active: true,
   },
@@ -109,7 +109,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '전통 맛집 계승',
     desc: '평창 50년 전통의 대표 향토음식 전문점으로, 지역 농수특산물 연계 및 명인 레시피 상품화를 함께합니다.',
     logoText: 'HWANGTAE',
-    image: '',
+    image: '/images/partners/hwangtae.svg',
     linkUrl: '',
     active: true,
   },
@@ -120,7 +120,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: 'CX 파사드 인테리어',
     desc: '호텔식 고급 디저트 및 제과제빵 전문 브랜드로, 수강생을 위한 바리스타 및 베이킹 실습 환경을 지원합니다.',
     logoText: 'VEN60 DESIGN',
-    image: '',
+    image: '/images/partners/ven60.svg',
     linkUrl: '',
     active: true,
   },
@@ -131,7 +131,7 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '산지 수산물',
     desc: '청정 남도 해역 수산물 직거래 유통 및 특산물 기반 메뉴 개발을 협업하는 산지 직송 파트너입니다.',
     logoText: 'JINDO FOOD',
-    image: '',
+    image: '/images/partners/jindo.svg',
     linkUrl: '',
     active: true,
   },
@@ -142,8 +142,19 @@ export const DEFAULT_PARTNER_LOGOS = [
     tag: '제과제빵 R&D',
     desc: '제과기능장의 천연효모종 발효 빵 및 쌀 베이킹 레시피를 공동 개발하고 지도하는 전문 연구소입니다.',
     logoText: 'DR.JANG LAB',
-    image: '',
+    image: '/images/partners/drjang.svg',
     linkUrl: '',
+    active: true,
+  },
+  {
+    id: 'p14',
+    name: '글로벌외식정보',
+    category: '공식 제휴 미디어',
+    tag: '외식 트렌드',
+    desc: '외식업 창업과 경영 인사이트, 현장 포토뉴스 및 칼럼을 전하는 공식 미디어 파트너입니다.',
+    logoText: 'HSGDN',
+    image: '/images/logo_global_dining.png',
+    linkUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
     active: true,
   },
 ];
@@ -151,9 +162,17 @@ export const DEFAULT_PARTNER_LOGOS = [
 export default function PartnerMarqueeSection({ partnerLogos = [] }) {
   const { t } = useLanguage();
 
-  // Active logos from props or fallback
+  // Active logos from props or fallback, always ensuring image path is hydrated
   const rawList = partnerLogos && partnerLogos.length > 0 ? partnerLogos : DEFAULT_PARTNER_LOGOS;
-  const activeLogos = rawList.filter((item) => item.active !== false);
+  const activeLogos = rawList
+    .map((item) => {
+      if (!item.image) {
+        const def = DEFAULT_PARTNER_LOGOS.find((d) => d.id === item.id || d.name === item.name);
+        return { ...item, image: def?.image || '' };
+      }
+      return item;
+    })
+    .filter((item) => item.active !== false);
 
   // Duplicate for seamless infinite loop (double length)
   const marqueeList = [...activeLogos, ...activeLogos];

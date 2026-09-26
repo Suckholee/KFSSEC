@@ -69,7 +69,16 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [] 
 
   // Dynamic Official Partner Companies from Admin or Defaults
   const rawPartners = partnerLogos && partnerLogos.length > 0 ? partnerLogos : DEFAULT_PARTNER_LOGOS;
-  const activePartners = rawPartners.filter((p) => p.active !== false);
+  const activePartners = rawPartners
+    .map((item) => {
+      if (!item.image) {
+        const def = DEFAULT_PARTNER_LOGOS.find((d) => d.id === item.id || d.name === item.name);
+        return { ...item, image: def?.image || '' };
+      }
+      return item;
+    })
+    .filter((p) => p.active !== false);
+
   const partnersList = activePartners.map((partner, idx) => ({
     ...partner,
     id: partner.id || `partner-${idx}`,

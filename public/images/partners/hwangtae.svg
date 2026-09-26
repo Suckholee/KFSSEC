@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100" width="220" height="100">
+  <g transform="translate(10, 15)">
+    <!-- Traditional emblem: Golden Hwangtae dried pollack -->
+    <rect x="8" y="10" width="54" height="50" rx="12" fill="#854D0E"/>
+    <path d="M 16 35 C 24 25, 42 25, 52 35 C 44 42, 28 42, 16 35 Z M 48 35 L 56 30 L 56 40 Z" fill="#FDE047"/>
+    <circle cx="24" cy="33" r="2" fill="#854D0E"/>
+    <!-- Text -->
+    <text x="74" y="32" font-family="'Batang', 'Pretendard', serif" font-size="22" font-weight="900" fill="#713F12" letter-spacing="0">황태회관</text>
+    <text x="75" y="52" font-family="'Pretendard', sans-serif" font-size="10" font-weight="700" fill="#A16207" letter-spacing="0.5">평창 50년 전통 향토음식</text>
+  </g>
+</svg>

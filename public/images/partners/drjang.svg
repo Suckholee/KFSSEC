@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 100" width="230" height="100">
+  <g transform="translate(10, 15)">
+    <!-- Bakery wheat & toque -->
+    <rect x="10" y="10" width="50" height="50" rx="14" fill="#EA580C"/>
+    <path d="M 24 42 C 24 32, 30 26, 35 26 C 40 26, 46 32, 46 42 Z" fill="#FEF08A"/>
+    <circle cx="28" cy="30" r="5" fill="#FEF08A"/>
+    <circle cx="42" cy="30" r="5" fill="#FEF08A"/>
+    <circle cx="35" cy="24" r="5" fill="#FEF08A"/>
+    <!-- Text -->
+    <text x="72" y="34" font-family="'Pretendard', sans-serif" font-size="17" font-weight="900" fill="#1E293B" letter-spacing="-0.5">닥터장 베이킹랩</text>
+    <text x="73" y="52" font-family="'Pretendard', sans-serif" font-size="10" font-weight="800" fill="#EA580C" letter-spacing="0.5">DR. JANG BAKING LAB</text>
+  </g>
+</svg>

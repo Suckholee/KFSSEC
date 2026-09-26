@@ -280,6 +280,14 @@ export default function App() {
         } else {
           if (!parsed.partnerLogos || parsed.partnerLogos.length === 0) {
             parsed.partnerLogos = DEFAULT_PARTNER_LOGOS;
+          } else {
+            parsed.partnerLogos = parsed.partnerLogos.map((p) => {
+              const def = DEFAULT_PARTNER_LOGOS.find((d) => d.id === p.id || d.name === p.name);
+              return {
+                ...p,
+                image: p.image || def?.image || '',
+              };
+            });
           }
           if (!parsed.institutionInfo) {
             parsed.institutionInfo = DEFAULT_INSTITUTION_INFO;

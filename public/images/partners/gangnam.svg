@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100" width="220" height="100">
+  <g transform="translate(15, 15)">
+    <!-- Gangnam-gu stylized G symbol -->
+    <path d="M 35 10 C 18 10, 8 24, 8 40 C 8 56, 20 68, 38 68 C 52 68, 62 58, 62 44 L 38 44" fill="none" stroke="#00965E" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="48" cy="22" r="7" fill="#003876"/>
+    <!-- Text -->
+    <text x="75" y="36" font-family="'Pretendard', sans-serif" font-size="22" font-weight="900" fill="#003876" letter-spacing="-0.5">강남구청</text>
+    <text x="76" y="55" font-family="'Pretendard', sans-serif" font-size="10" font-weight="700" fill="#00965E" letter-spacing="1">GANGNAM-GU</text>
+  </g>
+</svg>

@@ -18,9 +18,18 @@ import {
 import { DEFAULT_PARTNER_LOGOS } from '../Home/PartnerMarqueeSection';
 
 export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLogos }) {
-  const [list, setList] = useState(() =>
-    partnerLogos && partnerLogos.length > 0 ? partnerLogos : DEFAULT_PARTNER_LOGOS
-  );
+  const hydrateLogos = (raw) => {
+    const base = raw && raw.length > 0 ? raw : DEFAULT_PARTNER_LOGOS;
+    return base.map((item) => {
+      if (!item.image) {
+        const def = DEFAULT_PARTNER_LOGOS.find((d) => d.id === item.id || d.name === item.name);
+        return { ...item, image: def?.image || '' };
+      }
+      return item;
+    });
+  };
+
+  const [list, setList] = useState(() => hydrateLogos(partnerLogos));
   const [editingItem, setEditingItem] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState(false);
@@ -28,7 +37,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
   // Sync state if partnerLogos prop updates
   React.useEffect(() => {
     if (partnerLogos && partnerLogos.length > 0) {
-      setList(partnerLogos);
+      setList(hydrateLogos(partnerLogos));
     }
   }, [partnerLogos]);
 

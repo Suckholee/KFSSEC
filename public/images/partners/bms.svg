@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100" width="240" height="100">
+  <g transform="translate(10, 15)">
+    <!-- Wine glass / globe crest -->
+    <rect x="10" y="10" width="50" height="50" rx="14" fill="#6B1D2F"/>
+    <path d="M 28 22 L 42 22 C 42 32, 38 36, 35 38 L 35 48 M 28 48 L 42 48" stroke="#E2B15D" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="35" cy="27" r="3" fill="#E2B15D"/>
+    <!-- Text -->
+    <text x="72" y="32" font-family="'Pretendard', sans-serif" font-size="15" font-weight="900" fill="#1E293B" letter-spacing="-0.5">비엠스인터내셔날</text>
+    <text x="73" y="50" font-family="'Pretendard', sans-serif" font-size="10" font-weight="800" fill="#6B1D2F" letter-spacing="0.5">BMS INTERNATIONAL</text>
+  </g>
+</svg>

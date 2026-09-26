@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100" width="240" height="100">
+  <g transform="translate(15, 10)">
+    <!-- Korean Government Taegeuk Symbol -->
+    <circle cx="40" cy="40" r="32" fill="#003478"/>
+    <path d="M 40 8 A 32 32 0 0 1 72 40 A 16 16 0 0 1 40 40 A 16 16 0 0 0 8 40 A 32 32 0 0 1 40 8 Z" fill="#CD2E3A"/>
+    <circle cx="40" cy="40" r="8" fill="#CD2E3A"/>
+    <circle cx="40" cy="40" r="4" fill="#003478"/>
+    <!-- Typography -->
+    <text x="85" y="38" font-family="'Pretendard', 'Apple SD Gothic Neo', sans-serif" font-size="21" font-weight="900" fill="#0f172a" letter-spacing="-0.5">농림축산식품부</text>
+    <text x="86" y="58" font-family="'Pretendard', sans-serif" font-size="11" font-weight="700" fill="#64748b" letter-spacing="1.2">MAFRA KOREA</text>
+  </g>
+</svg>
