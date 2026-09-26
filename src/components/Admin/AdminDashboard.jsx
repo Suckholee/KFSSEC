@@ -15,6 +15,7 @@ import {
   Megaphone,
   Settings,
   Image,
+  Star,
 } from 'lucide-react';
 import { maskName, maskPhone, maskId } from '../../utils/security';
 
@@ -153,12 +154,12 @@ export default function AdminDashboard({
       accent: 'text-teal-600',
     },
     {
-      tab: 'reservations',
-      subTab: 'payment_status',
-      icon: Users,
-      label: '결제 및 정산',
-      desc: '128명 실시간 영수증',
-      accent: 'text-emerald-700',
+      tab: 'reviews',
+      subTab: 'review_list',
+      icon: Star,
+      label: '수강 후기 관리',
+      desc: '별점 평가 & 노출 승인',
+      accent: 'text-amber-500',
     },
     {
       tab: 'settings',
@@ -318,8 +319,8 @@ export default function AdminDashboard({
                     <th className="py-2 px-2.5">등록번호</th>
                     <th className="py-2 px-2.5">수강생명</th>
                     <th className="py-2 px-2.5">과정명</th>
-                    <th className="py-2 px-2.5 text-right">결제금액</th>
-                    <th className="py-2 px-2.5 text-center">상태</th>
+                    <th className="py-2 px-2.5 text-center">신청일자</th>
+                    <th className="py-2 px-2.5 text-center">학사상태</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-gray-700 font-medium">
@@ -334,18 +335,12 @@ export default function AdminDashboard({
                       <td className="py-2.5 px-2.5 text-gray-800 truncate max-w-[170px]">
                         {enrollee.courseTitle}
                       </td>
-                      <td className="py-2.5 px-2.5 text-right font-mono font-bold text-emerald-800">
-                        {enrollee.paidAmount ? `${enrollee.paidAmount.toLocaleString()}원` : '-'}
+                      <td className="py-2.5 px-2.5 text-center font-mono text-gray-500 text-[11px]">
+                        {enrollee.joinDate || '2026.08.30'}
                       </td>
                       <td className="py-2.5 px-2.5 text-center">
-                        <span
-                          className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold ${
-                            enrollee.status === 'completed'
-                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                              : 'bg-amber-50 text-amber-800 border border-amber-200'
-                          }`}
-                        >
-                          {enrollee.status === 'completed' ? '결제완료' : '입금대기'}
+                        <span className="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          수강등록
                         </span>
                       </td>
                     </tr>
@@ -357,7 +352,7 @@ export default function AdminDashboard({
 
           <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
             <span>{privacyMode ? '개인정보 보호 마스킹 작동중' : '전체 정보 노출중'}</span>
-            <span className="font-semibold text-emerald-800">128명 전원 수강증 & 영수증 발급 가능</span>
+            <span className="font-semibold text-emerald-800">128명 수강생 학사 관리 및 수강증 발급 가능</span>
           </div>
         </div>
 

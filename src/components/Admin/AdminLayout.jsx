@@ -55,7 +55,6 @@ import {
   Clipboard,
   PhoneCall,
   Mail,
-  Receipt,
   Download,
   Key,
   RotateCcw,
@@ -732,7 +731,6 @@ export default function AdminLayout({
         return [
           { id: 'enrollees_list', label: '📚 강의별 수강생 관리' },
           { id: 'student_accounts', label: '👤 학생 회원 계정 관리' },
-          { id: 'payment_status', label: '수강료 결제 현황' },
         ];
       case 'inquiries':
         return [
@@ -1251,7 +1249,7 @@ export default function AdminLayout({
           )}
 
           {/* DYNAMIC SCREEN 2: COURSE-FIRST ENROLLEE MANAGEMENT WORKSTATION */}
-          {primaryMenu === 'reservations' && (secondarySubTab === 'enrollees_list' || (secondarySubTab !== 'student_accounts' && secondarySubTab !== 'payment_status')) && (
+          {primaryMenu === 'reservations' && (secondarySubTab === 'enrollees_list' || secondarySubTab !== 'student_accounts') && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
               {/* IF SPECIFIC COURSE SELECTED */}
@@ -1302,9 +1300,9 @@ export default function AdminLayout({
                         </span>
                       </div>
                       <div className="bg-stone-50 p-3 rounded-xl border border-stone-300">
-                        <span className="text-gray-500 block">💰 강좌 총 수강료 매출</span>
+                        <span className="text-gray-500 block">📊 정원 충원율</span>
                         <span className="text-lg font-black text-emerald-900 font-mono">
-                          {(enrolleesList.filter((e) => e.courseId === selectedCourseForEnrollees.id).length * selectedCourseForEnrollees.price).toLocaleString()}원
+                          {Math.round((enrolleesList.filter((e) => e.courseId === selectedCourseForEnrollees.id).length / 15) * 100)}%
                         </span>
                       </div>
                       <div className="bg-stone-50 p-3 rounded-xl border border-stone-300">
@@ -1329,9 +1327,9 @@ export default function AdminLayout({
                       {/* Table Header */}
                       <div className="grid grid-cols-12 bg-gray-100 px-6 py-3 text-gray-600 font-black border-b border-gray-200">
                         <div className="col-span-2">신청번호/일시</div>
-                        <div className="col-span-3">수강생(성명/연락처/이메일)</div>
-                        <div className="col-span-3">결제 금액 및 혜택</div>
-                        <div className="col-span-2 text-center">결제 상태 / 수단</div>
+                        <div className="col-span-4">수강생(성명/연락처/이메일)</div>
+                        <div className="col-span-2">신청 구분 / 혜택</div>
+                        <div className="col-span-2 text-center">학사 등록 상태</div>
                         <div className="col-span-2 text-center">수강생 알림 조작</div>
                       </div>
 
@@ -1345,7 +1343,7 @@ export default function AdminLayout({
                               <span className="font-mono text-gray-400 text-[11px] block">{item.date}</span>
                             </div>
 
-                            <div className="col-span-3 space-y-0.5">
+                            <div className="col-span-4 space-y-0.5">
                               <span className="text-sm font-black text-black block">{item.studentName}</span>
                               <span className="font-mono text-gray-600 text-[11px] block flex items-center gap-1">
                                 <PhoneCall className="w-3 h-3 text-emerald-700" />
@@ -1354,11 +1352,11 @@ export default function AdminLayout({
                               <span className="font-mono text-gray-400 text-[10px] block">{item.email}</span>
                             </div>
 
-                            <div className="col-span-3 space-y-0.5">
-                              <span className="text-sm font-black text-black font-mono block">
-                                {item.paidAmount.toLocaleString()}원
+                            <div className="col-span-2 space-y-0.5">
+                              <span className="text-xs font-black text-black block">
+                                {item.discountText || '일반 수강생'}
                               </span>
-                              <span className="text-[10px] text-emerald-800 font-bold block">{item.discountText}</span>
+                              <span className="text-[10px] text-gray-500 font-bold block">정규 과정 등록</span>
                             </div>
 
                             <div className="col-span-2 text-center space-y-1">
@@ -1369,9 +1367,9 @@ export default function AdminLayout({
                                     : 'bg-amber-100 text-amber-900 border-amber-300'
                                 }`}
                               >
-                                {item.status === 'completed' ? '✓ 결제완료' : '⏳ 승인대기'}
+                                {item.status === 'completed' ? '✓ 수강등록' : '⏳ 접수대기'}
                               </span>
-                              <span className="text-[10px] text-gray-500 block">{item.paymentMethod}</span>
+                              <span className="text-[10px] text-gray-500 block">학적 반영완료</span>
                             </div>
 
                             <div className="col-span-2 text-center flex items-center justify-center gap-1.5">
@@ -1456,9 +1454,9 @@ export default function AdminLayout({
                     </div>
 
                     <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                      <span className="text-[11px] font-black text-gray-500 block">💰 누적 수강료 매출</span>
-                      <span className="text-2xl font-black text-emerald-950 font-mono">3억 8,450만원</span>
-                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">결제 완료 96%</span>
+                      <span className="text-[11px] font-black text-gray-500 block">🎓 누적 수료생 관리</span>
+                      <span className="text-2xl font-black text-emerald-950 font-mono">128명</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">학적 관리 정상 가동</span>
                     </div>
 
                     <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
@@ -1547,8 +1545,8 @@ export default function AdminLayout({
                   <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border-2 border-black shadow-2xl space-y-6">
                     <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
                       <h4 className="text-lg font-black text-black flex items-center gap-2">
-                        <Receipt className="w-5 h-5 text-emerald-700" />
-                        <span>수강 신청자 상세 내역</span>
+                        <UserCheck className="w-5 h-5 text-emerald-700" />
+                        <span>수강 신청자 상세 학적 내역</span>
                       </h4>
                       <button
                         onClick={() => setSelectedEnrolleeModal(null)}
@@ -1587,18 +1585,20 @@ export default function AdminLayout({
                           <span className="font-mono font-black">{selectedEnrolleeModal.startDate}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>정가 수강료:</span>
-                          <span className="font-mono line-through text-gray-500">{selectedEnrolleeModal.originalPrice.toLocaleString()}원</span>
+                          <span>학적 상태:</span>
+                          <span className="font-bold text-emerald-800">
+                            {selectedEnrolleeModal.status === 'completed' ? '수강 등록 승인 완료' : '신청 접수 대기'}
+                          </span>
                         </div>
                         <div className="flex justify-between pt-1 border-t border-emerald-200">
-                          <span className="font-black">최종 결제 금액:</span>
-                          <span className="font-mono text-base font-black text-emerald-900">
-                            {selectedEnrolleeModal.paidAmount.toLocaleString()}원
+                          <span className="font-black">등록 구분:</span>
+                          <span className="font-mono text-sm font-black text-emerald-900">
+                            {selectedEnrolleeModal.discountText || '일반 수강생'}
                           </span>
                         </div>
                         <div className="flex justify-between text-[11px]">
-                          <span>결제 수단:</span>
-                          <span>{selectedEnrolleeModal.paymentMethod}</span>
+                          <span>신청 채널:</span>
+                          <span>온라인 학사 접수</span>
                         </div>
                       </div>
                     </div>
@@ -1618,131 +1618,7 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN: REAL-TIME PAYMENT STATUS WORKSTATION */}
-          {primaryMenu === 'reservations' && secondarySubTab === 'payment_status' && (
-            <div className="space-y-6 animate-fadeIn max-w-6xl">
-              {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
-                <div>
-                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
-                    <Receipt className="w-6 h-6 text-emerald-700" />
-                    <span>수강료 실시간 결제 승인 & 정산 관리자 (128명 DB)</span>
-                  </h3>
-                  <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    수강생들의 신용카드, 실시간 계좌이체, 카카오페이/네이버페이 승인 내역 및 영수증을 실시간으로 확인하고 정산합니다.
-                  </p>
-                </div>
 
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => alert('📥 전체 128건 수강료 결제 정산 내역 엑셀(CSV) 다운로드가 시작됩니다.')}
-                    className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Download className="w-4 h-4 text-emerald-400" />
-                    <span>📥 결제 정산 DB 다운로드</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* KPI Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">💳 총 누적 결제금액</span>
-                  <span className="text-2xl font-black text-black font-mono">
-                    {enrolleesList.reduce((acc, curr) => acc + (curr.status === 'completed' ? curr.paidAmount : 0), 0).toLocaleString()}원
-                  </span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">실시간 정산 완료</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">✅ 결제 완료 건수</span>
-                  <span className="text-2xl font-black text-emerald-950 font-mono">
-                    {enrolleesList.filter((e) => e.status === 'completed').length}건
-                  </span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">정상 승인율 96.1%</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">⏳ 가상계좌 입금 대기</span>
-                  <span className="text-2xl font-black text-amber-700 font-mono">
-                    {enrolleesList.filter((e) => e.status === 'pending').length}건
-                  </span>
-                  <span className="text-[10px] text-amber-700 font-bold block pt-1">입금 기한 24시간 이내</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">📊 평균 수강료 결제액</span>
-                  <span className="text-2xl font-black text-black font-mono">230,359원</span>
-                  <span className="text-[10px] text-gray-500 font-bold block pt-1">얼리버드 할인 적용</span>
-                </div>
-              </div>
-
-              {/* Transactions Table */}
-              <div className="bg-white rounded-3xl border-2 border-black overflow-hidden shadow-sm">
-                <div className="p-4 bg-stone-50 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="w-4 h-4 text-emerald-700" />
-                    <span className="text-xs font-black text-black">실시간 결제 승인 내역 (총 {enrolleesList.length}건)</span>
-                  </div>
-                  <div className="text-xs font-bold text-gray-500">
-                    전자결제 PG사: 토스페이먼츠 / KCP 정산 연동
-                  </div>
-                </div>
-
-                <div className="divide-y divide-gray-200 overflow-x-auto">
-                  <table className="w-full text-left border-collapse text-xs">
-                    <thead>
-                      <tr className="bg-gray-100 text-gray-700 font-black border-b border-gray-200">
-                        <th className="py-3 px-4">주문번호</th>
-                        <th className="py-3 px-4">수강생명</th>
-                        <th className="py-3 px-4">신청 강좌</th>
-                        <th className="py-3 px-4">결제수단</th>
-                        <th className="py-3 px-4 text-right">결제금액</th>
-                        <th className="py-3 px-4 text-center">승인상태</th>
-                        <th className="py-3 px-4 text-center">전표</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                      {enrolleesList.slice(0, 20).map((item) => (
-                        <tr key={item.id} className="hover:bg-emerald-50/40 transition-colors">
-                          <td className="py-3 px-4 font-mono font-bold text-gray-600">{item.id}</td>
-                          <td className="py-3 px-4 font-black text-black">{item.studentName}</td>
-                          <td className="py-3 px-4 text-gray-800 font-bold">{item.courseTitle}</td>
-                          <td className="py-3 px-4 text-gray-600 font-mono text-[11px]">{item.paymentMethod}</td>
-                          <td className="py-3 px-4 text-right font-mono font-black text-emerald-950">
-                            {item.paidAmount.toLocaleString()}원
-                          </td>
-                          <td className="py-3 px-4 text-center">
-                            <span
-                              className={`px-2.5 py-1 rounded-full text-[10px] font-black border ${
-                                item.status === 'completed'
-                                  ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                                  : 'bg-amber-100 text-amber-900 border-amber-300'
-                              }`}
-                            >
-                              {item.status === 'completed' ? '✓ 결제완료' : '⏳ 입금대기'}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4 text-center">
-                            <button
-                              onClick={() =>
-                                alert(
-                                  `[📄 카드매출전표 / 전자영수증]\n주문번호: ${item.id}\n수강생: ${item.studentName}\n강좌: ${item.courseTitle}\n금액: ${item.paidAmount.toLocaleString()}원\n결제수단: ${item.paymentMethod}\n승인상태: ${item.status === 'completed' ? '정상 승인' : '입금 대기'}`
-                                )
-                              }
-                              className="px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-black hover:text-white text-gray-700 font-black text-[10px] transition-all cursor-pointer"
-                            >
-                              전표확인
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* DYNAMIC SCREEN: DEVELOPER INQUIRY BOARD VIEW */}
           {primaryMenu === 'developer' && (
