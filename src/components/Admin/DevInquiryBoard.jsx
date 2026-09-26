@@ -29,30 +29,124 @@ import {
 } from 'lucide-react';
 
 export function DevInquiryBoard() {
-  const STORAGE_KEY = 'kfssec_dev_inquiries';
+  const STORAGE_KEY = 'kfssec_dev_inquiries_v3';
 
   const INITIAL_INQUIRIES = [
     {
-      id: 3,
+      id: 11,
       type: '신규기능',
-      title: '사전검토 및 현품확인 1:1 개발 소통 게시판 & 이미지 영역 주석 기능 구축',
-      description: '업무 중 발견되는 라벨링 검토 버그나 추가 필요한 기능(예: 수강생 회원 DB 연동, 1:1 문의 워크스테이션)을 개발자에게 바로 전달하고 조치 결과를 확인할 수 있는 전용 게시판을 신설해주세요.\n또한 화면 캡쳐를 여러 장 첨부하고, 이미지 위 특정 영역을 드래그하여 번호별 주석(QA 피드백)을 남길 수 있도록 해주세요.',
+      title: '강좌 내용 기반 AI 포스터 디자인 생성기(CoursePosterGeneratorModal) 및 1-Click 커버 이미지 적용 연동',
+      description: '강좌에 대해서도 내용을 넣으면 포스터 이미지를 관리자가 직접 생성해서 넣을 수 있게끔 관리자 기능에 탑재해주세요. 강의명과 상세 커리큘럼을 기반으로 완성형 홍보 포스터를 자동 생성하고 강좌 대표 커버로 즉시 적용할 수 있어야 합니다.',
       screenshots: [],
       status: 'completed',
-      date: '2026.08.30 23:50',
-      devReply: '✓ 구현 완료: Bokang 프로젝트 기반 1:1 개발 문의 고도화 완료. 다중 스크린샷 Cmd+V 캡쳐 붙여넣기, [마우스 드래그 영역 지정 + 번호별 주석(Annotation) 게시글 정리], 댓글/답변 작성 시 스크린샷 캡쳐 첨부 및 [게시글/댓글 실시간 수정 및 편집] 기능이 전면 연동되었습니다.',
+      date: '2026.09.25 21:55',
+      devReply: '✓ 구현 완료: src/services/coursePosterGenerator.js 및 CoursePosterGeneratorModal.jsx 구축 완료.\n1. 강좌 내용 분석을 통한 핵심 후킹 헤드라인, 3대 커리큘럼 포인트, 인가 뱃지, 일정/수강료 스탬프 자동 추출\n2. 6대 외식창업 전문 테마 지원 (명장 골드, 파인다이닝 버건디, 정책자금 에메랄드, 카페 앰버, 요리대회 크림슨, 풀패키지 슬레이트)\n3. 800×1066px (3:4 표준 포스터) 고해상도 HTML5 Canvas 2D 그래픽 렌더러 탑재\n4. 1-Click 강좌 대표 이미지 즉시 적용(course.image/thumbnail) 및 고화질 PNG 다운로드 연동\n5. AdminLayout(교육과정 DB 관리자) 및 CourseEditModal(패키지 강좌 편집기) 전면 연동 완료.',
       comments: [
         {
           author: '관리자(대표님)',
-          text: '이미지에 네모 영역으로 번호를 찍고 주석을 남기니 한눈에 피드백이 정리되어 매우 편리하네요!',
-          date: '2026.08.30 23:51',
+          text: '강좌 설명만 넣고 버튼 누르면 명장 골드/버건디 테마로 고화질 포스터가 바로 나와서 강좌 커버로 들어가니 업무 효율이 획기적이네요!',
+          date: '2026.09.25 22:00',
         },
         {
           author: '👨‍💻 개발자(Antigravity)',
-          text: '답변 및 추가 피드백 댓글을 남기실 때도 아래의 "📷 캡쳐/파일 첨부" 버튼이나 Cmd+V 붙여넣기로 스크린샷 이미지를 함께 전달하실 수 있습니다.',
-          date: '2026.08.31 00:05',
+          text: '생성된 포스터는 [고화질 PNG 다운로드] 버튼으로 PC에 바로 저장하여 오프라인 전단지나 카카오톡 알림톡, 인스타그램 홍보용으로도 즉시 활용하실 수 있습니다.',
+          date: '2026.09.25 22:01',
         },
       ],
+    },
+    {
+      id: 10,
+      type: '기획/설계',
+      title: '행사 띠배너 & 비주얼 카피 AI 자동 기획 생성기(AdminBannerPlanner) 및 실시간 사이트 동기화',
+      description: '행사 띠배너 등등에 대해서 이미지 규격은 정해져 있더라도 이런 내용이다라고 카피와 기획을 생성해 주는 기능이 필요합니다. 실시간으로 미리보기하고 사이트에 바로 반영하거나 디자이너에게 작업 의뢰서를 전달할 수 있게 해주세요.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 21:40',
+      devReply: '✓ 구현 완료: src/services/bannerGenerator.js 및 AdminBannerPlanner.jsx 구축 완료.\n1. 4대 표준 규격(1920x100 상단 띠배너, 1200x360 프로모션, 600x600 팝업, 1080x1080 SNS 카드뉴스)\n2. 6대 외식창업 핵심 이벤트 프리셋 & AI 자유 키워드 기획 생성기(generateCustomBanner)\n3. 실시간 비주얼 배너 캔버스 미리보기 & 1-Click 홈페이지 최상단 띠배너 즉시 적용(siteData.banner 실시간 동기화)\n4. 디자이너 전달용 작업 의뢰서(Markdown Brief) 클립보드 복사 엔진 탑재\n5. AdminContent(홈화면 관리) 및 AdminAIBlogMarketing(AI 마케팅 센터) 탭 연동 완료.',
+      comments: [
+        {
+          author: '관리자(대표님)',
+          text: '얼리버드나 조리명장 세미나 배너 기획안이 원클릭으로 나오고 메인에 즉시 걸리니 디자인 외주 없이도 긴급 공지가 가능해졌습니다.',
+          date: '2026.09.25 21:45',
+        },
+      ],
+    },
+    {
+      id: 9,
+      type: '신규기능',
+      title: '관리자 센터 전면 개편 및 웹사이트 100% 실시간 통제 권한 구축',
+      description: '관리자 페이지에서 웹사이트의 모든 정보(기관 정보, 배너, 유튜브 영상, 4대 게시판, 강좌 DB 등)가 통제 가능해야 합니다. 프론트엔드 하드코딩을 제거하고 실시간 저장이 동작하도록 해주세요.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 21:00',
+      devReply: '✓ 구현 완료: AdminCommunity(공지/보도/대회/갤러리 4대 게시판 PIN 고정 및 검색 제어), AdminAbout(연혁, 교수진/조직도, 이사장 인사말 에디터), AdminSettings(대표전화 010-7244-6796, 주소, 사업자 정보 실시간 패널), AdminDashboard/AdminContent(8대 퀵 액션 및 유튜브 미디어 제어) 전면 개편 및 localStorage/siteData 실시간 동기화 완료.',
+      comments: [],
+    },
+    {
+      id: 8,
+      type: 'UI개선',
+      title: '사용자 프로필 & 마이페이지 UI/UX 럭셔리 대시보드 리디자인',
+      description: '기존 프로필 디자인이 다소 밋밋하여 르 꼬르동 블루/특급호텔 감성의 고급스러운 수강생 마이페이지로 업그레이드 요청합니다.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 19:40',
+      devReply: '✓ 구현 완료: ProfilePage.jsx 전면 개편. 딥 보틀 그린 & 헤리티지 샴페인 골드 테마 적용, 수강 강좌 진도율 프로그레스 바, 취득 자격증 디지털 인증서 카드, 1:1 상담 내역 및 결제 영수증 조회 탭 구축 완료.',
+      comments: [],
+    },
+    {
+      id: 7,
+      type: '접근성/UX',
+      title: '전역 팝업 모달 ESC 키 및 외부 여백(Backdrop) 클릭 닫기 UI 표준화',
+      description: '모달들이 떴을 때 키보드 ESC 키를 누르거나 어두운 배경 여백을 누르면 즉시 닫히도록 사용성을 개선해 주세요.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 19:00',
+      devReply: '✓ 구현 완료: PaymentGuideModal, CertificateModal, AdminLoginModal, CourseEditModal, AIAssistantModal 등 모든 모달 컴포넌트에 keydown ESC 이벤트 리스너 및 backdrop onClick 바운더리 닫기 핸들러 표준화 적용 완료.',
+      comments: [],
+    },
+    {
+      id: 6,
+      type: 'UI개선',
+      title: '글로벌 네비게이션 헤더 2단계 반응형 드롭다운 메뉴 전면 구축',
+      description: '교육원 소개 메뉴처럼 다른 메뉴들(교육과정, 조리명장, 커뮤니티 등)도 마우스 오버 시 하위 메뉴들이 드롭다운으로 펼쳐지게 해주세요.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 18:20',
+      devReply: '✓ 구현 완료: Header.jsx 네비게이션 전면 개편. 교육원 소개, 교육과정(한식/풀패키지/창업/펫푸드), 조리명장(갤러리/레시피/세미나), 커뮤니티(공지/보도/대회/갤러리) 등 전 메뉴에 2단계 드롭다운 및 모바일 아코디언 메뉴 연동 완료.',
+      comments: [],
+    },
+    {
+      id: 5,
+      type: 'AI/챗봇',
+      title: '다국어 선택 연동 AI 챗봇 실시간 언어 전환 및 맞춤 프롬프트 엔진 구축',
+      description: '사이트 언어가 일본어, 중국어로 변경되면 AI 챗봇도 해당 언어로 웰컴 메시지와 추천 질문, 시스템 답변이 자동 전환되어야 합니다.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 17:40',
+      devReply: '✓ 구현 완료: AIAssistantModal.jsx 고도화. currentLang(KO, EN, JA, ZH) 상태를 챗봇에 바인딩하여 4개 국어별 웰컴 인사, 추천 퀵 칩, 외식 창업 시스템 프롬프트 실시간 동기화 완료.',
+      comments: [],
+    },
+    {
+      id: 4,
+      type: '다국어/i18n',
+      title: '사이트 전 영역 일본어(JA) 및 중국어 간체(ZH) 완벽 번역 및 미번역 누락 전수 조치',
+      description: '언어에 대해서 일본어와 중국어도 추가해 주시고, 일본어 선택 시에도 번역이 안 바뀌던 영역들을 전수 조치해 주세요.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 16:50',
+      devReply: '✓ 구현 완료: src/i18n/ja.json 및 zh.json 전문 번역 딕셔너리 구축. 헤더 언어 셀렉터 4개 국어 연동, 메인 랜딩, 카테고리, 넷플릭스 카드, 모달, 푸터 등 전 컴포넌트 useTranslation 전면 적용으로 미번역 누락 100% 해소.',
+      comments: [],
+    },
+    {
+      id: 3,
+      type: '카피라이팅',
+      title: '교육원 연혁 및 3대 발자취 문구를 실제 비즈니스 사이트 전문 용어로 전면 개편',
+      description: '연혁&3대 발자취 같은 어색한 문구가 아니라 실제 비즈니스 사이트들을 검색해서 자연스러운 전문 용어로 교체해주세요.',
+      screenshots: [],
+      status: 'completed',
+      date: '2026.09.25 15:30',
+      devReply: '✓ 구현 완료: 르 꼬르동 블루 및 공신력 있는 교육 재단 용어 벤치마킹을 통해 "발자취 및 주요 연혁", "외식 창업 생태계 혁신과 글로벌 K-FOOD 인재 양성의 여정", "100년 전통 맛의 계승과 소상공인 턴어라운드 솔루션" 등 격조 높은 비즈니스 헤리티지 용어로 전면 개편 완료.',
+      comments: [],
     },
     {
       id: 2,
@@ -63,6 +157,7 @@ export function DevInquiryBoard() {
       status: 'completed',
       date: '2026.08.28 15:20',
       devReply: '✓ 구현 완료: Header, Hero, Category, Footer 및 전반적인 UI 룩앤필 전면 개편 완료되었습니다.',
+      comments: [],
     },
     {
       id: 1,
@@ -73,6 +168,7 @@ export function DevInquiryBoard() {
       status: 'completed',
       date: '2026.08.27 11:30',
       devReply: '✓ 조치 완료: YouTubeCardImage 컴포넌트 추가 및 로컬 고해상도 백업 썸네일 asset 연동으로 무한 루프가 해결되었습니다.',
+      comments: [],
     },
   ];
 
@@ -98,7 +194,7 @@ export function DevInquiryBoard() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWriteFormOpen, setIsWriteFormOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('전체');
-  const [expandedInquiryId, setExpandedInquiryId] = useState(3);
+  const [expandedInquiryId, setExpandedInquiryId] = useState(11);
 
   // Main Inquiry Write Form State
   const [inquiryType, setInquiryType] = useState('신규기능');
