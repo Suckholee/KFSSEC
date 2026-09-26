@@ -2,28 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Users,
   GraduationCap,
-  TrendingUp,
-  CreditCard,
-  ChevronRight,
-  ArrowUpRight,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  Eye,
-  EyeOff,
-  Shield,
   Award,
   Handshake,
   MessageSquare,
   Sparkles,
   Bot,
-  ExternalLink,
   Plus,
-  Building2,
-  Calendar,
-  Home,
+  Clock,
+  Eye,
+  EyeOff,
+  ChevronRight,
   Megaphone,
   Settings,
+  Image,
 } from 'lucide-react';
 import { maskName, maskPhone, maskId } from '../../utils/security';
 
@@ -51,7 +42,7 @@ export default function AdminDashboard({
   const totalEnrollees = enrolleesList.length || 128;
   const totalCourses = coursesList.length || 12;
   const partnerCount = siteData?.partnerLogos?.length || 12;
-  const pendingInquiriesCount = studentInquiries.filter(i => i.status === 'pending').length;
+  const pendingInquiriesCount = studentInquiries.filter((i) => i.status === 'pending').length;
   const totalInquiriesCount = studentInquiries.length || 6;
 
   // Recent 5 enrollees
@@ -66,396 +57,294 @@ export default function AdminDashboard({
       subTab: 'enrollees_list',
       title: '총 등록 수강생',
       value: `${totalEnrollees}명`,
-      badge: '+18.2% 전월대비',
-      subtext: '128명 정규 등록 회원 DB',
+      badge: '+18.2%',
       icon: Users,
-      color: 'bg-emerald-50 text-emerald-800 border-emerald-200',
     },
     {
       id: 'courses',
       subTab: 'course_list',
       title: '운영 교육과정',
-      value: `${totalCourses}개 과목`,
-      badge: '9개 정규 자격과정',
-      subtext: '한식·양식·일식·카페·펫푸드',
+      value: `${totalCourses}과목`,
+      badge: '9개 자격',
       icon: GraduationCap,
-      color: 'bg-blue-50 text-blue-800 border-blue-200',
     },
     {
       id: 'masters',
       subTab: 'profile_list',
-      title: '대한민국 명장·명인',
+      title: '명장·명인',
       value: '64명',
-      badge: '명장 11명 · 명인 53명',
-      subtext: '사단법인 검증 조리명장',
+      badge: '명장 11명',
       icon: Award,
-      color: 'bg-amber-50 text-amber-800 border-amber-200',
     },
     {
       id: 'partner_logos',
       subTab: 'logo_list',
-      title: '협약기관 & MOU 기업',
+      title: '협약기관(MOU)',
       value: `${partnerCount}개사`,
-      badge: '인피니티 롤링 연동',
-      subtext: '정부·지자체·산학협력 네트워크',
+      badge: '산학협력',
       icon: Handshake,
-      color: 'bg-indigo-50 text-indigo-800 border-indigo-200',
     },
     {
       id: 'inquiries',
       subTab: 'inquiry_all',
       title: '1:1 수강 문의',
       value: `${totalInquiriesCount}건`,
-      badge: pendingInquiriesCount > 0 ? `⚠️ 미답변 ${pendingInquiriesCount}건` : '✓ 전건 답변완료',
+      badge: pendingInquiriesCount > 0 ? `미답변 ${pendingInquiriesCount}건` : '답변완료',
       badgeAlert: pendingInquiriesCount > 0,
-      subtext: 'AI 답변 자동 초안 연동',
       icon: MessageSquare,
-      color: 'bg-rose-50 text-rose-800 border-rose-200',
     },
     {
       id: 'marketing',
       subTab: 'generator',
-      title: 'AI 마케팅 & 챗봇',
-      value: '실시간 가동중',
-      badge: '24시간 4개국어 지원',
-      subtext: 'AI 블로그 원고 자동생성',
+      title: 'AI 마케팅·챗봇',
+      value: '가동중',
+      badge: '24시간',
       icon: Bot,
-      color: 'bg-purple-50 text-purple-800 border-purple-200',
     },
   ];
 
-  const renderQuickActionsHub = (isElevated = false) => (
-    <div
-      id="quick-actions-hub"
-      ref={quickActionsRef}
-      className={`p-6 rounded-3xl border transition-all duration-300 space-y-4 ${
-        activeSubTab === 'quick_actions' || isElevated
-          ? 'bg-gradient-to-br from-stone-900 to-[#0B3C26] text-white border-2 border-[#C5A059] ring-4 ring-[#C5A059]/20 shadow-2xl'
-          : 'bg-white text-gray-900 border-stone-200 shadow-xs'
-      }`}
-    >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3.5 border-stone-200/40">
-        <div className="flex items-center gap-2.5">
-          <div className={`p-2 rounded-xl ${activeSubTab === 'quick_actions' || isElevated ? 'bg-[#C5A059]/20 text-[#D4AF37]' : 'bg-emerald-50 text-[#0B3C26]'}`}>
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className={`text-base sm:text-lg font-black ${activeSubTab === 'quick_actions' || isElevated ? 'text-white' : 'text-gray-900'}`}>
-                빠른 업무 바로가기 (Quick Actions)
-              </h3>
-              {activeSubTab === 'quick_actions' && (
-                <span className="px-2.5 py-0.5 rounded-full bg-[#C5A059] text-stone-950 text-[11px] font-black animate-pulse flex items-center gap-1">
-                  <span>⚡ 활성화됨</span>
-                </span>
-              )}
-            </div>
-            <p className={`text-xs ${activeSubTab === 'quick_actions' || isElevated ? 'text-emerald-100/80 font-medium' : 'text-stone-500 font-bold'}`}>
-              원하시는 항목을 클릭하시면 해당 관리 페이지로 즉시 전환됩니다.
-            </p>
-          </div>
-        </div>
-
-        {activeSubTab === 'quick_actions' && (
-          <button
-            type="button"
-            onClick={() => onNavigateTab('dashboard', 'overview')}
-            className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#D4AF37] border border-[#C5A059]/40 text-xs font-black transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
-          >
-            <span>← 대시보드 전체 개요로</span>
-          </button>
-        )}
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-        <button
-          type="button"
-          onClick={() => onNavigateTab('home', 'visual_editor')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Home className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">홈화면 라이브 관리</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>행사 배너 & 유튜브</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('home', 'banner_planner')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-[#C5A059]/20 hover:bg-[#C5A059] text-[#D4AF37] hover:text-stone-950 border-[#C5A059]/40 hover:border-[#C5A059]'
-              : 'bg-amber-50 hover:bg-[#0B3C26] text-amber-900 hover:text-white border-amber-200'
-          }`}
-        >
-          <Sparkles className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-amber-600 group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">🎨 행사 배너 AI 생성기</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-emerald-100/90 group-hover:text-stone-800' : 'text-amber-700/80 group-hover:text-emerald-100/80'}`}>1920 띠배너 & 카드뉴스</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('about', 'history_manage')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Building2 className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">교육원 소개 & 연혁</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>연혁 및 교수진 관리</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('courses', 'course_add')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Plus className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">신규 과목 DB 등록</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>수강료 및 개강일정</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('masters', 'profile_list')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Award className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">명장·명인 관리</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>64명 프로필 & SNS</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('partner_logos', 'logo_list')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Handshake className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">MOU 로고 관리</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>14개 기관 및 미디어</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('community', 'notice_list')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Megaphone className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">공지사항 & 게시판</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>보도자료 & 대회공지</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('reservations', 'enrollees_list')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Users className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">수강생 회원 (128명)</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>결제상태 & 수강증</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigateTab('settings', 'corp_info')}
-          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
-            activeSubTab === 'quick_actions' || isElevated
-              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
-              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
-          }`}
-        >
-          <Settings className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
-          <span className="text-xs sm:text-sm font-black block">기관 대표 정보 설정</span>
-          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>대표번호 & 주소 설정</span>
-        </button>
-      </div>
-    </div>
-  );
+  const quickActionItems = [
+    {
+      tab: 'home',
+      subTab: 'banner_planner',
+      icon: Image,
+      label: '배너 AI 생성기',
+      desc: '1920 띠배너·카드뉴스',
+      accent: 'text-amber-600',
+    },
+    {
+      tab: 'courses',
+      subTab: 'course_add',
+      icon: Plus,
+      label: '신규 강좌 등록',
+      desc: 'DB 등록 및 사진 업로드',
+      accent: 'text-emerald-600',
+    },
+    {
+      tab: 'marketing',
+      subTab: 'generator',
+      icon: Sparkles,
+      label: 'AI 블로그 원고',
+      desc: '네이버 블로그 1-Click',
+      accent: 'text-purple-600',
+    },
+    {
+      tab: 'inquiries',
+      subTab: 'chatbot_settings',
+      icon: Bot,
+      label: '챗봇 상담 설정',
+      desc: '버튼 및 AI 자동응답',
+      accent: 'text-blue-600',
+    },
+    {
+      tab: 'partner_logos',
+      subTab: 'logo_list',
+      icon: Handshake,
+      label: 'MOU 로고 관리',
+      desc: '협약기관 14개사',
+      accent: 'text-indigo-600',
+    },
+    {
+      tab: 'community',
+      subTab: 'notice_list',
+      icon: Megaphone,
+      label: '공지 & 게시판',
+      desc: '보도자료·대회공지',
+      accent: 'text-teal-600',
+    },
+    {
+      tab: 'reservations',
+      subTab: 'payment_status',
+      icon: Users,
+      label: '결제 및 정산',
+      desc: '128명 실시간 영수증',
+      accent: 'text-emerald-700',
+    },
+    {
+      tab: 'settings',
+      subTab: 'corp_info',
+      icon: Settings,
+      label: '기관 정보 설정',
+      desc: '대표자·주소·연락처',
+      accent: 'text-gray-700',
+    },
+  ];
 
   return (
-    <div className="space-y-7 animate-fadeIn font-sans text-gray-900 max-w-7xl mx-auto">
-      
-      {/* Top Executive Header Bar */}
-      <div className="bg-gradient-to-r from-[#0B3C26] via-[#104830] to-[#072517] text-white p-6 sm:p-8 rounded-3xl border-2 border-[#C5A059] shadow-xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative overflow-hidden">
-        <div className="space-y-2 relative z-10 max-w-2xl">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-black text-[#D4AF37] bg-[#C5A059]/20 border border-[#C5A059]/50 px-3 py-1 rounded-full uppercase tracking-wider">
-              EXECUTIVE MANAGEMENT SYSTEM
-            </span>
-            <span className="text-xs font-bold text-emerald-200 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
-              <Shield className="w-3 h-3 text-emerald-400" />
-              <span>개인정보보호법 준수 마스킹 가동</span>
+    <div className="space-y-4 animate-fadeIn font-sans text-gray-900 max-w-7xl mx-auto pb-8">
+      {/* 1. Sleek Compact Header */}
+      <div className="bg-white rounded-xl border border-gray-200 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
+              통합 운영 대시보드
+            </h2>
+            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              REST API 실시간 연동
             </span>
           </div>
-          
-          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight font-serif">
-            사단법인 한국외식창업교육원 스마트 파트너 센터
-          </h2>
-          
-          <p className="text-xs sm:text-sm text-emerald-100/90 font-medium leading-relaxed">
-            수강생 학사 관리, 교육과정 DB, 대한민국 명장·명인 프로필, 산학협력(MOU) 로고 배너 및 AI 챗봇 상담을 실시간으로 통합 운영합니다.
+          <p className="text-xs text-gray-500 mt-0.5">
+            사단법인 한국외식창업교육원 학사·강좌DB·수강문의 현황 및 바로가기
           </p>
         </div>
 
-        {/* Top Action Buttons */}
-        <div className="flex items-center gap-3 shrink-0 relative z-10 self-start lg:self-auto">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={() => setPrivacyMode(!privacyMode)}
-            className={`px-3.5 py-2.5 rounded-xl text-xs font-extrabold border transition-all flex items-center gap-1.5 cursor-pointer shadow-xs ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1.5 cursor-pointer ${
               privacyMode
-                ? 'bg-emerald-950 text-emerald-300 border-emerald-500/40'
-                : 'bg-rose-950 text-rose-300 border-rose-500/40'
+                ? 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-300'
+                : 'bg-rose-50 text-rose-700 border-rose-300'
             }`}
             title="개인정보 마스킹 켜기/끄기"
           >
-            {privacyMode ? <EyeOff className="w-4 h-4 text-emerald-400" /> : <Eye className="w-4 h-4 text-rose-400" />}
-            <span>{privacyMode ? '개인정보 마스킹 ON' : '마스킹 해제됨'}</span>
+            {privacyMode ? <EyeOff className="w-3.5 h-3.5 text-gray-500" /> : <Eye className="w-3.5 h-3.5 text-rose-600" />}
+            <span>{privacyMode ? '마스킹 ON' : '마스킹 OFF'}</span>
           </button>
 
           <button
             type="button"
             onClick={() => onNavigateTab('courses', 'course_add')}
-            className="px-4 py-2.5 bg-[#C5A059] hover:bg-[#b08e49] text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer border border-[#E0C078]"
+            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             <span>신규 강좌 등록</span>
           </button>
         </div>
-
-        {/* Ambient Decorative Glow */}
-        <div className="absolute -bottom-16 -right-16 w-80 h-80 bg-[#C5A059]/15 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* If quick_actions subTab is selected, elevate Quick Action Hub to top */}
-      {activeSubTab === 'quick_actions' && renderQuickActionsHub(true)}
-
-      {/* 6 Key Executive KPI Metrics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* 2. Compact Metric Strip (Flat, High-Density, No Big Bloated Cards) */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5">
         {stats.map((stat) => {
           const IconComp = stat.icon;
           return (
-            <div
+            <button
               key={stat.title}
+              type="button"
               onClick={() => onNavigateTab(stat.id, stat.subTab)}
-              className="bg-white rounded-3xl p-6 border border-stone-200/90 hover:border-[#0B3C26] shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group flex flex-col justify-between"
+              className="bg-white p-3 rounded-xl border border-gray-200 hover:border-emerald-500 transition-all text-left flex flex-col justify-between group cursor-pointer shadow-2xs hover:bg-emerald-50/20"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-stone-500">
-                  {stat.title}
-                </span>
-                <div className={`p-2.5 rounded-2xl border ${stat.color} group-hover:scale-110 transition-transform shadow-2xs`}>
-                  <IconComp className="w-5 h-5" />
-                </div>
+              <div className="flex items-center justify-between text-gray-500">
+                <span className="text-[11px] font-semibold text-gray-500 truncate">{stat.title}</span>
+                <IconComp className="w-3.5 h-3.5 text-gray-400 group-hover:text-emerald-600 transition-colors shrink-0" />
               </div>
 
-              <div className="mt-4 space-y-1.5">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight font-serif">
-                    {stat.value}
-                  </span>
-                  <span className={`text-[11px] font-black px-2.5 py-0.5 rounded-full ${
+              <div className="mt-2 flex items-baseline justify-between gap-1">
+                <span className="text-lg font-bold text-gray-900 font-mono tracking-tight">
+                  {stat.value}
+                </span>
+                <span
+                  className={`text-[10px] font-semibold px-1.5 py-0.2 rounded shrink-0 ${
                     stat.badgeAlert
-                      ? 'bg-rose-100 text-rose-800 animate-pulse'
-                      : 'bg-emerald-50 text-emerald-800'
-                  }`}>
-                    {stat.badge}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-xs text-stone-500 font-semibold pt-1 border-t border-stone-100">
-                  <span>{stat.subtext}</span>
-                  <span className="text-[#0B3C26] group-hover:translate-x-1 transition-transform flex items-center gap-0.5 font-bold">
-                    <span>관리</span>
-                    <ChevronRight size={13} />
-                  </span>
-                </div>
+                      ? 'bg-rose-100 text-rose-700 animate-pulse'
+                      : 'bg-emerald-50 text-emerald-700'
+                  }`}
+                >
+                  {stat.badge}
+                </span>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>
 
-      {/* If quick_actions is not active, render in default position below KPIs */}
-      {activeSubTab !== 'quick_actions' && renderQuickActionsHub(false)}
+      {/* 3. Compact Quick Actions Toolbar */}
+      <div
+        id="quick-actions-hub"
+        ref={quickActionsRef}
+        className="bg-white rounded-xl border border-gray-200 p-3.5 space-y-2.5 shadow-2xs"
+      >
+        <div className="flex items-center justify-between px-1">
+          <div className="flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="text-xs font-bold text-gray-800">빠른 업무 바로가기</span>
+          </div>
+          <span className="text-[11px] text-gray-400">클릭 시 해당 관리 기능으로 바로 전환됩니다</span>
+        </div>
 
-      {/* Two Live Workstation Feeds Grid: Recent Enrollees & Recent Inquiries */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-7">
-        
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
+          {quickActionItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => onNavigateTab(item.tab, item.subTab)}
+                className="p-2.5 rounded-lg border border-gray-100 bg-gray-50/70 hover:bg-emerald-50 hover:border-emerald-200 transition-all text-left flex flex-col justify-between group cursor-pointer"
+              >
+                <div className="flex items-center justify-between">
+                  <Icon className={`w-4 h-4 ${item.accent}`} />
+                  <ChevronRight className="w-3 h-3 text-gray-300 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+                </div>
+                <div className="mt-2">
+                  <span className="text-xs font-bold text-gray-800 block truncate group-hover:text-emerald-900">
+                    {item.label}
+                  </span>
+                  <span className="text-[10px] text-gray-400 block truncate mt-0.5">
+                    {item.desc}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 4. Live Data Tables & Feeds: Recent Enrollees & Inquiries */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left Column: Recent Student Enrollees (7 cols) */}
-        <div className="lg:col-span-7 bg-white rounded-3xl p-6 border border-stone-200 shadow-xs space-y-4 flex flex-col justify-between">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-stone-100 pb-3.5">
+        <div className="lg:col-span-7 bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-2xs space-y-3 flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
               <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-[#0B3C26]" />
-                <h3 className="text-base font-black text-gray-900">최근 실시간 수강 등록 내역</h3>
+                <Clock className="w-4 h-4 text-emerald-700" />
+                <h3 className="text-xs sm:text-sm font-bold text-gray-900">최근 실시간 수강 등록 내역</h3>
               </div>
               <button
                 type="button"
                 onClick={() => onNavigateTab('reservations', 'enrollees_list')}
-                className="text-xs font-bold text-[#0B3C26] hover:text-[#C5A059] transition-colors flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition-colors flex items-center gap-0.5 cursor-pointer"
               >
-                <span>전체 128명 명단보기</span>
+                <span>전체 128명 명단</span>
                 <ChevronRight size={13} />
               </button>
             </div>
 
             <div className="overflow-x-auto no-scrollbar">
-              <table className="w-full text-left border-collapse min-w-[500px]">
+              <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="text-xs font-black text-stone-400 border-b border-stone-100">
-                    <th className="pb-2.5 px-2">등록번호</th>
-                    <th className="pb-2.5 px-2">수강생명</th>
-                    <th className="pb-2.5 px-2">과정명</th>
-                    <th className="pb-2.5 px-2">결제금액</th>
-                    <th className="pb-2.5 px-2 text-center">상태</th>
+                  <tr className="text-[11px] font-bold text-gray-400 border-b border-gray-100 bg-gray-50/50">
+                    <th className="py-2 px-2.5">등록번호</th>
+                    <th className="py-2 px-2.5">수강생명</th>
+                    <th className="py-2 px-2.5">과정명</th>
+                    <th className="py-2 px-2.5 text-right">결제금액</th>
+                    <th className="py-2 px-2.5 text-center">상태</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100 text-xs font-semibold text-stone-700">
+                <tbody className="divide-y divide-gray-100 text-gray-700 font-medium">
                   {recentEnrollees.map((enrollee) => (
-                    <tr key={enrollee.id} className="hover:bg-stone-50 transition-colors">
-                      <td className="py-3 px-2 font-mono text-stone-400 text-[11px]">
+                    <tr key={enrollee.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="py-2.5 px-2.5 font-mono text-gray-400 text-[11px]">
                         {privacyMode ? maskId(enrollee.id) : enrollee.id}
                       </td>
-                      <td className="py-3 px-2 font-black text-gray-900">
+                      <td className="py-2.5 px-2.5 font-bold text-gray-900">
                         {privacyMode ? maskName(enrollee.studentName) : enrollee.studentName}
                       </td>
-                      <td className="py-3 px-2 font-medium text-stone-800 truncate max-w-[170px]">
+                      <td className="py-2.5 px-2.5 text-gray-800 truncate max-w-[170px]">
                         {enrollee.courseTitle}
                       </td>
-                      <td className="py-3 px-2 font-black text-emerald-800">
+                      <td className="py-2.5 px-2.5 text-right font-mono font-bold text-emerald-800">
                         {enrollee.paidAmount ? `${enrollee.paidAmount.toLocaleString()}원` : '-'}
                       </td>
-                      <td className="py-3 px-2 text-center">
-                        <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black ${
-                          enrollee.status === 'completed'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}>
+                      <td className="py-2.5 px-2.5 text-center">
+                        <span
+                          className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold ${
+                            enrollee.status === 'completed'
+                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                              : 'bg-amber-50 text-amber-800 border border-amber-200'
+                          }`}
+                        >
                           {enrollee.status === 'completed' ? '결제완료' : '입금대기'}
                         </span>
                       </td>
@@ -466,53 +355,55 @@ export default function AdminDashboard({
             </div>
           </div>
 
-          <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs text-stone-400">
+          <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
             <span>{privacyMode ? '개인정보 보호 마스킹 작동중' : '전체 정보 노출중'}</span>
-            <span className="font-bold text-[#0B3C26]">128명 전원 수강증 및 영수증 발급 가능</span>
+            <span className="font-semibold text-emerald-800">128명 전원 수강증 & 영수증 발급 가능</span>
           </div>
         </div>
 
         {/* Right Column: Recent 1:1 Inquiries (5 cols) */}
-        <div className="lg:col-span-5 bg-white rounded-3xl p-6 border border-stone-200 shadow-xs space-y-4 flex flex-col justify-between">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-stone-100 pb-3.5">
+        <div className="lg:col-span-5 bg-white rounded-xl p-4 sm:p-5 border border-gray-200 shadow-2xs space-y-3 flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
               <div className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-emerald-700" />
-                <h3 className="text-base font-black text-gray-900">1:1 수강 상담 문의</h3>
+                <MessageSquare className="w-4 h-4 text-emerald-700" />
+                <h3 className="text-xs sm:text-sm font-bold text-gray-900">1:1 수강 상담 문의</h3>
               </div>
               <button
                 type="button"
                 onClick={() => onNavigateTab('inquiries', 'inquiry_all')}
-                className="text-xs font-bold text-[#0B3C26] hover:text-[#C5A059] transition-colors flex items-center gap-1 cursor-pointer"
+                className="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition-colors flex items-center gap-0.5 cursor-pointer"
               >
                 <span>전체 문의보기</span>
                 <ChevronRight size={13} />
               </button>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {recentInquiries.map((inq) => (
                 <div
                   key={inq.id}
                   onClick={() => onNavigateTab('inquiries', 'inquiry_all')}
-                  className="p-3.5 rounded-2xl bg-stone-50 hover:bg-emerald-50/60 border border-stone-200 transition-all cursor-pointer space-y-1.5"
+                  className="p-2.5 rounded-lg bg-gray-50/70 hover:bg-emerald-50/40 border border-gray-200 transition-colors cursor-pointer space-y-1"
                 >
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-black text-gray-900 truncate max-w-[160px]">
+                    <span className="font-bold text-gray-900 truncate max-w-[160px]">
                       {privacyMode ? maskName(inq.studentName) : inq.studentName} 수강생
                     </span>
-                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
-                      inq.status === 'completed'
-                        ? 'bg-emerald-100 text-emerald-800'
-                        : 'bg-rose-100 text-rose-800 animate-pulse'
-                    }`}>
+                    <span
+                      className={`text-[10px] font-semibold px-1.5 py-0.2 rounded ${
+                        inq.status === 'completed'
+                          ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                          : 'bg-rose-50 text-rose-800 border border-rose-200'
+                      }`}
+                    >
                       {inq.status === 'completed' ? '답변완료' : '답변대기'}
                     </span>
                   </div>
-                  <p className="text-xs font-bold text-stone-700 line-clamp-1">
+                  <p className="text-xs text-gray-700 line-clamp-1 font-medium">
                     {inq.title}
                   </p>
-                  <div className="flex items-center justify-between text-[11px] text-stone-400 pt-1">
+                  <div className="flex items-center justify-between text-[10px] text-gray-400 pt-0.5">
                     <span>{inq.categoryName}</span>
                     <span>{inq.date}</span>
                   </div>
@@ -524,15 +415,13 @@ export default function AdminDashboard({
           <button
             type="button"
             onClick={() => onNavigateTab('inquiries', 'chatbot_settings')}
-            className="w-full py-2.5 bg-stone-100 hover:bg-[#0B3C26] hover:text-white rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-1.5 cursor-pointer text-stone-700"
+            className="w-full py-2 bg-gray-50 hover:bg-emerald-600 hover:text-white rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer text-gray-700 border border-gray-200 hover:border-emerald-600"
           >
-            <Bot size={14} />
+            <Bot size={13} />
             <span>AI 챗봇 사전 질문/답변 설정 열기</span>
           </button>
         </div>
-
       </div>
-
     </div>
   );
 }
