@@ -15,8 +15,14 @@ import {
   Image as ImageIcon,
   Type,
   Eye,
+  Download,
+  Wand2,
 } from 'lucide-react';
 import { DEFAULT_HERO_BANNERS } from '../Hero';
+import {
+  QUICK_PROMPTS,
+  renderHeroBannerCanvas,
+} from '../../services/heroBannerSynthesizer';
 
 // Gallery of institution high-res images for banner backgrounds
 const PRESET_GALLERY_IMAGES = [
@@ -125,6 +131,12 @@ export default function AdminBannerPlanner({
   const [saveSuccess, setSaveSuccess] = useState(false);
   const fileInputRef = useRef(null);
 
+  // AI Prompt State
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [aiStyle, setAiStyle] = useState('masters');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedSuccessMsg, setGeneratedSuccessMsg] = useState('');
+
   useEffect(() => {
     if (siteData?.heroBanners && siteData.heroBanners.length > 0) {
       setSlides(siteData.heroBanners);
@@ -159,6 +171,45 @@ export default function AdminBannerPlanner({
           : s
       )
     );
+  };
+
+  // AI Generation Handler from Prompt
+  const handleGenerateFromPrompt = async () => {
+    const promptToUse = aiPrompt.trim() || '특급호텔 40년 조리명장의 비법 스테이크와 와인 페어링 창업 실무';
+    setIsGenerating(true);
+    setGeneratedSuccessMsg('');
+
+    try {
+      const result = await renderHeroBannerCanvas({
+        prompt: promptToUse,
+        style: aiStyle,
+      });
+
+      const newId = `banner_ai_${Date.now()}`;
+      const newSlide = {
+        id: newId,
+        title: result.headline,
+        subtitle: result.subtitle,
+        imageUrl: result.dataUrl,
+        imageOnly: true, // Complete 2296x640 baked graphic matching Image 2!
+        active: true,
+        overlayDim: 0,
+        tag: result.badge,
+        buttonText: '교육과정 둘러보기',
+        buttonLink: 'catalog',
+      };
+
+      // Add to beginning of slides so it becomes the primary active slide!
+      setSlides([newSlide, ...slides]);
+      setSelectedSlideId(newId);
+      setGeneratedSuccessMsg(`✨ 2번 규격(2296×640)에 맞춘 고화질 배너가 새로 생성되었습니다!`);
+      setTimeout(() => setGeneratedSuccessMsg(''), 4000);
+    } catch (err) {
+      console.error('Failed to generate banner:', err);
+      alert('배너 생성 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleAddNewSlide = () => {
@@ -234,6 +285,14 @@ export default function AdminBannerPlanner({
     reader.readAsDataURL(file);
   };
 
+  const handleDownloadBannerImage = () => {
+    if (!currentSlide.imageUrl) return;
+    const link = document.createElement('a');
+    link.download = `kfssec_hero_banner_${currentSlide.id}.png`;
+    link.href = currentSlide.imageUrl;
+    link.click();
+  };
+
   const handleSaveToHomepage = () => {
     const updated = {
       ...siteData,
@@ -265,10 +324,104 @@ export default function AdminBannerPlanner({
   };
 
   return (
-    <div className="space-y-4 animate-fadeIn font-sans max-w-7xl mx-auto pb-8">
+    <div className="space-y-3.5 animate-fadeIn font-sans max-w-7xl mx-auto pb-8">
       
-      {/* 1. SLIM TOOLBAR (Slide Selector Chips + Action Buttons) */}
-      <div className="bg-white p-2.5 sm:p-3 rounded-2xl border border-gray-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+      {/* 1. AI PROMPT BANNER GENERATOR BAR (MATCHING 2296x640 CINEMA SIZE) */}
+      <div className="bg-gradient-to-r from-stone-950 via-stone-900 to-black rounded-2xl p-3.5 sm:p-4 border-2 border-[#C5A059] shadow-xl text-white space-y-2.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 border-b border-white/10 pb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-lg bg-[#C5A059] text-black flex items-center justify-center font-black shrink-0">
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <h3 className="text-xs sm:text-sm font-black text-white flex items-center gap-2">
+                <span>AI 프롬프트 배너 자동 생성기 (2번 규격 2296 × 640 맞춤 생성)</span>
+                <span className="px-2 py-0.5 rounded-full bg-[#C5A059]/20 text-[#D4AF37] border border-[#C5A059]/40 text-[9px] font-mono">
+                  Prompt to Cinema Banner
+                </span>
+              </h3>
+            </div>
+          </div>
+          <span className="text-[11px] text-gray-400">
+            원하는 주제를 입력하시면 2번 배너 사이즈에 맞춘 고화질 그래픽 배너를 즉시 생성합니다.
+          </span>
+        </div>
+
+        {/* Input Form Row */}
+        <div className="flex flex-col sm:flex-row gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleGenerateFromPrompt()}
+              placeholder="생성할 배너 주제 입력 (예: 특급호텔 40년 명장의 비법 스테이크와 와인 페어링 창업 특강)"
+              className="w-full pl-3.5 pr-8 py-2 bg-stone-900/90 border border-white/20 focus:border-[#C5A059] rounded-xl text-xs font-bold text-white placeholder-gray-500 focus:outline-none"
+            />
+            {aiPrompt && (
+              <button
+                type="button"
+                onClick={() => setAiPrompt('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          <select
+            value={aiStyle}
+            onChange={(e) => setAiStyle(e.target.value)}
+            className="bg-stone-900 border border-white/20 text-xs font-bold text-[#D4AF37] rounded-xl px-2.5 py-2 focus:outline-none focus:border-[#C5A059] shrink-0"
+          >
+            <option value="masters">👑 명장 화보 스타일 (2번)</option>
+            <option value="chef">🍳 셰프 다이내믹 불쇼 스타일</option>
+            <option value="sauce">🍷 100년 발효 비법 전수 스타일</option>
+            <option value="cafe">☕ 감성 카페 &amp; 디저트 스타일</option>
+            <option value="restaurant">🏢 프랜차이즈 창업 매장 스타일</option>
+          </select>
+
+          <button
+            type="button"
+            onClick={handleGenerateFromPrompt}
+            disabled={isGenerating}
+            className="px-5 py-2 bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#B38D43] hover:brightness-110 text-black font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50"
+          >
+            <Wand2 className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
+            <span>{isGenerating ? 'AI 배너 생성중...' : '✨ AI 배너 새로 생성하기'}</span>
+          </button>
+        </div>
+
+        {/* Quick Chips & Success Message */}
+        <div className="flex items-center justify-between gap-2 pt-0.5">
+          <div className="flex items-center gap-1 overflow-x-auto scrollbar-none text-[10px]">
+            <span className="text-gray-400 font-bold shrink-0">추천 예시:</span>
+            {QUICK_PROMPTS.map((qp) => (
+              <button
+                key={qp.label}
+                type="button"
+                onClick={() => {
+                  setAiPrompt(qp.prompt);
+                  setAiStyle(qp.style);
+                }}
+                className="px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition-colors cursor-pointer shrink-0 border border-white/10"
+              >
+                {qp.label}
+              </button>
+            ))}
+          </div>
+
+          {generatedSuccessMsg && (
+            <span className="text-[11px] text-emerald-400 font-bold shrink-0 animate-fadeIn flex items-center gap-1">
+              <CheckCircle className="w-3.5 h-3.5" />
+              <span>{generatedSuccessMsg}</span>
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* 2. SLIM TOOLBAR (Slide Selector Chips + Action Buttons) */}
+      <div className="bg-white p-2.5 rounded-2xl border border-gray-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         
         {/* Slide Switcher Chips */}
         <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-thin">
@@ -301,6 +454,16 @@ export default function AdminBannerPlanner({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+          <button
+            type="button"
+            onClick={handleDownloadBannerImage}
+            className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-gray-800 text-xs font-bold rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
+            title="현재 배너 이미지 파일 다운로드"
+          >
+            <Download className="w-3.5 h-3.5 text-gray-600" />
+            <span>이미지 다운로드</span>
+          </button>
+
           <a
             href="/"
             target="_blank"
@@ -339,11 +502,11 @@ export default function AdminBannerPlanner({
         </div>
       )}
 
-      {/* 2-COLUMN HIGH-DENSITY SPLIT WORKSPACE */}
+      {/* 3. 2-COLUMN HIGH-DENSITY SPLIT WORKSPACE */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         
         {/* LEFT COLUMN: LIVE CANVASS + TEMPLATES + ROSTER (7 cols) */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-7 space-y-3.5">
           
           {/* COMPACT CINEMA CANVAS PREVIEW */}
           <div className="bg-stone-900 rounded-2xl p-3 sm:p-4 border border-black shadow-md space-y-2">
@@ -438,7 +601,7 @@ export default function AdminBannerPlanner({
           </div>
 
           {/* ONE-CLICK 2번 스타일 추천 템플릿 CHIPS */}
-          <div className="bg-white rounded-2xl p-3.5 border border-gray-200 shadow-xs space-y-2">
+          <div className="bg-white rounded-2xl p-3 border border-gray-200 shadow-xs space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black text-black flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
@@ -453,12 +616,12 @@ export default function AdminBannerPlanner({
                   key={tmpl.id}
                   type="button"
                   onClick={() => handleApplyPreset(tmpl)}
-                  className="p-2 rounded-xl border border-gray-200 hover:border-black hover:bg-stone-50 transition-all text-left group flex items-center gap-2 cursor-pointer"
+                  className="p-1.5 rounded-xl border border-gray-200 hover:border-black hover:bg-stone-50 transition-all text-left group flex items-center gap-2 cursor-pointer"
                 >
                   <img
                     src={tmpl.imageUrl}
                     alt=""
-                    className="w-10 h-8 rounded-lg object-cover bg-black shrink-0 border border-gray-300"
+                    className="w-10 h-7 rounded-lg object-cover bg-black shrink-0 border border-gray-300"
                   />
                   <div className="min-w-0">
                     <span className="text-[11px] font-black text-gray-900 group-hover:text-emerald-800 block truncate leading-tight">
@@ -474,8 +637,8 @@ export default function AdminBannerPlanner({
           </div>
 
           {/* COMPACT SLIDES ORDER & ROSTER */}
-          <div className="bg-white rounded-2xl p-3.5 border border-gray-200 shadow-xs space-y-2">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+          <div className="bg-white rounded-2xl p-3 border border-gray-200 shadow-xs space-y-2">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
               <span className="text-xs font-black text-black flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5 text-emerald-700" />
                 <span>슬라이더 순서 &amp; 노출 관리 ({slides.length}개)</span>
@@ -483,12 +646,12 @@ export default function AdminBannerPlanner({
               <span className="text-[10px] text-gray-400">위/아래 순서 변경</span>
             </div>
 
-            <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
+            <div className="space-y-1 max-h-40 overflow-y-auto pr-1">
               {slides.map((s, idx) => (
                 <div
                   key={s.id}
                   onClick={() => setSelectedSlideId(s.id)}
-                  className={`p-2 rounded-xl border transition-all flex items-center justify-between gap-2 cursor-pointer ${
+                  className={`p-1.5 sm:p-2 rounded-xl border transition-all flex items-center justify-between gap-2 cursor-pointer ${
                     s.id === currentSlide.id
                       ? 'border-black bg-stone-50 ring-1 ring-black'
                       : 'border-gray-200 bg-white hover:bg-stone-50'
@@ -498,7 +661,7 @@ export default function AdminBannerPlanner({
                     <span className="w-5 h-5 rounded-md bg-black text-[#D4AF37] font-black font-mono text-[10px] flex items-center justify-center shrink-0">
                       0{idx + 1}
                     </span>
-                    <img src={s.imageUrl} alt="" className="w-9 h-6 rounded object-cover bg-black shrink-0 border border-gray-300" />
+                    <img src={s.imageUrl} alt="" className="w-8 h-5 rounded object-cover bg-black shrink-0 border border-gray-300" />
                     <span className="text-xs font-black text-black truncate max-w-[170px] sm:max-w-[220px]">
                       {s.title}
                     </span>
@@ -553,11 +716,11 @@ export default function AdminBannerPlanner({
 
         {/* RIGHT COLUMN: STICKY VISUAL INSPECTOR (5 cols) */}
         <div className="lg:col-span-5">
-          <div className="bg-white rounded-2xl p-4 border border-gray-200 shadow-sm space-y-4 lg:sticky lg:top-4">
+          <div className="bg-white rounded-2xl p-3.5 border border-gray-200 shadow-sm space-y-3.5 lg:sticky lg:top-4">
             
             {/* Inspector Tab Switcher */}
-            <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
-              <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+              <div className="flex items-center gap-1 bg-gray-100 p-0.5 rounded-xl">
                 <button
                   type="button"
                   onClick={() => setInspectorTab('image')}
@@ -589,7 +752,7 @@ export default function AdminBannerPlanner({
 
             {/* TAB 1: IMAGE SETTINGS */}
             {inspectorTab === 'image' && (
-              <div className="space-y-3.5 text-xs animate-fadeIn">
+              <div className="space-y-3 text-xs animate-fadeIn">
                 {/* Banner Mode */}
                 <div className="space-y-1">
                   <label className="text-[11px] font-black text-gray-700 block">배너 타입</label>
@@ -682,7 +845,7 @@ export default function AdminBannerPlanner({
 
             {/* TAB 2: TEXT & STYLE SETTINGS */}
             {inspectorTab === 'text' && (
-              <div className="space-y-3 text-xs animate-fadeIn">
+              <div className="space-y-2.5 text-xs animate-fadeIn">
                 {/* Title */}
                 <div className="space-y-1">
                   <label className="text-[11px] font-black text-gray-700 block">메인 타이틀 (대형 헤드라인)</label>
@@ -721,7 +884,7 @@ export default function AdminBannerPlanner({
 
                 {/* Dimming Slider */}
                 {!currentSlide.imageOnly && (
-                  <div className="space-y-1 bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                  <div className="space-y-1 bg-stone-50 p-2 rounded-xl border border-stone-200">
                     <div className="flex justify-between items-center text-[11px]">
                       <span className="font-black text-gray-700">배경 어둡기(Dim)</span>
                       <span className="font-mono font-black text-emerald-800">{currentSlide.overlayDim || 50}%</span>
@@ -772,7 +935,7 @@ export default function AdminBannerPlanner({
               <button
                 type="button"
                 onClick={handleSaveToHomepage}
-                className="w-full py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-[#C5A059]"
+                className="w-full py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-[#C5A059]"
               >
                 <CheckCircle className="w-4 h-4 text-emerald-400" />
                 <span>홈페이지 실시간 반영 저장</span>
