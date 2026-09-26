@@ -215,27 +215,27 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
   return (
     <div className="space-y-6 animate-fadeIn font-sans text-gray-900 max-w-7xl mx-auto pb-12">
       
-      {/* Header Bar */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black">
-              HOME VISUAL & MEDIA CONTROL
-            </span>
+      {/* Compact Header Bar */}
+      <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-gray-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black shrink-0">
+            VISUAL & MEDIA
+          </span>
+          <div>
+            <h2 className="text-base font-black text-gray-900 tracking-tight leading-tight">
+              홈화면 비주얼 &amp; 미디어 관리
+            </h2>
+            <p className="text-[11px] text-gray-500 hidden sm:block">
+              메인 히어로 배너 슬라이더, 행사 띠배너, 유튜브 미디어를 제어합니다.
+            </p>
           </div>
-          <h2 className="text-2xl font-black text-gray-900 tracking-tight mt-1">
-            홈화면 라이브 에디터 & 유튜브 미디어 관리
-          </h2>
-          <p className="text-xs text-gray-500 mt-1">
-            메인 행사 띠배너, 모집 카운트다운(D-Day), 언론 보도 및 유튜브 동영상 콘텐츠를 실시간으로 제어합니다.
-          </p>
         </div>
 
         {/* View/Subtab Switcher */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-gray-100 p-1.5 rounded-2xl border border-gray-200 self-start md:self-auto">
+        <div className="flex flex-wrap items-center gap-1 bg-gray-100 p-1 rounded-xl border border-gray-200 self-start md:self-auto">
           <button
             onClick={() => handleSubTabSwitch('visual_editor')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
               activeSubTab === 'visual_editor'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-gray-600 hover:text-gray-900'
@@ -245,18 +245,18 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
           </button>
           <button
             onClick={() => handleSubTabSwitch('banner_planner')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
               activeSubTab === 'banner_planner'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-emerald-800 bg-emerald-50 hover:bg-emerald-100'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>🖼️ 메인 히어로 배너 관리 (슬라이더)</span>
+            <span>🖼️ 메인 히어로 배너 (슬라이더)</span>
           </button>
           <button
             onClick={() => handleSubTabSwitch('banner_edit')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
               activeSubTab === 'banner_edit'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-gray-600 hover:text-gray-900'
@@ -266,7 +266,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
           </button>
           <button
             onClick={() => handleSubTabSwitch('youtube_edit')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
               activeSubTab === 'youtube_edit'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'text-gray-600 hover:text-gray-900'
