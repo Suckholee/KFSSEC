@@ -103,6 +103,36 @@ export function analyzePromptAndGenerateCopy(promptText, styleKey = 'masters') {
 }
 
 /**
+ * Call serverless / Express backend to generate high-res image using OpenAI or Google Gemini
+ */
+export async function generateAiBannerImage({ prompt, model = 'gemini', style = 'masters' }) {
+  try {
+    const response = await fetch('/api/generate-ai-image', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt, model, style }),
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.message || `API error (${response.status})`);
+    }
+
+    const data = await response.json();
+    if (!data.success || !data.imageUrl) {
+      throw new Error(data.message || 'Image generation failed');
+    }
+
+    return data;
+  } catch (err) {
+    console.error('[generateAiBannerImage] Error:', err);
+    throw err;
+  }
+}
+
+/**
  * Loads an image with CORS/local safety
  */
 function loadImage(src) {
@@ -127,13 +157,31 @@ function loadImage(src) {
 export async function renderHeroBannerCanvas({
   prompt,
   style = 'masters',
+  model = 'gemini', // 'gemini' | 'openai'
+  useAiGeneration = false,
   customBgUrl = null,
   overrideHeadline = null,
   overrideSubtitle = null,
   overrideBadge = null,
 }) {
   const analysis = analyzePromptAndGenerateCopy(prompt, style);
-  const targetBgUrl = customBgUrl || analysis.bgUrl;
+  let targetBgUrl = customBgUrl;
+  let modelUsed = null;
+
+  // If AI generation is requested and no customBgUrl is provided, generate image via API
+  if (useAiGeneration && !targetBgUrl) {
+    try {
+      const aiResult = await generateAiBannerImage({ prompt, model, style });
+      targetBgUrl = aiResult.imageUrl;
+      modelUsed = aiResult.modelUsed || model;
+    } catch (aiErr) {
+      console.warn('AI image generation failed or offline, falling back to local style background:', aiErr.message);
+      targetBgUrl = analysis.bgUrl;
+    }
+  } else if (!targetBgUrl) {
+    targetBgUrl = analysis.bgUrl;
+  }
+
   const headline = overrideHeadline || analysis.headline;
   const subtitle = overrideSubtitle || analysis.subtitle;
   const badge = overrideBadge || analysis.badge;
@@ -282,5 +330,6 @@ export async function renderHeroBannerCanvas({
     subtitle,
     badge,
     bgUrl: targetBgUrl,
+    modelUsed,
   };
 }

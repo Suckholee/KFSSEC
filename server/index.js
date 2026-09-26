@@ -4,6 +4,20 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GLOBAL_DINING_TRENDS, TREND_CATEGORY_INFO } from '../src/data/globalDiningTrends.js';
+import { handleGenerateAiImage } from '../api/generate-ai-image.js';
+
+// Load .env / .env.local
+try {
+  if (process.loadEnvFile) {
+    if (fs.existsSync('.env.local')) {
+      process.loadEnvFile('.env.local');
+    } else if (fs.existsSync('.env')) {
+      process.loadEnvFile('.env');
+    }
+  }
+} catch (e) {
+  // Ignore if not present
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -138,6 +152,16 @@ app.post('/api/upload', (req, res) => {
   } catch (err) {
     console.error('File upload error:', err);
     res.status(500).json({ success: false, message: 'File upload failed' });
+  }
+});
+
+// REST API 7: POST Direct AI Image Generation (OpenAI & Gemini)
+app.post('/api/generate-ai-image', async (req, res) => {
+  try {
+    await handleGenerateAiImage(req, res);
+  } catch (err) {
+    console.error('Error generating AI image:', err);
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 

@@ -134,7 +134,9 @@ export default function AdminBannerPlanner({
   // AI Prompt State
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiStyle, setAiStyle] = useState('masters');
+  const [aiModel, setAiModel] = useState('gemini'); // 'gemini' | 'openai'
   const [isGenerating, setIsGenerating] = useState(false);
+  const [aiProgressText, setAiProgressText] = useState('');
   const [generatedSuccessMsg, setGeneratedSuccessMsg] = useState('');
 
   useEffect(() => {
@@ -178,11 +180,15 @@ export default function AdminBannerPlanner({
     const promptToUse = aiPrompt.trim() || '특급호텔 40년 조리명장의 비법 스테이크와 와인 페어링 창업 실무';
     setIsGenerating(true);
     setGeneratedSuccessMsg('');
+    const modelNameDisplay = aiModel === 'gemini' ? 'Google Gemini' : 'OpenAI';
+    setAiProgressText(`${modelNameDisplay} 이미지 모델 생성 중... (잠시만 기다려주세요)`);
 
     try {
       const result = await renderHeroBannerCanvas({
         prompt: promptToUse,
         style: aiStyle,
+        model: aiModel,
+        useAiGeneration: true,
       });
 
       const newId = `banner_ai_${Date.now()}`;
@@ -202,13 +208,19 @@ export default function AdminBannerPlanner({
       // Add to beginning of slides so it becomes the primary active slide!
       setSlides([newSlide, ...slides]);
       setSelectedSlideId(newId);
-      setGeneratedSuccessMsg(`✨ 2번 규격(2296×640)에 맞춘 고화질 배너가 새로 생성되었습니다!`);
-      setTimeout(() => setGeneratedSuccessMsg(''), 4000);
+      const usedName = result.modelUsed
+        ? result.modelUsed.includes('gemini')
+          ? 'Google Gemini'
+          : 'OpenAI'
+        : modelNameDisplay;
+      setGeneratedSuccessMsg(`✨ ${usedName} 모델로 2번 규격(2296×640) 맞춤 배너가 새로 생성되었습니다!`);
+      setTimeout(() => setGeneratedSuccessMsg(''), 5000);
     } catch (err) {
       console.error('Failed to generate banner:', err);
-      alert('배너 생성 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      alert(`배너 생성 중 오류가 발생했습니다: ${err.message || '다시 시도해 주세요.'}`);
     } finally {
       setIsGenerating(false);
+      setAiProgressText('');
     }
   };
 
@@ -342,9 +354,35 @@ export default function AdminBannerPlanner({
               </h3>
             </div>
           </div>
-          <span className="text-[11px] text-gray-400">
-            원하는 주제를 입력하시면 2번 배너 사이즈에 맞춘 고화질 그래픽 배너를 즉시 생성합니다.
-          </span>
+
+          {/* Model Switcher Pill Group */}
+          <div className="flex items-center gap-1.5 bg-black/60 border border-white/15 p-1 rounded-xl shrink-0">
+            <span className="text-[10px] text-gray-400 font-bold px-1 hidden sm:inline">AI 모델:</span>
+            <button
+              type="button"
+              onClick={() => setAiModel('gemini')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer ${
+                aiModel === 'gemini'
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm ring-1 ring-blue-400'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <span className={`w-2 h-2 rounded-full ${aiModel === 'gemini' ? 'bg-cyan-300 animate-pulse' : 'bg-gray-500'}`} />
+              <span>Google Gemini</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setAiModel('openai')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer ${
+                aiModel === 'openai'
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-sm ring-1 ring-emerald-400'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <span className={`w-2 h-2 rounded-full ${aiModel === 'openai' ? 'bg-emerald-300 animate-pulse' : 'bg-gray-500'}`} />
+              <span>OpenAI</span>
+            </button>
+          </div>
         </div>
 
         {/* Input Form Row */}
@@ -388,12 +426,12 @@ export default function AdminBannerPlanner({
             className="px-5 py-2 bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#B38D43] hover:brightness-110 text-black font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50"
           >
             <Wand2 className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
-            <span>{isGenerating ? 'AI 배너 생성중...' : '✨ AI 배너 새로 생성하기'}</span>
+            <span>{isGenerating ? (aiModel === 'gemini' ? 'Gemini 생성중...' : 'OpenAI 생성중...') : '✨ AI 배너 새로 생성하기'}</span>
           </button>
         </div>
 
-        {/* Quick Chips & Success Message */}
-        <div className="flex items-center justify-between gap-2 pt-0.5">
+        {/* Progress & Quick Chips Row */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pt-0.5">
           <div className="flex items-center gap-1 overflow-x-auto scrollbar-none text-[10px]">
             <span className="text-gray-400 font-bold shrink-0">추천 예시:</span>
             {QUICK_PROMPTS.map((qp) => (
@@ -411,7 +449,14 @@ export default function AdminBannerPlanner({
             ))}
           </div>
 
-          {generatedSuccessMsg && (
+          {isGenerating && aiProgressText && (
+            <span className="text-[11px] text-amber-300 font-bold shrink-0 animate-pulse flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+              <span>{aiProgressText}</span>
+            </span>
+          )}
+
+          {generatedSuccessMsg && !isGenerating && (
             <span className="text-[11px] text-emerald-400 font-bold shrink-0 animate-fadeIn flex items-center gap-1">
               <CheckCircle className="w-3.5 h-3.5" />
               <span>{generatedSuccessMsg}</span>
