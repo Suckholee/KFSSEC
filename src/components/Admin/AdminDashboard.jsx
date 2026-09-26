@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Users,
   GraduationCap,
@@ -33,8 +33,19 @@ export default function AdminDashboard({
   coursesList = [],
   studentInquiries = [],
   siteData = {},
+  activeSubTab = 'overview',
 }) {
   const [privacyMode, setPrivacyMode] = useState(true);
+  const quickActionsRef = useRef(null);
+
+  useEffect(() => {
+    if (activeSubTab === 'quick_actions') {
+      const el = quickActionsRef.current || document.getElementById('quick-actions-hub');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [activeSubTab]);
 
   // Live KPI calculations
   const totalEnrollees = enrolleesList.length || 128;
@@ -113,6 +124,165 @@ export default function AdminDashboard({
     },
   ];
 
+  const renderQuickActionsHub = (isElevated = false) => (
+    <div
+      id="quick-actions-hub"
+      ref={quickActionsRef}
+      className={`p-6 rounded-3xl border transition-all duration-300 space-y-4 ${
+        activeSubTab === 'quick_actions' || isElevated
+          ? 'bg-gradient-to-br from-stone-900 to-[#0B3C26] text-white border-2 border-[#C5A059] ring-4 ring-[#C5A059]/20 shadow-2xl'
+          : 'bg-white text-gray-900 border-stone-200 shadow-xs'
+      }`}
+    >
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3.5 border-stone-200/40">
+        <div className="flex items-center gap-2.5">
+          <div className={`p-2 rounded-xl ${activeSubTab === 'quick_actions' || isElevated ? 'bg-[#C5A059]/20 text-[#D4AF37]' : 'bg-emerald-50 text-[#0B3C26]'}`}>
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className={`text-base sm:text-lg font-black ${activeSubTab === 'quick_actions' || isElevated ? 'text-white' : 'text-gray-900'}`}>
+                빠른 업무 바로가기 (Quick Actions)
+              </h3>
+              {activeSubTab === 'quick_actions' && (
+                <span className="px-2.5 py-0.5 rounded-full bg-[#C5A059] text-stone-950 text-[11px] font-black animate-pulse flex items-center gap-1">
+                  <span>⚡ 활성화됨</span>
+                </span>
+              )}
+            </div>
+            <p className={`text-xs ${activeSubTab === 'quick_actions' || isElevated ? 'text-emerald-100/80 font-medium' : 'text-stone-500 font-bold'}`}>
+              원하시는 항목을 클릭하시면 해당 관리 페이지로 즉시 전환됩니다.
+            </p>
+          </div>
+        </div>
+
+        {activeSubTab === 'quick_actions' && (
+          <button
+            type="button"
+            onClick={() => onNavigateTab('dashboard', 'overview')}
+            className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#D4AF37] border border-[#C5A059]/40 text-xs font-black transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+          >
+            <span>← 대시보드 전체 개요로</span>
+          </button>
+        )}
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <button
+          type="button"
+          onClick={() => onNavigateTab('home', 'visual_editor')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Home className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">홈화면 라이브 관리</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>행사 배너 & 유튜브</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('about', 'history_manage')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Building2 className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">교육원 소개 & 연혁</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>연혁 및 교수진 관리</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('courses', 'course_add')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Plus className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">신규 과목 DB 등록</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>수강료 및 개강일정</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('masters', 'profile_list')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Award className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">명장·명인 관리</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>64명 프로필 & SNS</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('partner_logos', 'logo_list')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Handshake className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">MOU 로고 관리</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>14개 기관 및 미디어</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('community', 'notice_list')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Megaphone className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">공지사항 & 게시판</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>보도자료 & 대회공지</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('reservations', 'enrollees_list')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Users className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">수강생 회원 (128명)</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>결제상태 & 수강증</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('settings', 'corp_info')}
+          className={`p-4 rounded-2xl text-left transition-all duration-200 group cursor-pointer active:scale-95 border ${
+            activeSubTab === 'quick_actions' || isElevated
+              ? 'bg-white/10 hover:bg-[#C5A059] text-white hover:text-stone-950 border-white/10 hover:border-[#C5A059]'
+              : 'bg-stone-50 hover:bg-[#0B3C26] hover:text-white border-stone-200'
+          }`}
+        >
+          <Settings className={`w-6 h-6 mb-2 transition-colors ${activeSubTab === 'quick_actions' || isElevated ? 'text-[#D4AF37] group-hover:text-stone-950' : 'text-[#0B3C26] group-hover:text-[#D4AF37]'}`} />
+          <span className="text-xs sm:text-sm font-black block">기관 대표 정보 설정</span>
+          <span className={`text-[11px] block mt-0.5 ${activeSubTab === 'quick_actions' || isElevated ? 'text-gray-300 group-hover:text-stone-800' : 'text-stone-500 group-hover:text-emerald-100/80'}`}>대표번호 & 주소 설정</span>
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-7 animate-fadeIn font-sans text-gray-900 max-w-7xl mx-auto">
       
@@ -168,6 +338,9 @@ export default function AdminDashboard({
         <div className="absolute -bottom-16 -right-16 w-80 h-80 bg-[#C5A059]/15 rounded-full blur-3xl pointer-events-none" />
       </div>
 
+      {/* If quick_actions subTab is selected, elevate Quick Action Hub to top */}
+      {activeSubTab === 'quick_actions' && renderQuickActionsHub(true)}
+
       {/* 6 Key Executive KPI Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {stats.map((stat) => {
@@ -213,98 +386,8 @@ export default function AdminDashboard({
         })}
       </div>
 
-      {/* Quick Action Hub (빠른 업무 실행) */}
-      <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-xs space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#C5A059]" />
-            <h3 className="text-base font-black text-gray-900">빠른 업무 바로가기 (Quick Actions)</h3>
-          </div>
-          <span className="text-xs text-stone-400 font-bold">자주 사용하는 핵심 관리 메뉴</span>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-          <button
-            type="button"
-            onClick={() => onNavigateTab('home', 'visual_editor')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Home className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">홈화면 라이브 관리</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">행사 배너 & 유튜브</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('about', 'history_manage')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Building2 className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">교육원 소개 & 연혁</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">연혁 및 교수진 관리</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('courses', 'course_add')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Plus className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">신규 과목 DB 등록</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">수강료 및 개강일정</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('masters', 'profile_list')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Award className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">명장·명인 관리</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">64명 프로필 & SNS</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('partner_logos', 'logo_list')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Handshake className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">MOU 로고 관리</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">인피니티 롤링 배너</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('community', 'notice_list')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Megaphone className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">공지사항 & 게시판</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">보도자료 & 대회공지</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('reservations', 'enrollees_list')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Users className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">수강생 회원 (128명)</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">결제상태 & 수강증</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('settings', 'corp_info')}
-            className="p-4 rounded-2xl bg-stone-50 hover:bg-[#0B3C26] hover:text-white border border-stone-200 text-left transition-all duration-200 group cursor-pointer"
-          >
-            <Settings className="w-6 h-6 text-[#0B3C26] group-hover:text-[#D4AF37] mb-2 transition-colors" />
-            <span className="text-xs sm:text-sm font-black block">기관 대표 정보 설정</span>
-            <span className="text-[11px] text-stone-500 group-hover:text-emerald-100/80 block mt-0.5">대표번호 & 주소 설정</span>
-          </button>
-        </div>
-      </div>
+      {/* If quick_actions is not active, render in default position below KPIs */}
+      {activeSubTab !== 'quick_actions' && renderQuickActionsHub(false)}
 
       {/* Two Live Workstation Feeds Grid: Recent Enrollees & Recent Inquiries */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-7">

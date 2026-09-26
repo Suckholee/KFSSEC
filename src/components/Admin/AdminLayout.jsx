@@ -457,6 +457,28 @@ export default function AdminLayout({
   };
 
   const switchPrimaryMenu = (menu, subTab = null, course = null) => {
+    let effectiveCourse = course;
+    if (menu === 'courses' && subTab === 'course_add' && !effectiveCourse) {
+      effectiveCourse = {
+        title: '',
+        category: 'hansik',
+        categoryName: '한식',
+        industry: '한식',
+        stage: '창업 준비',
+        format: '오프라인',
+        price: 4500000,
+        discountRate: 30,
+        duration: '4주 과정',
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: '',
+        examDate: '',
+        certName: '한식 조리기능장 및 지도사 1급',
+        instructor: '안형상 이사장 / 40년 명장',
+        image: '/images/course_menu_dev.jpg',
+        description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
+      };
+    }
+
     const defaultSubTab = subTab || (
       menu === 'dashboard' ? 'overview' :
       menu === 'home' ? 'visual_editor' :
@@ -473,9 +495,9 @@ export default function AdminLayout({
     );
     setPrimaryMenu(menu);
     setSecondarySubTab(defaultSubTab);
-    setSelectedCourseForEdit(course);
+    setSelectedCourseForEdit(effectiveCourse);
     setSelectedCourseForEnrollees(null);
-    updateAdminUrl(menu, defaultSubTab, course ? course.id : null);
+    updateAdminUrl(menu, defaultSubTab, effectiveCourse ? effectiveCourse.id : null);
   };
 
   useEffect(() => {
@@ -983,6 +1005,7 @@ export default function AdminLayout({
               coursesList={coursesList}
               studentInquiries={studentInquiries}
               siteData={siteData}
+              activeSubTab={secondarySubTab}
             />
           )}
 
