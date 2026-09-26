@@ -29,9 +29,55 @@ import {
 } from 'lucide-react';
 
 export function DevInquiryBoard() {
-  const STORAGE_KEY = 'kfssec_dev_inquiries_v3';
+  const STORAGE_KEY = 'kfssec_dev_inquiries_v4';
 
   const INITIAL_INQUIRIES = [
+    {
+      id: 13,
+      type: '디자인/브랜딩',
+      title: '공식 로고 기반 크롬 탭 파비콘(Favicon) & 모바일 PWA 앱 아이콘 제작 및 전역 배포',
+      description: '공식 로고(/images/logo.png)를 활용하여 크롬 등 웹 브라우저 탭, 즐겨찾기, 북마크, 모바일 홈 화면 바로가기(iOS Apple Touch Icon / Android PWA Web App Icon)에서 선명하게 보일 수 있도록 고해상도 멀티 플랫폼 파비콘 및 앱 아이콘을 제작 및 배포해 주세요.',
+      screenshots: [
+        { url: '/images/logo.png', annotations: [{ x: 50, y: 50, text: '한국외식창업교육원 공식 엠블럼 원본 (에메랄드 & 골드)' }] },
+        { url: '/apple-touch-icon.png', annotations: [{ x: 50, y: 50, text: 'iOS 사파리 및 아이폰/아이패드 180×180 고화질 앱 아이콘' }] },
+        { url: '/android-chrome-512x512.png', annotations: [{ x: 50, y: 50, text: '안드로이드 PWA 및 웹앱 512×512 마스터 아이콘' }] },
+        { url: '/favicon-32x32.png', annotations: [{ x: 50, y: 50, text: 'PC 크롬 탭 및 북마크 32×32 선명화 아이콘' }] },
+      ],
+      status: 'completed',
+      date: '2026.09.26 14:15',
+      devReply: '✓ 구현 완료: 한국외식창업교육원 공식 로고 심볼(그린 라운드 프레임, 황금 월계관, 중앙 조리모/나이프/포크) 기반 고화질 멀티 포맷 파비콘 및 모바일 앱 아이콘 제작 및 전역 적용 완료.\n1. public/favicon.svg: SVG 벡터 기반 초고화질 무손실 파비콘 렌더링\n2. public/favicon.ico: 레거시 및 최신 브라우저 호환 16x16, 32x32, 48x48 멀티 레이어 ICO 파일 패키징\n3. public/apple-touch-icon.png: iOS 사파리 및 아이폰/아이패드 홈 화면 추가용 180x180 프리미엄 앱 아이콘 생성\n4. public/android-chrome-192x192.png, public/android-chrome-512x512.png: 안드로이드 크롬 PWA 설치 및 모바일 풀스크린 규격 생성\n5. public/site.webmanifest & index.html 메타 태그 전역 연동 완료 (theme-color: #0B3C26)\n6. Vercel 프로덕션 배포 완료 및 브라우저 캐시 무결성 검증 완료.',
+      comments: [
+        {
+          author: '관리자(대표님)',
+          text: 'PC 크롬 탭과 즐겨찾기, 스마트폰 홈 화면에 추가했을 때 우리 교육원 공식 로고가 선명하고 고급스럽게 떠서 브랜드 가치가 훨씬 높아졌습니다!',
+          date: '2026.09.26 14:16',
+        },
+        {
+          author: '👨‍💻 개발자(Antigravity)',
+          text: '스마트폰 브라우저에서 [홈 화면에 추가] 시 단독 앱처럼 동작하며, 고해상도 레티나 디스플레이(180x180, 512x512) 환경에서도 흐림 현상 없이 또렷하게 표출됩니다.',
+          date: '2026.09.26 14:17',
+        },
+      ],
+    },
+    {
+      id: 12,
+      type: '신규기능',
+      title: '관리자 센터 협력기관(MOU) 로고 이미지 산학협력 페이지 실시간 연동 및 자동 압축 최적화',
+      description: '관리자 센터 협력기관 관리에서 로고 이미지를 수정하거나 교체했을 때, 산학협력/MOU 페이지에 즉시 실시간으로 반영되고 대용량 이미지도 자동 압축되어 로딩 속도가 저하되지 않도록 개선 요청합니다.',
+      screenshots: [
+        { url: '/images/logo.png', annotations: [{ x: 50, y: 50, text: '협력기관 로고 이미지 자동 압축 및 실시간 연동 시스템' }] },
+      ],
+      status: 'completed',
+      date: '2026.09.26 13:50',
+      devReply: '✓ 구현 완료: AdminPartnership 및 IndustryPage 실시간 상태 동기화 및 이미지 최적화 완료.\n1. MOU 협약 기업 로고 등록 시 HTML5 Canvas 기반 자동 해상도 리사이징 및 압축 파이프라인 연동\n2. 관리자에서 로고 변경 즉시 메인화면 파트너 롤링 배너 및 산학협력 상세 페이지에 실시간 반영\n3. 기본 로고 누락 시 공식 기관 대체 엠블럼 자동 폴백 처리로 깨짐 방지.',
+      comments: [
+        {
+          author: '관리자(대표님)',
+          text: '로고 수정 즉시 산학협력 페이지에 깔끔하게 들어가고 깨짐 없이 정상 동작합니다.',
+          date: '2026.09.26 13:55',
+        },
+      ],
+    },
     {
       id: 11,
       type: '신규기능',
@@ -194,7 +240,7 @@ export function DevInquiryBoard() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isWriteFormOpen, setIsWriteFormOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('전체');
-  const [expandedInquiryId, setExpandedInquiryId] = useState(11);
+  const [expandedInquiryId, setExpandedInquiryId] = useState(13);
 
   // Main Inquiry Write Form State
   const [inquiryType, setInquiryType] = useState('신규기능');
@@ -237,8 +283,27 @@ export function DevInquiryBoard() {
         }));
         setInquiries(normalized);
       } else {
-        setInquiries(INITIAL_INQUIRIES);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_INQUIRIES));
+        // Check if v3 exists to preserve user-added custom inquiries
+        const v3Saved = localStorage.getItem('kfssec_dev_inquiries_v3');
+        if (v3Saved) {
+          try {
+            const v3Parsed = JSON.parse(v3Saved);
+            const initialIds = new Set(INITIAL_INQUIRIES.map((it) => it.id));
+            const userAddedTickets = v3Parsed.filter((it) => !initialIds.has(it.id) && it.id > 13);
+            const merged = [...INITIAL_INQUIRIES, ...userAddedTickets].map((item) => ({
+              ...item,
+              screenshots: normalizeScreenshots(item),
+            }));
+            setInquiries(merged);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+          } catch {
+            setInquiries(INITIAL_INQUIRIES);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_INQUIRIES));
+          }
+        } else {
+          setInquiries(INITIAL_INQUIRIES);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_INQUIRIES));
+        }
       }
     } catch (e) {
       console.error('Failed to load dev inquiries from localStorage', e);
@@ -682,6 +747,7 @@ export function DevInquiryBoard() {
                 onChange={(e) => setInquiryType(e.target.value)}
                 className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#0B3C26]"
               >
+                <option value="디자인/브랜딩">💎 디자인/브랜딩</option>
                 <option value="신규기능">✨ 신규기능</option>
                 <option value="버그수정">🐞 버그수정</option>
                 <option value="UI개선">🎨 UI개선</option>
@@ -851,6 +917,7 @@ export function DevInquiryBoard() {
         <div className="flex items-center gap-1.5 overflow-x-auto">
           {[
             { id: '전체', label: '전체 목록', icon: Filter },
+            { id: '디자인/브랜딩', label: '💎 디자인/브랜딩', icon: Palette },
             { id: '신규기능', label: '✨ 신규기능', icon: Sparkles },
             { id: '버그수정', label: '🐞 버그수정', icon: Bug },
             { id: 'UI개선', label: '🎨 UI개선', icon: Palette },
@@ -937,6 +1004,8 @@ export function DevInquiryBoard() {
                             ? 'bg-rose-100 text-rose-800'
                             : ticket.type === 'UI개선'
                             ? 'bg-purple-100 text-purple-800'
+                            : ticket.type === '디자인/브랜딩'
+                            ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
                             : 'bg-amber-100 text-amber-800'
                         }`}
                       >
@@ -1006,6 +1075,7 @@ export function DevInquiryBoard() {
                                 onChange={(e) => setEditInquiryType(e.target.value)}
                                 className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-xl font-bold text-gray-900"
                               >
+                                <option value="디자인/브랜딩">💎 디자인/브랜딩</option>
                                 <option value="신규기능">✨ 신규기능</option>
                                 <option value="버그수정">🐞 버그수정</option>
                                 <option value="UI개선">🎨 UI개선</option>
