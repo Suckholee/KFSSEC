@@ -206,9 +206,35 @@ const DEFAULT_FACULTY = [
   },
 ];
 
-export default function AdminAbout({ siteData = {}, onUpdateSiteData }) {
-  const [activeTab, setActiveTab] = useState('history'); // 'history' | 'faculty' | 'speech'
+export default function AdminAbout({
+  siteData = {},
+  onUpdateSiteData,
+  subTab = 'history_manage',
+  onSubTabChange,
+}) {
+  const normalizeTab = (st) => {
+    if (st === 'faculty_manage' || st === 'faculty') return 'faculty';
+    if (st === 'speech_manage' || st === 'speech') return 'speech';
+    return 'history';
+  };
+
+  const [activeTab, setActiveTab] = useState(normalizeTab(subTab));
   const [savedSuccessMsg, setSavedSuccessMsg] = useState('');
+
+  useEffect(() => {
+    if (subTab) {
+      setActiveTab(normalizeTab(subTab));
+    }
+  }, [subTab]);
+
+  const handleTabSwitch = (tab) => {
+    setActiveTab(tab);
+    if (onSubTabChange) {
+      const fullSubTab =
+        tab === 'history' ? 'history_manage' : tab === 'faculty' ? 'faculty_manage' : 'speech_manage';
+      onSubTabChange(fullSubTab);
+    }
+  };
 
   // History State
   const [milestones, setMilestones] = useState(() => {
@@ -498,7 +524,7 @@ export default function AdminAbout({ siteData = {}, onUpdateSiteData }) {
         {/* Tab Toggle Buttons */}
         <div className="flex items-center gap-1.5 bg-gray-100 p-1.5 rounded-2xl border border-gray-200 self-start md:self-auto">
           <button
-            onClick={() => setActiveTab('history')}
+            onClick={() => handleTabSwitch('history')}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === 'history'
                 ? 'bg-emerald-600 text-white shadow-xs'
@@ -508,7 +534,7 @@ export default function AdminAbout({ siteData = {}, onUpdateSiteData }) {
             주요 연혁 관리
           </button>
           <button
-            onClick={() => setActiveTab('faculty')}
+            onClick={() => handleTabSwitch('faculty')}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === 'faculty'
                 ? 'bg-emerald-600 text-white shadow-xs'
@@ -518,7 +544,7 @@ export default function AdminAbout({ siteData = {}, onUpdateSiteData }) {
             교수진 소개 관리
           </button>
           <button
-            onClick={() => setActiveTab('speech')}
+            onClick={() => handleTabSwitch('speech')}
             className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === 'speech'
                 ? 'bg-emerald-600 text-white shadow-xs'

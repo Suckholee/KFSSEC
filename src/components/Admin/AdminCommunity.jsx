@@ -26,12 +26,21 @@ import {
 export default function AdminCommunity({
   postsList = [],
   setPostsList,
+  subTab = 'notice_list',
+  onSubTabChange,
 }) {
   const [activeCategoryFilter, setActiveCategoryFilter] = useState('all');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
   const [savedSuccessMsg, setSavedSuccessMsg] = useState('');
+
+  // Auto open write modal if subTab is notice_add
+  useEffect(() => {
+    if (subTab === 'notice_add') {
+      handleOpenCreateModal();
+    }
+  }, [subTab]);
 
   // Form State for creating/editing posts
   const [formCategory, setFormCategory] = useState('공지 사항');
@@ -41,12 +50,21 @@ export default function AdminCommunity({
   const [formIsPinned, setFormIsPinned] = useState(false);
   const [formImage, setFormImage] = useState('');
 
+  const handleCloseModals = () => {
+    if (isWriteModalOpen) {
+      setIsWriteModalOpen(false);
+      if (subTab === 'notice_add' && onSubTabChange) {
+        onSubTabChange('notice_list');
+      }
+    }
+    if (editingPost) setEditingPost(null);
+  };
+
   // Keyboard shortcut: Close modals on ESC
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
-        if (isWriteModalOpen) setIsWriteModalOpen(false);
-        if (editingPost) setEditingPost(null);
+        handleCloseModals();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -67,6 +85,9 @@ export default function AdminCommunity({
     setFormIsPinned(false);
     setFormImage('');
     setIsWriteModalOpen(true);
+    if (onSubTabChange && subTab !== 'notice_add') {
+      onSubTabChange('notice_add');
+    }
   };
 
   // Open Edit Modal
@@ -146,7 +167,7 @@ export default function AdminCommunity({
       };
       updatedList = [newPost, ...postsList];
       showNotification('새 공지/게시글이 성공적으로 등록되었습니다.');
-      setIsWriteModalOpen(false);
+      handleCloseModals();
     }
 
     setPostsList(updatedList);
@@ -472,10 +493,7 @@ export default function AdminCommunity({
       {(isWriteModalOpen || editingPost) && (
         <div
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
-          onClick={() => {
-            setIsWriteModalOpen(false);
-            setEditingPost(null);
-          }}
+          onClick={handleCloseModals}
         >
           <div
             className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 space-y-6 max-h-[90vh] overflow-y-auto"
@@ -497,10 +515,7 @@ export default function AdminCommunity({
                 </div>
               </div>
               <button
-                onClick={() => {
-                  setIsWriteModalOpen(false);
-                  setEditingPost(null);
-                }}
+                onClick={handleCloseModals}
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 cursor-pointer"
               >
                 <X className="w-4 h-4" />
@@ -598,10 +613,7 @@ export default function AdminCommunity({
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-200">
                 <button
                   type="button"
-                  onClick={() => {
-                    setIsWriteModalOpen(false);
-                    setEditingPost(null);
-                  }}
+                  onClick={handleCloseModals}
                   className="px-5 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
                 >
                   취소

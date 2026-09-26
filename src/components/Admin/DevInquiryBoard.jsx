@@ -28,8 +28,35 @@ import {
   RotateCcw,
 } from 'lucide-react';
 
-export function DevInquiryBoard() {
+export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange }) {
   const STORAGE_KEY = 'kfssec_dev_inquiries_v4';
+
+  const filterFromSubTab = (st) => {
+    if (st === 'dev_issue_track') return '버그수정';
+    if (st === 'dev_feature_request') return '신규기능';
+    return '전체';
+  };
+
+  const [inquiries, setInquiries] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isWriteFormOpen, setIsWriteFormOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState(filterFromSubTab(subTab));
+  const [expandedInquiryId, setExpandedInquiryId] = useState(13);
+
+  useEffect(() => {
+    if (subTab) {
+      setSelectedFilter(filterFromSubTab(subTab));
+    }
+  }, [subTab]);
+
+  const handleFilterClick = (filterId) => {
+    setSelectedFilter(filterId);
+    if (onSubTabChange) {
+      if (filterId === '버그수정') onSubTabChange('dev_issue_track');
+      else if (filterId === '신규기능') onSubTabChange('dev_feature_request');
+      else onSubTabChange('dev_inquiry_list');
+    }
+  };
 
   const INITIAL_INQUIRIES = [
     {
@@ -235,12 +262,6 @@ export function DevInquiryBoard() {
     }
     return [];
   };
-
-  const [inquiries, setInquiries] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isWriteFormOpen, setIsWriteFormOpen] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('전체');
-  const [expandedInquiryId, setExpandedInquiryId] = useState(13);
 
   // Main Inquiry Write Form State
   const [inquiryType, setInquiryType] = useState('신규기능');
@@ -927,7 +948,7 @@ export function DevInquiryBoard() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setSelectedFilter(tab.id)}
+                onClick={() => handleFilterClick(tab.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                   isSelected
                     ? 'bg-[#0B3C26] text-white shadow-sm border border-[#C5A059]'

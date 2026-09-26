@@ -375,57 +375,91 @@ export default function AdminLayout({
     const path = window.location.pathname;
     const parts = path.split('/').filter(Boolean);
     
+    // Determine primary and secondary admin segments
+    // e.g., /admin/home/banner_planner -> primary: 'home', secondary: 'banner_planner'
+    // e.g., /admin/courses/c1 -> primary: 'courses', secondary: 'c1'
+    const primaryPart = parts[0] === 'admin' ? parts[1] : parts[0];
+    const secondaryPart = parts[0] === 'admin' ? parts[2] : parts[1];
+
     let menu = 'dashboard';
     let subTab = 'overview';
     let selectedCourse = null;
 
-    if (parts[1] === 'dashboard' || !parts[1]) {
+    if (!primaryPart || primaryPart === 'dashboard') {
       menu = 'dashboard';
-      subTab = 'overview';
-    } else if (parts[1] === 'partner_logos' || parts[1] === 'partners') {
+      subTab = secondaryPart || 'overview';
+    } else if (primaryPart === 'partner_logos' || primaryPart === 'partners') {
       menu = 'partner_logos';
-      subTab = 'logo_list';
-    } else if (parts[1] === 'home') {
+      subTab = secondaryPart || 'logo_list';
+    } else if (primaryPart === 'home') {
       menu = 'home';
-      subTab = 'visual_editor';
-    } else if (parts[1] === 'about') {
+      subTab = secondaryPart || 'visual_editor';
+    } else if (primaryPart === 'about') {
       menu = 'about';
-      subTab = 'history_manage';
-    } else if (parts[1] === 'community' || parts[1] === 'posts' || parts[1] === 'notices') {
+      subTab = secondaryPart || 'history_manage';
+    } else if (primaryPart === 'community' || primaryPart === 'posts' || primaryPart === 'notices') {
       menu = 'community';
-      subTab = 'notice_list';
-    } else if (parts[1] === 'settings') {
+      subTab = secondaryPart || 'notice_list';
+    } else if (primaryPart === 'settings') {
       menu = 'settings';
-      subTab = 'corp_info';
-    } else if (parts[1] === 'masters') {
+      subTab = secondaryPart || 'corp_info';
+    } else if (primaryPart === 'masters') {
       menu = 'masters';
-      subTab = 'profile_list';
-    } else if (parts[1] === 'developer') {
+      subTab = secondaryPart || 'profile_list';
+    } else if (primaryPart === 'developer') {
       menu = 'developer';
-      subTab = 'dev_inquiry_list';
-    } else if (parts[1] === 'reservations') {
+      subTab = secondaryPart || 'dev_inquiry_list';
+    } else if (primaryPart === 'reservations') {
       menu = 'reservations';
-      subTab = 'enrollees_list';
-    } else if (parts[1] === 'users') {
+      subTab = secondaryPart || 'enrollees_list';
+    } else if (primaryPart === 'users') {
       menu = 'reservations';
       subTab = 'student_accounts';
-    } else if (parts[1] === 'inquiries') {
+    } else if (primaryPart === 'inquiries') {
       menu = 'inquiries';
-      subTab = parts[2] === 'chatbot' ? 'chatbot_settings' : 'inquiry_all';
-    } else if (parts[1] === 'reviews') {
+      subTab = (secondaryPart === 'chatbot' || secondaryPart === 'chatbot_settings') ? 'chatbot_settings' : (secondaryPart || 'inquiry_all');
+    } else if (primaryPart === 'reviews') {
       menu = 'reviews';
-      subTab = 'review_list';
-    } else if (parts[1] === 'marketing') {
+      subTab = secondaryPart || 'review_list';
+    } else if (primaryPart === 'marketing') {
       menu = 'marketing';
-      subTab = 'generator';
-    } else if (parts[1] === 'courses') {
+      subTab = secondaryPart || 'generator';
+    } else if (primaryPart === 'courses') {
       menu = 'courses';
-      subTab = 'course_list';
-      if (parts[2]) {
-        const found = getCoursesFromDB().find((c) => c.id === parts[2]);
+      if (secondaryPart === 'course_add' || secondaryPart === 'add' || secondaryPart === 'new') {
+        subTab = 'course_add';
+        selectedCourse = {
+          title: '',
+          category: 'hansik',
+          categoryName: '한식',
+          industry: '한식',
+          stage: '창업 준비',
+          format: '오프라인',
+          price: 4500000,
+          discountRate: 30,
+          duration: '4주 과정',
+          startDate: new Date().toISOString().split('T')[0],
+          endDate: '',
+          examDate: '',
+          certName: '한식 조리기능장 및 지도사 1급',
+          instructor: '안형상 이사장 / 40년 명장',
+          image: '/images/course_menu_dev.jpg',
+          description: '특급호텔 40년 경력 명장이 직접 전수하는 100년 전통 발효 소스 및 시그니처 레시피 전수',
+        };
+      } else if (secondaryPart === 'schedule_manage' || secondaryPart === 'schedule') {
+        subTab = 'schedule_manage';
+      } else if (secondaryPart === 'exam_manage' || secondaryPart === 'exam') {
+        subTab = 'exam_manage';
+      } else if (secondaryPart && secondaryPart !== 'course_list') {
+        const found = getCoursesFromDB().find((c) => c.id === secondaryPart);
         if (found) {
           selectedCourse = found;
+          subTab = 'course_list';
+        } else {
+          subTab = 'course_list';
         }
+      } else {
+        subTab = 'course_list';
       }
     }
 
@@ -443,13 +477,21 @@ export default function AdminLayout({
   const updateAdminUrl = (menu, subTab, courseId = null) => {
     let targetPath = `/admin/${menu}`;
     if (menu === 'dashboard') {
-      targetPath = `/admin`;
+      targetPath = (!subTab || subTab === 'overview') ? `/admin` : `/admin/dashboard/${subTab}`;
+    } else if (menu === 'courses') {
+      if (courseId) {
+        targetPath = `/admin/courses/${courseId}`;
+      } else if (subTab && subTab !== 'course_list') {
+        targetPath = `/admin/courses/${subTab}`;
+      } else {
+        targetPath = `/admin/courses/course_list`;
+      }
     } else if (menu === 'inquiries' && subTab === 'chatbot_settings') {
-      targetPath = `/admin/inquiries/chatbot`;
-    } else if (subTab === 'student_accounts') {
-      targetPath = `/admin/users`;
-    } else if (menu === 'courses' && courseId) {
-      targetPath = `/admin/courses/${courseId}`;
+      targetPath = `/admin/inquiries/chatbot_settings`;
+    } else if (menu === 'reservations' && subTab === 'student_accounts') {
+      targetPath = `/admin/reservations/student_accounts`;
+    } else if (subTab) {
+      targetPath = `/admin/${menu}/${subTab}`;
     }
     if (window.location.pathname !== targetPath) {
       window.history.pushState({}, '', targetPath);
@@ -918,6 +960,19 @@ export default function AdminLayout({
           </button>
 
           <button
+            onClick={() => switchPrimaryMenu('reviews', 'review_list', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'reviews'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="수강후기 & 별점 관리"
+          >
+            <Star className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">후기관리</span>
+          </button>
+
+          <button
             onClick={() => switchPrimaryMenu('settings', 'corp_info', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'settings'
@@ -1029,7 +1084,7 @@ export default function AdminLayout({
               siteData={siteData}
               onUpdateSiteData={onUpdateSiteData}
               subTab={secondarySubTab}
-              onSubTabChange={(st) => setSecondarySubTab(st)}
+              onSubTabChange={(st) => switchPrimaryMenu('marketing', st)}
             />
           )}
 
@@ -1196,7 +1251,7 @@ export default function AdminLayout({
           )}
 
           {/* DYNAMIC SCREEN 2: COURSE-FIRST ENROLLEE MANAGEMENT WORKSTATION */}
-          {primaryMenu === 'reservations' && secondarySubTab === 'enrollees_list' && (
+          {primaryMenu === 'reservations' && (secondarySubTab === 'enrollees_list' || (secondarySubTab !== 'student_accounts' && secondarySubTab !== 'payment_status')) && (
             <div className="space-y-6 animate-fadeIn max-w-6xl">
               
               {/* IF SPECIFIC COURSE SELECTED */}
@@ -1563,9 +1618,138 @@ export default function AdminLayout({
             </div>
           )}
 
+          {/* DYNAMIC SCREEN: REAL-TIME PAYMENT STATUS WORKSTATION */}
+          {primaryMenu === 'reservations' && secondarySubTab === 'payment_status' && (
+            <div className="space-y-6 animate-fadeIn max-w-6xl">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                <div>
+                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                    <Receipt className="w-6 h-6 text-emerald-700" />
+                    <span>수강료 실시간 결제 승인 & 정산 관리자 (128명 DB)</span>
+                  </h3>
+                  <p className="text-xs text-gray-500 font-bold mt-0.5">
+                    수강생들의 신용카드, 실시간 계좌이체, 카카오페이/네이버페이 승인 내역 및 영수증을 실시간으로 확인하고 정산합니다.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => alert('📥 전체 128건 수강료 결제 정산 내역 엑셀(CSV) 다운로드가 시작됩니다.')}
+                    className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-4 h-4 text-emerald-400" />
+                    <span>📥 결제 정산 DB 다운로드</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* KPI Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">💳 총 누적 결제금액</span>
+                  <span className="text-2xl font-black text-black font-mono">
+                    {enrolleesList.reduce((acc, curr) => acc + (curr.status === 'completed' ? curr.paidAmount : 0), 0).toLocaleString()}원
+                  </span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">실시간 정산 완료</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">✅ 결제 완료 건수</span>
+                  <span className="text-2xl font-black text-emerald-950 font-mono">
+                    {enrolleesList.filter((e) => e.status === 'completed').length}건
+                  </span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">정상 승인율 96.1%</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">⏳ 가상계좌 입금 대기</span>
+                  <span className="text-2xl font-black text-amber-700 font-mono">
+                    {enrolleesList.filter((e) => e.status === 'pending').length}건
+                  </span>
+                  <span className="text-[10px] text-amber-700 font-bold block pt-1">입금 기한 24시간 이내</span>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
+                  <span className="text-[11px] font-black text-gray-500 block">📊 평균 수강료 결제액</span>
+                  <span className="text-2xl font-black text-black font-mono">230,359원</span>
+                  <span className="text-[10px] text-gray-500 font-bold block pt-1">얼리버드 할인 적용</span>
+                </div>
+              </div>
+
+              {/* Transactions Table */}
+              <div className="bg-white rounded-3xl border-2 border-black overflow-hidden shadow-sm">
+                <div className="p-4 bg-stone-50 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-emerald-700" />
+                    <span className="text-xs font-black text-black">실시간 결제 승인 내역 (총 {enrolleesList.length}건)</span>
+                  </div>
+                  <div className="text-xs font-bold text-gray-500">
+                    전자결제 PG사: 토스페이먼츠 / KCP 정산 연동
+                  </div>
+                </div>
+
+                <div className="divide-y divide-gray-200 overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs">
+                    <thead>
+                      <tr className="bg-gray-100 text-gray-700 font-black border-b border-gray-200">
+                        <th className="py-3 px-4">주문번호</th>
+                        <th className="py-3 px-4">수강생명</th>
+                        <th className="py-3 px-4">신청 강좌</th>
+                        <th className="py-3 px-4">결제수단</th>
+                        <th className="py-3 px-4 text-right">결제금액</th>
+                        <th className="py-3 px-4 text-center">승인상태</th>
+                        <th className="py-3 px-4 text-center">전표</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {enrolleesList.slice(0, 20).map((item) => (
+                        <tr key={item.id} className="hover:bg-emerald-50/40 transition-colors">
+                          <td className="py-3 px-4 font-mono font-bold text-gray-600">{item.id}</td>
+                          <td className="py-3 px-4 font-black text-black">{item.studentName}</td>
+                          <td className="py-3 px-4 text-gray-800 font-bold">{item.courseTitle}</td>
+                          <td className="py-3 px-4 text-gray-600 font-mono text-[11px]">{item.paymentMethod}</td>
+                          <td className="py-3 px-4 text-right font-mono font-black text-emerald-950">
+                            {item.paidAmount.toLocaleString()}원
+                          </td>
+                          <td className="py-3 px-4 text-center">
+                            <span
+                              className={`px-2.5 py-1 rounded-full text-[10px] font-black border ${
+                                item.status === 'completed'
+                                  ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                  : 'bg-amber-100 text-amber-900 border-amber-300'
+                              }`}
+                            >
+                              {item.status === 'completed' ? '✓ 결제완료' : '⏳ 입금대기'}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-center">
+                            <button
+                              onClick={() =>
+                                alert(
+                                  `[📄 카드매출전표 / 전자영수증]\n주문번호: ${item.id}\n수강생: ${item.studentName}\n강좌: ${item.courseTitle}\n금액: ${item.paidAmount.toLocaleString()}원\n결제수단: ${item.paymentMethod}\n승인상태: ${item.status === 'completed' ? '정상 승인' : '입금 대기'}`
+                                )
+                              }
+                              className="px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-black hover:text-white text-gray-700 font-black text-[10px] transition-all cursor-pointer"
+                            >
+                              전표확인
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* DYNAMIC SCREEN: DEVELOPER INQUIRY BOARD VIEW */}
           {primaryMenu === 'developer' && (
-            <DevInquiryBoard />
+            <DevInquiryBoard
+              subTab={secondarySubTab}
+              onSubTabChange={(st) => switchPrimaryMenu('developer', st)}
+            />
           )}
 
           {/* DYNAMIC SCREEN: AI CHATBOT SETTINGS OR 1:1 INQUIRIES WORKSTATION */}
@@ -2092,11 +2276,162 @@ export default function AdminLayout({
 
             </div>
           ) : (
-            /* DYNAMIC SCREEN 2: ALL COURSES CARDS GRID VIEW */
+            /* DYNAMIC SCREEN 2: ALL COURSES CARDS GRID VIEW / SCHEDULE / EXAM */
             primaryMenu === 'courses' && (
-              <div className="space-y-6 animate-fadeIn">
-                
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+              secondarySubTab === 'schedule_manage' ? (
+                <div className="space-y-6 animate-fadeIn">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                    <div>
+                      <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                        <Calendar className="w-6 h-6 text-emerald-700" />
+                        <span>2026 하반기 학사 및 개강일정 타임라인</span>
+                      </h3>
+                      <p className="text-xs text-gray-500 font-bold mt-0.5">
+                        전체 12개 정규 과정의 개강일정, 수업 형식, 정원 및 모집 진행 상태를 타임라인으로 종합 관리합니다.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => switchPrimaryMenu('courses', 'course_add')}
+                      className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4 text-emerald-400" />
+                      <span>➕ 신규 강좌 일정 등록</span>
+                    </button>
+                  </div>
+
+                  <div className="bg-white rounded-3xl border-2 border-black overflow-hidden shadow-sm">
+                    <div className="p-4 bg-stone-50 border-b border-gray-200 flex items-center justify-between">
+                      <span className="text-xs font-black text-black">정규과정 개강 타임라인 (총 {coursesList.length}과목)</span>
+                      <span className="text-xs font-bold text-gray-500">정원: 강좌당 20명 정원제</span>
+                    </div>
+
+                    <div className="divide-y divide-gray-200 overflow-x-auto">
+                      <table className="w-full text-left border-collapse text-xs">
+                        <thead>
+                          <tr className="bg-gray-100 text-gray-700 font-black border-b border-gray-200">
+                            <th className="py-3 px-4">과정명</th>
+                            <th className="py-3 px-4">분야</th>
+                            <th className="py-3 px-4">담당 교수진</th>
+                            <th className="py-3 px-4">개강일자</th>
+                            <th className="py-3 px-4">수업형식</th>
+                            <th className="py-3 px-4">수강료</th>
+                            <th className="py-3 px-4 text-center">모집현황</th>
+                            <th className="py-3 px-4 text-center">관리</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {coursesList.map((c) => (
+                            <tr key={c.id} className="hover:bg-emerald-50/40 transition-colors">
+                              <td className="py-3.5 px-4 font-black text-black">{c.title}</td>
+                              <td className="py-3.5 px-4">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-stone-200 text-stone-800">
+                                  {c.categoryName || c.industry}
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 font-bold text-gray-700">{c.instructor}</td>
+                              <td className="py-3.5 px-4 font-mono font-bold text-emerald-950">{c.startDate}</td>
+                              <td className="py-3.5 px-4 text-gray-600 font-bold">{c.duration || '4주 과정'} ({c.format || '오프라인'})</td>
+                              <td className="py-3.5 px-4 font-mono font-black text-emerald-950">
+                                {c.price == null ? '문의' : `${c.price.toLocaleString()}원`}
+                              </td>
+                              <td className="py-3.5 px-4 text-center">
+                                <span className="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                                  접수중 (18/20명)
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 text-center">
+                                <button
+                                  onClick={() => switchPrimaryMenu('courses', 'course_list', c)}
+                                  className="px-3 py-1 bg-black text-white text-[11px] font-bold rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                                >
+                                  일정편집
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              ) : secondarySubTab === 'exam_manage' ? (
+                <div className="space-y-6 animate-fadeIn">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                    <div>
+                      <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                        <Award className="w-6 h-6 text-emerald-700" />
+                        <span>국가공인 및 민간 등록 자격시험 & 검정일정 관리</span>
+                      </h3>
+                      <p className="text-xs text-gray-500 font-bold mt-0.5">
+                        한국외식창업교육원 산하 자격검정위원회 공인 시험 일정 및 수료 시험 계획을 관리합니다.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => alert('신규 자격 검정 일정을 등록합니다.')}
+                      className="px-5 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4 text-emerald-400" />
+                      <span>➕ 시험일정 등록</span>
+                    </button>
+                  </div>
+
+                  <div className="bg-white rounded-3xl border-2 border-black overflow-hidden shadow-sm">
+                    <div className="p-4 bg-stone-50 border-b border-gray-200 flex items-center justify-between">
+                      <span className="text-xs font-black text-black">자격 검정 및 수료 시험 일정표</span>
+                      <span className="text-xs font-bold text-gray-500">검정장소: 서울 강남 제1실습 교육장</span>
+                    </div>
+
+                    <div className="divide-y divide-gray-200 overflow-x-auto">
+                      <table className="w-full text-left border-collapse text-xs">
+                        <thead>
+                          <tr className="bg-gray-100 text-gray-700 font-black border-b border-gray-200">
+                            <th className="py-3 px-4">자격 종목명</th>
+                            <th className="py-3 px-4">연계 교육과정</th>
+                            <th className="py-3 px-4">시험일자</th>
+                            <th className="py-3 px-4">원서접수 마감</th>
+                            <th className="py-3 px-4">검정 방식</th>
+                            <th className="py-3 px-4 text-center">합격자 발표</th>
+                            <th className="py-3 px-4 text-center">관리</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {coursesList.map((c) => (
+                            <tr key={c.id} className="hover:bg-emerald-50/40 transition-colors">
+                              <td className="py-3.5 px-4 font-black text-black">
+                                {c.certName || '외식창업실무지도사 1급'}
+                              </td>
+                              <td className="py-3.5 px-4 font-bold text-gray-700">{c.title}</td>
+                              <td className="py-3.5 px-4 font-mono font-black text-rose-700">
+                                {c.examDate || '2026.10.19'}
+                              </td>
+                              <td className="py-3.5 px-4 font-mono text-gray-600">개강 2주차 마감</td>
+                              <td className="py-3.5 px-4 text-gray-700 font-bold">필기(객관식) + 실무작업형</td>
+                              <td className="py-3.5 px-4 text-center">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                                  시험 7일 후
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 text-center">
+                                <button
+                                  onClick={() => switchPrimaryMenu('courses', 'course_list', c)}
+                                  className="px-3 py-1 bg-black text-white text-[11px] font-bold rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+                                >
+                                  시험일변경
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-6 animate-fadeIn">
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
                   <div>
                     <h3 className="text-xl font-black text-black tracking-tight">
                       네이버 스마트플레이스 스타일 교육과정 DB 관리자
@@ -2211,7 +2546,7 @@ export default function AdminLayout({
 
               </div>
             )
-          )}
+          ))}
 
           {/* HOME MENU SCREENS */}
           {primaryMenu === 'home' && (
@@ -2219,7 +2554,7 @@ export default function AdminLayout({
               siteData={siteData}
               onUpdateSiteData={onUpdateSiteData}
               subTab={secondarySubTab}
-              onSubTabChange={(st) => setSecondarySubTab(st)}
+              onSubTabChange={(st) => switchPrimaryMenu('home', st)}
             />
           )}
 
@@ -2228,6 +2563,8 @@ export default function AdminLayout({
             <AdminAbout
               siteData={siteData}
               onUpdateSiteData={onUpdateSiteData}
+              subTab={secondarySubTab}
+              onSubTabChange={(st) => switchPrimaryMenu('about', st)}
             />
           )}
 
@@ -2236,6 +2573,8 @@ export default function AdminLayout({
             <AdminCommunity
               postsList={postsList}
               setPostsList={setPostsList}
+              subTab={secondarySubTab}
+              onSubTabChange={(st) => switchPrimaryMenu('community', st)}
             />
           )}
 
@@ -2245,6 +2584,59 @@ export default function AdminLayout({
               siteData={siteData}
               onUpdateSiteData={onUpdateSiteData}
             />
+          )}
+
+          {/* REVIEWS & RATINGS SCREEN */}
+          {primaryMenu === 'reviews' && (
+            <div className="space-y-6 animate-fadeIn max-w-6xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
+                <div>
+                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
+                    <Star className="w-6 h-6 text-amber-500 fill-amber-500" />
+                    <span>수강 후기 & 만족도 별점 관리 (실시간 DB 연동)</span>
+                  </h3>
+                  <p className="text-xs text-gray-500 font-bold mt-0.5">
+                    128명 수강생들이 등록한 실제 수강 후기 및 별점 평가를 검토하고 홈페이지 노출 여부를 관리합니다.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="px-3.5 py-1.5 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-xs font-black">
+                    평균 만족도 ★ 4.9 / 5.0 (총 48건)
+                  </span>
+                </div>
+              </div>
+
+              {/* Reviews Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  { id: 'rev-1', student: '김태훈', course: '외식창업 성공전략 마스터', stars: 5, date: '2026.09.20', text: '특급호텔 40년 명장님의 실전 노하우가 그대로 담겨있어 상권분석부터 메뉴 원가 산출까지 단번에 이해할 수 있었습니다. 창업 준비생에게 필독 과정입니다!' },
+                  { id: 'rev-2', student: '이소연', course: '메뉴개발과 원가관리', stars: 5, date: '2026.09.18', text: '시그니처 비법 소스와 발효장 제조 실습이 정말 유익했습니다. 매장 매출 증대에 직결되는 실전 팁을 아낌없이 전수해 주셔서 감사합니다.' },
+                  { id: 'rev-3', student: '박준형', course: '배달매장 운영 전략', stars: 5, date: '2026.09.15', text: '배달 플랫폼 깃발 알고리즘 세팅과 밀키트 패키징 실습 덕분에 배달 전문점 오픈 첫 달부터 손익분기점을 넘길 수 있었습니다.' },
+                  { id: 'rev-4', student: '최성민', course: '외식업 마케팅 실전', stars: 5, date: '2026.09.12', text: '네이버 스마트플레이스 상위 노출 기법과 인스타그램 바이럴 광고 집행 전략을 배우고 실습해 보면서 마케팅에 대한 자신감이 생겼습니다.' },
+                  { id: 'rev-5', student: '정다은', course: '외식창업 마스터 풀 패키지', stars: 4, date: '2026.09.08', text: '이론과 실습이 균형있게 구성되어 있고 전담 컨설턴트님의 1:1 사업계획서 피드백까지 받을 수 있어 비용 이상의 가치를 느꼈습니다.' },
+                  { id: 'rev-6', student: '강현우', course: '상권·입지 분석 실전', stars: 5, date: '2026.09.05', text: '빅데이터 기반 상권 분석 도구 활용법을 상세히 배울 수 있어 임대차 계약 전 큰 실수를 피할 수 있었습니다.' },
+                ].map((item) => (
+                  <div key={item.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
+                    <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="font-black text-black text-sm">{item.student} 수강생</span>
+                        <span className="text-[11px] text-gray-500 font-mono">{item.date}</span>
+                      </div>
+                      <div className="flex text-amber-500 text-xs">
+                        {'★'.repeat(item.stars)}
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-700 leading-relaxed font-medium bg-stone-50 p-3 rounded-xl border border-stone-200">
+                      "{item.text}"
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-emerald-900 font-black pt-1">
+                      <span>과정: {item.course}</span>
+                      <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">홈페이지 노출 승인</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
         </main>
