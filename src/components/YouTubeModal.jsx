@@ -1,22 +1,28 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React, { useEffect } from 'react';
 import { X, Youtube } from 'lucide-react';
+import { extractYoutubeId } from '../utils/youtube';
 
-export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle }) {
+export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle, videoUrl, title }) {
   const { tr, language } = useLanguage();
+  const effectiveVideoId = videoId || (videoUrl ? extractYoutubeId(videoUrl) : '');
+  const modalOpen = isOpen !== undefined ? isOpen : Boolean(effectiveVideoId);
+  const displayTitle = videoTitle || title || '유튜브 동영상 시청';
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
       }
     };
-    if (isOpen) {
+    if (modalOpen) {
       window.addEventListener('keydown', handleKeyDown);
     }
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [modalOpen, onClose]);
 
-  if (!isOpen || !videoId) return null;
+  if (!modalOpen || !effectiveVideoId) return null;
+
 
   return (
     <div
@@ -34,7 +40,7 @@ export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle }) {
               <Youtube className="w-5 h-5 fill-current" />
             </div>
             <h3 className="text-base sm:text-lg font-extrabold text-white line-clamp-1">
-              {tr(videoTitle || '유튜브 동영상 시청')}
+              {tr(displayTitle)}
             </h3>
           </div>
           <button
@@ -49,8 +55,8 @@ export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle }) {
         {/* Responsive YouTube Video Player Iframe */}
         <div className="relative aspect-video w-full bg-black">
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-            title={tr(videoTitle)}
+            src={`https://www.youtube.com/embed/${effectiveVideoId}?autoplay=1&rel=0`}
+            title={tr(displayTitle)}
             className="w-full h-full border-0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

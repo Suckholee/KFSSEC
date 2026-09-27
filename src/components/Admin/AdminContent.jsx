@@ -76,6 +76,12 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
   const [newVideoTitle, setNewVideoTitle] = useState('');
   const [newVideoCategory, setNewVideoCategory] = useState('공식 채널 영상');
 
+  // Editing Existing Video State
+  const [editingVideoId, setEditingVideoId] = useState(null);
+  const [editVideoUrl, setEditVideoUrl] = useState('');
+  const [editVideoTitle, setEditVideoTitle] = useState('');
+  const [editVideoCategory, setEditVideoCategory] = useState('');
+
   // Banner State
   const [bannerActive, setBannerActive] = useState(
     siteData?.banner?.active !== false
@@ -188,6 +194,62 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
       };
       try { await syncToParent(newYoutube, null); }
       catch (error) { console.error('Video delete failed:', error); }
+    }
+  };
+
+  const handleStartEditVideo = (video) => {
+    setEditingVideoId(video.id);
+    const existingUrl = video.videoUrl || (video.videoId ? `https://www.youtube.com/watch?v=${video.videoId}` : '');
+    setEditVideoUrl(existingUrl);
+    setEditVideoTitle(video.title || '');
+    setEditVideoCategory(video.categoryBadge || '공식 채널 영상');
+  };
+
+  const handleCancelEditVideo = () => {
+    setEditingVideoId(null);
+    setEditVideoUrl('');
+    setEditVideoTitle('');
+    setEditVideoCategory('');
+  };
+
+  const handleSaveEditVideo = async (id) => {
+    const rawUrl = editVideoUrl.trim();
+    const extractedId = extractYoutubeId(rawUrl);
+    if (!rawUrl || !extractedId) {
+      alert('유효한 유튜브 영상 전체 주소(URL) 또는 영상 ID를 입력해주세요.');
+      return;
+    }
+    const cleanUrl = rawUrl.startsWith('http') ? rawUrl : `https://www.youtube.com/watch?v=${extractedId}`;
+    const updatedVideos = youtubeVideos.map((v) => {
+      if (v.id === id) {
+        return {
+          ...v,
+          id: extractedId,
+          videoId: extractedId,
+          videoUrl: cleanUrl,
+          thumbnail: `https://img.youtube.com/vi/${extractedId}/hqdefault.jpg`,
+          title: editVideoTitle.trim() || v.title,
+          categoryBadge: editVideoCategory || v.categoryBadge,
+        };
+      }
+      return v;
+    });
+    setYoutubeVideos(updatedVideos);
+    setEditingVideoId(null);
+
+    const newYoutube = {
+      title: youtubeTitle,
+      subtitle: youtubeSubtitle,
+      channelUrl: youtubeChannelUrl,
+      videos: updatedVideos,
+    };
+    try {
+      await syncToParent(newYoutube, null);
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 3000);
+    } catch (error) {
+      console.error('Video edit save failed:', error);
+      alert('영상 수정 저장 중 오류가 발생했습니다.');
     }
   };
 
@@ -653,8 +715,106 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
 
             <div className="divide-y divide-gray-100">
               {youtubeVideos.map((video) => {
+                const isEditingThis = editingVideoId === video.id;
                 const effectiveId = extractYoutubeId(video.videoUrl || video.videoId);
                 const thumb = `https://img.youtube.com/vi/${effectiveId}/hqdefault.jpg`;
+
+                if (isEditingThis) {
+                  const previewEditId = extractYoutubeId(editVideoUrl);
+                  const previewThumb = previewEditId ? `https://img.youtube.com/vi/${previewEditId}/hqdefault.jpg` : thumb;
+
+                  return (
+                    <div key={video.id} className="py-4 bg-emerald-50/50 p-4 rounded-2xl border border-emerald-200 space-y-4 my-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black text-emerald-800 flex items-center gap-1.5">
+                          <Edit3 className="w-3.5 h-3.5 text-emerald-600" />
+                          영상 정보 및 유튜브 링크 수정
+                        </span>
+                        <span className="text-[11px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+                          ID: {previewEditId || '확인 중'}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {/* Thumbnail Live Preview */}
+                        <div className="sm:col-span-1">
+                          <div className="aspect-video w-full rounded-xl overflow-hidden border border-emerald-300 bg-black relative">
+                            {previewEditId ? (
+                              <img
+                                src={previewThumb}
+                                alt="미리보기"
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
+                                썸네일 미리보기
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Edit Fields */}
+                        <div className="sm:col-span-2 space-y-2 text-xs">
+                          <div>
+                            <label className="font-bold text-gray-700 block mb-1">유튜브 주소 (URL 또는 ID)</label>
+                            <input
+                              type="text"
+                              value={editVideoUrl}
+                              onChange={(e) => setEditVideoUrl(e.target.value)}
+                              placeholder="https://www.youtube.com/watch?v=..."
+                              className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 font-mono font-medium focus:outline-none focus:border-emerald-500"
+                              autoFocus
+                            />
+                          </div>
+
+                          <div>
+                            <label className="font-bold text-gray-700 block mb-1">영상 제목</label>
+                            <input
+                              type="text"
+                              value={editVideoTitle}
+                              onChange={(e) => setEditVideoTitle(e.target.value)}
+                              className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 font-bold focus:outline-none focus:border-emerald-500"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="font-bold text-gray-700 block mb-1">카테고리</label>
+                            <select
+                              value={editVideoCategory}
+                              onChange={(e) => setEditVideoCategory(e.target.value)}
+                              className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 font-medium focus:outline-none focus:border-emerald-500"
+                            >
+                              <option value="공식 채널 영상">공식 채널 영상</option>
+                              <option value="언론 보도 영상">언론 보도 영상</option>
+                              <option value="특강 및 세미나">특강 및 세미나</option>
+                              <option value="수강생 현장 스케치">수강생 현장 스케치</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-emerald-200">
+                        <button
+                          type="button"
+                          onClick={handleCancelEditVideo}
+                          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold rounded-xl cursor-pointer"
+                        >
+                          취소
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleSaveEditVideo(video.id)}
+                          className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow cursor-pointer flex items-center gap-1.5"
+                        >
+                          <Save className="w-3.5 h-3.5" />
+                          <span>수정 저장 및 즉시 반영</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <div
                     key={video.id}
@@ -678,6 +838,14 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
                     </div>
 
                     <div className="flex items-center gap-2 self-end sm:self-center">
+                      <button
+                        onClick={() => handleStartEditVideo(video)}
+                        className="p-2 text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors flex items-center gap-1 text-xs font-bold cursor-pointer"
+                        title="영상 링크 및 제목 수정"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                        <span>수정</span>
+                      </button>
                       <a
                         href={video.videoUrl || `https://www.youtube.com/watch?v=${video.videoId}`}
                         target="_blank"
