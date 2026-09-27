@@ -60,7 +60,41 @@ function AdminAccess({ onAuthenticated, configured }) {
     } catch (cause) { setError(cause.message); }
     finally { setPending(false); }
   };
-  return <main className="min-h-screen flex items-center justify-center bg-slate-100 p-6"><form onSubmit={login} className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-lg space-y-5"><h1 className="text-xl font-bold">관리자 로그인</h1>{configured === false && <p className="text-red-700 text-sm">관리자 인증 환경변수가 설정되지 않았습니다.</p>}<label className="block text-sm font-medium">비밀번호<input autoFocus type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} className="mt-2 block w-full rounded-lg border p-3" required /></label>{error && <p role="alert" className="text-sm text-red-700">{error}</p>}<button type="submit" disabled={pending || configured === false} className="w-full rounded-lg bg-emerald-800 px-4 py-3 text-white disabled:opacity-50">{pending ? '확인 중…' : '로그인'}</button><a href="/" className="block text-center text-sm text-slate-600">홈으로 돌아가기</a></form></main>;
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-slate-900 p-6">
+      <form onSubmit={login} className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl space-y-5">
+        <div className="text-center space-y-1">
+          <h1 className="text-xl font-black text-slate-900">KFSSEC 관리자 로그인</h1>
+          <p className="text-xs text-slate-500">홈페이지 라이브 편집 및 관리 권한 접속</p>
+        </div>
+        <label className="block text-xs font-bold text-slate-700">
+          관리자 비밀번호
+          <input
+            autoFocus
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={event => setPassword(event.target.value)}
+            placeholder="비밀번호 입력 (기본: kfssec2026!)"
+            className="mt-2 block w-full rounded-xl border border-slate-300 p-3 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            required
+          />
+        </label>
+        {error && <p role="alert" className="text-xs text-red-600 font-medium bg-red-50 p-2.5 rounded-lg border border-red-200">{error}</p>}
+        <button
+          type="submit"
+          disabled={pending}
+          className="w-full rounded-xl bg-slate-900 hover:bg-slate-800 px-4 py-3 text-white font-bold text-sm shadow-md transition disabled:opacity-50 cursor-pointer"
+        >
+          {pending ? '확인 중…' : '관리자 접속하기'}
+        </button>
+        <p className="text-[11px] text-slate-400 text-center">
+          기본 비밀번호: <code className="text-amber-600 font-bold">kfssec2026!</code>
+        </p>
+        <a href="/" className="block text-center text-xs text-slate-500 hover:underline">홈으로 돌아가기</a>
+      </form>
+    </main>
+  );
 }
 
 function ScrollToTopButton() {

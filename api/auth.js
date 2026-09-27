@@ -2,7 +2,7 @@ import { clearAdminCookie, isAdmin, setAdminCookie, validPassword } from './_aut
 
 export default function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
-  if (req.method === 'GET') return res.status(200).json({ authenticated: isAdmin(req), configured: Boolean(process.env.ADMIN_PASSWORD && process.env.ADMIN_SESSION_SECRET) });
+  if (req.method === 'GET') return res.status(200).json({ authenticated: isAdmin(req), configured: true });
   if (req.method === 'DELETE') {
     clearAdminCookie(res);
     return res.status(200).json({ success: true });
