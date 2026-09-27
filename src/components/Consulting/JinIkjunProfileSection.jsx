@@ -22,8 +22,12 @@ import {
   FileText,
   HelpCircle
 } from 'lucide-react';
+import EditableImage from '../Admin/InlineEditor/EditableImage';
+import EditableText from '../Admin/InlineEditor/EditableText';
+import { useAdminEdit } from '../../context/AdminEditContext';
 
 export default function JinIkjunProfileSection({ onConsultClick }) {
+  const { siteDraft } = useAdminEdit();
   // Sub-tabs: 'profile' (진익준교수 소개 프로필) | 'references' (진익준교수 사례예시 프렌차이즈 사례)
   const [activeSubTab, setActiveSubTab] = useState('profile');
   const [refCategory, setRefCategory] = useState('all');
