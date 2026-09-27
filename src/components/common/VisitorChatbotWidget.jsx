@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import {
   getChatbotConfig,
+  loadChatbotConfig,
   findBotAnswer,
 } from '../../services/chatbotConfig';
 
@@ -37,6 +38,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
 
   // Keep synced with admin updates
   useEffect(() => {
+    loadChatbotConfig().catch(error => console.error('Chatbot settings load failed:', error));
     const handleConfigUpdate = () => {
       const fresh = getChatbotConfig();
       setConfig(fresh);

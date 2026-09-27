@@ -2,8 +2,10 @@ import React from 'react';
 import { Award, Calendar, ChevronRight, Sparkles, Trophy, Users } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
-export default function AwardCeremonyBannerSection({ onGoToGallery, onGoToInquiry }) {
+export default function AwardCeremonyBannerSection({ onGoToGallery, onGoToInquiry, bannerData = {} }) {
   const { tr } = useLanguage();
+
+  if (bannerData.active === false) return null;
 
   return (
     <section className="w-full bg-gradient-to-r from-[#072819] via-[#0B3C26] to-[#051C12] text-white py-6 sm:py-8 border-y-2 border-[#C5A059] relative overflow-hidden shadow-2xl">
@@ -26,13 +28,13 @@ export default function AwardCeremonyBannerSection({ onGoToGallery, onGoToInquir
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/50 text-[#D4AF37] text-xs font-black">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>{tr("2026 KFSSEC 공식 시상식 개최 안내")}</span>
+                <span>{tr(bannerData.badgeText || "2026 KFSSEC 공식 시상식 개최 안내")}</span>
               </div>
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                {tr("대한민국 외식산업 명인·명장 추계 시상식 및 선정식")}
+                {tr(bannerData.title || "대한민국 외식산업 명인·명장 추계 시상식 및 선정식")}
               </h3>
               <p className="text-xs sm:text-sm text-emerald-100/90 font-medium leading-relaxed max-w-2xl">
-                {tr("한국 전통 식문화의 계승과 K-FOOD 세계화에 기여한 최고 권위의 조리명장 및 명인을 선정하고 공식 인증패를 수여합니다.")}
+                {tr(bannerData.subtitle || "한국 전통 식문화의 계승과 K-FOOD 세계화에 기여한 최고 권위의 조리명장 및 명인을 선정하고 공식 인증패를 수여합니다.")}
               </p>
             </div>
           </div>
@@ -44,7 +46,7 @@ export default function AwardCeremonyBannerSection({ onGoToGallery, onGoToInquir
               <Calendar className="w-5 h-5 text-[#D4AF37] shrink-0" />
               <div className="text-left">
                 <span className="text-[10px] font-bold text-gray-400 block uppercase tracking-wider">{tr("시상식 일시")}</span>
-                <span className="text-sm font-black text-white tracking-wide">{tr("2026. 10. 19 (월)")}</span>
+                <span className="text-sm font-black text-white tracking-wide">{tr(bannerData.dDay || "2026. 10. 19 (월)")}</span>
               </div>
             </div>
 
@@ -54,7 +56,7 @@ export default function AwardCeremonyBannerSection({ onGoToGallery, onGoToInquir
               className="w-full sm:w-auto px-5 py-3.5 bg-gradient-to-r from-[#C5A059] to-[#D4AF37] hover:from-[#b08e4c] hover:to-[#c5a059] text-gray-950 font-black text-xs sm:text-sm rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer border border-amber-200"
             >
               <Award className="w-4 h-4 text-gray-950" />
-              <span>{tr("시상식 갤러리 보기")}</span>
+              <span>{tr(bannerData.buttonText || "시상식 갤러리 보기")}</span>
               <ChevronRight className="w-4 h-4 text-gray-950" />
             </button>
 

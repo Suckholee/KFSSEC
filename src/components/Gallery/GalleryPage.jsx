@@ -18,7 +18,7 @@ import {
   Maximize2,
 } from 'lucide-react';
 
-export default function GalleryPage({ initialSubTab = 'all' }) {
+export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
   const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState(initialSubTab || 'all');
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -45,88 +45,16 @@ export default function GalleryPage({ initialSubTab = 'all' }) {
     { id: 'training', label: t('조리 실습 현장') },
   ];
 
-  const galleryItems = [
-    {
-      id: 1,
-      category: 'ceremony',
-      categoryLabel: '시상식 & 인증패',
-      title: '2026 대한민국 자랑스러운 외식 명인·명장 인물대상 시상식',
-      date: '2026.08.30',
-      location: '한국외식창업교육원 대강당',
-      image: '/images/hero_bg.jpg',
-      desc: '특급호텔 40년 현장 실무 경력의 조리 명장진과 열정적인 128명 수강생, 협회 임원진이 함께한 명인 인증서 수여식 및 공로패 시상 현장입니다.',
-    },
-    {
-      id: 2,
-      category: 'competition',
-      categoryLabel: '요리대회',
-      title: '제01회 K-FOOD 지역 특산물 연계 조리 경연대회 본선 현장',
-      date: '2026.08.25',
-      location: '교육원 조리 실습 1강의실',
-      image: '/images/chef_tossing_food.jpg',
-      desc: '전국 농수축산물 식자재를 현대적 감각으로 재해석한 창작 요리 경연으로, 심사위원단의 엄정한 실기 채점이 진행되었습니다.',
-    },
-    {
-      id: 3,
-      category: 'consulting',
-      categoryLabel: '지자체 컨설팅',
-      title: '강남구 및 전국 지자체 소상공인 외식창업 경영개선 현장 컨설팅',
-      date: '2026.08.20',
-      location: '강남구 소상공인 지원센터',
-      image: '/images/course_menu_dev.jpg',
-      desc: '진익준 교수를 비롯한 전문 컨설턴트가 골목상권 소상공인 매장을 직접 방문하여 상권분석 및 메뉴 표준화 솔루션을 제공했습니다.',
-    },
-    {
-      id: 4,
-      category: 'training',
-      categoryLabel: '조리 실습 현장',
-      title: '100년 전통 발효 소스 시그니처 갈비찜 실전 레시피 전수',
-      date: '2026.08.15',
-      location: '한식 마스터 실습실',
-      image: '/images/course_restaurant.jpg',
-      desc: '조리 명장이 직접 시연하는 전통 비법 소스와 육질 연화 테크닉, 업소용 대용량 조리 표준 매뉴얼을 전수하는 마스터클래스 실습 현장입니다.',
-    },
-    {
-      id: 5,
-      category: 'consulting',
-      categoryLabel: '지자체 컨설팅',
-      title: '경상남도 및 산청군 향토 약선음식 외식자원화 품평회',
-      date: '2026.08.10',
-      location: '지자체 특산물 R&D 센터',
-      image: '/images/course_delivery.jpg',
-      desc: '지역 농가와 외식 창업인의 상생을 위한 지자체 연계 프로젝트로, 약선 한방 식재료를 활용한 시제품 메뉴 품평 및 시식이 진행되었습니다.',
-    },
-    {
-      id: 6,
-      category: 'competition',
-      categoryLabel: '요리대회',
-      title: '청년 외식창업자 라이브 쿠킹 배틀 & 시그니처 메뉴 쇼케이스',
-      date: '2026.07.28',
-      location: '국제외식박람회 특설무대',
-      image: '/images/course_net_1.jpg',
-      desc: '창의적인 소자본 창업 아이템을 겨루는 청년 창업가 라이브 조리대회로 우수팀에게는 창업 지원금 및 협회장상이 수여되었습니다.',
-    },
-    {
-      id: 7,
-      category: 'ceremony',
-      categoryLabel: '시상식 & 인증패',
-      title: '10대 산학협력 가족기업 업무협약(MOU) 및 명예교수 위촉식',
-      date: '2026.07.18',
-      location: '교육원 컨벤션홀',
-      image: '/images/chairman_ahn_real.jpg',
-      desc: '(주)주방뱅크, (주)세진, ㈜자인 등 10대 공식 협력업체 대표단과 안형상 이사장이 참석한 산학협력 공식 조인식 현장입니다.',
-    },
-    {
-      id: 8,
-      category: 'training',
-      categoryLabel: '조리 실습 현장',
-      title: '스페셜티 카페 창업 & 에스프레소 추출 및 라떼아트 1:1 직강',
-      date: '2026.07.05',
-      location: '바리스타 & 베이커리 랩',
-      image: '/images/course_cafe.jpg',
-      desc: '상위 1% 스페셜티 원두 큐레이션부터 매장형 머신 관리, 테이크아웃 회전율 최적화 동선까지 실습하는 전문 바리스타 창업 수업 현장입니다.',
-    },
-  ];
+  const galleryItems = postsList.filter(post => post.categoryType === 'gallery').map(post => ({
+    id: post.id,
+    category: post.galleryCategory || 'training',
+    categoryLabel: galleryCategories.find(item => item.id === (post.galleryCategory || 'training'))?.label || '조리 실습 현장',
+    title: post.title,
+    date: post.date || '',
+    location: post.location || '',
+    image: post.image || '/images/hero_bg.jpg',
+    desc: post.content || '',
+  }));
 
   // Filtering
   const filteredItems = galleryItems.filter((item) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getMasterProfiles, MASTER_STORAGE_KEY, MASTER_UPDATE_EVENT, sortProfiles } from '../services/masterDatabase';
+import { getMasterProfiles, loadMasterProfiles, MASTER_UPDATE_EVENT, sortProfiles } from '../services/masterDatabase';
 
 export default function useMasterProfiles() {
   const read = () => {
@@ -8,13 +8,12 @@ export default function useMasterProfiles() {
   };
   const [state, setState] = useState(read);
   useEffect(() => {
+    loadMasterProfiles().catch(error => setState(current => ({ ...current, error: error.message })));
     const refresh = event => {
-      if (event.type !== 'storage' || event.key === MASTER_STORAGE_KEY || event.key === null) setState(read());
+      setState(read());
     };
-    window.addEventListener('storage', refresh);
     window.addEventListener(MASTER_UPDATE_EVENT, refresh);
     return () => {
-      window.removeEventListener('storage', refresh);
       window.removeEventListener(MASTER_UPDATE_EVENT, refresh);
     };
   }, []);

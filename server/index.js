@@ -5,6 +5,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { GLOBAL_DINING_TRENDS, TREND_CATEGORY_INFO } from '../src/data/globalDiningTrends.js';
 import { handleGenerateAiImage } from '../api/generate-ai-image.js';
+import authHandler from '../api/auth.js';
+import contentHandler from '../api/content.js';
+import coursesHandler from '../api/courses.js';
+import mediaHandler from '../api/media.js';
+import uploadHandler from '../api/upload.js';
+import inquiriesHandler from '../api/inquiries.js';
 
 // Load .env / .env.local
 try {
@@ -28,6 +34,14 @@ const PORT = process.env.PORT || 5001;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+app.all('/api/auth', (req, res) => authHandler(req, res));
+app.all('/api/content', (req, res) => contentHandler(req, res));
+app.all('/api/media', (req, res) => mediaHandler(req, res));
+app.all('/api/upload', (req, res) => uploadHandler(req, res));
+app.all('/api/inquiries', (req, res) => inquiriesHandler(req, res));
+app.all('/api/courses', (req, res) => coursesHandler(req, res));
+app.all('/api/courses/:id', (req, res) => coursesHandler(Object.assign(req, { query: { ...req.query, id: req.params.id } }), res));
 
 const DB_FILE = path.join(__dirname, 'data', 'courses.json');
 const UPLOADS_DIR = path.join(__dirname, '..', 'public', 'uploads');

@@ -36,9 +36,9 @@ export default function AdminMasters() {
   const filtered = profiles.filter(p => (group === 'all' || p.group === group) && `${p.name} ${p.title}`.includes(search.trim()));
   const canArrange = !search.trim() && !readError;
   const groupIds = profile => profiles.filter(p => p.group === profile.group).map(p => p.id);
-  const move = (profile, targetId, expectedIds = groupIds(profile)) => {
+  const move = async (profile, targetId, expectedIds = groupIds(profile)) => {
     try {
-      moveMasterProfile(profile.id, targetId, expectedIds);
+      await moveMasterProfile(profile.id, targetId, expectedIds);
       setError(''); setNotice(`${profile.name} 프로필의 배치를 저장했습니다. 사이트에도 같은 순서로 반영됩니다.`);
     } catch (error) { setError(error.message); }
     finally { dragRef.current = null; setDraggedId(null); setDropId(null); }
@@ -89,14 +89,14 @@ export default function AdminMasters() {
     try {
       const { awardsText, ...profile } = draft;
       await checkProfileImage(profile.image);
-      saveMasterProfile({ ...profile, awards: awardsText.split('\n').map(s => s.trim()).filter(Boolean) }, originalRef.current);
-      setDraft(null); setNotice('프로필을 저장했습니다. 이 브라우저의 명장·명인 페이지에 반영되었습니다.');
+      await saveMasterProfile({ ...profile, awards: awardsText.split('\n').map(s => s.trim()).filter(Boolean) }, originalRef.current);
+      setDraft(null); setNotice('프로필을 저장했습니다. 공개 페이지에 반영되었습니다.');
     } catch (error) { setError(error.message); }
     finally { savingRef.current = false; setSaving(false); }
   };
-  const remove = profile => {
+  const remove = async profile => {
     if (!window.confirm(`${profile.name} 프로필을 삭제할까요? 삭제 후 복구할 수 없습니다.`)) return;
-    try { deleteMasterProfile(profile.id); setError(''); setNotice('프로필을 삭제했습니다.'); }
+    try { await deleteMasterProfile(profile.id); setError(''); setNotice('프로필을 삭제했습니다.'); }
     catch (error) { setError(error.message); }
   };
   return (
@@ -105,7 +105,7 @@ export default function AdminMasters() {
         <div><h1 className="text-2xl font-bold flex items-center gap-2"><Award className="text-emerald-700" />명장·명인 프로필 관리</h1><p className="mt-2 text-sm text-gray-500">사진과 소개, 경력, 공개 여부를 관리합니다.</p></div>
         {!draft && <button disabled={!!readError} className={`${buttonClass} bg-emerald-800 text-white`} onClick={() => edit({ id: crypto.randomUUID(), headline: '', name: '', group: 'expert', image: '', title: '', intro: '', awards: [], blogUrl: '', youtubeUrl: '', instagramUrl: '', published: true, order: Math.max(0, ...profiles.map(p => p.order)) + 1 })}><Plus size={16} />프로필 등록</button>}
       </header>
-      <p className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">현재 변경 사항은 이 브라우저에 저장됩니다. 다른 기기에는 공유되지 않으며 브라우저 데이터 삭제 시 초기화됩니다.</p>
+      <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">변경 사항은 서버에 저장되어 공개 페이지에 반영됩니다.</p>
       {(error || readError) && <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">{error || readError}</p>}
       {notice && <p role="status" className="rounded-xl bg-emerald-50 p-4 text-emerald-800">{notice}</p>}
       {draft ? <div className="grid gap-6 xl:grid-cols-[1fr_320px]">

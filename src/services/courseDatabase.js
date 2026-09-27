@@ -11,17 +11,14 @@ export async function fetchCoursesFromAPI() {
       const contentType = res.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         const json = await res.json();
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          const hasLegacy = json.data.some(c => /^c(?:[1-9]|1[0-2])$/.test(String(c.id)));
-          if (!hasLegacy) {
-            saveCoursesToDB(json.data);
-            return json.data;
-          }
+        if (json.success && Array.isArray(json.data)) {
+          saveCoursesToDB(json.data);
+          return json.data;
         }
       }
     }
   } catch (err) {
-    console.warn('[REAL DB CLIENT] Real REST API server offline, fallback to localStorage:', err);
+    console.warn('Course API unavailable:', err);
   }
 
   return getCoursesFromDB();
@@ -41,7 +38,7 @@ export function getCoursesFromDB() {
           c.title.includes('파스타 & 파인다이닝') ||
           c.title.includes('대박 분식집')
       );
-      if (Array.isArray(parsed) && parsed.length > 0 && !hasLegacyMock) {
+      if (Array.isArray(parsed) && !hasLegacyMock) {
         return parsed;
       }
     } catch (e) {
@@ -67,7 +64,7 @@ export function resetCoursesToDefault() {
 }
 
 export function saveCoursesToDB(courses) {
-  if (!Array.isArray(courses) || courses.length === 0) return;
+  if (!Array.isArray(courses)) return;
   localStorage.setItem('kfssec_courses_version', DB_VERSION);
   localStorage.setItem('kfssec_courses_db', JSON.stringify(courses));
   try {
@@ -84,56 +81,27 @@ export async function createCourseAPI(courseData) {
     id: courseData.id || `c${Date.now()}`,
   };
 
-  try {
     const res = await fetch('/api/courses', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newCourse),
     });
-    if (res.ok) {
-      const contentType = res.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const json = await res.json();
-        if (json.success && json.data) {
-          const current = getCoursesFromDB();
-          const updated = [json.data, ...current];
-          saveCoursesToDB(updated);
-          return json.data;
-        }
-      }
-    }
-  } catch (err) {
-    console.warn('Real API create error, saving locally:', err);
-  }
-
-  const current = getCoursesFromDB();
-  const updated = [newCourse, ...current];
-  saveCoursesToDB(updated);
-  return newCourse;
+  const json = await res.json();
+  if (!res.ok || !json.success || !json.data) throw new Error(json.message || '과정 등록 실패');
+  saveCoursesToDB([json.data, ...getCoursesFromDB()]);
+  return json.data;
 }
 
 // REST API PUT Update Course with 100% robust string ID matching
 export async function updateCourseAPI(id, courseData) {
-  let updatedPayload = courseData;
-
-  try {
     const res = await fetch(`/api/courses/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(courseData),
     });
-    if (res.ok) {
-      const contentType = res.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const json = await res.json();
-        if (json.success && json.data) {
-          updatedPayload = json.data;
-        }
-      }
-    }
-  } catch (err) {
-    console.warn('Real API update error, saving locally:', err);
-  }
+  const json = await res.json();
+  if (!res.ok || !json.success || !json.data) throw new Error(json.message || '과정 수정 실패');
+  const updatedPayload = json.data;
 
   // Update in local DB store using robust string ID matching
   const current = getCoursesFromDB();
@@ -153,22 +121,11 @@ export async function updateCourseAPI(id, courseData) {
 
 // REST API DELETE Course
 export async function deleteCourseAPI(id) {
-  try {
     const res = await fetch(`/api/courses/${id}`, {
       method: 'DELETE',
     });
-    if (res.ok) {
-      const contentType = res.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const json = await res.json();
-        if (json.success) {
-          // Proceed
-        }
-      }
-    }
-  } catch (err) {
-    console.warn('Real API delete error, saving locally:', err);
-  }
+  const json = await res.json();
+  if (!res.ok || !json.success) throw new Error(json.message || '과정 삭제 실패');
 
   const current = getCoursesFromDB();
   const idStr = String(id);

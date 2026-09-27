@@ -2,35 +2,14 @@ import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState } from 'react';
 import { ChevronRight, Bell, Calendar } from 'lucide-react';
 
-export default function NoticePostSection({ onScrollNext }) {
+export default function NoticePostSection({ onScrollNext, postsList = [] }) {
   const { t } = useLanguage();
   const [activeSlide, setActiveSlide] = useState(0);
 
-  const posts = [
-    {
-      id: 'post-1',
-      date: '2026년 08월',
-      title: '외식창업 수강생 N:N 커리큘럼 매칭 포트폴리오 시스템 도입',
-      subtitle: '사단법인 한국외식창업교육원 맞춤 수강생 라이프스타일 창업 교육 개편',
-      image: '/images/dir_1.jpg',
-    },
-    {
-      id: 'post-2',
-      date: '2026년 08월',
-      title: '2026 사단법인 한국외식창업교육원 3분기 총회 및 성과발표회 개최',
-      subtitle: '2026 결산 및 외식창업 비전 사업 계획 정기 총회 성료',
-      image: '/images/yt_thumb_1.jpg',
-    },
-    {
-      id: 'post-3',
-      date: '2026년 08월',
-      title: '제 01회 요리대회 <K-FOOD 지역 특산물 연계 조리 경연 대회> 규정집 안내',
-      subtitle: '지역 특산 식재료 연계 레시피 개발 및 외식창업 시그니처 메뉴 경연',
-      image: '/images/yt_thumb_2.jpg',
-    },
-  ];
-
-  const currentPost = posts[activeSlide];
+  const posts = postsList.filter(post => post.categoryType === 'notice' || post.isPinned).slice(0, 3)
+    .map(post => ({ ...post, subtitle: post.content, image: post.image || '/images/hero_bg.jpg' }));
+  const currentPost = posts[activeSlide % posts.length];
+  if (!currentPost) return null;
 
   return (
     <section

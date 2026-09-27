@@ -15,7 +15,7 @@ import {
   BookmarkCheck,
 } from 'lucide-react';
 
-export default function GreetingsSection({ viewMode = 'all' }) {
+export default function GreetingsSection({ viewMode = 'all', speech }) {
   const { t } = useLanguage();
   const highlightPoints = [
     {
@@ -444,7 +444,7 @@ export default function GreetingsSection({ viewMode = 'all' }) {
 
   return (
     <section className="space-y-12">
-      {viewMode === 'speech' && renderSpeechContent()}
+      {viewMode === 'speech' && (speech ? <section className="rounded-3xl border border-emerald-200 bg-white p-6 sm:p-10 shadow-sm"><div className="grid gap-8 md:grid-cols-[280px_1fr] items-start"><img src={speech.image || '/images/chairman_ahn_real.jpg'} alt={speech.chairmanName || '이사장'} className="w-full rounded-2xl object-cover" /><div className="space-y-6"><h2 className="text-2xl sm:text-3xl font-black text-emerald-950">{t(speech.title || '이사장 인사말')}</h2><p className="whitespace-pre-line text-lg leading-8 text-gray-700">{t(speech.quote || '')}</p><div className="pt-5 border-t text-right"><strong className="block text-xl text-emerald-900">{t(speech.chairmanName || '')}</strong><span className="text-sm text-gray-600">{t(speech.chairmanTitle || '')}</span></div></div></div></section> : renderSpeechContent())}
       {viewMode === 'profile' && renderProfileContent()}
       {viewMode === 'all' && (
         <>

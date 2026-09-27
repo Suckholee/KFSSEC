@@ -4,7 +4,7 @@ import SubSidebar from '../common/SubSidebar';
 import { Building2, ShieldCheck, Scale, FileText, Bell, Users, CheckCircle2, ChevronRight, HelpCircle, Gift, Sparkles, PhoneCall } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
 
-export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 'intro' }) {
+export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 'intro', onGoToInquiry, postsList = [] }) {
   const { tr, language } = useLanguage();
   const defaultSub = initialSubTab || initialTab || 'intro';
   const [activeTab, setActiveTab] = useState(defaultSub);
@@ -57,8 +57,8 @@ export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 
             <SubSidebar
               title={tr("강남구 소상공인")}
               items={gangnamSubItems}
-              activeTab={activeTab}
-              onTabChange={handleTabChange}
+              activeId={activeTab}
+              onSelectTab={handleTabChange}
             />
           </div>
 
@@ -136,10 +136,10 @@ export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 
 
                   <div className="pt-4 border-t border-gray-200 flex justify-end">
                     <button
-                      onClick={() => alert(tr('🎉 강남구 소상공인 가입 상담 신청이 완료되었습니다.\n담당자가 빠른 시간 내 연락드립니다.'))}
+                      onClick={onGoToInquiry}
                       className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
                     >
-                      <span>{tr("⚡ 강남구 소상공인 회원 가입 상담 신청")}</span>
+                      <span>{tr("⚡ 강남구 소상공인 회원 가입 상담 문의")}</span>
                       <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
                     </button>
                   </div>
@@ -191,21 +191,19 @@ export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 
                   </div>
 
                   <div className="divide-y divide-gray-200 font-bold text-xs sm:text-sm">
-                    {[
-                      { id: 1, date: '2026.09.05', title: '[강남구청 소식] 2026 하반기 소상공인 긴급 경영안정자금 신청 안내', category: '지원사업' },
-                      { id: 2, date: '2026.08.28', title: '[세무 특강] 외식업 자영업자를 위한 부가가치세 신고 및 절세 세미나', category: '세미나' },
-                      { id: 3, date: '2026.08.15', title: '[행사] 강남구 맛집 상권 소상공인 상생 박람회 개최 안내', category: '행사' },
-                    ].map((notice) => (
+                    {postsList.filter(post => post.category === '강남 소상공인').map((notice) => (
                       <div key={notice.id} className="py-4 flex items-center justify-between gap-4 hover:bg-stone-50 transition-colors cursor-pointer px-2 rounded-xl">
                         <div className="space-y-1">
                           <span className="text-[11px] font-black text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-md mr-2">
                             {tr(notice.category)}
                           </span>
                           <span className="font-bold text-gray-900 text-sm">{tr(notice.title)}</span>
+                          {notice.content && <p className="mt-2 whitespace-pre-wrap text-xs font-normal text-gray-600">{tr(notice.content)}</p>}
                         </div>
                         <span className="text-xs font-mono text-gray-400 shrink-0">{tr(notice.date)}</span>
                       </div>
                     ))}
+                    {!postsList.some(post => post.category === '강남 소상공인') && <p className="py-6 text-center text-gray-500">등록된 공지가 없습니다.</p>}
                   </div>
                 </div>
               </ScrollReveal>

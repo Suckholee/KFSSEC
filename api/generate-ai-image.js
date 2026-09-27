@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { requireAdmin } from './_auth.js';
 
 // Auto-load .env or .env.local if available in local Node runtime
 try {
@@ -252,11 +253,6 @@ async function generateWithOpenAI(promptText) {
  * Main Controller Handler for both Express server and Vercel Serverless Function
  */
 export async function handleGenerateAiImage(req, res) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -264,6 +260,7 @@ export async function handleGenerateAiImage(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
+  if (!requireAdmin(req, res)) return;
 
   try {
     const body = req.body || {};

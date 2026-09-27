@@ -195,12 +195,12 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
     }
   };
 
-  const persistChanges = (newList) => {
-    if (onUpdatePartnerLogos) {
-      onUpdatePartnerLogos(newList);
-    }
-    setSaveSuccessMsg(true);
-    setTimeout(() => setSaveSuccessMsg(false), 3000);
+  const persistChanges = async (newList) => {
+    try {
+      if (onUpdatePartnerLogos) await onUpdatePartnerLogos(newList);
+      setSaveSuccessMsg(true);
+      setTimeout(() => setSaveSuccessMsg(false), 3000);
+    } catch (error) { setList(partnerLogos || []); console.error('Partner save failed:', error); }
   };
 
   return (

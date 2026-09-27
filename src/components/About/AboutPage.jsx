@@ -297,7 +297,7 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
 
             {/* SUB-TAB 3: 원장 인사말 */}
             {activeTab === 'speech' && (
-              <GreetingsSection viewMode="speech" />
+              <GreetingsSection viewMode="speech" speech={siteData?.speech} />
             )}
 
             {/* SUB-TAB 3: 원장 프로필 & MOU */}

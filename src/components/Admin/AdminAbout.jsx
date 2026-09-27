@@ -294,7 +294,7 @@ export default function AdminAbout({
   };
 
   // Save changes to siteData
-  const persistSiteData = (newHistory, newFaculty, newSpeech) => {
+  const persistSiteData = async (newHistory, newFaculty, newSpeech) => {
     const updated = {
       ...siteData,
       history: newHistory !== undefined ? newHistory : milestones,
@@ -302,7 +302,7 @@ export default function AdminAbout({
       speech: newSpeech !== undefined ? newSpeech : speech,
     };
     if (onUpdateSiteData) {
-      onUpdateSiteData(updated);
+      await onUpdateSiteData(updated);
     }
   };
 
@@ -327,7 +327,7 @@ export default function AdminAbout({
     setIsEventModalOpen(true);
   };
 
-  const handleSaveEvent = (e) => {
+  const handleSaveEvent = async (e) => {
     e.preventDefault();
     if (!eventTitle.trim()) {
       alert('연혁 사건 제목을 입력해주세요.');
@@ -358,13 +358,14 @@ export default function AdminAbout({
       return m;
     });
 
+    try { await persistSiteData(updatedMilestones, faculty, speech); }
+    catch (error) { return; }
     setMilestones(updatedMilestones);
-    persistSiteData(updatedMilestones, faculty, speech);
     setIsEventModalOpen(false);
     showNotification('연혁 항목이 성공적으로 저장되었습니다.');
   };
 
-  const handleDeleteEvent = (year, eventId) => {
+  const handleDeleteEvent = async (year, eventId) => {
     if (window.confirm('이 연혁 항목을 삭제하시겠습니까?')) {
       const updatedMilestones = milestones.map((m) => {
         if (m.year === year) {
@@ -375,13 +376,14 @@ export default function AdminAbout({
         }
         return m;
       });
+      try { await persistSiteData(updatedMilestones, faculty, speech); }
+      catch (error) { return; }
       setMilestones(updatedMilestones);
-      persistSiteData(updatedMilestones, faculty, speech);
       showNotification('연혁 항목이 삭제되었습니다.');
     }
   };
 
-  const handleAddYearMilestone = () => {
+  const handleAddYearMilestone = async () => {
     const inputYear = window.prompt('추가할 연도를 4자리 숫자로 입력하세요 (예: 2027):');
     if (!inputYear || !inputYear.trim()) return;
     const yearStr = inputYear.trim();
@@ -406,8 +408,9 @@ export default function AdminAbout({
     };
 
     const updatedMilestones = [newYearItem, ...milestones];
+    try { await persistSiteData(updatedMilestones, faculty, speech); }
+    catch (error) { return; }
     setMilestones(updatedMilestones);
-    persistSiteData(updatedMilestones, faculty, speech);
     showNotification(`${yearStr}년 연혁 섹션이 추가되었습니다.`);
   };
 
@@ -436,7 +439,7 @@ export default function AdminAbout({
     setIsFacultyModalOpen(true);
   };
 
-  const handleSaveFaculty = (e) => {
+  const handleSaveFaculty = async (e) => {
     e.preventDefault();
     if (!facultyName.trim()) {
       alert('교수진 성함을 입력해주세요.');
@@ -464,7 +467,6 @@ export default function AdminAbout({
             }
           : f
       );
-      showNotification('교수진 정보가 수정되었습니다.');
     } else {
       const newMember = {
         id: `prof-${Date.now()}`,
@@ -478,27 +480,30 @@ export default function AdminAbout({
         highlights: highlightsArr,
       };
       updatedFaculty = [...faculty, newMember];
-      showNotification('새 교수진이 성공적으로 등록되었습니다.');
     }
 
+    try { await persistSiteData(milestones, updatedFaculty, speech); }
+    catch (error) { return; }
     setFaculty(updatedFaculty);
-    persistSiteData(milestones, updatedFaculty, speech);
+    showNotification('교수진 정보가 저장되었습니다.');
     setIsFacultyModalOpen(false);
   };
 
-  const handleDeleteFaculty = (id) => {
+  const handleDeleteFaculty = async (id) => {
     if (window.confirm('정말 이 교수진 정보를 삭제하시겠습니까?')) {
       const updatedFaculty = faculty.filter((f) => f.id !== id);
+      try { await persistSiteData(milestones, updatedFaculty, speech); }
+      catch (error) { return; }
       setFaculty(updatedFaculty);
-      persistSiteData(milestones, updatedFaculty, speech);
       showNotification('교수진 정보가 삭제되었습니다.');
     }
   };
 
   // --- Speech Handlers ---
-  const handleSaveSpeech = (e) => {
+  const handleSaveSpeech = async (e) => {
     e.preventDefault();
-    persistSiteData(milestones, faculty, speech);
+    try { await persistSiteData(milestones, faculty, speech); }
+    catch (error) { return; }
     showNotification('이사장 인사말 및 비전 설정이 저장되었습니다.');
   };
 

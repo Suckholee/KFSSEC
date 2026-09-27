@@ -97,67 +97,6 @@ import AdminAbout from './AdminAbout';
 import AdminSettings from './AdminSettings';
 import CoursePosterGeneratorModal from './CoursePosterGeneratorModal';
 
-// Programmatically generate 128 real full student enrollee & account records
-const generate128Enrollees = () => {
-  const lastNames = ['김', '이', '박', '최', '정', '강', '조', '윤', '장', '임', '한', '오', '서', '신', '권', '황', '안', '송', '전', '홍', '고', '문', '양', '손', '배', '백', '허', '유', '남', '심'];
-  const firstNames = ['태훈', '소연', '준형', '성민', '다은', '현우', '수진', '경민', '보미', '남궁건', '승룡', '위안', '현석', '유진', '민수', '지훈', '예은', '도현', '지유', '우진', '해진', '재성', '진우', '동건', '시경', '경수', '보경', '은지', '상철', '영희', '철수', '동현', '서연', '민재', '지원', '하은', '지민', '준서', '도윤', '시우', '하준', '지호', '유준', '지안'];
-  
-  const courseRefs = [
-    { id: 'c1', title: '외식창업 성공전략 마스터', category: '한식', date: '2026-09-05', orig: 260000, price: 234000, disc: '10% 얼리버드' },
-    { id: 'c2', title: '상권·입지 분석 실전', category: '한식', date: '2026-09-12', orig: 240000, price: 216000, disc: '10% 데이터특강' },
-    { id: 'c3', title: '메뉴개발과 원가관리', category: '한식', date: '2026-09-18', orig: 200000, price: 190000, disc: '5% 할인' },
-    { id: 'c4', title: '매장 운영·서비스 관리', category: '한식', date: '2026-09-20', orig: 300000, price: 260000, disc: '13% 할인' },
-    { id: 'c5', title: '외식업 마케팅 실전', category: '카페/디저트', date: '2026-09-22', orig: 120000, price: 120000, disc: '온라인특가' },
-    { id: 'c6', title: '프랜차이즈 창업의 이해', category: '기타', date: '2026-09-25', orig: 200000, price: 150000, disc: '25% 가맹지원' },
-    { id: 'c7', title: '배달매장 운영 전략', category: '배달/밀키트', date: '2026-09-27', orig: 184000, price: 160000, disc: '13% 수강지원' },
-    { id: 'c8', title: '식품위생 및 안전관리', category: '기타', date: '2026-09-29', orig: 200000, price: 180000, disc: '10% HACCP지원' },
-    { id: 'c9', title: '외식창업 마스터 풀 패키지', category: '기타', date: '2026-10-01', orig: 550000, price: 450000, disc: '20% 올인원패키지' },
-    { id: 'c10', title: '메뉴개발·원가관리 풀 패키지', category: '한식', date: '2026-10-03', orig: 460000, price: 390000, disc: '15% 패키지' },
-    { id: 'c11', title: '매장운영·서비스 풀 패키지', category: '기타', date: '2026-10-05', orig: 510000, price: 420000, disc: '18% 패키지' },
-    { id: 'c12', title: '외식마케팅·프랜차이즈 풀 패키지', category: '배달/밀키트', date: '2026-10-08', orig: 500000, price: 380000, disc: '25% 마케팅패키지' },
-  ];
-
-  const payMethods = ['신용카드 (KB국민 12개월)', '신용카드 (신한 6개월)', '실시간 계좌이체 (신한)', '가상계좌 (입금 대기중)', '카카오페이 (카드)', '네이버페이 (계좌)', '무통장 입금 (농협)'];
-  const domains = ['naver.com', 'gmail.com', 'daum.net', 'kakao.com'];
-
-  const list = [];
-  for (let i = 1; i <= 128; i++) {
-    const lName = lastNames[i % lastNames.length];
-    const fName = firstNames[i % firstNames.length];
-    const name = `${lName}${fName}`;
-    const course = courseRefs[(i - 1) % courseRefs.length];
-    const day = String(30 - Math.floor(i / 5)).padStart(2, '0');
-    const hour = String(9 + (i % 10)).padStart(2, '0');
-    const min = String((i * 13) % 60).padStart(2, '0');
-    const p1 = 1000 + ((i * 73) % 8999);
-    const p2 = 1000 + ((i * 37) % 8999);
-
-    const isPending = i <= 5;
-    const isSuspended = i === 127 || i === 128;
-
-    list.push({
-      id: `R2026-08${day}-${String(i).padStart(2, '0')}`,
-      userId: `user_student_${i}`,
-      joinDate: `2026.08.${day}`,
-      lastLogin: `2026.08.30 ${hour}:${min}`,
-      studentName: name,
-      phone: `010-${p1}-${p2}`,
-      email: `student${i}@${domains[i % domains.length]}`,
-      courseId: course.id,
-      courseTitle: course.title,
-      categoryName: course.category,
-      startDate: course.date,
-      originalPrice: course.orig,
-      paidAmount: course.price,
-      discountText: course.disc,
-      paymentMethod: isPending ? '가상계좌 (입금 대기중)' : payMethods[i % payMethods.length],
-      status: isPending ? 'pending' : 'completed',
-      accountStatus: isSuspended ? 'suspended' : 'active',
-    });
-  }
-  return list;
-};
-
 export default function AdminLayout({
   siteData,
   onUpdateSiteData,
@@ -170,7 +109,7 @@ export default function AdminLayout({
   const [coursesList, setCoursesList] = useState(getCoursesFromDB());
 
   // Enrollees & Reservations State (EXACTLY 128 REAL RECORDS)
-  const [enrolleesList, setEnrolleesList] = useState(generate128Enrollees());
+  const [enrolleesList, setEnrolleesList] = useState([]);
 
   // Selected Course for Course-First Enrollee Management View
   const [selectedCourseForEnrollees, setSelectedCourseForEnrollees] = useState(null);
@@ -214,101 +153,10 @@ export default function AdminLayout({
     },
   ]);
 
-  // Student 1:1 Inquiries State connected to 128 Student Account Dataset
-  const [studentInquiries, setStudentInquiries] = useState([
-    {
-      id: 'INQ-2026-0830-01',
-      studentName: '강현우',
-      userId: 'user_student_6',
-      phone: '010-4821-3950',
-      email: 'student6@naver.com',
-      courseTitle: '외식창업 성공전략 마스터',
-      categoryName: '한식',
-      date: '2026.08.30 14:15',
-      title: '청년 외식창업 정부지원금 5천만원 연계 신청 방법 및 자격 문의',
-      content: '청년 창업 교육 지원 정책 및 소상공인 창업 지원금 연계 절차에 관해 문의드립니다. 제출해야 하는 사업계획서 및 증빙 서류 양식이 궁금합니다.',
-      status: 'completed',
-      replyDate: '2026.08.30 14:20',
-      replyContent: '안녕하세요 강현우 수강생님, 사단법인 한국외식창업교육원입니다.\n청년 외식창업 정부지원금 연계 서류는 스마트 파트너 센터 마이페이지에서 바로 다운로드 가능하며, 9월 5일 개강 당일 1:1 전담 컨설턴트가 사업계획서 검토 및 수정을 도와드립니다.',
-    },
-    {
-      id: 'INQ-2026-0830-02',
-      studentName: '윤경민',
-      userId: 'user_student_8',
-      phone: '010-7539-1420',
-      email: 'student8@gmail.com',
-      courseTitle: '메뉴개발과 원가관리',
-      categoryName: '한식',
-      date: '2026.08.30 11:30',
-      title: '소상공인 100년 전통 발효 소스 시그니처 전수 과정 수강료 문의',
-      content: '기존 매장 메뉴 리뉴얼 및 셰프 1:1 레시피 전수 과정 수강료 할인 패키지 혜택과 주말 실습 참여 가능 여부에 대해 상세 상담 부탁드립니다.',
-      status: 'pending',
-      replyDate: null,
-      replyContent: null,
-    },
-    {
-      id: 'INQ-2026-0830-03',
-      studentName: '임남궁건',
-      userId: 'user_student_10',
-      phone: '010-3841-9270',
-      email: 'student10@kakao.com',
-      courseTitle: '배달매장 운영 전략',
-      categoryName: '배달/밀키트',
-      date: '2026.08.30 09:45',
-      title: '배달 플랫폼 깃발 알고리즘 공략 및 밀키트 포장 실습 일정 문의',
-      content: '배달 전문 매장 깃발 세팅 노하우 및 HMR 밀키트 파우더 포장 패키징 실습이 몇 회 차 수업에 포함되어 있는지 궁금합니다.',
-      status: 'pending',
-      replyDate: null,
-      replyContent: null,
-    },
-    {
-      id: 'INQ-2026-0829-04',
-      studentName: '조수진',
-      userId: 'user_student_7',
-      phone: '010-9182-4510',
-      email: 'student7@daum.net',
-      courseTitle: '상권·입지 분석 실전',
-      categoryName: '한식',
-      date: '2026.08.29 16:20',
-      title: '1:1 현장 주방 동선 & 매장 설비 피드백 컨설팅 예약 문의',
-      content: '9월 매장 오픈 예정인 한식 전문점 주방 설비 및 동선 1:1 현장 컨설팅 일정을 신청하고자 합니다.',
-      status: 'completed',
-      replyDate: '2026.08.29 16:45',
-      replyContent: '조수진 대표님 안녕하세요!\n신청하신 1:1 주방 동선 컨설팅은 9월 5일 개강 당일 안형상 이사장님 직강 후 오프라인 실습실에서 진행될 예정입니다.',
-    },
-    {
-      id: 'INQ-2026-0828-05',
-      studentName: '장보미',
-      userId: 'user_student_9',
-      phone: '010-6214-8930',
-      email: 'student9@naver.com',
-      courseTitle: '파스타 & 파인다이닝 레스토랑 브런치 창업',
-      categoryName: '양식',
-      date: '2026.08.28 10:50',
-      title: '파스타 생면 제면기 및 주방 집기 거래망 문의',
-      content: '브런치 파스타 창업 과정 수강생 전용 커뮤니티에서 업소용 제면기 중고 구매 정보 및 시제품 테스트 도구를 제공받을 수 있나요?',
-      status: 'completed',
-      replyDate: '2026.08.28 11:10',
-      replyContent: '장보미 수강생님 반갑습니다.\n원장님 추천 검증된 주방 집기 거래망 및 수강생 정보 공유 커뮤니티 채팅방 링크를 문자로 발송해 드렸습니다.',
-    },
-    {
-      id: 'INQ-2026-0827-06',
-      studentName: '최성민',
-      userId: 'user_student_4',
-      phone: '010-2918-7340',
-      email: 'student4@gmail.com',
-      courseTitle: '외식업 마케팅 실전',
-      categoryName: '카페/디저트',
-      date: '2026.08.27 15:30',
-      title: '네이버 플레이스 상위 노출 & SNS 바이럴 마케팅 1:1 피드백 신청',
-      content: '카페 매장 플레이스 등록 후 블로그/인스타그램 바이럴 마케팅 광고 집행 전 수석 강사님의 1:1 사전 피드백을 수강하고 싶습니다.',
-      status: 'completed',
-      replyDate: '2026.08.27 16:00',
-      replyContent: '최성민 대표님 안녕하세요!\n정하늘 마케팅 팀장님의 1:1 피드백 세션이 9월 1일 오후 2시 온라인 Zoom 미팅으로 예약되었습니다.',
-    },
-  ]);
+  // No student records are shown until a real enrollment service is connected.
+  const [studentInquiries, setStudentInquiries] = useState([]);
 
-  const [expandedStudentInquiryId, setExpandedStudentInquiryId] = useState('INQ-2026-0830-02');
+  const [expandedStudentInquiryId, setExpandedStudentInquiryId] = useState(null);
   const [inquiryFilterStatus, setInquiryFilterStatus] = useState('all');
   const [inquirySearchKw, setInquirySearchKw] = useState('');
 
@@ -592,7 +440,7 @@ export default function AdminLayout({
 
   // Student Account Reset Password Handler
   const handleResetStudentPassword = (student) => {
-    alert(`🔑 [비밀번호 재설정 완료] ${student.studentName} (${student.email}) 수강생의 비밀번호가 임시 비밀번호로 초기화되어 이메일로 발송되었습니다.`);
+    alert('회원 인증과 이메일 발송 서비스가 아직 연결되지 않았습니다.');
   };
 
   // Toggle Account Suspend/Active Handler
@@ -651,26 +499,24 @@ export default function AdminLayout({
       return;
     }
 
-    if (selectedCourseForEdit.id) {
-      await updateCourseAPI(selectedCourseForEdit.id, selectedCourseForEdit);
-    } else {
-      await createCourseAPI(selectedCourseForEdit);
-    }
-
-    const fresh = getCoursesFromDB();
-    setCoursesList(fresh);
-    switchPrimaryMenu('courses', 'course_list', null);
-    triggerSavedNotice();
-    alert('🎉 작성하신 내용(강의명, 커리큘럼 설명, 커버 이미지)이 리얼 DB에 저장 및 라이브 적용되었습니다.');
+    try {
+      if (selectedCourseForEdit.id) await updateCourseAPI(selectedCourseForEdit.id, selectedCourseForEdit);
+      else await createCourseAPI(selectedCourseForEdit);
+      setCoursesList(await fetchCoursesFromAPI());
+      switchPrimaryMenu('courses', 'course_list', null);
+      triggerSavedNotice();
+      alert('교육과정이 서버에 저장되어 공개 목록에 반영되었습니다.');
+    } catch (error) { alert(`교육과정 저장 실패: ${error.message}`); }
   };
 
   const handleDeleteCourse = async (id) => {
     if (window.confirm('정말 이 교육과정을 리얼 DB에서 삭제하시겠습니까?')) {
-      await deleteCourseAPI(id);
-      const fresh = await fetchCoursesFromAPI();
-      setCoursesList(fresh);
-      switchPrimaryMenu('courses', 'course_list', null);
-      triggerSavedNotice();
+      try {
+        await deleteCourseAPI(id);
+        setCoursesList(await fetchCoursesFromAPI());
+        switchPrimaryMenu('courses', 'course_list', null);
+        triggerSavedNotice();
+      } catch (error) { alert(`교육과정 삭제 실패: ${error.message}`); }
     }
   };
 
@@ -922,7 +768,7 @@ export default function AdminLayout({
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
                 : 'text-gray-400 hover:text-white hover:bg-gray-800'
             }`}
-            title="회원 관리 (128명)"
+            title="회원 관리"
           >
             <UserCheck className="w-5 h-5" />
             <span className="text-[9px] font-black mt-0.5">회원관리</span>
@@ -995,7 +841,7 @@ export default function AdminLayout({
               {primaryMenu === 'masters' && '명장·명인 프로필 관리'}
               {primaryMenu === 'partner_logos' && '협약기관/MOU 로고'}
               {primaryMenu === 'community' && '게시판 & 공지사항 관리'}
-              {primaryMenu === 'reservations' && '회원 관리 센터 (128명)'}
+              {primaryMenu === 'reservations' && '회원 관리 센터'}
               {primaryMenu === 'inquiries' && '1:1 수강 문의 & AI 챗봇'}
               {primaryMenu === 'marketing' && 'AI 블로그 마케팅'}
               {primaryMenu === 'settings' && '기관 정보 & 시스템 설정'}
@@ -1068,7 +914,7 @@ export default function AdminLayout({
             <AdminPartnerLogos
               partnerLogos={siteData?.partnerLogos}
               onUpdatePartnerLogos={(newLogos) => {
-                onUpdateSiteData({
+                return onUpdateSiteData({
                   ...siteData,
                   partnerLogos: newLogos,
                 });
@@ -1105,16 +951,16 @@ export default function AdminLayout({
                 <div>
                   <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
                     <Users className="w-6 h-6 text-emerald-700" />
-                    <span>학생 회원 계정 관리자 (128명 회원 DB)</span>
+                    <span>학생 회원 계정 관리자</span>
                   </h3>
                   <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    회원가입 완료된 128명 수강생 계정 상태, 비밀번호 초기화, 로그인 이력 및 접근 제재를 종합 관리합니다.
+                    회원 인증 서비스가 연결되면 실제 회원 계정이 여기에 표시됩니다.
                   </p>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => alert('📥 수강생 회원 계정 엑셀(CSV) 다운로드가 시작됩니다.')}
+                    disabled title="회원 데이터 연동 전"
                     className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <Download className="w-4 h-4 text-emerald-400" />
@@ -1127,26 +973,26 @@ export default function AdminLayout({
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
                   <span className="text-[11px] font-black text-gray-500 block">👥 가입 완료 학생 회원</span>
-                  <span className="text-2xl font-black text-black font-mono">128명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">인증 회원 100%</span>
+                  <span className="text-2xl font-black text-black font-mono">{enrolleesList.length}명</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">회원 인증 연동 전</span>
                 </div>
 
                 <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
                   <span className="text-[11px] font-black text-gray-500 block">✅ 정상 활동 계정</span>
-                  <span className="text-2xl font-black text-emerald-950 font-mono">126명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">정상 사용 비율 98.4%</span>
+                  <span className="text-2xl font-black text-emerald-950 font-mono">0명</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">회원 인증 연동 전</span>
                 </div>
 
                 <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
                   <span className="text-[11px] font-black text-gray-500 block">🔑 오늘 로그인 접속자</span>
-                  <span className="text-2xl font-black text-black font-mono">89명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">2026.08.30 기준</span>
+                  <span className="text-2xl font-black text-black font-mono">0명</span>
+                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">로그인 기록 연동 전</span>
                 </div>
 
                 <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
                   <span className="text-[11px] font-black text-gray-500 block">⛔ 제재/휴면 계정</span>
-                  <span className="text-2xl font-black text-rose-700 font-mono">2명</span>
-                  <span className="text-[10px] text-rose-700 font-bold block pt-1">비밀번호 연속 오입력</span>
+                  <span className="text-2xl font-black text-rose-700 font-mono">0명</span>
+                  <span className="text-[10px] text-rose-700 font-bold block pt-1">회원 인증 연동 전</span>
                 </div>
               </div>
 
@@ -1400,7 +1246,7 @@ export default function AdminLayout({
                                 📜 수료증
                               </button>
                               <button
-                                onClick={() => alert(`[SMS 발송 완료] ${item.studentName} 수강생에게 개강 및 장소 안내문자를 발송했습니다.`)}
+                                onClick={() => alert('SMS 발송 서비스가 아직 연결되지 않았습니다.')}
                                 className="px-2.5 py-1 bg-emerald-100 hover:bg-emerald-600 hover:text-white text-emerald-900 text-[11px] font-black rounded-lg transition-colors cursor-pointer"
                               >
                                 SMS
@@ -1449,20 +1295,20 @@ export default function AdminLayout({
 
                     <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
                       <span className="text-[11px] font-black text-gray-500 block">📚 운영 개강 강좌</span>
-                      <span className="text-2xl font-black text-black font-mono">12개 과목</span>
-                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">100% 충원 완료</span>
+                      <span className="text-2xl font-black text-black font-mono">{coursesList.length}개 과목</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">등록된 과정 기준</span>
                     </div>
 
                     <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
                       <span className="text-[11px] font-black text-gray-500 block">🎓 누적 수료생 관리</span>
-                      <span className="text-2xl font-black text-emerald-950 font-mono">128명</span>
-                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">학적 관리 정상 가동</span>
+                      <span className="text-2xl font-black text-emerald-950 font-mono">{enrolleesList.length}명</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">수강 이력 연동 전</span>
                     </div>
 
                     <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
                       <span className="text-[11px] font-black text-gray-500 block">📅 2026년 9월 개강 인원</span>
-                      <span className="text-2xl font-black text-black font-mono">42명</span>
-                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">정원 충원율 88%</span>
+                      <span className="text-2xl font-black text-black font-mono">0명</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block pt-1">수강 신청 연동 전</span>
                     </div>
                   </div>
 
@@ -1641,10 +1487,10 @@ export default function AdminLayout({
                 <div>
                   <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
                     <MessageSquare className="w-6 h-6 text-emerald-700" />
-                    <span>1:1 수강 문의 관리자 (128명 수강생 회원 DB 연동)</span>
+                    <span>1:1 수강 문의 관리자</span>
                   </h3>
                   <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    회원 DB의 128명 수강생들이 남긴 수강 신청, 지원금 연계, 레시피 전수 및 1:1 컨설팅 질문에 실시간 답변하고 SMS를 발송합니다.
+                    문의 접수 시스템 연동 후 실제 상담 내역이 표시됩니다.
                   </p>
                 </div>
 
@@ -1854,7 +1700,7 @@ export default function AdminLayout({
                                 <div className="flex items-center justify-between pt-1">
                                   <span className="text-[11px] text-emerald-800 font-bold flex items-center gap-1">
                                     <Send className="w-3.5 h-3.5" />
-                                    <span>답변 저장 시 수강생 ({inq.phone})에게 개별 SMS 문자가 자동 발송됩니다.</span>
+                                    <span>SMS 발송 서비스는 아직 연결되지 않았습니다.</span>
                                   </span>
 
                                   <button
@@ -1876,7 +1722,7 @@ export default function AdminLayout({
                                               : item
                                           )
                                         );
-                                        alert(`🎉 [답변 저장 & SMS 발송 완료] ${inq.studentName} 수강생에게 답변 안내 문자가 발송되었습니다.`);
+                                        alert('답변을 화면에 반영했습니다. 서버 저장과 SMS 발송은 아직 연결되지 않았습니다.');
                                       } else {
                                         alert('답변 내용을 입력해 주세요.');
                                       }
@@ -1884,7 +1730,7 @@ export default function AdminLayout({
                                     className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
                                   >
                                     <Send className="w-4 h-4" />
-                                    <span>💬 답변 등록 및 수강생 SMS/알림 발송</span>
+                                    <span>💬 임시 답변 입력</span>
                                   </button>
                                 </div>
                               </div>
@@ -2469,49 +2315,20 @@ export default function AdminLayout({
                 <div>
                   <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
                     <Star className="w-6 h-6 text-amber-500 fill-amber-500" />
-                    <span>수강 후기 & 만족도 별점 관리 (실시간 DB 연동)</span>
+                    <span>수강 후기 & 만족도 별점 관리</span>
                   </h3>
                   <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    128명 수강생들이 등록한 실제 수강 후기 및 별점 평가를 검토하고 홈페이지 노출 여부를 관리합니다.
+                    후기 접수 시스템을 연결하면 실제 후기를 검토할 수 있습니다.
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="px-3.5 py-1.5 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-xs font-black">
-                    평균 만족도 ★ 4.9 / 5.0 (총 48건)
+                    등록된 후기 0건
                   </span>
                 </div>
               </div>
 
-              {/* Reviews Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  { id: 'rev-1', student: '김태훈', course: '외식창업 성공전략 마스터', stars: 5, date: '2026.09.20', text: '특급호텔 40년 명장님의 실전 노하우가 그대로 담겨있어 상권분석부터 메뉴 원가 산출까지 단번에 이해할 수 있었습니다. 창업 준비생에게 필독 과정입니다!' },
-                  { id: 'rev-2', student: '이소연', course: '메뉴개발과 원가관리', stars: 5, date: '2026.09.18', text: '시그니처 비법 소스와 발효장 제조 실습이 정말 유익했습니다. 매장 매출 증대에 직결되는 실전 팁을 아낌없이 전수해 주셔서 감사합니다.' },
-                  { id: 'rev-3', student: '박준형', course: '배달매장 운영 전략', stars: 5, date: '2026.09.15', text: '배달 플랫폼 깃발 알고리즘 세팅과 밀키트 패키징 실습 덕분에 배달 전문점 오픈 첫 달부터 손익분기점을 넘길 수 있었습니다.' },
-                  { id: 'rev-4', student: '최성민', course: '외식업 마케팅 실전', stars: 5, date: '2026.09.12', text: '네이버 스마트플레이스 상위 노출 기법과 인스타그램 바이럴 광고 집행 전략을 배우고 실습해 보면서 마케팅에 대한 자신감이 생겼습니다.' },
-                  { id: 'rev-5', student: '정다은', course: '외식창업 마스터 풀 패키지', stars: 4, date: '2026.09.08', text: '이론과 실습이 균형있게 구성되어 있고 전담 컨설턴트님의 1:1 사업계획서 피드백까지 받을 수 있어 비용 이상의 가치를 느꼈습니다.' },
-                  { id: 'rev-6', student: '강현우', course: '상권·입지 분석 실전', stars: 5, date: '2026.09.05', text: '빅데이터 기반 상권 분석 도구 활용법을 상세히 배울 수 있어 임대차 계약 전 큰 실수를 피할 수 있었습니다.' },
-                ].map((item) => (
-                  <div key={item.id} className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm space-y-3">
-                    <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-black text-black text-sm">{item.student} 수강생</span>
-                        <span className="text-[11px] text-gray-500 font-mono">{item.date}</span>
-                      </div>
-                      <div className="flex text-amber-500 text-xs">
-                        {'★'.repeat(item.stars)}
-                      </div>
-                    </div>
-                    <p className="text-xs text-gray-700 leading-relaxed font-medium bg-stone-50 p-3 rounded-xl border border-stone-200">
-                      "{item.text}"
-                    </p>
-                    <div className="flex items-center justify-between text-xs text-emerald-900 font-black pt-1">
-                      <span>과정: {item.course}</span>
-                      <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">홈페이지 노출 승인</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center text-sm text-gray-600">실제 후기 데이터가 아직 연결되지 않았습니다.</div>
             </div>
           )}
 

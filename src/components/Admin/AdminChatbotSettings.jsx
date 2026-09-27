@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import {
   getChatbotConfig,
+  loadChatbotConfig,
   saveChatbotConfig,
   resetChatbotConfig,
   findBotAnswer,
@@ -46,6 +47,7 @@ export default function AdminChatbotSettings() {
 
   // Re-sync on update
   useEffect(() => {
+    loadChatbotConfig().catch(error => console.error('Chatbot settings load failed:', error));
     const handleUpdate = () => {
       const fresh = getChatbotConfig();
       setConfig(fresh);
@@ -54,15 +56,19 @@ export default function AdminChatbotSettings() {
     return () => window.removeEventListener('kfssec_chatbot_config_updated', handleUpdate);
   }, []);
 
-  const handleSave = () => {
-    saveChatbotConfig(config);
-    setSavedAlert(true);
-    setTimeout(() => setSavedAlert(false), 3000);
+  const handleSave = async () => {
+    try {
+      await saveChatbotConfig(config);
+      setSavedAlert(true);
+      setTimeout(() => setSavedAlert(false), 3000);
+    } catch (error) { alert(`챗봇 설정 저장 실패: ${error.message}`); }
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (window.confirm('챗봇 설정을 교육원 기본값으로 초기화하시겠습니까?')) {
-      const reset = resetChatbotConfig();
+      let reset;
+      try { reset = await resetChatbotConfig(); }
+      catch (error) { alert(`챗봇 설정 초기화 실패: ${error.message}`); return; }
       setConfig(reset);
       setSimChatLog([{ sender: 'bot', text: reset.welcomeMessage }]);
       alert('챗봇 설정이 기본값으로 초기화되었습니다.');

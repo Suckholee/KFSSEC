@@ -1,5 +1,5 @@
 import { useLanguage } from '../../i18n/LanguageContext';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft,
   Image as ImageIcon,
@@ -34,6 +34,7 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
   const [isPinned, setIsPinned] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
   const [isDraftSaved, setIsDraftSaved] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   // Check for auto-draft from AI Chatbot bridge
   useEffect(() => {
@@ -77,12 +78,14 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
   };
 
   const handleSaveDraft = () => {
+    localStorage.setItem('kfssec_inquiry_draft', JSON.stringify({ title, content }));
     setIsDraftSaved(true);
     setTimeout(() => setIsDraftSaved(false), 3000);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     if (!title.trim()) {
       alert(tr('게시글 제목을 입력해 주세요.'));
       return;
@@ -107,15 +110,20 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
       coverImage: coverImage || null,
       tags,
       isPinned: category === '공지 사항' || isPinned,
-      author: currentUser?.name || '수강생 (회원)',
+      author: currentUser?.name || '방문자',
       date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
       views: 1,
     };
 
-    if (onSubmitPost) {
-      onSubmitPost(newPost);
-    } else if (onPublishPost) {
-      onPublishPost(newPost);
+    setSubmitting(true);
+    try {
+      if (onSubmitPost) await onSubmitPost(newPost);
+      else if (onPublishPost) await onPublishPost(newPost);
+      localStorage.removeItem('kfssec_inquiry_draft');
+    } catch (error) {
+      alert(error.message || tr('문의 등록에 실패했습니다.'));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -178,10 +186,11 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
             <button
               type="button"
               onClick={handleSubmit}
+              disabled={submitting}
               className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer"
             >
               <Send className="w-4 h-4 text-emerald-400" />
-              <span>{tr("게시글 발행")}</span>
+              <span>{submitting ? tr("등록 중…") : tr("문의 등록")}</span>
             </button>
           </div>
 
@@ -206,27 +215,7 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
                 className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-300 rounded-2xl text-sm font-black text-black focus:outline-none focus:border-black shadow-xs cursor-pointer"
               >
                 <option value="문의">{tr("문의하기")}</option>
-                <option value="갤러리">{tr("갤러리")}</option>
-                <option value="요리대회">{tr("요리대회")}</option>
-                <option value="공지 사항">{tr("공지 사항 (상단 고정)")}</option>
               </select>
-            </div>
-
-            {/* Top Pin Toggle Button */}
-            <div className="sm:col-span-3 space-y-2">
-              <label className="block text-xs font-black text-gray-700">{tr("상단 고정 여부")}</label>
-              <button
-                type="button"
-                onClick={() => setIsPinned(!isPinned)}
-                className={`w-full py-3 px-4 rounded-2xl text-xs font-black transition-all border-2 flex items-center justify-center gap-2 cursor-pointer ${
-                  isPinned
-                    ? 'bg-rose-50 border-rose-500 text-rose-700 shadow-sm'
-                    : 'bg-stone-50 border-stone-300 text-stone-600 hover:border-black'
-                }`}
-              >
-                <Pin className={`w-4 h-4 ${isPinned ? 'fill-rose-500 text-rose-600' : ''}`} />
-                <span>{tr(isPinned ? '📌 상단 고정 설정됨' : '상단 고정 안함')}</span>
-              </button>
             </div>
 
             {/* Preset Cover Image Selector */}
@@ -414,7 +403,7 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
           <div className="pt-4 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-gray-500 font-bold gap-2">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>{tr("작성자: ")}<strong className="text-black font-black">{tr(currentUser?.name || '수강생 회원')}</strong>{tr(" (로그인 세션 인증 완료)")}</span>
+              <span>{tr("작성자: ")}<strong className="text-black font-black">{tr(currentUser?.name || '방문자')}</strong></span>
             </div>
             <span>{tr("사단법인 한국외식창업교육원 운영 정책 준수")}</span>
           </div>

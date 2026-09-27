@@ -5,7 +5,7 @@ import { Rocket, Shield, HelpCircle, CheckSquare, ChevronRight, ArrowLeft, FileT
 import ScrollReveal from '../common/ScrollReveal';
 import JinIkjunProfileSection from './JinIkjunProfileSection';
 
-export default function ConsultingPage({ initialSubTab = 'education', initialTab = 'education', onOpenAuth }) {
+export default function ConsultingPage({ initialSubTab = 'education', initialTab = 'education', onGoToInquiry }) {
   const { tr, language } = useLanguage();
   const resolveTab = value => value === 'apply' ? 'consulting' : ['education', 'consulting', 'professor', 'youth', 'readiness'].includes(value) ? value : 'education';
   const defaultSub = resolveTab(initialSubTab || initialTab);
@@ -41,11 +41,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
   ];
 
   const handleApplyClick = (type) => {
-    if (onOpenAuth) {
-      onOpenAuth('consulting');
-    } else {
-      alert(tr`[${type}] 신청 양식으로 이동합니다.`);
-    }
+    onGoToInquiry?.(type);
   };
 
   return (
@@ -120,7 +116,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                           onClick={() => handleApplyClick('청년 창업 교육')}
                           className="w-full py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
-                          <span>{tr("청년 창업 교육 신청하기")}</span>
+                          <span>{tr("청년 창업 교육 문의하기")}</span>
                           <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
                         </button>
                       </div>
@@ -155,7 +151,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                           onClick={() => handleApplyClick('일반 창업 교육')}
                           className="w-full py-3 bg-[#C5A059] hover:bg-[#d8b368] text-stone-950 font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
-                          <span>{tr("일반 창업 교육 신청하기")}</span>
+                          <span>{tr("일반 창업 교육 문의하기")}</span>
                           <ChevronRight className="w-4 h-4 text-stone-950" />
                         </button>
                       </div>
@@ -248,7 +244,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       onClick={() => handleApplyClick('1:1 맞춤형 창업 컨설팅')}
                       className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer whitespace-nowrap"
                     >
-                      {tr("1:1 컨설팅 신청하기")}
+                      {tr("1:1 컨설팅 문의하기")}
                     </button>
                   </div>
 
@@ -304,7 +300,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       onClick={() => handleApplyClick('청년 창업 1:1 심층 상담')}
                       className="w-full sm:w-auto px-8 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>{tr("청년 창업 상담 신청하기")}</span>
+                      <span>{tr("청년 창업 상담 문의하기")}</span>
                       <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
                     </button>
                   </div>
@@ -349,7 +345,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                       onClick={() => handleApplyClick('창업 준비 종합 진단')}
                       className="w-full sm:w-auto px-8 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm rounded-xl shadow-md transition-all cursor-pointer"
                     >
-                      {tr("창업 준비 종합 진단 의뢰하기")}
+                      {tr("창업 준비 종합 진단 문의하기")}
                     </button>
                   </div>
                 </div>

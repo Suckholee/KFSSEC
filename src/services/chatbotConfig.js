@@ -1,5 +1,7 @@
 // Central Chatbot & 1:1 AI Inquiry Configuration Store
-const STORAGE_KEY = 'kfssec_chatbot_config';
+import { readSharedContent, saveSharedContent } from './contentApi.js';
+
+export const CHATBOT_UPDATE_EVENT = 'kfssec_chatbot_config_updated';
 
 export const DEFAULT_CHATBOT_CONFIG = {
   enabled: true,
@@ -187,42 +189,27 @@ export const DEFAULT_CHATBOT_CONFIG = {
   fallbackReply: '질문해 주신 내용에 대해 담당 전문 컨설턴트의 1:1 심층 상담이 필요합니다. 아래 [1:1 문의 게시판 남기기] 버튼을 누르시면 교육원에서 영업일 기준 신속히 전화 및 온라인으로 맞춤 안내를 드립니다.',
 };
 
-// Retrieve config from localStorage with fallback
+let cachedConfig = null;
+
 export function getChatbotConfig() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      return { ...DEFAULT_CHATBOT_CONFIG, ...parsed };
-    }
-  } catch (e) {
-    console.error('Failed to load chatbot config:', e);
-  }
-  return DEFAULT_CHATBOT_CONFIG;
+  return cachedConfig || DEFAULT_CHATBOT_CONFIG;
 }
 
-// Save config and notify listeners
-export function saveChatbotConfig(newConfig) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newConfig));
-    window.dispatchEvent(new CustomEvent('kfssec_chatbot_config_updated', { detail: newConfig }));
-    return true;
-  } catch (e) {
-    console.error('Failed to save chatbot config:', e);
-    return false;
-  }
+export async function loadChatbotConfig() {
+  const remote = await readSharedContent('chatbot');
+  cachedConfig = remote ? { ...DEFAULT_CHATBOT_CONFIG, ...remote } : DEFAULT_CHATBOT_CONFIG;
+  window.dispatchEvent(new CustomEvent(CHATBOT_UPDATE_EVENT, { detail: cachedConfig }));
+  return cachedConfig;
 }
 
-// Reset to factory defaults
-export function resetChatbotConfig() {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-    window.dispatchEvent(new CustomEvent('kfssec_chatbot_config_updated', { detail: DEFAULT_CHATBOT_CONFIG }));
-    return DEFAULT_CHATBOT_CONFIG;
-  } catch (e) {
-    console.error('Failed to reset chatbot config:', e);
-    return DEFAULT_CHATBOT_CONFIG;
-  }
+export async function saveChatbotConfig(newConfig) {
+  cachedConfig = await saveSharedContent('chatbot', newConfig);
+  window.dispatchEvent(new CustomEvent(CHATBOT_UPDATE_EVENT, { detail: cachedConfig }));
+  return cachedConfig;
+}
+
+export async function resetChatbotConfig() {
+  return saveChatbotConfig(DEFAULT_CHATBOT_CONFIG);
 }
 
 // Match user question against FAQ keywords

@@ -77,7 +77,7 @@ export default function AdminSettings({ siteData = {}, onUpdateSiteData }) {
     }
   }, [siteData]);
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     const updatedInfo = {
       corpName,
@@ -94,15 +94,11 @@ export default function AdminSettings({ siteData = {}, onUpdateSiteData }) {
       operatingHours,
     };
 
-    if (onUpdateSiteData) {
-      onUpdateSiteData({
-        ...siteData,
-        institutionInfo: updatedInfo,
-      });
-    }
-
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 3000);
+    try {
+      if (onUpdateSiteData) await onUpdateSiteData({ ...siteData, institutionInfo: updatedInfo });
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 3000);
+    } catch (error) { console.error('Institution settings save failed:', error); }
   };
 
   return (

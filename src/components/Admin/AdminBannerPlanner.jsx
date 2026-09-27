@@ -310,16 +310,15 @@ export default function AdminBannerPlanner({
     link.click();
   };
 
-  const handleSaveToHomepage = () => {
+  const handleSaveToHomepage = async () => {
     const updated = {
       ...siteData,
       heroBanners: slides,
     };
 
     try {
-      localStorage.setItem('kfssec_site_data', JSON.stringify(updated));
       if (onUpdateSiteData) {
-        onUpdateSiteData(updated);
+        await onUpdateSiteData(updated);
       }
       setSaveError('');
       setSaveSuccess(true);
@@ -327,7 +326,7 @@ export default function AdminBannerPlanner({
     } catch (err) {
       console.error(err);
       setSaveSuccess(false);
-      setSaveError('저장 공간이 부족합니다. 불필요한 배너를 삭제한 뒤 다시 저장해 주세요.');
+      setSaveError(`배너 저장 실패: ${err.message}`);
     }
   };
 

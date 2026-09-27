@@ -19,7 +19,7 @@ import {
   Maximize2,
 } from 'lucide-react';
 
-export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [] }) {
+export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [], postsList = [] }) {
   const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
@@ -68,7 +68,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [] 
   };
 
   // Dynamic Official Partner Companies from Admin or Defaults
-  const rawPartners = partnerLogos && partnerLogos.length > 0 ? partnerLogos : DEFAULT_PARTNER_LOGOS;
+  const rawPartners = Array.isArray(partnerLogos) ? partnerLogos : DEFAULT_PARTNER_LOGOS;
   const activePartners = rawPartners
     .map((item) => {
       if (!item.image) {
@@ -86,36 +86,9 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [] 
   }));
 
   // MOU Event Photos
-  const mouPhotos = [
-    {
-      id: 1,
-      title: '한국외식창업교육원 - 10대 가족기업 산학협력 합동 MOU 체결식',
-      date: '2026.08.12',
-      image: '/images/hero_bg.jpg',
-      desc: '안형상 이사장과 10대 협력기업 대표단이 참석하여 청년 창업 및 조리 실습 지원에 관한 포괄적 업무협약을 체결했습니다.',
-    },
-    {
-      id: 2,
-      title: '전국 지자체 소상공인 연합 지원 업무협약 및 현판 수여식',
-      date: '2026.07.25',
-      image: '/images/chairman_ahn_real.jpg',
-      desc: '지역 골목상권 활성화와 외식 창업인의 경쟁력 강화를 위한 지자체-교육원 간 공식 지원 협약이 체결되었습니다.',
-    },
-    {
-      id: 3,
-      title: '(주)주방뱅크 - 교육원 공식 주방설비 공급 및 3D 설계 협약',
-      date: '2026.06.30',
-      image: '/images/course_menu_dev.jpg',
-      desc: '수강생 전용 업소용 주방설비 원가 공급 및 매장 오픈 시 무상 도면 설계 지원 협약을 공식 조인했습니다.',
-    },
-    {
-      id: 4,
-      title: '글로벌 K-FOOD 문화 교류 및 아시아 외식 조리협회 교류 협약',
-      date: '2026.05.18',
-      image: '/images/course_restaurant.jpg',
-      desc: '대한민국 외식명인들의 해외 진출과 전통 한국 발효 음식의 세계화를 위한 아시아 조리협회와의 협약식 현장입니다.',
-    },
-  ];
+  const mouPhotos = postsList.filter(post => post.category === '갤러리' && post.galleryCategory === 'partners' && (post.image || post.coverImage)).map(post => ({
+    id: post.id, title: post.title, date: post.date, image: post.image || post.coverImage, desc: post.content,
+  }));
 
   return (
     <div className="bg-gray-50 min-h-screen py-8 font-sans text-gray-900">
@@ -297,13 +270,13 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [] 
               </h2>
             </div>
             <span className="text-xs font-black text-[#0B3C26] bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 self-start sm:self-auto">
-              사단법인 공식 체결 건수 35+
+              등록된 협약식 사진 {mouPhotos.length}건
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mouPhotos.map((photo) => (
-              <ScrollReveal key={photo.id} direction="up" delay={photo.id * 80}>
+            {mouPhotos.map((photo, index) => (
+              <ScrollReveal key={photo.id} direction="up" delay={index * 80}>
                 <div
                   onClick={() => setSelectedPhoto(photo)}
                   className="group bg-white rounded-2xl overflow-hidden border border-stone-200 hover:border-[#0B3C26] shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col h-full"
@@ -339,6 +312,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [] 
                 </div>
               </ScrollReveal>
             ))}
+            {mouPhotos.length === 0 && <p className="col-span-full rounded-xl border border-stone-200 bg-white p-6 text-center text-sm text-stone-600">등록된 협약식 사진이 없습니다.</p>}
           </div>
         </div>
 

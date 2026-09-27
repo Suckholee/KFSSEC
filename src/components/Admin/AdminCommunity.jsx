@@ -34,6 +34,9 @@ export default function AdminCommunity({
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
   const [savedSuccessMsg, setSavedSuccessMsg] = useState('');
+  const [replyingPost, setReplyingPost] = useState(null);
+  const [replyText, setReplyText] = useState('');
+  const [replySaving, setReplySaving] = useState(false);
 
   // Auto open write modal if subTab is notice_add
   useEffect(() => {
@@ -49,6 +52,7 @@ export default function AdminCommunity({
   const [formContent, setFormContent] = useState('');
   const [formIsPinned, setFormIsPinned] = useState(false);
   const [formImage, setFormImage] = useState('');
+  const [formGalleryCategory, setFormGalleryCategory] = useState('training');
 
   const handleCloseModals = () => {
     if (isWriteModalOpen) {
@@ -84,6 +88,7 @@ export default function AdminCommunity({
     setFormContent('');
     setFormIsPinned(false);
     setFormImage('');
+    setFormGalleryCategory('training');
     setIsWriteModalOpen(true);
     if (onSubTabChange && subTab !== 'notice_add') {
       onSubTabChange('notice_add');
@@ -99,10 +104,11 @@ export default function AdminCommunity({
     setFormContent(post.content || '');
     setFormIsPinned(Boolean(post.isPinned));
     setFormImage(post.image || '');
+    setFormGalleryCategory(post.galleryCategory || 'training');
   };
 
   // Handle Save (Create or Edit)
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
     if (!formTitle.trim()) {
       alert('제목을 입력해주세요.');
@@ -137,12 +143,11 @@ export default function AdminCommunity({
             content: formContent.trim(),
             isPinned: formIsPinned,
             image: formImage || p.image || null,
+            galleryCategory: formGalleryCategory,
           };
         }
         return p;
       });
-      showNotification('게시글이 성공적으로 수정되었습니다.');
-      setEditingPost(null);
     } else {
       const newPost = {
         id: Date.now(),
@@ -164,45 +169,60 @@ export default function AdminCommunity({
         views: 1,
         isPinned: formIsPinned,
         image: formImage || null,
+        galleryCategory: formGalleryCategory,
       };
       updatedList = [newPost, ...postsList];
-      showNotification('새 공지/게시글이 성공적으로 등록되었습니다.');
-      handleCloseModals();
     }
 
-    setPostsList(updatedList);
     try {
-      localStorage.setItem('kfssec_posts_list', JSON.stringify(updatedList));
-    } catch (e) {
-      console.error(e);
+      await setPostsList(updatedList);
+      showNotification(editingPost ? '게시글이 수정되었습니다.' : '새 게시글이 등록되었습니다.');
+      if (editingPost) setEditingPost(null);
+      else handleCloseModals();
+    } catch (error) {
+      console.error('Post save failed:', error);
     }
   };
 
   // Toggle Pin Status
-  const handleTogglePin = (id) => {
+  const handleTogglePin = async (id) => {
     const updatedList = postsList.map((p) =>
       p.id === id ? { ...p, isPinned: !p.isPinned } : p
     );
-    setPostsList(updatedList);
     try {
-      localStorage.setItem('kfssec_posts_list', JSON.stringify(updatedList));
-    } catch (e) {
-      console.error(e);
+      await setPostsList(updatedList);
+      showNotification('상단 고정 상태가 변경되었습니다.');
+    } catch (error) {
+      console.error('Post update failed:', error);
     }
-    showNotification('상단 고정 상태가 변경되었습니다.');
   };
 
   // Delete Post
-  const handleDeletePost = (id) => {
+  const handleDeletePost = async (id) => {
     if (window.confirm('정말 이 게시글을 삭제하시겠습니까? 삭제 후에는 복구할 수 없습니다.')) {
       const updatedList = postsList.filter((p) => p.id !== id);
-      setPostsList(updatedList);
       try {
-        localStorage.setItem('kfssec_posts_list', JSON.stringify(updatedList));
-      } catch (e) {
-        console.error(e);
+        await setPostsList(updatedList);
+        showNotification('게시글이 삭제되었습니다.');
+      } catch (error) {
+        console.error('Post delete failed:', error);
       }
-      showNotification('게시글이 삭제되었습니다.');
+    }
+  };
+
+  const handleSaveReply = async (event) => {
+    event.preventDefault();
+    if (!replyingPost || !replyText.trim()) return;
+    setReplySaving(true);
+    const reply = { date: new Date().toISOString().slice(0, 16).replace('T', ' '), content: replyText.trim(), isAI: false };
+    try {
+      await setPostsList(postsList.map(post => post.id === replyingPost.id ? { ...post, reply, status: 'completed' } : post));
+      setReplyingPost(null);
+      showNotification('문의 답변이 저장되었습니다.');
+    } catch (error) {
+      console.error('Inquiry reply save failed:', error);
+    } finally {
+      setReplySaving(false);
     }
   };
 
@@ -218,6 +238,8 @@ export default function AdminCommunity({
         if (!post.category.includes('대회') && !post.category.includes('요리')) return false;
       } else if (activeCategoryFilter === 'gallery') {
         if (!post.category.includes('갤러리') && !post.category.includes('현장')) return false;
+      } else if (activeCategoryFilter === 'inquiry') {
+        if (post.category !== '문의') return false;
       }
     }
     // Search keyword match
@@ -326,6 +348,7 @@ export default function AdminCommunity({
             { id: 'press', label: '보도자료' },
             { id: 'competition', label: '요리대회' },
             { id: 'gallery', label: '갤러리' },
+            { id: 'inquiry', label: '문의' },
           ].map((cat) => (
             <button
               key={cat.id}
@@ -465,6 +488,7 @@ export default function AdminCommunity({
                     {/* Actions: Edit & Delete */}
                     <td className="py-3.5 px-4 text-center whitespace-nowrap">
                       <div className="flex items-center justify-center gap-1.5">
+                        {post.category === '문의' && <button type="button" onClick={() => { setReplyingPost(post); setReplyText(post.reply?.content || ''); }} className="rounded-lg bg-emerald-100 px-2 py-1.5 text-xs font-bold text-emerald-900 hover:bg-emerald-200">{post.reply ? '답변 수정' : '답변'}</button>}
                         <button
                           onClick={() => handleOpenEditModal(post)}
                           className="p-1.5 bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 rounded-lg transition-colors cursor-pointer"
@@ -538,6 +562,7 @@ export default function AdminCommunity({
                     <option value="보도자료">보도자료 (Press Release)</option>
                     <option value="요리대회">요리대회 접수 및 공고</option>
                     <option value="갤러리">갤러리 (현장 화보)</option>
+                    <option value="강남 소상공인">강남 소상공인 공지</option>
                   </select>
                 </div>
 
@@ -553,6 +578,8 @@ export default function AdminCommunity({
                   />
                 </div>
               </div>
+
+              {formCategory === '갤러리' && <label className="block space-y-1.5 text-xs font-black text-gray-700">갤러리 분류<select value={formGalleryCategory} onChange={e => setFormGalleryCategory(e.target.value)} className="w-full rounded-xl border border-gray-300 bg-gray-50 px-3.5 py-2.5"><option value="competition">요리대회</option><option value="ceremony">시상식 & 인증패</option><option value="consulting">지자체 컨설팅</option><option value="training">조리 실습 현장</option><option value="partners">협약식 및 MOU</option></select></label>}
 
               {/* Pin To Top Checkbox */}
               <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 p-3 rounded-xl">
@@ -632,6 +659,7 @@ export default function AdminCommunity({
         </div>
       )}
 
+      {replyingPost && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => setReplyingPost(null)}><form onSubmit={handleSaveReply} onClick={event => event.stopPropagation()} className="w-full max-w-xl space-y-4 rounded-2xl bg-white p-6 shadow-2xl"><h3 className="text-lg font-bold text-gray-900">문의 답변</h3><p className="text-sm font-semibold text-gray-700">{replyingPost.title}</p><p className="max-h-40 overflow-auto whitespace-pre-wrap text-sm text-gray-600">{replyingPost.content}</p><label className="block text-sm font-semibold text-gray-700">답변 내용<textarea value={replyText} onChange={event => setReplyText(event.target.value)} rows={6} required className="mt-2 w-full rounded-xl border border-gray-300 p-3 text-sm" /></label><div className="flex justify-end gap-2"><button type="button" onClick={() => setReplyingPost(null)} className="rounded-lg border px-4 py-2 text-sm">취소</button><button type="submit" disabled={replySaving} className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold text-white disabled:opacity-50">{replySaving ? '저장 중…' : '답변 저장'}</button></div></form></div>}
     </div>
   );
 }

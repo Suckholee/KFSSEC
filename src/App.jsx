@@ -26,8 +26,26 @@ import AuthModal from './components/AuthModal';
 import YouTubeModal from './components/YouTubeModal';
 import PaymentGuideModal from './components/PaymentGuideModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
-import { generateAIInquiryDraft, getChatbotConfig } from './services/chatbotConfig';
 import { ChevronUp } from 'lucide-react';
+import { readSharedContent, saveSharedContent } from './services/contentApi';
+
+function AdminAccess({ onAuthenticated, configured }) {
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
+  const login = async event => {
+    event.preventDefault();
+    setPending(true); setError('');
+    try {
+      const response = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: 'admin', password }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || '로그인에 실패했습니다.');
+      onAuthenticated();
+    } catch (cause) { setError(cause.message); }
+    finally { setPending(false); }
+  };
+  return <main className="min-h-screen flex items-center justify-center bg-slate-100 p-6"><form onSubmit={login} className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-lg space-y-5"><h1 className="text-xl font-bold">관리자 로그인</h1>{configured === false && <p className="text-red-700 text-sm">관리자 인증 환경변수가 설정되지 않았습니다.</p>}<label className="block text-sm font-medium">비밀번호<input autoFocus type="password" autoComplete="current-password" value={password} onChange={event => setPassword(event.target.value)} className="mt-2 block w-full rounded-lg border p-3" required /></label>{error && <p role="alert" className="text-sm text-red-700">{error}</p>}<button type="submit" disabled={pending || configured === false} className="w-full rounded-lg bg-emerald-800 px-4 py-3 text-white disabled:opacity-50">{pending ? '확인 중…' : '로그인'}</button><a href="/" className="block text-center text-sm text-slate-600">홈으로 돌아가기</a></form></main>;
+}
 
 function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
@@ -83,6 +101,17 @@ export default function App() {
   // Auth state
   const [authModalState, setAuthModalState] = useState({ isOpen: false, initialMode: 'login' });
   const [currentUser, setCurrentUser] = useState(null);
+  const [adminAuth, setAdminAuth] = useState({ checked: false, authenticated: false, configured: true });
+
+  useEffect(() => {
+    fetch('/api/auth', { cache: 'no-store' }).then(response => response.json()).then(result => setAdminAuth({ checked: true, authenticated: result.authenticated, configured: result.configured })).catch(() => setAdminAuth({ checked: true, authenticated: false, configured: false }));
+    readSharedContent('site').then(data => { if (data) setSiteData(mergeSiteData(data)); }).catch(error => console.error('Failed to load site data:', error));
+    const refreshPosts = () => readSharedContent('posts').then(data => { if (Array.isArray(data)) setPostsList(data); }).catch(error => console.error('Failed to load posts:', error));
+    refreshPosts();
+    const timer = window.setInterval(() => { if (!document.hidden) refreshPosts(); }, 30000);
+    window.addEventListener('focus', refreshPosts);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', refreshPosts); };
+  }, []);
 
   // YouTube modal state
   const [activeVideoUrl, setActiveVideoUrl] = useState(null);
@@ -90,165 +119,10 @@ export default function App() {
   // Payment Guide Modal State
   const [isPaymentGuideOpen, setIsPaymentGuideOpen] = useState(false);
 
-  // Sync REST API Backend DB & Saved User Session on Mount
+  // Sync course data from the shared API on mount.
   useEffect(() => {
     fetchCoursesFromAPI();
-    const savedUser = localStorage.getItem('kfssec_user');
-    if (savedUser) {
-      try {
-        setCurrentUser(JSON.parse(savedUser));
-      } catch (e) {}
-    }
   }, []);
-
-  // Shared Community Posts List State populated with 128 Real Student Dataset
-  const DEFAULT_POSTS_LIST = [
-    {
-      id: 1,
-      category: '공지 사항',
-      categoryType: 'notice',
-      isPinned: true,
-      title: '2026년 사단법인 한국외식창업교육원 3분기 총회 및 성과발표회 개최 안내',
-      date: '2026.08.30',
-      author: 'Admin (교육원)',
-      views: 1450,
-      content: '사단법인 한국외식창업교육원 2026년 3분기 외식 창업 성과 발표 및 글로벌 K-FOOD 조리 명장 인증서 수여식 총회가 개최됩니다.',
-    },
-    {
-      id: 2,
-      category: '공지 사항',
-      categoryType: 'notice',
-      isPinned: true,
-      title: '외식창업 수강생 N:N 커리큘럼 매칭 포트폴리오 시스템 도입 안내',
-      date: '2026.08.28',
-      author: 'Admin (교육원)',
-      views: 1120,
-      content: '128명 가입 수강생 1인이 다수의 조리/창업 커리큘럼을 연계하여 수강하고 정부지원금 혜택을 제공받을 수 있는 N:N 매칭 포트폴리오 시스템이 공식 도입되었습니다.',
-    },
-    {
-      id: 3,
-      category: '공지 사항',
-      categoryType: 'notice',
-      isPinned: true,
-      title: '제 01회 요리대회 <K-FOOD 지역 특산물 연계 조리 경연 대회> 규정집 & 접수 안내',
-      date: '2026.08.25',
-      author: 'Admin (교육원)',
-      views: 2340,
-      content: '전국 128명 수강생 및 외식 창업 준비생 대상 K-FOOD 지역 농수축산물 활성화 요리대회 참가를 위한 규정집 다운로드 및 접수 안내입니다.',
-    },
-    {
-      id: 4,
-      category: '요리대회',
-      categoryType: 'competition',
-      title: '제 01회 K-FOOD 지역 특산물 연계 요리대회 참가 신청서 제출',
-      date: '2026.08.29',
-      author: '김태훈 수강생',
-      views: 890,
-      content: '전통 한식 조리 마스터 과정을 수강 중인 김태훈입니다. 발효 장류를 활용한 퓨전 한식 메뉴로 요리대회 참가를 신청합니다.',
-    },
-    {
-      id: 5,
-      category: '갤러리',
-      categoryType: 'gallery',
-      title: '2026 대한민국 자랑스러운 외식 명인 시상식 현장 화보',
-      date: '2026.08.29',
-      author: '안형상 이사장',
-      views: 1280,
-      image: '/images/hero_bg.jpg',
-      content: '특급호텔 40년 현장 실무 경력의 조리 명장진과 열정적인 128명 수강생들의 명인 시상식 및 수여식 현장 사진 기록입니다.',
-    },
-    {
-      id: 6,
-      category: '갤러리',
-      categoryType: 'gallery',
-      title: '외식창업 조리 실습실 100년 전통 발효 소스 시그니처 메뉴 테스트 현장',
-      date: '2026.08.28',
-      author: '박준형 수강생',
-      views: 940,
-      image: '/images/course_menu_dev.jpg',
-      content: '한식 셰프 창업 과정을 통해 직접 조리한 100년 전통 발효 소스 시그니처 갈비찜 테스트 실습 현장 화보입니다.',
-    },
-    {
-      id: 7,
-      category: '갤러리',
-      categoryType: 'gallery',
-      title: '카페 창업 실전 & 라떼아트 1:1 직강 이수 인증 샷!',
-      date: '2026.08.27',
-      author: '최성민 수강생',
-      views: 710,
-      image: '/images/course_cafe.jpg',
-      content: '바리스타 챔피언 이지은 강사님의 라떼아트 1:1 코칭을 이수하고 드디어 로제타 패턴 완성에 성공했습니다!',
-    },
-    {
-      id: 8,
-      category: '문의',
-      categoryType: 'inquiry',
-      status: 'completed',
-      title: '청년 외식창업 정부지원금 5천만원 연계 신청 방법 및 자격 문의',
-      date: '2026.08.30',
-      author: '강현우 수강생',
-      views: 450,
-      content: '청년 창업 교육 지원 정책 및 소상공인 창업 지원금 연계 절차에 관해 문의드립니다. 제출 서류 양식이 궁금합니다.',
-      reply: {
-        date: '2026.08.30 14:20',
-        content: '안녕하세요 강현우 수강생님, 사단법인 한국외식창업교육원입니다.\n청년 외식창업 정부지원금 연계 서류는 스마트 파트너 센터 마이페이지에서 다운로드 가능하며, 1:1 전담 컨설턴트가 사업계획서 검토를 도와드립니다.',
-      },
-    },
-    {
-      id: 9,
-      category: '문의',
-      categoryType: 'inquiry',
-      status: 'completed',
-      title: '전통 한식 조리 마스터 1:1 주방 동선 컨설팅 예약 문의',
-      date: '2026.08.29',
-      author: '조수진 수강생',
-      views: 380,
-      content: '9월 매장 오픈 예정인 한식 전문점 주방 설비 및 동선 1:1 현장 컨설팅 일정을 신청하고자 합니다.',
-      reply: {
-        date: '2026.08.29 16:45',
-        content: '조수진 대표님 안녕하세요!\n신청하신 1:1 주방 동선 컨설팅은 9월 5일 개강 당일 안형상 이사장님 직강 후 오프라인 실습실에서 진행될 예정입니다.',
-      },
-    },
-    {
-      id: 10,
-      category: '문의',
-      categoryType: 'inquiry',
-      status: 'pending',
-      title: '소상공인 100년 전통 발효 소스 시그니처 전수 과정 문의',
-      date: '2026.08.30',
-      author: '윤경민 수강생',
-      views: 290,
-      content: '기존 매장 메뉴 리뉴얼 및 셰프 1:1 레시피 전수 과정 수강료 할인 패키지에 대해 상세 상담 부탁드립니다.',
-      reply: null,
-    },
-    {
-      id: 11,
-      category: '문의',
-      categoryType: 'inquiry',
-      status: 'completed',
-      title: '파스타 생면 제면기 및 이태리 파인다이닝 주방 집기 중고 구매 문의',
-      date: '2026.08.28',
-      author: '장보미 수강생',
-      views: 510,
-      content: '브런치 파스타 창업 과정 수강생 전용 커뮤니티에서 업소용 제면기 중고 구매 정보를 얻을 수 있나요?',
-      reply: {
-        date: '2026.08.28 11:10',
-        content: '장보미 수강생님 반갑습니다.\n이사장님 추천 검증된 주방 집기 거래망 및 수강생 정보 공유 커뮤니티 채팅방 링크를 문자로 발송해 드렸습니다.',
-      },
-    },
-    {
-      id: 12,
-      category: '문의',
-      categoryType: 'inquiry',
-      status: 'pending',
-      title: '일식 횟집 & 초밥 오마카세 창업 1:1 컨설팅 일정 문의',
-      date: '2026.08.30',
-      author: '임남궁건 수강생',
-      views: 330,
-      content: '활어 오로시 및 성게알 타르타르 레시피 실습 시간표와 주말반 개설 여부가 궁금합니다.',
-      reply: null,
-    },
-  ];
 
   const DEFAULT_SITE_DATA = {
     partnerLogos: DEFAULT_PARTNER_LOGOS,
@@ -342,31 +216,13 @@ export default function App() {
       }
     });
 
-    // 2. Partner Logos: ensure every default partner exists and has valid logo image
-    const savedLogos = Array.isArray(saved.partnerLogos) ? saved.partnerLogos : [];
-    const defaultLogosMerged = DEFAULT_PARTNER_LOGOS.map((def) => {
-      const existing = savedLogos.find((p) => p.id === def.id || p.name === def.name);
-      if (!existing) return def;
-      return {
-        ...def,
-        ...existing,
-        image: existing.image || def.image, // never allow empty string to overwrite default logo
-      };
-    });
-    // Preserve custom partners added by admin that are not in defaults
-    const customLogos = savedLogos.filter(
-      (p) => !DEFAULT_PARTNER_LOGOS.some((def) => def.id === p.id || def.name === p.name)
-    );
-    const partnerLogos = [...defaultLogosMerged, ...customLogos];
+    const partnerLogos = Array.isArray(saved.partnerLogos) ? saved.partnerLogos : DEFAULT_PARTNER_LOGOS;
 
     // 3. YouTube: fallback if missing or empty
     const youtube = {
       ...DEFAULT_SITE_DATA.youtube,
       ...(saved.youtube || {}),
-      videos:
-        saved.youtube?.videos && saved.youtube.videos.length > 0
-          ? saved.youtube.videos
-          : DEFAULT_SITE_DATA.youtube.videos,
+      videos: Array.isArray(saved.youtube?.videos) ? saved.youtube.videos : DEFAULT_SITE_DATA.youtube.videos,
     };
 
     // 4. Banner: fallback if missing
@@ -377,7 +233,7 @@ export default function App() {
 
     // 5. Hero Banners: fallback to defaults or merge saved slides
     const heroBanners =
-      Array.isArray(saved.heroBanners) && saved.heroBanners.length > 0
+      Array.isArray(saved.heroBanners)
         ? saved.heroBanners
         : DEFAULT_SITE_DATA.heroBanners;
 
@@ -392,64 +248,22 @@ export default function App() {
     };
   };
 
-  const [postsList, setPostsList] = useState(() => {
-    const saved = localStorage.getItem('kfssec_posts_list');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const defaultMap = new Map(DEFAULT_POSTS_LIST.map((p) => [p.id, p]));
-          const merged = parsed.map((p) => {
-            const def = defaultMap.get(p.id);
-            if (!def) return p;
-            return {
-              ...def,
-              ...p,
-              image: p.image || def.image,
-            };
-          });
-          const existingIds = new Set(merged.map((p) => p.id));
-          const missingDefaults = DEFAULT_POSTS_LIST.filter((p) => !existingIds.has(p.id));
-          return [...merged, ...missingDefaults];
-        }
-      } catch (e) {}
-    }
-    return DEFAULT_POSTS_LIST;
-  });
+  const [postsList, setPostsList] = useState([]);
 
-  const handleUpdatePostsList = (newList) => {
-    setPostsList(newList);
-    try {
-      localStorage.setItem('kfssec_posts_list', JSON.stringify(newList));
-    } catch (e) {}
+  const handleUpdatePostsList = async (newList) => {
+    const resolved = typeof newList === 'function' ? newList(postsList) : newList;
+    try { setPostsList(await saveSharedContent('posts', resolved)); }
+    catch (error) { alert(`게시글 저장 실패: ${error.message}`); throw error; }
   };
 
   // Central Dynamic Site Data Store with Safe Hydration
   const [siteData, setSiteData] = useState(() => {
-    const saved = localStorage.getItem('kfssec_site_data');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        // Force update if legacy b4wS9WvI38g video ID exists
-        if (parsed?.youtube?.videos?.some((v) => v.videoId === 'b4wS9WvI38g')) {
-          localStorage.removeItem('kfssec_site_data');
-          return DEFAULT_SITE_DATA;
-        }
-        return mergeSiteData(parsed);
-      } catch (e) {
-        console.error('Failed to parse saved site data:', e);
-      }
-    }
     return DEFAULT_SITE_DATA;
   });
 
-  const handleUpdateSiteData = (newSiteData) => {
-    setSiteData(newSiteData);
-    try {
-      localStorage.setItem('kfssec_site_data', JSON.stringify(newSiteData));
-    } catch (err) {
-      console.error('Failed to save to localStorage:', err);
-    }
+  const handleUpdateSiteData = async (newSiteData) => {
+    try { setSiteData(mergeSiteData(await saveSharedContent('site', newSiteData))); }
+    catch (error) { alert(`사이트 저장 실패: ${error.message}`); throw error; }
   };
 
   // Sync state with URL path
@@ -498,20 +312,18 @@ export default function App() {
     setAuthModalState({ isOpen: true, initialMode });
   };
 
+  const navigateToInquiry = (topic) => {
+    if (topic) localStorage.setItem('kfssec_inquiry_draft', JSON.stringify({ title: `${topic} 문의` }));
+    handleTabChange('community', 'editor');
+  };
+
   const handleCloseAuth = () => {
     setAuthModalState({ isOpen: false, initialMode: 'login' });
   };
 
-  const handleLoginSuccess = (userObj) => {
-    setCurrentUser(userObj);
-    localStorage.setItem('kfssec_user', JSON.stringify(userObj));
-    handleCloseAuth();
-    if (userObj.role === 'admin') {
-      handleTabChange('admin');
-    }
-  };
-
   const handleLogout = () => {
+    fetch('/api/auth', { method: 'DELETE' }).catch(console.error);
+    setAdminAuth({ checked: true, authenticated: false, configured: true });
     setCurrentUser(null);
     localStorage.removeItem('kfssec_user');
     handleTabChange('home');
@@ -537,35 +349,20 @@ export default function App() {
   };
 
   // Handle New Post Submission from Editor
-  const handleCreatePost = (newPostData) => {
-    let reply = newPostData.reply || null;
-    let status = newPostData.status || (newPostData.category === '문의' ? 'pending' : undefined);
-
-    const botConfig = getChatbotConfig();
-    if (newPostData.category === '문의' && botConfig.autoReplyAiDraft !== false) {
-      const aiContent = generateAIInquiryDraft(newPostData.title, newPostData.content);
-      const now = new Date();
-      const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      reply = {
-        date: dateStr,
-        content: aiContent,
-        isAI: true,
-      };
-      status = 'completed';
-    }
-
-    const createdPost = {
-      ...newPostData,
-      id: postsList.length + 1,
-      date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-      reply,
-      status,
-    };
-    setPostsList([createdPost, ...postsList]);
-    handleTabChange('community', newPostData.category === '문의' ? 'inquiry' : 'all');
+  const handleCreatePost = async (newPostData) => {
+    const response = await fetch('/api/inquiries', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newPostData),
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) throw new Error(result.message || '문의 등록에 실패했습니다.');
+    setPostsList(previous => [result.data, ...previous]);
+    handleTabChange('community', 'inquiry');
   };
 
   if (activeTab === 'admin') {
+    if (!adminAuth.checked) return <div className="min-h-screen grid place-items-center">관리자 인증 확인 중…</div>;
+    if (!adminAuth.authenticated) return <AdminAccess configured={adminAuth.configured} onAuthenticated={() => setAdminAuth({ checked: true, authenticated: true, configured: true })} />;
     return (
       <AdminLayout
         siteData={siteData}
@@ -601,6 +398,7 @@ export default function App() {
               onInquiryClick={() => handleTabChange('community', 'inquiry')}
             />
             <AwardCeremonyBannerSection
+              bannerData={siteData.banner}
               onGoToGallery={() => handleTabChange('gallery', 'awards')}
               onGoToInquiry={() => handleTabChange('community', 'inquiry')}
             />
@@ -613,7 +411,7 @@ export default function App() {
             <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
             <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
             <PartnerMarqueeSection partnerLogos={siteData.partnerLogos} />
-            <NoticePostSection onScrollNext={() => scrollToSection('footer')} />
+            <NoticePostSection postsList={postsList} onScrollNext={() => scrollToSection('footer')} />
 
           </div>
         )}
@@ -637,19 +435,20 @@ export default function App() {
           <ConsultingPage
             initialSubTab={subTab || 'consulting'}
             onGoToApply={() => handleTabChange('consulting', 'apply')}
+            onGoToInquiry={navigateToInquiry}
           />
         )}
 
         {activeTab === 'gallery' && (
-          <GalleryPage initialSubTab={subTab || 'all'} />
+          <GalleryPage initialSubTab={subTab || 'all'} postsList={postsList} />
         )}
 
         {activeTab === 'partners' && (
-          <PartnersPage initialSubTab={subTab || 'all'} partnerLogos={siteData.partnerLogos} />
+          <PartnersPage initialSubTab={subTab || 'all'} partnerLogos={siteData.partnerLogos} postsList={postsList} />
         )}
 
         {activeTab === 'gangnam' && (
-          <PartnersPage initialSubTab="gangnam" partnerLogos={siteData.partnerLogos} />
+          <GangnamSohoPage initialSubTab={subTab || 'intro'} onGoToInquiry={() => navigateToInquiry('강남구 소상공인 회원 가입 상담')} postsList={postsList} />
         )}
 
 
@@ -668,7 +467,7 @@ export default function App() {
             isUserLoggedIn={!!currentUser}
             onGoToEditor={() => handleTabChange('community', 'editor')}
             postsList={postsList}
-            setPostsList={handleUpdatePostsList}
+            setPostsList={undefined}
           />
         )}
       </main>
@@ -690,7 +489,6 @@ export default function App() {
         isOpen={authModalState.isOpen}
         initialMode={authModalState.initialMode}
         onClose={handleCloseAuth}
-        onLoginSuccess={handleLoginSuccess}
       />
 
       <YouTubeModal

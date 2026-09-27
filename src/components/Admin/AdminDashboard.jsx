@@ -40,11 +40,11 @@ export default function AdminDashboard({
   }, [activeSubTab]);
 
   // Live KPI calculations
-  const totalEnrollees = enrolleesList.length || 128;
-  const totalCourses = coursesList.length || 12;
-  const partnerCount = siteData?.partnerLogos?.length || 12;
+  const totalEnrollees = enrolleesList.length;
+  const totalCourses = coursesList.length;
+  const partnerCount = siteData?.partnerLogos?.length || 0;
   const pendingInquiriesCount = studentInquiries.filter((i) => i.status === 'pending').length;
-  const totalInquiriesCount = studentInquiries.length || 6;
+  const totalInquiriesCount = studentInquiries.length;
 
   // Recent 5 enrollees
   const recentEnrollees = enrolleesList.slice(0, 5);
@@ -58,7 +58,7 @@ export default function AdminDashboard({
       subTab: 'enrollees_list',
       title: '총 등록 수강생',
       value: `${totalEnrollees}명`,
-      badge: '+18.2%',
+      badge: '등록 기준',
       icon: Users,
     },
     {
@@ -66,15 +66,15 @@ export default function AdminDashboard({
       subTab: 'course_list',
       title: '운영 교육과정',
       value: `${totalCourses}과목`,
-      badge: '9개 자격',
+      badge: '공개 과정',
       icon: GraduationCap,
     },
     {
       id: 'masters',
       subTab: 'profile_list',
       title: '명장·명인',
-      value: '64명',
-      badge: '명장 11명',
+      value: '명단 관리',
+      badge: '프로필 확인',
       icon: Award,
     },
     {
@@ -307,7 +307,7 @@ export default function AdminDashboard({
                 onClick={() => onNavigateTab('reservations', 'enrollees_list')}
                 className="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition-colors flex items-center gap-0.5 cursor-pointer"
               >
-                <span>전체 128명 명단</span>
+                <span>전체 명단</span>
                 <ChevronRight size={13} />
               </button>
             </div>
@@ -352,7 +352,7 @@ export default function AdminDashboard({
 
           <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
             <span>{privacyMode ? '개인정보 보호 마스킹 작동중' : '전체 정보 노출중'}</span>
-            <span className="font-semibold text-emerald-800">128명 수강생 학사 관리 및 수강증 발급 가능</span>
+            <span className="font-semibold text-emerald-800">실제 수강 신청 데이터 연동 전</span>
           </div>
         </div>
 

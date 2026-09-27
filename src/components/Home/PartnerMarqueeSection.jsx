@@ -163,7 +163,7 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
   const { t } = useLanguage();
 
   // Active logos from props or fallback, always ensuring image path is hydrated
-  const rawList = partnerLogos && partnerLogos.length > 0 ? partnerLogos : DEFAULT_PARTNER_LOGOS;
+  const rawList = Array.isArray(partnerLogos) ? partnerLogos : DEFAULT_PARTNER_LOGOS;
   const activeLogos = rawList
     .map((item) => {
       if (!item.image) {

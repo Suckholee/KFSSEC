@@ -114,9 +114,9 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
   }, [siteData]);
 
   // Synchronize SiteData helper
-  const syncToParent = (updatedYoutube, updatedBanner) => {
+  const syncToParent = async (updatedYoutube, updatedBanner) => {
     if (onUpdateSiteData) {
-      onUpdateSiteData({
+      await onUpdateSiteData({
         ...siteData,
         youtube: updatedYoutube || {
           title: youtubeTitle,
@@ -136,7 +136,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
     }
   };
 
-  const handleAddVideo = (e) => {
+  const handleAddVideo = async (e) => {
     e.preventDefault();
     const rawUrl = newVideoInputUrl.trim();
     const extractedId = extractYoutubeId(rawUrl);
@@ -168,12 +168,11 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
       channelUrl: youtubeChannelUrl,
       videos: updatedVideos,
     };
-    syncToParent(newYoutube, null);
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 3000);
+    try { await syncToParent(newYoutube, null); setSavedSuccess(true); setTimeout(() => setSavedSuccess(false), 3000); }
+    catch (error) { console.error('Video save failed:', error); }
   };
 
-  const handleDeleteVideo = (id) => {
+  const handleDeleteVideo = async (id) => {
     if (youtubeVideos.length <= 1) {
       alert('최소 1개 이상의 유튜브 미디어 영상이 등록되어 있어야 합니다.');
       return;
@@ -187,11 +186,12 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
         channelUrl: youtubeChannelUrl,
         videos: updatedVideos,
       };
-      syncToParent(newYoutube, null);
+      try { await syncToParent(newYoutube, null); }
+      catch (error) { console.error('Video delete failed:', error); }
     }
   };
 
-  const handleSaveAll = (e) => {
+  const handleSaveAll = async (e) => {
     e.preventDefault();
     const newYoutube = {
       title: youtubeTitle,
@@ -207,9 +207,8 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
       dDay: bannerDDay,
       buttonText: bannerButtonText,
     };
-    syncToParent(newYoutube, newBanner);
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 3000);
+    try { await syncToParent(newYoutube, newBanner); setSavedSuccess(true); setTimeout(() => setSavedSuccess(false), 3000); }
+    catch (error) { console.error('Home settings save failed:', error); }
   };
 
   return (

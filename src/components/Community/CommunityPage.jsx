@@ -120,14 +120,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
     });
 
   const handleWriteButtonClick = () => {
-    if (!isUserLoggedIn) {
-      alert(tr('🔒 글작성은 로그인 후 이용 가능합니다. 로그인 페이지로 이동합니다.'));
-      onOpenAuth('login');
-    } else {
-      if (onGoToEditor) {
-        onGoToEditor();
-      }
-    }
+    if (onGoToEditor) onGoToEditor();
   };
 
   const handleTogglePin = (postId) => {
@@ -540,23 +533,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
             )}
 
             {/* Modal Footer Controls */}
-            <div className="pt-2 flex items-center justify-between border-t border-gray-200">
-              <button
-                onClick={() => handleTogglePin(selectedPost.id)}
-                className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer border ${
-                  selectedPost.isPinned || selectedPost.category === '공지 사항'
-                    ? 'bg-rose-100 text-rose-800 border-rose-300'
-                    : 'bg-stone-100 text-stone-700 border-stone-300 hover:bg-stone-200'
-                }`}
-              >
-                <Pin className="w-3.5 h-3.5" />
-                <span>
-                  {tr(selectedPost.isPinned || selectedPost.category === '공지 사항'
-                    ? '상단 고정 해제'
-                    : '상단에 고정하기')}
-                </span>
-              </button>
-
+            <div className="pt-2 flex items-center justify-end border-t border-gray-200">
               <button
                 onClick={() => setSelectedPost(null)}
                 className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-colors cursor-pointer"

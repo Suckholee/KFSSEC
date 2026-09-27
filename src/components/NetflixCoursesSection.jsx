@@ -1,10 +1,11 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { actualCourses } from '../data/actualCourses';
+import useCourses from '../hooks/useCourses';
 
 export default function NetflixCoursesSection({ onSelectCourse }) {
   const { t } = useLanguage();
+  const actualCourses = useCourses();
   return (
     <section className="py-12 lg:py-16 bg-[#FAF8F5] text-gray-900 border-b border-stone-200/80 font-sans">
       <div className="max-w-[1520px] mx-auto px-4 sm:px-8 lg:px-12">
