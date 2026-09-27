@@ -90,8 +90,8 @@ export default function AdminLiveToolbar() {
               <span>{pendingChanges.count}건 수정됨 (저장 대기)</span>
             </div>
           ) : (
-            <span className="text-slate-400 text-xs hidden md:inline">
-              화면의 글씨나 사진을 클릭해 바로 수정하세요.
+            <span className="text-slate-300 text-xs hidden md:inline font-medium">
+              💡 블록 위에서 <strong className="text-amber-300 font-bold">마우스 우클릭</strong>(PC) 또는 <strong className="text-amber-300 font-bold">꾹 누르면</strong>(모바일) 수정 툴 패널이 열립니다.
             </span>
           )}
         </div>

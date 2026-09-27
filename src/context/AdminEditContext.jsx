@@ -75,6 +75,16 @@ export function AdminEditProvider({
     setSavedSnapshot(prev => ({ ...prev, posts: initialPostsList }));
   }, [initialPostsList]);
 
+  // Support opening admin drawer from anywhere (context menu / quick action)
+  useEffect(() => {
+    const handleDrawerEvent = (e) => {
+      if (e.detail?.tab) setDrawerTab(e.detail.tab);
+      setIsDrawerOpen(true);
+    };
+    window.addEventListener('kfssec:open-drawer', handleDrawerEvent);
+    return () => window.removeEventListener('kfssec:open-drawer', handleDrawerEvent);
+  }, []);
+
   // Update a field in siteData
   const updateSiteField = useCallback((path, value) => {
     setSiteDraft(prev => {

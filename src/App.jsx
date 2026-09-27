@@ -465,7 +465,15 @@ export default function App() {
         <main className="flex-1">
           {activeTab === 'home' && (
             <div className="space-y-0">
-              <SectorBlock sectorId="S-HOME-01" sectorName="메인 비주얼 배너" sectorList={HOME_SECTORS}>
+              <SectorBlock
+                sectorId="S-HOME-01"
+                sectorName="메인 비주얼 배너"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🖼️ 메인 배너 슬라이드 편집"
+                onEditContent={() => {
+                  handleTabChange('admin', 'legacy');
+                }}
+              >
                 <Hero
                   heroBanners={siteData.heroBanners}
                   onExploreClick={() => handleTabChange('catalog')}
@@ -474,7 +482,15 @@ export default function App() {
                 />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-02" sectorName="수강생 모집 / 이벤트 배너" sectorList={HOME_SECTORS}>
+              <SectorBlock
+                sectorId="S-HOME-02"
+                sectorName="수강생 모집 / 이벤트 배너"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🎯 D-Day 배너 설정 수정"
+                onEditContent={() => {
+                  handleTabChange('admin', 'legacy');
+                }}
+              >
                 <AwardCeremonyBannerSection
                   bannerData={siteData.banner}
                   onGoToGallery={() => handleTabChange('gallery', 'awards')}
@@ -482,14 +498,36 @@ export default function App() {
                 />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-08" sectorName="공식 유튜브 미디어" sectorList={HOME_SECTORS}>
+              <SectorBlock
+                sectorId="S-HOME-08"
+                sectorName="공식 유튜브 미디어"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🎥 유튜브 영상 링크 변경"
+                onEditContent={() => {
+                  window.dispatchEvent(new CustomEvent('kfssec:action', { detail: { action: 'edit_youtube' } }));
+                }}
+                customActions={[
+                  {
+                    label: '➕ 새 유튜브 영상 추가 등록',
+                    onClick: () => {
+                      window.dispatchEvent(new CustomEvent('kfssec:action', { detail: { action: 'add_youtube' } }));
+                    },
+                  },
+                ]}
+              >
                 <YouTubeMediaSection
                   youtubeData={siteData.youtube}
                   onPlayVideo={handleOpenVideo}
                 />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-03" sectorName="추천 강좌 큐레이션 (넷플릭스형)" sectorList={HOME_SECTORS}>
+              <SectorBlock
+                sectorId="S-HOME-03"
+                sectorName="추천 강좌 큐레이션 (넷플릭스형)"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📚 교육 과정 카탈로그 바로가기"
+                onEditContent={() => handleTabChange('catalog', 'courses')}
+              >
                 <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
               </SectorBlock>
 
@@ -497,11 +535,23 @@ export default function App() {
                 <GlobalDiningTrendsSection />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-05" sectorName="자격증·실무 과정 카테고리" sectorList={HOME_SECTORS}>
+              <SectorBlock
+                sectorId="S-HOME-05"
+                sectorName="자격증·실무 과정 카테고리"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📋 과정 카테고리 둘러보기"
+                onEditContent={() => handleTabChange('catalog', 'courses')}
+              >
                 <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-05B" sectorName="분야별 교육 포커스" sectorList={HOME_SECTORS}>
+              <SectorBlock
+                sectorId="S-HOME-05B"
+                sectorName="분야별 교육 포커스"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🔍 교육 포커스 상세 안내"
+                onEditContent={() => handleTabChange('catalog', 'guide')}
+              >
                 <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
               </SectorBlock>
 
@@ -509,7 +559,13 @@ export default function App() {
                 <PartnerMarqueeSection partnerLogos={siteData.partnerLogos} />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-07" sectorName="최신 공지사항 & 커뮤니티" sectorList={HOME_SECTORS}>
+              <SectorBlock
+                sectorId="S-HOME-07"
+                sectorName="최신 공지사항 & 커뮤니티"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📝 1:1 문의 및 신청 내역 확인"
+                onEditContent={() => handleTabChange('community', 'inquiry')}
+              >
                 <NoticePostSection postsList={postsList} onScrollNext={() => scrollToSection('footer')} />
               </SectorBlock>
             </div>
@@ -580,8 +636,17 @@ export default function App() {
       {/* Visitor Button-based AI Assistant Chatbot */}
       <VisitorChatbotWidget onNavigate={handleTabChange} />
 
-      {/* Footer Component */}
-      <Footer onTabChange={handleTabChange} siteData={siteData} />
+      {/* Footer Component wrapped in SectorBlock for unified context editing */}
+      <SectorBlock
+        sectorId="S-GLOBAL-02"
+        sectorName="하단 푸터 & 법인 정보"
+        editContentLabel="🏢 법인 연락처/사업자정보 수정"
+        onEditContent={() => {
+          window.dispatchEvent(new CustomEvent('kfssec:open-drawer', { detail: { tab: 'info' } }));
+        }}
+      >
+        <Footer onTabChange={handleTabChange} siteData={siteData} />
+      </SectorBlock>
 
       {/* Modals */}
       <AuthModal

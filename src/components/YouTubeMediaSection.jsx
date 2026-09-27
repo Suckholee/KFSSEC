@@ -134,7 +134,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext, onPlayV
 
   // Open Add Modal
   const handleOpenAddModal = (e) => {
-    e?.stopPropagation();
+    e?.stopPropagation?.();
     setActiveEditingIndex(null);
     setInputUrl('');
     setInputTitle('');
@@ -142,6 +142,19 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext, onPlayV
     setInputCategory('공식 채널 영상');
     setModalMode('add');
   };
+
+  // Listen for actions from SectorBlock context menu
+  useEffect(() => {
+    const handleAction = (e) => {
+      if (e.detail?.action === 'edit_youtube') {
+        handleOpenEditModal({ stopPropagation: () => {} }, 0);
+      } else if (e.detail?.action === 'add_youtube') {
+        handleOpenAddModal({ stopPropagation: () => {} });
+      }
+    };
+    window.addEventListener('kfssec:action', handleAction);
+    return () => window.removeEventListener('kfssec:action', handleAction);
+  }, [rawVideos]);
 
   // Save changes from the modal
   const handleSaveModal = (e) => {
@@ -367,6 +380,13 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext, onPlayV
               key={`${video.id}-${index}`}
               onClick={() => handleCardClick(video, index)}
               onKeyDown={(e) => handleKeyPress(e, video, index)}
+              onContextMenu={(e) => {
+                if (isEditMode) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleOpenEditModal(e, index);
+                }
+              }}
               tabIndex={0}
               role="button"
               aria-label={`${t("유튜브에서 영상 보기")}: ${t(video.title)}`}
