@@ -464,7 +464,8 @@ export default function App() {
       <AdminLiveToolbar />
       <AdminBlockNavigator
         activeTab={activeTab}
-        homeSectors={HOME_SECTORS}
+        subTab={subTab}
+        onTabChange={handleTabChange}
       />
       <AdminDrawer />
 

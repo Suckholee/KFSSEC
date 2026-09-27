@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import { Building2, ShieldCheck, Scale, FileText, Bell, Users, CheckCircle2, ChevronRight, HelpCircle, Gift, Sparkles, PhoneCall } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
+import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 
 export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 'intro', onGoToInquiry, postsList = [] }) {
   const { tr, language } = useLanguage();
@@ -67,146 +68,154 @@ export default function GangnamSohoPage({ initialSubTab = 'intro', initialTab = 
             
             {/* SUB-TAB 1: 조직 및 연합 소개 */}
             {activeTab === 'intro' && (
-              <ScrollReveal>
-                <div className="space-y-6">
-                  <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-4">
-                    <span className="text-xs font-black text-[#0B3C26] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                      GANGNAM SOHO ASSOCIATION
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-black text-gray-900">{tr(" 강남구 소상공인 연합회 개요 ")}</h2>
-                    <p className="text-sm sm:text-base text-gray-700 font-medium leading-relaxed">{tr(" 강남구 내 5만 여 소상공인의 안정적인 매장 운영과 지속 가능한 성장을 돕기 위해 설립된 비영리 자율 지원 단체입니다. 한국외식창업교육원과 협력하여 골목상권 활성화, 맞춤형 창업 인허가 컨설팅, 소상공인 역량 강화 교육을 적극 추진하고 있습니다. ")}</p>
+              <SectorBlock sectorId="S-GANG-01" sectorName="강남구 소상공인 연합회 소개" pageKey="gangnam">
+                <ScrollReveal>
+                  <div className="space-y-6">
+                    <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-4">
+                      <span className="text-xs font-black text-[#0B3C26] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                        GANGNAM SOHO ASSOCIATION
+                      </span>
+                      <h2 className="text-2xl sm:text-3xl font-black text-gray-900">{tr(" 강남구 소상공인 연합회 개요 ")}</h2>
+                      <p className="text-sm sm:text-base text-gray-700 font-medium leading-relaxed">{tr(" 강남구 내 5만 여 소상공인의 안정적인 매장 운영과 지속 가능한 성장을 돕기 위해 설립된 비영리 자율 지원 단체입니다. 한국외식창업교육원과 협력하여 골목상권 활성화, 맞춤형 창업 인허가 컨설팅, 소상공인 역량 강화 교육을 적극 추진하고 있습니다. ")}</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2 text-center">
+                        <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto text-[#0B3C26]">
+                          <Users className="w-6 h-6" />
+                        </div>
+                        <h4 className="font-black text-gray-900 text-base">{tr("회원 권익 보호")}</h4>
+                        <p className="text-xs text-gray-600 font-medium">{tr("소상공인 규제 개선 및 불공정 거래 대응 자문")}</p>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2 text-center">
+                        <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto text-[#B38F48]">
+                          <Building2 className="w-6 h-6" />
+                        </div>
+                        <h4 className="font-black text-gray-900 text-base">{tr("골목상권 활성화")}</h4>
+                        <p className="text-xs text-gray-600 font-medium">{tr("강남구 상권 데이터 분석 및 마케팅 지원")}</p>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2 text-center">
+                        <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto text-[#0B3C26]">
+                          <Scale className="w-6 h-6" />
+                        </div>
+                        <h4 className="font-black text-gray-900 text-base">{tr("전문가 경영 자문")}</h4>
+                        <p className="text-xs text-gray-600 font-medium">{tr("변호사·세무사·노무사 1:1 동반 상담")}</p>
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2 text-center">
-                      <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto text-[#0B3C26]">
-                        <Users className="w-6 h-6" />
-                      </div>
-                      <h4 className="font-black text-gray-900 text-base">{tr("회원 권익 보호")}</h4>
-                      <p className="text-xs text-gray-600 font-medium">{tr("소상공인 규제 개선 및 불공정 거래 대응 자문")}</p>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2 text-center">
-                      <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto text-[#B38F48]">
-                        <Building2 className="w-6 h-6" />
-                      </div>
-                      <h4 className="font-black text-gray-900 text-base">{tr("골목상권 활성화")}</h4>
-                      <p className="text-xs text-gray-600 font-medium">{tr("강남구 상권 데이터 분석 및 마케팅 지원")}</p>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs space-y-2 text-center">
-                      <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto text-[#0B3C26]">
-                        <Scale className="w-6 h-6" />
-                      </div>
-                      <h4 className="font-black text-gray-900 text-base">{tr("전문가 경영 자문")}</h4>
-                      <p className="text-xs text-gray-600 font-medium">{tr("변호사·세무사·노무사 1:1 동반 상담")}</p>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
+                </ScrollReveal>
+              </SectorBlock>
             )}
 
             {/* SUB-TAB 2: 회원 가입 혜택 */}
             {activeTab === 'benefits' && (
-              <ScrollReveal>
-                <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-6">
-                  <div className="border-b border-gray-200 pb-4">
-                    <span className="text-xs font-black text-[#C5A059] bg-[#C5A059]/10 px-3 py-1 rounded-full border border-[#C5A059]/30">
-                      MEMBERSHIP BENEFITS
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">{tr(" 강남구 소상공인 회원 혜택 ")}</h2>
-                  </div>
+              <SectorBlock sectorId="S-GANG-02" sectorName="소상공인 회원 가입 혜택" pageKey="gangnam">
+                <ScrollReveal>
+                  <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-6">
+                    <div className="border-b border-gray-200 pb-4">
+                      <span className="text-xs font-black text-[#C5A059] bg-[#C5A059]/10 px-3 py-1 rounded-full border border-[#C5A059]/30">
+                        MEMBERSHIP BENEFITS
+                      </span>
+                      <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">{tr(" 강남구 소상공인 회원 혜택 ")}</h2>
+                    </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm font-bold">
-                    {[
-                      { title: '외식창업 수강료 30% 특별 할인', desc: '한국외식창업교육원 실전 전과정 우대 가산점 및 수강료 감면' },
-                      { title: '무상 세무·노무 1:1 상담권', desc: '매월 1회 전문 세무사·노무사 무료 자문 상담 제공' },
-                      { title: '정부/지자체 소상공인 지원금 알림', desc: '강남구 및 서울시 소상공인 육성자금 신속 안내' },
-                      { title: '네이버 플레이스 마케팅 컨설팅', desc: '지역 상권 키워드 상위 노출 기법 및 무료 메뉴판 디자인 템플릿' },
-                    ].map((benefit, idx) => (
-                      <div key={idx} className="bg-[#F8F6F0] p-5 rounded-2xl border border-[#E5E0D8] space-y-2">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-[#0B3C26]" />
-                          <span className="font-black text-gray-900 text-sm sm:text-base">{tr(benefit.title)}</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm font-bold">
+                      {[
+                        { title: '외식창업 수강료 30% 특별 할인', desc: '한국외식창업교육원 실전 전과정 우대 가산점 및 수강료 감면' },
+                        { title: '무상 세무·노무 1:1 상담권', desc: '매월 1회 전문 세무사·노무사 무료 자문 상담 제공' },
+                        { title: '정부/지자체 소상공인 지원금 알림', desc: '강남구 및 서울시 소상공인 육성자금 신속 안내' },
+                        { title: '네이버 플레이스 마케팅 컨설팅', desc: '지역 상권 키워드 상위 노출 기법 및 무료 메뉴판 디자인 템플릿' },
+                      ].map((benefit, idx) => (
+                        <div key={idx} className="bg-[#F8F6F0] p-5 rounded-2xl border border-[#E5E0D8] space-y-2">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-[#0B3C26]" />
+                            <span className="font-black text-gray-900 text-sm sm:text-base">{tr(benefit.title)}</span>
+                          </div>
+                          <p className="text-xs text-gray-600 font-medium leading-relaxed pl-6">{tr(benefit.desc)}</p>
                         </div>
-                        <p className="text-xs text-gray-600 font-medium leading-relaxed pl-6">{tr(benefit.desc)}</p>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
 
-                  <div className="pt-4 border-t border-gray-200 flex justify-end">
-                    <button
-                      onClick={onGoToInquiry}
-                      className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
-                    >
-                      <span>{tr("⚡ 강남구 소상공인 회원 가입 상담 문의")}</span>
-                      <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
-                    </button>
+                    <div className="pt-4 border-t border-gray-200 flex justify-end">
+                      <button
+                        onClick={onGoToInquiry}
+                        className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
+                      >
+                        <span>{tr("⚡ 강남구 소상공인 회원 가입 상담 문의")}</span>
+                        <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </ScrollReveal>
+                </ScrollReveal>
+              </SectorBlock>
             )}
 
             {/* SUB-TAB 3: 법률·세무·회계 지원 */}
             {activeTab === 'support' && (
-              <ScrollReveal>
-                <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-6">
-                  <div className="border-b border-gray-200 pb-4">
-                    <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
-                      LEGAL & TAX SUPPORT
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">{tr(" 법률·세무·회계 전문 지원 정보 ")}</h2>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="bg-stone-50 p-5 rounded-2xl border border-stone-300 space-y-2">
-                      <h4 className="font-black text-gray-900 text-base flex items-center gap-2">
-                        <Scale className="w-5 h-5 text-[#0B3C26]" />
-                        <span>{tr("상가 임대차 보호법 및 권리금 자문")}</span>
-                      </h4>
-                      <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">{tr(" 계약 갱신 요구권, 임대료 인상 상한율(5%), 권리금 회수 기회 보호 등 소상공인이 필수적으로 알아야 할 임대차 법률 가이드를 제공합니다. ")}</p>
+              <SectorBlock sectorId="S-GANG-03" sectorName="법률·세무·회계 경영 자문" pageKey="gangnam">
+                <ScrollReveal>
+                  <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-6">
+                    <div className="border-b border-gray-200 pb-4">
+                      <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+                        LEGAL & TAX SUPPORT
+                      </span>
+                      <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">{tr(" 법률·세무·회계 전문 지원 정보 ")}</h2>
                     </div>
 
-                    <div className="bg-stone-50 p-5 rounded-2xl border border-stone-300 space-y-2">
-                      <h4 className="font-black text-gray-900 text-base flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-[#B38F48]" />
-                        <span>{tr("부가가치세 & 종합소득세 절세 절차")}</span>
-                      </h4>
-                      <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">{tr(" 외식업 의제매입세액 공제, 카드 매출 매입 공제 및 식자재 지출 증빙 팁을 실무 중심으로 안내합니다. ")}</p>
+                    <div className="space-y-4">
+                      <div className="bg-stone-50 p-5 rounded-2xl border border-stone-300 space-y-2">
+                        <h4 className="font-black text-gray-900 text-base flex items-center gap-2">
+                          <Scale className="w-5 h-5 text-[#0B3C26]" />
+                          <span>{tr("상가 임대차 보호법 및 권리금 자문")}</span>
+                        </h4>
+                        <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">{tr(" 계약 갱신 요구권, 임대료 인상 상한율(5%), 권리금 회수 기회 보호 등 소상공인이 필수적으로 알아야 할 임대차 법률 가이드를 제공합니다. ")}</p>
+                      </div>
+
+                      <div className="bg-stone-50 p-5 rounded-2xl border border-stone-300 space-y-2">
+                        <h4 className="font-black text-gray-900 text-base flex items-center gap-2">
+                          <FileText className="w-5 h-5 text-[#B38F48]" />
+                          <span>{tr("부가가치세 & 종합소득세 절세 절차")}</span>
+                        </h4>
+                        <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">{tr(" 외식업 의제매입세액 공제, 카드 매출 매입 공제 및 식자재 지출 증빙 팁을 실무 중심으로 안내합니다. ")}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ScrollReveal>
+                </ScrollReveal>
+              </SectorBlock>
             )}
 
             {/* SUB-TAB 4: 공지 및 행사 소식 */}
             {activeTab === 'notices' && (
-              <ScrollReveal>
-                <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-6">
-                  <div className="border-b border-gray-200 pb-4">
-                    <span className="text-xs font-black text-gray-700 bg-gray-100 px-3 py-1 rounded-full border border-gray-300">
-                      NOTICES & EVENTS
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">{tr(" 강남구 소상공인 공지사항 및 행사 소식 ")}</h2>
-                  </div>
+              <SectorBlock sectorId="S-GANG-04" sectorName="공지 및 행사 소식" pageKey="gangnam">
+                <ScrollReveal>
+                  <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-gray-200 shadow-md space-y-6">
+                    <div className="border-b border-gray-200 pb-4">
+                      <span className="text-xs font-black text-gray-700 bg-gray-100 px-3 py-1 rounded-full border border-gray-300">
+                        NOTICES & EVENTS
+                      </span>
+                      <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-2">{tr(" 강남구 소상공인 공지사항 및 행사 소식 ")}</h2>
+                    </div>
 
-                  <div className="divide-y divide-gray-200 font-bold text-xs sm:text-sm">
-                    {postsList.filter(post => post.category === '강남 소상공인').map((notice) => (
-                      <div key={notice.id} className="py-4 flex items-center justify-between gap-4 hover:bg-stone-50 transition-colors cursor-pointer px-2 rounded-xl">
-                        <div className="space-y-1">
-                          <span className="text-[11px] font-black text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-md mr-2">
-                            {tr(notice.category)}
-                          </span>
-                          <span className="font-bold text-gray-900 text-sm">{tr(notice.title)}</span>
-                          {notice.content && <p className="mt-2 whitespace-pre-wrap text-xs font-normal text-gray-600">{tr(notice.content)}</p>}
+                    <div className="divide-y divide-gray-200 font-bold text-xs sm:text-sm">
+                      {postsList.filter(post => post.category === '강남 소상공인').map((notice) => (
+                        <div key={notice.id} className="py-4 flex items-center justify-between gap-4 hover:bg-stone-50 transition-colors cursor-pointer px-2 rounded-xl">
+                          <div className="space-y-1">
+                            <span className="text-[11px] font-black text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-md mr-2">
+                              {tr(notice.category)}
+                            </span>
+                            <span className="font-bold text-gray-900 text-sm">{tr(notice.title)}</span>
+                            {notice.content && <p className="mt-2 whitespace-pre-wrap text-xs font-normal text-gray-600">{tr(notice.content)}</p>}
+                          </div>
+                          <span className="text-xs font-mono text-gray-400 shrink-0">{tr(notice.date)}</span>
                         </div>
-                        <span className="text-xs font-mono text-gray-400 shrink-0">{tr(notice.date)}</span>
-                      </div>
-                    ))}
-                    {!postsList.some(post => post.category === '강남 소상공인') && <p className="py-6 text-center text-gray-500">등록된 공지가 없습니다.</p>}
+                      ))}
+                      {!postsList.some(post => post.category === '강남 소상공인') && <p className="py-6 text-center text-gray-500">등록된 공지가 없습니다.</p>}
+                    </div>
                   </div>
-                </div>
-              </ScrollReveal>
+                </ScrollReveal>
+              </SectorBlock>
             )}
 
           </div>

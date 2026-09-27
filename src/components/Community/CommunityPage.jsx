@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import { MessageSquare, Bell, Image, Trophy, HelpCircle, PenSquare, Search, Eye, Calendar, User, ChevronRight, X, Lock, Pin, ShieldCheck, CheckCircle2, Clock, Send, FileText, Bot, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
+import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 
 export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLoggedIn, onGoToEditor, postsList = [], setPostsList }) {
   const { tr, language } = useLanguage();
@@ -152,7 +153,11 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
 
           {/* Right Main Content Panel */}
           <div className="flex-1 w-full space-y-6 min-w-0">
-            
+            <SectorBlock
+              sectorId={activeTab === 'notice' ? 'S-COM-02' : activeTab === 'faq' ? 'S-COM-03' : activeTab === 'inquiry' ? 'S-COM-04' : 'S-COM-01'}
+              sectorName={activeTab === 'notice' ? '공식 공지사항' : activeTab === 'faq' ? '주요 문의 (FAQ 10문 10답)' : activeTab === 'inquiry' ? '1:1 온라인 문의 및 수강 상담' : '전체 게시글 & 공지사항'}
+              pageKey="community"
+            >
             <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
               
               {/* Header Title & Search Toolbar */}
@@ -390,6 +395,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
               )}
 
             </div>
+            </SectorBlock>
 
           </div>
 

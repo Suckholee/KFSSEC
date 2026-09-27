@@ -4,6 +4,7 @@ import { Sparkles, Award, Medal } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import useMasterProfiles from '../../hooks/useMasterProfiles';
 import MasterDirectory from './MasterDirectory';
+import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 
 const normalizeTab = tab => {
   if (tab === 'directory') return 'directory';
@@ -154,12 +155,18 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
 
         {/* Master Directory Content Panel */}
         <main className="w-full min-w-0">
-          <MasterDirectory
-            key={activeTab}
-            group={currentItem.group}
-            groupLabel={currentItem.label}
-            onSelectGroup={selectTab}
-          />
+          <SectorBlock
+            sectorId={activeTab === 'profiles' ? 'S-MAS-02' : activeTab === 'directory' ? 'S-MAS-03' : 'S-MAS-01'}
+            sectorName={activeTab === 'profiles' ? '대한민국 조리명장 명단' : activeTab === 'directory' ? '외식창업 조리명인 명단' : '명장·명인 전체 목록'}
+            pageKey="master"
+          >
+            <MasterDirectory
+              key={activeTab}
+              group={currentItem.group}
+              groupLabel={currentItem.label}
+              onSelectGroup={selectTab}
+            />
+          </SectorBlock>
         </main>
 
       </div>

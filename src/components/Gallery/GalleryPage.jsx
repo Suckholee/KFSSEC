@@ -1,7 +1,8 @@
 import { useLanguage } from '../../i18n/LanguageContext';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import ScrollReveal from '../common/ScrollReveal';
+import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 import {
   Image,
   Trophy,
@@ -23,6 +24,12 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
   const [activeCategory, setActiveCategory] = useState(initialSubTab || 'all');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  useEffect(() => {
+    if (initialSubTab) {
+      setActiveCategory(initialSubTab);
+    }
+  }, [initialSubTab]);
 
   // Close modal on Escape key press
   React.useEffect(() => {
@@ -126,6 +133,11 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
         </div>
 
         {/* Gallery Grid */}
+        <SectorBlock
+          sectorId={activeCategory === 'competition' ? 'S-GAL-02' : activeCategory === 'ceremony' ? 'S-GAL-03' : activeCategory === 'consulting' ? 'S-GAL-04' : activeCategory === 'training' ? 'S-GAL-05' : 'S-GAL-01'}
+          sectorName={activeCategory === 'competition' ? '요리대회 포토 갤러리' : activeCategory === 'ceremony' ? '시상식 & 인증패 갤러리' : activeCategory === 'consulting' ? '지자체 컨설팅 포토' : activeCategory === 'training' ? '조리 실습 현장 스케치' : '전체 갤러리 미디어'}
+          pageKey="gallery"
+        >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredItems.map((item, idx) => (
             <ScrollReveal key={item.id} direction="up" delay={idx * 60}>
@@ -178,6 +190,7 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
             <p className="font-bold">일치하는 갤러리 자료가 없습니다.</p>
           </div>
         )}
+        </SectorBlock>
 
       </div>
 

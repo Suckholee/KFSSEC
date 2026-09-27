@@ -1,6 +1,7 @@
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
+import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 import { DEFAULT_PARTNER_LOGOS } from '../Home/PartnerMarqueeSection';
 import {
   Handshake,
@@ -115,6 +116,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
         </ScrollReveal>
 
         {/* SECTION 1: INFINITE ROLLING LOGO SLIDER (고객 반영사항: 협력업체 로고들이 좌우로 슬라이딩되는 롤링 디자인) */}
+        <SectorBlock sectorId="S-PART-01" sectorName="공식 제휴기관 & 파트너사 목록" pageKey="partners">
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b-2 border-[#0B3C26] pb-3">
             <div className="flex items-center gap-2">
@@ -255,8 +257,10 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
 
           </div>
         </div>
+        </SectorBlock>
 
         {/* SECTION 2: MOU SIGNING PHOTOS (고객 반영사항: 업무협약 관련 사진 등록) */}
+        <SectorBlock sectorId="S-PART-02" sectorName="글로벌 외식 산업 협력 MOU" pageKey="partners">
         <div id="partners-mou" className="space-y-6 scroll-mt-28">
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#0B3C26] pb-3">
@@ -409,8 +413,10 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
             ))}
           </div>
         </div>
+        </SectorBlock>
 
         {/* SECTION 4: PARTNERSHIP INQUIRY BANNER */}
+        <SectorBlock sectorId="S-PART-03" sectorName="공식 업무 제휴 및 입점 문의" pageKey="partners">
         <div id="partners-inquiry" className="bg-[#0B3C26] text-white rounded-3xl p-6 sm:p-10 border-2 border-[#C5A059] shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 scroll-mt-28">
 
           <div className="space-y-2 text-center md:text-left">
@@ -429,6 +435,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
+        </SectorBlock>
 
       </div>
 
