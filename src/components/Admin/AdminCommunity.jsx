@@ -21,6 +21,9 @@ import {
   Sparkles,
   Send,
   Upload,
+  HelpCircle,
+  Bot,
+  ArrowUpRight,
 } from 'lucide-react';
 
 export default function AdminCommunity({
@@ -169,6 +172,7 @@ export default function AdminCommunity({
         views: 1,
         isPinned: formIsPinned,
         image: formImage || null,
+        images: formImage ? [formImage] : [],
         galleryCategory: formGalleryCategory,
       };
       updatedList = [newPost, ...postsList];
@@ -257,6 +261,96 @@ export default function AdminCommunity({
   const noticeCount = postsList.filter((p) => (p.category || '').includes('공지')).length;
   const pressCount = postsList.filter((p) => (p.category || '').includes('보도')).length;
   const galleryCount = postsList.filter((p) => (p.category || '').includes('갤러리')).length;
+
+  const adminFaqList = [
+    { id: 1, category: '교육원 소개', group: '기본안내', q: '한국외식창업교육원은 어떤 곳인가요?', a: '본 교육원은 오랜 현장 실무 경험과 실력을 갖춘 명인, 명장들과 함께 예비 창업자 및 소상공인을 지원하고 전문 외식 인재를 양성하는 전문 교육기관입니다. 체계적인 교육 과정과 컨설팅을 통해 성공적인 외식 창업을 돕고 있습니다.' },
+    { id: 2, category: '취득 자격증', group: '자격증', q: '교육원에서 취득할 수 있는 자격증은 어떤 것이 있나요?', a: '농림축산식품부 허가를 받은 다양한 전문 자격증 과정을 운영하고 있습니다. 대표적으로 K-FOOD 자격증, 외식지도사(1, 2급), 외식창업실무지도사(1, 2급), 명인민간자격증, 소믈리에파티컨설턴트, 푸드테크설계사 자격증 등이 있습니다.' },
+    { id: 3, category: '명인·명장 시상식', group: '시상식', q: '명인·명장 시상식은 언제 개최되나요?', a: '명인·명장 시상식은 연 1회 정기적으로 개최됩니다. 한 해 동안 대한민국 외식 산업 발전과 문화 진흥에 기여한 우수 외식인 및 전문가들을 발굴하여 격려하고 명인·명장으로 추대하는 공식 행사입니다.' },
+    { id: 4, category: '명인·명장 선발', group: '시상식', q: '명인·명장 자격요건 및 신청 프로세스는 어떻게 되나요?', a: '오랜 기간 외식 및 조리 분야에서 탁월한 업적과 실무 경력을 쌓아온 전문가들을 대상으로 합니다. 홈페이지 내 [명인·명장] 메뉴의 자격요건을 확인하신 후 심사 서류를 제출해 주시면, 소정의 심사 기준을 거쳐 최종 선발됩니다.' },
+    { id: 5, category: '초보자 수강', group: '교육과정', q: '외식 창업을 전혀 해본 적 없는 초보자도 교육을 받을 수 있나요?', a: '네, 물론입니다. 외식업 창업을 꿈꾸는 초보자부터 메뉴 개발, 경영 실무, 마케팅까지 체계적인 현장 맞춤형 교육이 준비되어 있으므로 누구나 수강하실 수 있습니다.' },
+    { id: 6, category: '창업 컨설팅', group: '컨설팅', q: '창업 컨설팅은 어떤 방식으로 진행되나요?', a: '예비 창업자의 아이템 분석, 상권 분석, 점포 계약 및 인테리어, 메뉴 선정부터 사후 경영 노하우까지 성공적인 창업을 위한 1:1 맞춤형 종합 컨설팅을 제공하고 있습니다.' },
+    { id: 7, category: '사후 관리/지원', group: '사후지원', q: '교육원 수료 후 사후 관리나 지원 혜택이 있나요?', a: '수료 후에도 지속적인 네트워크 형성을 위한 명인명장 협력업체 연계, 정보 공유, 자문 등 다양한 사후 지원 프로그램을 운영하여 성공적인 사업 유지를 돕고 있습니다.' },
+    { id: 8, category: '신청 및 상담', group: '상담안내', q: '수강 신청 및 상담은 어떻게 하나요?', a: '홈페이지 내 [교육과정] 메뉴에서 온라인으로 간편하게 신청하실 수 있습니다. 또한, 카카오톡 채널을 통해서도 실시간 1:1 상담 및 문의가 가능합니다.' },
+    { id: 9, category: '오프라인 교육장', group: '교육장', q: '오프라인 교육장 위치는 어디이며, 방문 상담이 가능한가요?', a: '이론강의실과 실습강의실이 따로 운영되고 있습니다.\n• 이론강의실 (교대역): 캐롤라인대학교 강의실 (서울 서초구 서초동 1666-13, 지제이빌딩 5층)\n• 실습강의실: 닥터장 베이킹랩 교육장 (서울 금천구 대륭테크노타운 8차 5층 503호)' },
+    { id: 10, category: '커리큘럼/자료', group: '교육과정', q: '교육 일정이나 커리큘럼에 대한 상세 자료를 받아볼 수 있나요?', a: '홈페이지의 교육과정 페이지에서 각 과목별 상세 커리큘럼을 확인하실 수 있으며, 추가적인 자료나 궁금한 사항은 교육원 사무국으로 문의해 주시면 친절하게 안내해 드립니다.' },
+    { id: 11, category: '진익준 외식컨설팅', group: '진익준', q: '진익준 교수의 외식 컨설팅은 기존 컨설팅과 어떻게 다른가요?', a: '단순히 인테리어 디자인에만 치중하지 않습니다. 국내외 수많은 외식공간 설계·감리 경험과 학술적 연구를 바탕으로 [상권 분석 + 브랜드 입지 전략 + 효율적인 주방/매장 동선 시스템 + 공간 브랜딩]을 종합적으로 기획하여 실질적인 매출 상승과 오퍼레이션 효율화를 이끌어내는 맞춤형 공간/경영 컨설팅을 제공합니다.' },
+    { id: 12, category: '진익준 외식컨설팅', group: '진익준', q: '신규 창업이 아닌, 기존에 운영 중인 매장의 리뉴얼이나 경영 개선도 컨설팅이 가능한가요?', a: '네, 가능합니다. 노후화되거나 효율이 떨어진 기존 매장의 동선 재배치, 주방 시스템 개선(푸드테크 적용 등), 브랜드 리뉴얼 컨설팅을 전문적으로 진행합니다. 상권 환경과 고객 타겟 분석을 거쳐 최소 비용으로 최대 효과를 낼 수 있는 리모델링 및 경영 개선 방안을 제시해 드립니다.' },
+    { id: 13, category: '진익준 외식컨설팅', group: '진익준', q: '컨설팅 진행 절차와 신청 시 준비해야 할 자료는 무엇인가요?', a: '온라인/전화 문의 접수 후 사전 상담을 진행하며, [매장 입지(주소) 및 평수 / 현재(예정) 메뉴 컨셉 / 예산 범위 / 주요 고민사항]을 작성해 주시면 더욱 신속하고 정확한 진단이 가능합니다. 이후 사전 현장 조사 및 면담을 통해 단계별 컨설팅 범위와 일정을 확정하게 됩니다.' },
+  ];
+
+  if (subTab === 'faq_list') {
+    return (
+      <div className="space-y-6 animate-fadeIn font-sans text-gray-900 max-w-7xl mx-auto pb-12">
+        {/* Header Card */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black">
+                FAQ DATABASE & KNOWLEDGE
+              </span>
+              <span className="text-xs text-gray-500 font-bold">
+                총 {adminFaqList.length}문 {adminFaqList.length}답 등록됨
+              </span>
+            </div>
+            <h2 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
+              <HelpCircle className="w-6 h-6 text-emerald-600" />
+              <span>자주 묻는 질문 (FAQ) & 챗봇 연동 데이터</span>
+            </h2>
+            <p className="text-xs text-gray-500 leading-relaxed max-w-2xl">
+              교육원 공식 10문 10답 및 진익준 교수 외식 컨설팅 3문 3답이 등록되어 있습니다. 해당 내용은 사용자 커뮤니티 FAQ 게시판과 24시 AI 상담 챗봇 자동 응답 엔진에 동시 적용됩니다.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                if (window.location) {
+                  window.location.hash = '#/admin/inquiries/chatbot_settings';
+                }
+              }}
+              className="px-5 py-3 bg-[#1E5D3B] hover:bg-[#2B7752] text-white rounded-2xl font-black text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer shrink-0"
+            >
+              <Bot className="w-4 h-4 text-emerald-300" />
+              <span>AI 챗봇 키워드/규칙 설정 바로가기</span>
+              <ArrowUpRight className="w-4 h-4 text-emerald-300" />
+            </button>
+          </div>
+        </div>
+
+        {/* 13 FAQ Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {adminFaqList.map((faq) => (
+            <div
+              key={faq.id}
+              className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs hover:border-emerald-500/60 transition-all space-y-3"
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shrink-0">
+                    Q{faq.id}
+                  </span>
+                  <span className="text-[11px] font-black text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
+                    {faq.category}
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold text-gray-400">
+                  {faq.group}
+                </span>
+              </div>
+
+              <h4 className="text-sm font-black text-gray-900 leading-snug">
+                {faq.q}
+              </h4>
+
+              <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 text-xs text-gray-700 leading-relaxed font-medium whitespace-pre-line">
+                {faq.a}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 animate-fadeIn font-sans text-gray-900 max-w-7xl mx-auto pb-12">

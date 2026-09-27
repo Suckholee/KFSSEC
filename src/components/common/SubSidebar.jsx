@@ -31,8 +31,8 @@ export default function SubSidebar({
                 onClick={() => handleSelect(item.id)}
                 className={`py-2 px-3.5 rounded-xl text-xs font-black transition-all whitespace-nowrap cursor-pointer shrink-0 border tracking-tight break-keep ${
                   isActive
-                    ? 'bg-[#0B3C26] text-white border-[#C5A059] shadow-sm'
-                    : 'bg-stone-50 text-gray-700 hover:bg-stone-100 border-stone-200'
+                    ? 'bg-[#2B7752] text-white border-[#2B7752] shadow-sm'
+                    : 'bg-stone-50 text-gray-700 hover:bg-[#F2FAF5] border-stone-200'
                 }`}
               >
                 {tr(item.label)}
@@ -43,9 +43,9 @@ export default function SubSidebar({
       </div>
 
       {/* Desktop Vertical Left Sidebar (Visible on desktop >= md) */}
-      <div className="hidden md:block bg-[#e8e8e8] rounded-3xl p-5 border border-gray-300 shadow-md space-y-4">
-        {/* Top Black Header Badge Pill */}
-        <div className="bg-black text-white text-base font-black px-4 py-2.5 rounded-xl text-center shadow-sm tracking-tight">
+      <div className="hidden md:block bg-[#F8FAF9] rounded-3xl p-5 border border-[#D0E7DA] shadow-xs space-y-4">
+        {/* Top Header Badge Pill */}
+        <div className="bg-[#2B7752] text-white text-base font-black px-4 py-2.5 rounded-xl text-center shadow-xs tracking-tight">
           {tr(title)}
         </div>
 
@@ -59,12 +59,12 @@ export default function SubSidebar({
                 onClick={() => handleSelect(item.id)}
                 className={`w-full text-left py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-between cursor-pointer ${
                   isActive
-                    ? 'bg-white text-black font-black shadow-md border border-gray-300 translate-x-1'
-                    : 'text-gray-700 hover:text-black hover:bg-white/60'
+                    ? 'bg-white text-[#1E5D3B] font-black shadow-xs border border-[#D0E7DA] translate-x-1'
+                    : 'text-stone-700 hover:text-[#1E5D3B] hover:bg-white/80'
                 }`}
               >
                 <span>{tr(item.label)}</span>
-                {isActive && <ChevronRight className="w-4 h-4 text-[#0B3C26]" />}
+                {isActive && <ChevronRight className="w-4 h-4 text-[#2B7752]" />}
               </button>
             );
           })}

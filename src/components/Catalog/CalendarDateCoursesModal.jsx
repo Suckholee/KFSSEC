@@ -66,25 +66,25 @@ export default function CalendarDateCoursesModal({
         className="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl transition-all border border-gray-200 max-h-[90vh] flex flex-col cursor-default"
       >
         {/* Modal Header */}
-        <div className="bg-[#0B3C26] text-white p-6 sm:p-7 relative shrink-0 border-b border-[#C5A059]">
+        <div className="bg-gradient-to-r from-[#1B5238] via-[#266847] to-[#34885E] text-white p-6 sm:p-7 relative shrink-0 border-b border-[#BEDECB]/30 shadow-sm">
           <button
             onClick={onClose}
-            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-black/25 hover:bg-black/50 text-white flex items-center justify-center transition-colors cursor-pointer"
             title={tr("닫기 (ESC)")}
           >
             <X className="w-5 h-5" />
           </button>
 
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#D4AF37] text-xs font-black">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 border border-white/25 text-[#A7F3D0] text-xs font-black">
               <CalendarIcon className="w-3.5 h-3.5" />
               <span>{tr("2026년 9월 학사 일정 및 수강 신청")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
               <span>{tr(dateStr || tr`2026년 9월 ${dayNum}일`)}</span>
-              <span className="text-[#D4AF37] text-lg font-bold">{tr("강의 일정")}</span>
+              <span className="text-[#A7F3D0] text-lg font-bold">{tr("강의 일정")}</span>
             </h2>
-            <p className="text-xs sm:text-sm text-emerald-100/80 font-bold">
+            <p className="text-xs sm:text-sm text-emerald-100/90 font-medium">
               {tr(isFallback
                 ? '선택하신 일자에는 개강 예정 과정이 없으나, 모집 중인 추천 인기 특화 과정을 바로 신청하실 수 있습니다.'
                 : '선택하신 일자에 개강 및 수업이 진행되는 특화 자격증 과정을 확인하고 원클릭 수강 신청을 진행하세요.')}
@@ -96,10 +96,10 @@ export default function CalendarDateCoursesModal({
         <div className="p-6 sm:p-8 space-y-6 overflow-y-auto flex-1">
           {/* ENROLLMENT SUB-FORM MODAL VIEW IF USER CLICKED APPLY */}
           {enrollingCourse ? (
-            <div className="bg-emerald-50/70 p-6 sm:p-7 rounded-3xl border-2 border-[#0B3C26] space-y-5 animate-fadeIn">
-              <div className="flex items-center justify-between border-b border-emerald-200 pb-4">
+            <div className="bg-[#F8FAF9] p-6 sm:p-7 rounded-3xl border-2 border-[#2B7752] space-y-5 animate-fadeIn shadow-sm">
+              <div className="flex items-center justify-between border-b border-[#D0E7DA] pb-4">
                 <div>
-                  <span className="text-xs font-bold text-[#0B3C26] bg-emerald-100 px-3 py-1 rounded-full">{tr(" 원클릭 수강 신청 ")}</span>
+                  <span className="text-xs font-bold text-[#1E5D3B] bg-[#EAF5EE] px-3 py-1 rounded-full border border-[#D0E7DA]">{tr(" 원클릭 수강 신청 ")}</span>
                   <h3 className="text-xl font-black text-gray-900 mt-1">
                     {tr(enrollingCourse.title)}
                   </h3>
@@ -115,7 +115,7 @@ export default function CalendarDateCoursesModal({
 
               {enrollSuccess ? (
                 <div className="py-10 text-center space-y-3">
-                  <div className="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-lg animate-bounce">
+                  <div className="w-14 h-14 rounded-full bg-[#2B7752] text-white flex items-center justify-center mx-auto shadow-lg animate-bounce">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h4 className="text-lg font-black text-gray-900">{tr("수강 신청 처리 중...")}</h4>
@@ -132,7 +132,7 @@ export default function CalendarDateCoursesModal({
                         placeholder={tr("홍길동")}
                         value={enrollForm.name}
                         onChange={(e) => setEnrollForm({ ...enrollForm, name: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#0B3C26]"
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#D0E7DA] rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#2B7752]"
                       />
                     </div>
                     <div>
@@ -143,7 +143,7 @@ export default function CalendarDateCoursesModal({
                         placeholder="010-1234-5678"
                         value={enrollForm.phone}
                         onChange={(e) => setEnrollForm({ ...enrollForm, phone: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#0B3C26]"
+                        className="w-full px-3.5 py-2.5 bg-white border border-[#D0E7DA] rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#2B7752]"
                       />
                     </div>
                   </div>
@@ -153,7 +153,7 @@ export default function CalendarDateCoursesModal({
                     <select
                       value={enrollForm.experience}
                       onChange={(e) => setEnrollForm({ ...enrollForm, experience: e.target.value })}
-                      className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#0B3C26]"
+                      className="w-full px-3.5 py-2.5 bg-white border border-[#D0E7DA] rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#2B7752]"
                     >
                       <option value="신규 창업 준비생">{tr("신규 창업 준비생 (6개월 이내 오픈)")}</option>
                       <option value="기존 업종 변경/재창업">{tr("기존 업종 변경 / 재창업 희망자")}</option>
@@ -170,7 +170,7 @@ export default function CalendarDateCoursesModal({
                       placeholder={tr("국비지원 가능 여부 및 주말반 개설 문의 등...")}
                       value={enrollForm.note}
                       onChange={(e) => setEnrollForm({ ...enrollForm, note: e.target.value })}
-                      className="w-full p-3 bg-white border border-gray-300 rounded-xl font-medium text-gray-900 focus:outline-none focus:border-[#0B3C26] resize-none"
+                      className="w-full p-3 bg-white border border-[#D0E7DA] rounded-xl font-medium text-gray-900 focus:outline-none focus:border-[#2B7752] resize-none"
                     />
                   </div>
 
@@ -182,10 +182,10 @@ export default function CalendarDateCoursesModal({
                     >{tr(" 취소 ")}</button>
                     <button
                       type="submit"
-                      className="px-7 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold rounded-xl shadow-lg border border-[#C5A059] flex items-center gap-2 cursor-pointer"
+                      className="px-7 py-2.5 bg-[#2B7752] hover:bg-[#236344] text-white font-extrabold rounded-xl shadow-md border border-[#3CA370] flex items-center gap-2 cursor-pointer transition-all"
                     >
                       <span>{tr("수강 신청 접수 완료")}</span>
-                      <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+                      <ChevronRight className="w-4 h-4 text-[#A7F3D0]" />
                     </button>
                   </div>
                 </form>
@@ -196,7 +196,7 @@ export default function CalendarDateCoursesModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#0B3C26]" />
+                  <Sparkles className="w-4 h-4 text-[#2B7752]" />
                   <span>
                     {tr(isFallback ? '개강 추천 인기 수강 과정' : tr`9월 ${dayNum}일 수강 및 개강 강좌 목록 (${matchedCourses.length}건)`)}
                   </span>
@@ -208,7 +208,7 @@ export default function CalendarDateCoursesModal({
                 {displayCourses.map((c, idx) => (
                   <div
                     key={c.id || idx}
-                    className="group bg-white rounded-2xl border-2 border-gray-200 hover:border-[#0B3C26] p-4 sm:p-5 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row items-center justify-between gap-4"
+                    className="group bg-white rounded-2xl border-2 border-[#D0E7DA] hover:border-[#32875D] p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col sm:flex-row items-center justify-between gap-4"
                   >
                     {/* Course Image & Main Info */}
                     <div className="flex items-center gap-4 w-full sm:w-auto">
@@ -225,7 +225,7 @@ export default function CalendarDateCoursesModal({
 
                       <div className="space-y-1.5 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="px-2 py-0.5 bg-emerald-100 text-[#0B3C26] text-[10px] font-black rounded border border-emerald-300">
+                          <span className="px-2 py-0.5 bg-[#EAF6EE] text-[#1E5D3B] text-[10px] font-black rounded border border-[#D0E7DA]">
                             {tr(c.startDate ? tr`${c.startDate} 개강` : '9월 개강')}
                           </span>
                           <span className="text-xs font-bold text-gray-500">
@@ -233,7 +233,7 @@ export default function CalendarDateCoursesModal({
                           </span>
                         </div>
 
-                        <h4 className="text-base sm:text-lg font-black text-gray-900 group-hover:text-[#0B3C26] transition-colors leading-snug">
+                        <h4 className="text-base sm:text-lg font-black text-gray-900 group-hover:text-[#256D48] transition-colors leading-snug">
                           {tr(c.title)}
                         </h4>
 
@@ -242,12 +242,13 @@ export default function CalendarDateCoursesModal({
                         </p>
 
                         <div className="flex items-center gap-3 pt-1 text-xs font-extrabold text-gray-900">
-                          <span className="text-emerald-800 text-sm sm:text-base font-black">
-                            {tr(c.priceFormatted || (c.price ? tr`${c.price.toLocaleString()}원` : '234,000원'))}
+                          <span className="text-[#1E5D3B] text-sm sm:text-base font-black">
+                            {tr(c.priceFormatted || (c.price ? `${Number(c.price).toLocaleString()}원` : '수강료 문의'))}
                           </span>
-                          {c.discountRate && (
-                            <span className="text-rose-600 text-xs font-bold bg-rose-50 px-2 py-0.5 rounded">
-                              {tr(c.discountRate)}{tr(" 할인 ")}</span>
+                          {c.duration && (
+                            <span className="text-[#256D48] text-xs font-bold bg-[#EAF6EE] px-2 py-0.5 rounded border border-[#D0E7DA]">
+                              {tr(c.duration)}
+                            </span>
                           )}
                         </div>
                       </div>
@@ -257,10 +258,10 @@ export default function CalendarDateCoursesModal({
                     <div className="flex sm:flex-col items-center gap-2 w-full sm:w-auto shrink-0 justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
                       <button
                         onClick={() => setEnrollingCourse(c)}
-                        className="flex-1 sm:flex-initial px-5 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-[#C5A059] whitespace-nowrap min-h-[44px]"
+                        className="flex-1 sm:flex-initial px-5 py-2.5 bg-[#2B7752] hover:bg-[#236344] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-[#3CA370] whitespace-nowrap min-h-[44px]"
                       >
                         <span>{tr("⚡ 바로 수강 신청")}</span>
-                        <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+                        <ChevronRight className="w-4 h-4 text-[#A7F3D0]" />
                       </button>
 
                       <button
@@ -281,7 +282,7 @@ export default function CalendarDateCoursesModal({
         {/* Modal Footer Guarantee Notice */}
         <div className="bg-gray-50 p-4 px-6 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600 font-bold shrink-0">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#0B3C26]" />
+            <ShieldCheck className="w-4 h-4 text-[#2B7752]" />
             <span>{tr("(사)한국외식창업교육원 정식 인증 자격 연계 과정")}</span>
           </div>
           <button

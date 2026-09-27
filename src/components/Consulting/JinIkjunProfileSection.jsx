@@ -19,7 +19,8 @@ import {
   TrendingUp,
   Store,
   Layers,
-  FileText
+  FileText,
+  HelpCircle
 } from 'lucide-react';
 
 export default function JinIkjunProfileSection({ onConsultClick }) {
@@ -130,16 +131,16 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
   return (
     <div className="space-y-6 w-full animate-fadeIn">
       {/* Top Banner & Tab Navigation Switcher */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#0B3C26] shadow-xl">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#D0E7DA] shadow-sm">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b-2 border-stone-200">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#0B3C26] text-xs font-black mb-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F2FAF5] border border-[#D0E7DA] text-[#1E5D3B] text-xs font-black mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#2B7752]" />
               <span>KFSSEC MASTER FACULTY & STARTUP STRATEGY</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight flex items-center gap-2">
               <span>외식경영 & 공간전략 권위자</span>
-              <span className="text-[#0B3C26] underline decoration-[#C5A059] decoration-4">진익준 교수</span>
+              <span className="text-[#1E5D3B] underline decoration-[#85CFAB] decoration-4">진익준 교수</span>
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1.5 leading-relaxed">
               사단법인 한국외식창업교육원 교육분과이사 / 비엑스디(BXD) 대표 / 청운대·세종사이버대 외래교수
@@ -149,42 +150,61 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
           {/* Quick CTA Action */}
           <button
             onClick={() => onConsultClick && onConsultClick('진익준 교수 1:1 창업 컨설팅')}
-            className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm rounded-2xl shadow-lg transition-all flex items-center gap-2 shrink-0 cursor-pointer border border-[#C5A059]"
+            className="px-6 py-3 bg-[#2B7752] hover:bg-[#236344] text-white font-black text-sm rounded-2xl shadow-md transition-all flex items-center gap-2 shrink-0 cursor-pointer border border-[#85CFAB]"
           >
             <span>진익준 교수 1:1 컨설팅 문의</span>
-            <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+            <ChevronRight className="w-4 h-4 text-[#A7F3D0]" />
           </button>
         </div>
 
-        {/* 2 Major Sub-Tabs Switcher (진익준교수 소개 프로필 / 진익준교수 사례예시 프렌차이즈 사례) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-6">
+        {/* 3 Major Sub-Tabs Switcher (진익준교수 소개 프로필 / 사례예시 프랜차이즈 사례 / 외식 컨설팅 FAQ) */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6">
           <button
             onClick={() => setActiveSubTab('profile')}
-            className={`flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-black text-sm sm:text-base transition-all cursor-pointer border-2 ${
+            className={`flex items-center justify-center gap-2.5 py-4 px-4 rounded-2xl font-black text-sm sm:text-base transition-all cursor-pointer border-2 ${
               activeSubTab === 'profile'
-                ? 'bg-[#0B3C26] text-white border-[#0B3C26] shadow-md'
-                : 'bg-stone-50 text-gray-700 border-stone-200 hover:border-[#0B3C26] hover:bg-stone-100'
+                ? 'bg-[#2B7752] text-white border-[#2B7752] shadow-md'
+                : 'bg-stone-50 text-gray-700 border-stone-200 hover:border-[#34885E] hover:bg-stone-100'
             }`}
           >
-            <GraduationCap className={`w-5 h-5 ${activeSubTab === 'profile' ? 'text-[#D4AF37]' : 'text-gray-400'}`} />
-            <span>진익준교수 소개 프로필</span>
+            <GraduationCap className={`w-5 h-5 ${activeSubTab === 'profile' ? 'text-[#A7F3D0]' : 'text-gray-400'}`} />
+            <span>소개 프로필</span>
           </button>
 
           <button
             onClick={() => setActiveSubTab('references')}
-            className={`flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-black text-sm sm:text-base transition-all cursor-pointer border-2 ${
+            className={`flex items-center justify-center gap-2.5 py-4 px-4 rounded-2xl font-black text-sm sm:text-base transition-all cursor-pointer border-2 ${
               activeSubTab === 'references'
-                ? 'bg-[#0B3C26] text-white border-[#0B3C26] shadow-md'
-                : 'bg-stone-50 text-gray-700 border-stone-200 hover:border-[#0B3C26] hover:bg-stone-100'
+                ? 'bg-[#2B7752] text-white border-[#2B7752] shadow-md'
+                : 'bg-stone-50 text-gray-700 border-stone-200 hover:border-[#34885E] hover:bg-stone-100'
             }`}
           >
-            <Store className={`w-5 h-5 ${activeSubTab === 'references' ? 'text-[#D4AF37]' : 'text-gray-400'}`} />
-            <div className="flex items-center gap-2">
-              <span>진익준교수 사례예시 프렌차이즈 사례</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                activeSubTab === 'references' ? 'bg-[#C5A059] text-gray-950' : 'bg-gray-200 text-gray-700'
+            <Store className={`w-5 h-5 ${activeSubTab === 'references' ? 'text-[#A7F3D0]' : 'text-gray-400'}`} />
+            <div className="flex items-center gap-1.5">
+              <span>프랜차이즈 사례</span>
+              <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold ${
+                activeSubTab === 'references' ? 'bg-[#EAF6EE] text-[#1E5D3B]' : 'bg-gray-200 text-gray-700'
               }`}>
-                100+ 건
+                100+
+              </span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setActiveSubTab('faq')}
+            className={`flex items-center justify-center gap-2.5 py-4 px-4 rounded-2xl font-black text-sm sm:text-base transition-all cursor-pointer border-2 ${
+              activeSubTab === 'faq'
+                ? 'bg-[#2B7752] text-white border-[#2B7752] shadow-md'
+                : 'bg-stone-50 text-gray-700 border-stone-200 hover:border-[#34885E] hover:bg-stone-100'
+            }`}
+          >
+            <HelpCircle className={`w-5 h-5 ${activeSubTab === 'faq' ? 'text-[#A7F3D0]' : 'text-gray-400'}`} />
+            <div className="flex items-center gap-1.5">
+              <span>외식 컨설팅 FAQ</span>
+              <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold ${
+                activeSubTab === 'faq' ? 'bg-[#EAF6EE] text-[#1E5D3B]' : 'bg-amber-100 text-amber-800'
+              }`}>
+                3문 3답
               </span>
             </div>
           </button>
@@ -202,29 +222,37 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
               
               {/* Left Column: Official Profile Photo & QR Links */}
               <div className="lg:col-span-4 flex flex-col items-center text-center space-y-4">
-                <div className="relative group w-full max-w-[280px] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#0B3C26]/20 bg-amber-50">
-                  <img
-                    src="/images/faculty/jin_ikjun_profile.png"
+                <div className="relative group w-full max-w-[280px] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#2B7752]/20 bg-amber-50">
+                  <EditableImage
+                    path="jinIkjun.image"
+                    src={siteDraft?.jinIkjun?.image || "/images/faculty/jin_ikjun_profile.png"}
                     alt="진익준 교수 공식 프로필"
-                    className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-auto"
+                    imageClassName="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-3 left-3 bg-[#0B3C26] text-white text-[11px] font-black px-2.5 py-1 rounded-full border border-[#C5A059]">
+                  <div className="absolute top-3 left-3 bg-[#2B7752] text-white text-[11px] font-black px-2.5 py-1 rounded-full border border-[#85CFAB] pointer-events-none">
                     KFSSEC 교육분과이사
                   </div>
                 </div>
 
                 <div className="w-full max-w-[280px] bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2 text-left text-xs">
                   <div className="flex items-center gap-2 text-gray-700 font-bold">
-                    <Mail className="w-4 h-4 text-[#0B3C26] shrink-0" />
-                    <span className="truncate">ikjunjin@naver.com</span>
+                    <Mail className="w-4 h-4 text-[#2B7752] shrink-0" />
+                    <span className="truncate">
+                      <EditableText path="jinIkjun.email" value={siteDraft?.jinIkjun?.email || "ikjunjin@naver.com"} />
+                    </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-700 font-bold">
-                    <Phone className="w-4 h-4 text-[#0B3C26] shrink-0" />
-                    <span>010-8563-8440</span>
+                    <Phone className="w-4 h-4 text-[#2B7752] shrink-0" />
+                    <span>
+                      <EditableText path="jinIkjun.phone" value={siteDraft?.jinIkjun?.phone || "010-8563-8440"} />
+                    </span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-700 font-bold pt-1 border-t border-stone-200">
-                    <Building className="w-4 h-4 text-[#C5A059] shrink-0" />
-                    <span className="truncate">비엑스디(BXD) 대표</span>
+                    <Building className="w-4 h-4 text-[#2B7752] shrink-0" />
+                    <span className="truncate">
+                      <EditableText path="jinIkjun.company" value={siteDraft?.jinIkjun?.company || "비엑스디(BXD) 대표"} />
+                    </span>
                   </div>
                 </div>
 
@@ -234,10 +262,12 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                     공식 칼럼 & 모바일 연결 QR
                   </span>
                   <div className="rounded-xl overflow-hidden border border-stone-200 shadow-inner bg-white p-1">
-                    <img
-                      src="/images/faculty/jin_ikjun_qr.png"
+                    <EditableImage
+                      path="jinIkjun.qrImage"
+                      src={siteDraft?.jinIkjun?.qrImage || "/images/faculty/jin_ikjun_qr.png"}
                       alt="진익준 교수 칼럼 및 네이버 블로그 QR"
-                      className="w-full h-auto object-cover"
+                      className="w-full h-auto"
+                      imageClassName="w-full h-auto object-cover"
                     />
                   </div>
                 </div>
@@ -246,15 +276,16 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
               {/* Right Column: Detailed Biography & Academic Roles */}
               <div className="lg:col-span-8 space-y-6">
                 <div>
-                  <span className="text-xs font-black text-[#C5A059] tracking-widest uppercase">PROFILE & EXPERTISE</span>
+                  <span className="text-xs font-black text-[#2B7752] tracking-widest uppercase">PROFILE & EXPERTISE</span>
                   <h3 className="text-3xl font-black text-gray-950 mt-1">
-                    진 익 준 <span className="text-lg font-bold text-gray-500">/ JIN IK JUN</span>
+                    <EditableText path="jinIkjun.name" value={siteDraft?.jinIkjun?.name || "진 익 준"} />{' '}
+                    <span className="text-lg font-bold text-gray-500">/ JIN IK JUN</span>
                   </h3>
-                  <p className="text-sm font-bold text-[#0B3C26] mt-1">
-                    現 비엑스디 대표 (외식경영 및 공간전략 기획 컨설팅 / 외식관련 도서 출판사)
+                  <p className="text-sm font-bold text-[#1E5D3B] mt-1">
+                    <EditableText path="jinIkjun.currentRole" value={siteDraft?.jinIkjun?.currentRole || "現 비엑스디 대표 (외식경영 및 공간전략 기획 컨설팅 / 외식관련 도서 출판사)"} />
                   </p>
                   <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
-                    상권 입지 분석부터 3D 주방 설계, 브랜드 콘셉트, 고객 경험 디자인(CX)까지 외식 공간의 모든 것을 과학적 데이터와 20여 년의 현장 실전 노하우로 설계하는 대한민국 대표 외식 경영 컨설턴트입니다.
+                    <EditableText multiline path="jinIkjun.bio" value={siteDraft?.jinIkjun?.bio || "상권 입지 분석부터 3D 주방 설계, 브랜드 콘셉트, 고객 경험 디자인(CX)까지 외식 공간의 모든 것을 과학적 데이터와 20여 년의 현장 실전 노하우로 설계하는 대한민국 대표 외식 경영 컨설턴트입니다."} />
                   </p>
                 </div>
 
@@ -262,17 +293,17 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Faculty Appointments */}
                   <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2.5">
-                    <div className="flex items-center gap-2 text-xs font-black text-[#0B3C26] border-b border-stone-200 pb-1.5">
-                      <GraduationCap className="w-4 h-4 text-[#C5A059]" />
+                    <div className="flex items-center gap-2 text-xs font-black text-[#1E5D3B] border-b border-stone-200 pb-1.5">
+                      <GraduationCap className="w-4 h-4 text-[#2B7752]" />
                       <span>외래교수 및 학술 직책</span>
                     </div>
                     <ul className="text-xs space-y-1.5 text-gray-700 font-medium">
                       <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
                         <span><strong>現 청운대학교</strong> 외래교수</span>
                       </li>
                       <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
                         <span><strong>現 세종사이버대학교</strong> 외래교수</span>
                       </li>
                       <li className="flex items-start gap-1.5">
@@ -288,29 +319,29 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
 
                   {/* Public & Corporate Advisory */}
                   <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2.5">
-                    <div className="flex items-center gap-2 text-xs font-black text-[#0B3C26] border-b border-stone-200 pb-1.5">
-                      <Award className="w-4 h-4 text-[#C5A059]" />
+                    <div className="flex items-center gap-2 text-xs font-black text-[#1E5D3B] border-b border-stone-200 pb-1.5">
+                      <Award className="w-4 h-4 text-[#2B7752]" />
                       <span>공직 및 협회 임원</span>
                     </div>
                     <ul className="text-xs space-y-1.5 text-gray-700 font-medium">
                       <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
                         <span><strong>現 (사)한국외식창업교육원</strong> 교육분과이사</span>
                       </li>
                       <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
                         <span><strong>現 국가보훈처</strong> 자문위원</span>
                       </li>
                       <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
                         <span><strong>現 (사)한국외식경영학회</strong> 부회장</span>
                       </li>
                       <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
                         <span><strong>現 (사)한국전통주학회</strong> 부회장</span>
                       </li>
                       <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
                         <span><strong>現 (사)한국외식업중앙회</strong> 신규영업자교육 교수</span>
                       </li>
                       <li className="flex items-start gap-1.5">
@@ -357,14 +388,14 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
           {/* Section: Books & Academic Theses */}
           <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-stone-200 shadow-lg space-y-6">
             <div className="flex items-center gap-2 border-b-2 border-stone-200 pb-4">
-              <BookOpen className="w-6 h-6 text-[#0B3C26]" />
+              <BookOpen className="w-6 h-6 text-[#2B7752]" />
               <h4 className="text-xl sm:text-2xl font-black text-gray-950">저서(著書) 및 학술 연구 논문</h4>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Major Books */}
               <div className="space-y-4">
-                <span className="text-xs font-black text-[#0B3C26] uppercase tracking-wider block">
+                <span className="text-xs font-black text-[#2B7752] uppercase tracking-wider block">
                   MAJOR PUBLICATIONS (대표 출간 저서)
                 </span>
                 <div className="space-y-3">
@@ -374,7 +405,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                     { title: '창업성공의 인테리어 디자인 전략', publisher: '크라운출판사 (2008 / 2010)', desc: '매출을 극대화하는 외식 공간 기획의 정석' },
                     { title: '외식업 성공지침서', publisher: '백산출판사 (2009)', desc: '예비창업자와 점포 경영자를 위한 실전 솔루션' },
                   ].map((book, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#0B3C26] transition-all">
+                    <div key={idx} className="p-4 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#34885E] transition-all">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-md">
                           {book.publisher}
@@ -389,7 +420,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
 
               {/* Research Papers */}
               <div className="space-y-4">
-                <span className="text-xs font-black text-[#0B3C26] uppercase tracking-wider block">
+                <span className="text-xs font-black text-[#2B7752] uppercase tracking-wider block">
                   ACADEMIC RESEARCH & PAPERS (학술 논문)
                 </span>
                 <div className="space-y-3">
@@ -413,7 +444,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                       desc: '고객 심리와 감성 반응을 반영한 맞춤형 인테리어 선호 유형 분석'
                     },
                   ].map((paper, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#C5A059] transition-all">
+                    <div key={idx} className="p-4 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#85CFAB] transition-all">
                       <span className="text-[11px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md">
                         {paper.date} | {paper.journal}
                       </span>
@@ -429,7 +460,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
           {/* Section: Universities & Government Lectures (출강 이력) */}
           <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-stone-200 shadow-lg space-y-6">
             <div className="flex items-center gap-2 border-b-2 border-stone-200 pb-4">
-              <Briefcase className="w-6 h-6 text-[#0B3C26]" />
+              <Briefcase className="w-6 h-6 text-[#2B7752]" />
               <h4 className="text-xl sm:text-2xl font-black text-gray-950">대학 최고경영자과정 및 사회단체 출강 이력</h4>
             </div>
 
@@ -455,7 +486,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                 { title: '외식업중앙회 경기지회', prog: '신규영업자 위생교육 및 경영개선 강사' },
               ].map((item, idx) => (
                 <div key={idx} className="p-3.5 bg-stone-50 rounded-xl border border-stone-200">
-                  <div className="font-black text-xs text-[#0B3C26]">{item.title}</div>
+                  <div className="font-black text-xs text-[#2B7752]">{item.title}</div>
                   <div className="text-xs text-gray-700 font-medium mt-0.5">{item.prog}</div>
                 </div>
               ))}
@@ -474,12 +505,12 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
           <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-stone-200 shadow-lg space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <span className="text-xs font-black text-[#C5A059] uppercase tracking-wider block">
+                <span className="text-xs font-black text-[#2B7752] uppercase tracking-wider block">
                   PROVEN PORTFOLIO & CLIENT CASES
                 </span>
                 <h3 className="text-2xl font-black text-gray-950 mt-1 flex items-center gap-2">
                   <span>진익준 교수 국내외 대표 컨설팅 & 프랜차이즈 사례</span>
-                  <span className="text-xs bg-[#0B3C26] text-white font-black px-3 py-1 rounded-full">
+                  <span className="text-xs bg-[#2B7752] text-white font-black px-3 py-1 rounded-full">
                     {filteredReferences.length}개 검색됨
                   </span>
                 </h3>
@@ -496,7 +527,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="브랜드명, 지역(예: 이학갈비, 파리)..."
-                  className="w-full pl-10 pr-4 py-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0B3C26]"
+                  className="w-full pl-10 pr-4 py-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#2B7752]"
                 />
               </div>
             </div>
@@ -516,7 +547,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                   onClick={() => setRefCategory(cat.id)}
                   className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
                     refCategory === cat.id
-                      ? 'bg-[#0B3C26] text-white shadow-md'
+                      ? 'bg-[#2B7752] text-white shadow-md'
                       : 'bg-stone-100 text-gray-700 hover:bg-stone-200'
                   }`}
                 >
@@ -529,29 +560,29 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
           {/* Key Highlight Spotlight: 이학갈비 & 글로벌 프로젝트 */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Spotlight 1: 이학갈비 / 이학농가 */}
-            <div className="bg-gradient-to-br from-stone-900 to-[#0B3C26] rounded-3xl p-6 text-white shadow-xl space-y-4">
-              <span className="text-[11px] font-black tracking-widest text-[#D4AF37] uppercase bg-black/40 px-2.5 py-1 rounded-full border border-[#D4AF37]/30">
+            <div className="bg-gradient-to-br from-stone-900 via-[#1E5B3C] to-[#2B7752] rounded-3xl p-6 text-white shadow-xl space-y-4">
+              <span className="text-[11px] font-black tracking-widest text-[#A7F3D0] uppercase bg-black/40 px-2.5 py-1 rounded-full border border-white/20">
                 REPRESENTATIVE SUCCESS CASE
               </span>
               <h4 className="text-xl font-black">이학갈비 & 이학농가 전 지점</h4>
               <p className="text-xs text-stone-300 leading-relaxed">
                 인천 연수동 본점, 서울 면목동 사가정점, 군포 산본점, 시흥점, 김포 이학농가까지 초대형 한식 명가의 공간 기획 및 설계 감리를 총괄하였습니다.
               </p>
-              <div className="pt-2 text-xs font-bold text-[#D4AF37] flex items-center gap-1">
+              <div className="pt-2 text-xs font-bold text-[#A7F3D0] flex items-center gap-1">
                 <span>동선 최적화 & 고객 회전율 극대화 설계</span>
               </div>
             </div>
 
             {/* Spotlight 2: 프랑스/미국 aT 글로벌 */}
-            <div className="bg-gradient-to-br from-[#0B3C26] to-emerald-950 rounded-3xl p-6 text-white shadow-xl space-y-4">
-              <span className="text-[11px] font-black tracking-widest text-[#D4AF37] uppercase bg-black/40 px-2.5 py-1 rounded-full border border-[#D4AF37]/30">
+            <div className="bg-gradient-to-br from-[#1B5238] via-[#266847] to-[#34885E] rounded-3xl p-6 text-white shadow-xl space-y-4">
+              <span className="text-[11px] font-black tracking-widest text-[#A7F3D0] uppercase bg-black/40 px-2.5 py-1 rounded-full border border-white/20">
                 GLOBAL K-FOOD CONSULTING
               </span>
               <h4 className="text-xl font-black">aT 파리·LA·대련 해외 컨설팅</h4>
               <p className="text-xs text-stone-300 leading-relaxed">
                 한국농수산식품유통공사(aT) 주관 프랑스 파리지역 한식당 디자인 컨설팅(3개년 연속) 및 미국 LA, 중국 대련 한식당 표준화 모델 구축.
               </p>
-              <div className="pt-2 text-xs font-bold text-[#D4AF37] flex items-center gap-1">
+              <div className="pt-2 text-xs font-bold text-[#A7F3D0] flex items-center gap-1">
                 <span>K-FOOD 글로벌 공간 표준화 달성</span>
               </div>
             </div>
@@ -578,7 +609,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                 key={item.id}
                 className={`bg-white rounded-2xl p-5 border-2 transition-all hover:shadow-lg flex flex-col justify-between ${
                   item.highlight
-                    ? 'border-[#0B3C26] bg-emerald-50/20'
+                    ? 'border-[#2B7752] bg-[#F2FAF5]/50'
                     : 'border-stone-200 hover:border-stone-400'
                 }`}
               >
@@ -587,13 +618,13 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                     <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${
                       item.region === '해외'
                         ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                        : 'bg-emerald-100 text-[#0B3C26] border border-emerald-200'
+                        : 'bg-[#EAF6EE] text-[#1E5D3B] border border-[#BEDECB]'
                     }`}>
                       {item.region} | {item.role}
                     </span>
                     {item.highlight && (
-                      <span className="text-[10px] font-black text-[#C5A059] flex items-center gap-0.5">
-                        <Sparkles className="w-3 h-3" />
+                      <span className="text-[10px] font-black text-[#2B7752] flex items-center gap-0.5">
+                        <Sparkles className="w-3 h-3 text-[#2B7752]" />
                         <span>대표사례</span>
                       </span>
                     )}
@@ -607,7 +638,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                     <MapPin className="w-3.5 h-3.5 text-gray-400" />
                     <span>{item.location}</span>
                   </span>
-                  <span className="text-[11px] text-[#0B3C26] font-bold">완료</span>
+                  <span className="text-[11px] text-[#2B7752] font-bold">완료</span>
                 </div>
               </div>
             ))}
@@ -638,6 +669,138 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
               className="px-8 py-4 bg-[#C5A059] hover:bg-[#b08e4c] text-gray-950 font-black text-sm rounded-2xl shadow-xl transition-all shrink-0 cursor-pointer flex items-center gap-2"
             >
               <span>1:1 상담 신청하기</span>
+              <ChevronRight className="w-4 h-4 text-gray-950" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* VIEW 3: 진익준 교수 외식 컨설팅 자주 묻는 질문 FAQ (3문 3답)             */}
+      {/* ========================================================================= */}
+      {activeSubTab === 'faq' && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Header Card */}
+          <div className="bg-gradient-to-br from-[#1E5D3B] to-[#2B7752] rounded-3xl p-6 sm:p-8 text-white border-2 border-[#85CFAB] shadow-lg space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 border border-white/20 text-[#A7F3D0] text-xs font-black">
+              <HelpCircle className="w-4 h-4 text-[#A7F3D0]" />
+              <span>진익준 교수 외식 컨설팅 핵심 가이드</span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-black">
+              진익준 교수의 외식 공간 & 경영 컨설팅 FAQ
+            </h3>
+            <p className="text-emerald-100 text-xs sm:text-sm max-w-2xl leading-relaxed font-medium">
+              컨설팅 차별점, 기존 매장 리뉴얼 및 경영 개선, 사전 준비 자료와 진행 절차 등 가장 많이 문의하시는 핵심 질문 3가지를 정리해 드립니다.
+            </p>
+          </div>
+
+          {/* 3 FAQ Accordion / Cards */}
+          <div className="space-y-4">
+            {/* FAQ 1 */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-stone-200 shadow-sm space-y-4 hover:border-[#1E5D3B] transition-colors">
+              <div className="flex items-start gap-4">
+                <span className="w-10 h-10 rounded-2xl bg-[#1E5D3B] text-white font-black text-base flex items-center justify-center shrink-0 shadow-md">
+                  Q1
+                </span>
+                <div className="space-y-1">
+                  <span className="text-xs font-black text-[#1E5D3B] bg-[#EAF6EE] px-2.5 py-0.5 rounded-md inline-block border border-[#A7F3D0]">
+                    차별화 경쟁력
+                  </span>
+                  <h4 className="text-base sm:text-lg font-black text-gray-950">
+                    진익준 교수의 외식 컨설팅은 기존 컨설팅과 어떻게 다른가요?
+                  </h4>
+                </div>
+              </div>
+              <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 flex items-start gap-3.5 ml-0 sm:ml-14">
+                <span className="w-7 h-7 rounded-xl bg-[#C5A059] text-gray-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  A
+                </span>
+                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
+                  단순히 인테리어 디자인에만 치중하지 않습니다. 국내외 수많은 외식공간 설계·감리 경험과 학술적 연구를 바탕으로 <strong className="text-[#1E5D3B] font-black">[상권 분석 + 브랜드 입지 전략 + 효율적인 주방/매장 동선 시스템 + 공간 브랜딩]</strong>을 종합적으로 기획하여 실질적인 매출 상승과 오퍼레이션 효율화를 이끌어내는 맞춤형 공간/경영 컨설팅을 제공합니다.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ 2 */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-stone-200 shadow-sm space-y-4 hover:border-[#1E5D3B] transition-colors">
+              <div className="flex items-start gap-4">
+                <span className="w-10 h-10 rounded-2xl bg-[#1E5D3B] text-white font-black text-base flex items-center justify-center shrink-0 shadow-md">
+                  Q2
+                </span>
+                <div className="space-y-1">
+                  <span className="text-xs font-black text-[#1E5D3B] bg-[#EAF6EE] px-2.5 py-0.5 rounded-md inline-block border border-[#A7F3D0]">
+                    기존 매장 리뉴얼
+                  </span>
+                  <h4 className="text-base sm:text-lg font-black text-gray-950">
+                    신규 창업이 아닌, 기존에 운영 중인 매장의 리뉴얼이나 경영 개선도 컨설팅이 가능한가요?
+                  </h4>
+                </div>
+              </div>
+              <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 flex items-start gap-3.5 ml-0 sm:ml-14">
+                <span className="w-7 h-7 rounded-xl bg-[#C5A059] text-gray-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  A
+                </span>
+                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
+                  네, 가능합니다. 노후화되거나 효율이 떨어진 기존 매장의 <strong className="text-[#1E5D3B] font-black">동선 재배치, 주방 시스템 개선(푸드테크 적용 등), 브랜드 리뉴얼 컨설팅</strong>을 전문적으로 진행합니다. 상권 환경과 고객 타겟 분석을 거쳐 최소 비용으로 최대 효과를 낼 수 있는 리모델링 및 경영 개선 방안을 제시해 드립니다.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ 3 */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-stone-200 shadow-sm space-y-4 hover:border-[#1E5D3B] transition-colors">
+              <div className="flex items-start gap-4">
+                <span className="w-10 h-10 rounded-2xl bg-[#1E5D3B] text-white font-black text-base flex items-center justify-center shrink-0 shadow-md">
+                  Q3
+                </span>
+                <div className="space-y-1">
+                  <span className="text-xs font-black text-[#1E5D3B] bg-[#EAF6EE] px-2.5 py-0.5 rounded-md inline-block border border-[#A7F3D0]">
+                    진행 절차 & 준비 자료
+                  </span>
+                  <h4 className="text-base sm:text-lg font-black text-gray-950">
+                    컨설팅 진행 절차와 신청 시 준비해야 할 자료는 무엇인가요?
+                  </h4>
+                </div>
+              </div>
+              <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 flex items-start gap-3.5 ml-0 sm:ml-14">
+                <span className="w-7 h-7 rounded-xl bg-[#C5A059] text-gray-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  A
+                </span>
+                <div className="space-y-2 text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
+                  <p>
+                    온라인/전화 문의 접수 후 사전 상담을 진행하며, 아래 항목을 미리 작성해 주시면 더욱 신속하고 정확한 진단이 가능합니다:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 bg-white p-3.5 rounded-xl border border-stone-200 text-gray-900 font-bold">
+                    <li>매장 입지(주소) 및 평수</li>
+                    <li>현재(또는 예정) 메뉴 콘셉트</li>
+                    <li>예산 범위</li>
+                    <li>주요 고민사항 및 개선 희망 포인트</li>
+                  </ul>
+                  <p className="pt-1">
+                    이후 사전 현장 조사 및 면담을 통해 단계별 컨설팅 범위와 일정을 확정하게 됩니다.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Lead Banner */}
+          <div className="bg-stone-900 rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 border-2 border-[#C5A059]">
+            <div className="space-y-2 text-center md:text-left">
+              <span className="text-xs font-black text-[#D4AF37] uppercase tracking-wider">
+                1:1 맞춤 컨설팅 접수 중
+              </span>
+              <h4 className="text-2xl font-black">
+                진익준 교수와 함께 성공하는 외식 공간을 설계하세요
+              </h4>
+              <p className="text-xs sm:text-sm text-stone-300 max-w-2xl leading-relaxed">
+                위 4가지 사항(매장 위치, 평수, 메뉴 컨셉, 예산)을 남겨주시면 진익준 교수 연구팀에서 1차 검토 후 연락드립니다.
+              </p>
+            </div>
+            <button
+              onClick={() => onConsultClick && onConsultClick('진익준 교수 외식 컨설팅 신청')}
+              className="px-8 py-4 bg-[#C5A059] hover:bg-[#b08e4c] text-gray-950 font-black text-sm rounded-2xl shadow-xl transition-all shrink-0 cursor-pointer flex items-center gap-2"
+            >
+              <span>지금 1:1 컨설팅 신청하기</span>
               <ChevronRight className="w-4 h-4 text-gray-950" />
             </button>
           </div>

@@ -1,9 +1,11 @@
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { X, Award, CheckCircle2, ShieldCheck, ChevronRight, BookOpen, Star, Calendar } from 'lucide-react';
+import { X, Award, CheckCircle2, ShieldCheck, ChevronRight, BookOpen, Star, Calendar, Edit3 } from 'lucide-react';
+import { useAdminEdit } from '../../context/AdminEditContext';
 
-export default function MasterDetailModal({ isOpen, master, onClose, originRect }) {
+export default function MasterDetailModal({ isOpen, master, onClose, originRect, onEditMaster }) {
   const { tr, language } = useLanguage();
+  const { isEditMode } = useAdminEdit();
   const dialogRef = useRef(null);
   const overlayRef = useRef(null);
   const closingRef = useRef(false);
@@ -67,20 +69,37 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
       <div
         ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="master-detail-title" tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
-        className="master-profile-dialog bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl transition-all border-2 border-[#0B3C26] max-h-[92vh] flex flex-col cursor-default"
+        className="master-profile-dialog bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl transition-all border border-[#16A34A]/40 max-h-[92vh] flex flex-col cursor-default"
       >
         {/* Header */}
-        <div className="bg-[#262a28] text-white p-6 sm:p-7 relative shrink-0 border-b-2 border-[#C5A059]">
-          <button
-            onClick={requestClose}
-            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center transition-colors cursor-pointer"
-            title={tr("닫기 (ESC)")}
-          >
-            <X className="w-5 h-5" />
-          </button>
+        <div className="bg-gradient-to-r from-[#14532D] via-[#15803D] to-[#16A34A] text-white p-6 sm:p-7 relative shrink-0 border-b border-[#16A34A]/40">
+          <div className="absolute top-5 right-5 flex items-center gap-2">
+            {isEditMode && (
+              <button
+                type="button"
+                onClick={() => {
+                  requestClose();
+                  onEditMaster?.(master.id || master.name);
+                }}
+                className="px-3.5 py-1.5 rounded-xl bg-white hover:bg-[#F0FDF4] text-[#15803D] font-black text-xs shadow-lg border border-[#86EFAC] flex items-center gap-1.5 transition-all cursor-pointer hover:scale-105 active:scale-95"
+                title="이 명장의 정보 및 사진 편집하기"
+              >
+                <Edit3 className="w-3.5 h-3.5 text-[#15803D]" />
+                <span>이 프로필 수정하기</span>
+              </button>
+            )}
+
+            <button
+              onClick={requestClose}
+              className="w-9 h-9 rounded-full bg-black/20 hover:bg-black/40 text-white flex items-center justify-center transition-colors cursor-pointer"
+              title={tr("닫기 (ESC)")}
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-[#C5A059] shadow-md bg-white shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-white/50 shadow-md bg-white shrink-0">
               <img
                 src={master.image}
                 alt={tr(master.name)}
@@ -89,9 +108,13 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
             </div>
 
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#D4AF37] text-xs font-black">
-                <Award className="w-3.5 h-3.5" />
-                <span>{tr(master.badge || (master.group === 'expert' ? '명인' : '명장'))}</span>
+              <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black shadow-xs ${
+                master.group === 'expert' 
+                  ? 'bg-gradient-to-r from-[#EA580C] to-[#F97316] text-white border border-orange-300/40' 
+                  : 'bg-white/20 text-[#86EFAC] border border-white/30'
+              }`}>
+                <Award className={`w-3.5 h-3.5 ${master.group === 'expert' ? 'text-amber-100' : 'text-[#86EFAC]'}`} />
+                <span>{tr(master.badge || (master.group === 'expert' ? '조리 명인' : '대한민국 명장'))}</span>
               </div>
 
               <h2 id="master-detail-title" className="text-2xl sm:text-3xl font-black tracking-tight text-white font-serif">
@@ -110,8 +133,8 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
           
           {/* Intro Overview Box */}
           <div className="bg-white p-5 rounded-2xl border border-[#E5E0D8] shadow-xs space-y-2">
-            <h3 className="text-sm font-black text-[#0B3C26] flex items-center gap-2">
-              <Star className="w-4 h-4 text-[#C5A059]" />
+            <h3 className="text-sm font-black text-[#15803D] flex items-center gap-2">
+              <Star className="w-4 h-4 text-[#F97316] fill-[#F97316]" />
               <span>{tr("소개 및 전문 분야")}</span>
             </h3>
             <p className="text-xs sm:text-sm text-gray-700 font-medium leading-relaxed whitespace-pre-wrap">
@@ -121,8 +144,8 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
 
           {/* SNS Channels Section */}
           {(master.blogUrl || master.youtubeUrl || master.instagramUrl) && (
-            <div className="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 shadow-xs space-y-2">
-              <h3 className="text-xs font-black text-[#0B3C26] flex items-center gap-1.5 uppercase tracking-wider">
+            <div className="bg-[#F0FDF4] p-4 rounded-2xl border border-[#DCFCE7] shadow-xs space-y-2">
+              <h3 className="text-xs font-black text-[#15803D] flex items-center gap-1.5 uppercase tracking-wider">
                 <span>공식 SNS 및 미디어 채널</span>
               </h3>
               <div className="flex flex-wrap items-center gap-2 pt-1">
@@ -131,7 +154,7 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
                     href={master.blogUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#15803D] hover:bg-[#16A34A] text-white rounded-xl text-xs font-bold transition-all shadow-xs"
                   >
                     <span>📗 네이버 블로그</span>
                   </a>
@@ -162,8 +185,8 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
 
           {/* Awards & Career Timeline List */}
           <div className="space-y-3">
-            <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b-2 border-[#0B3C26] pb-2">
-              <Award className="w-4 h-4 text-[#0B3C26]" />
+            <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b-2 border-[#16A34A]/40 pb-2">
+              <Award className="w-4 h-4 text-[#F97316]" />
               <span>{tr("주요 이력, 활동 및 수상 경력")}</span>
             </h3>
 
@@ -171,7 +194,7 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
               {!master.awards?.length && <p className="font-normal text-gray-500">{tr("등록된 경력이 없습니다.")}</p>}
               {master.awards && master.awards.map((award, idx) => (
                 <div key={idx} className="flex items-start gap-3 py-1 border-b border-stone-100 last:border-0">
-                  <CheckCircle2 className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#15803D] shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm text-gray-800 font-bold leading-relaxed">{tr(award)}</span>
                 </div>
               ))}
@@ -183,12 +206,12 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect 
         {/* Footer */}
         <div className="bg-gray-100 p-4 px-6 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600 font-bold shrink-0">
           <span className="flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-[#0B3C26]" />
+            <ShieldCheck className="w-4 h-4 text-[#15803D]" />
             <span>{tr("사단법인 한국외식창업교육원 검증 명장·명인")}</span>
           </span>
           <button
             onClick={requestClose}
-            className="px-5 py-2 bg-[#0B3C26] text-white rounded-xl font-bold hover:bg-[#072819] transition-colors cursor-pointer"
+            className="px-5 py-2 bg-gradient-to-r from-[#14532D] to-[#15803D] hover:from-[#15803D] hover:to-[#16A34A] text-white rounded-xl font-bold transition-all shadow-xs cursor-pointer"
           >{tr(" 닫기 ")}</button>
         </div>
 

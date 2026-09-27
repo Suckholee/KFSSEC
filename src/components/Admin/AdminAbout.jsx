@@ -53,7 +53,7 @@ const DEFAULT_MILESTONES = [
   {
     year: '2025',
     badge: '전국 확장',
-    badgeColor: 'bg-[#0B3C26] text-[#D4AF37] border border-[#C5A059]/40',
+    badgeColor: 'bg-[#2B7752] text-[#D4AF37] border border-[#C5A059]/40',
     events: [
       {
         id: 'e-2025-1',

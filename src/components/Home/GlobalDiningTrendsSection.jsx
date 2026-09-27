@@ -60,8 +60,8 @@ export default function GlobalDiningTrendsSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-stone-200">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B3C26] text-[#D4AF37] text-xs font-black shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#14532D] to-[#15803D] text-white text-xs font-black shadow-xs border border-[#4ADE80]/30">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                 <span>{t('공식 미디어 제휴', 'Official Media Partner')}</span>
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white text-stone-700 text-xs font-bold border border-stone-200 shadow-2xs">
@@ -76,7 +76,7 @@ export default function GlobalDiningTrendsSection() {
 
             <div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight flex items-center gap-2.5">
-                <Camera className="w-7 h-7 sm:w-8 sm:h-8 text-[#0B3C26]" />
+                <Camera className="w-7 h-7 sm:w-8 sm:h-8 text-[#15803D]" />
                 <span>{t('외식 트렌드 포토 갤러리', 'Food Trend & Photo Gallery')}</span>
               </h2>
               <p className="text-sm sm:text-base text-stone-600 mt-1 font-medium">
@@ -95,14 +95,14 @@ export default function GlobalDiningTrendsSection() {
               <button
                 onClick={() => scroll('left')}
                 aria-label="이전 기사 화보 보기"
-                className="w-9 h-9 rounded-full bg-white hover:bg-[#0B3C26] text-stone-700 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+                className="w-9 h-9 rounded-full bg-white hover:bg-[#15803D] text-stone-700 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={() => scroll('right')}
                 aria-label="다음 기사 화보 보기"
-                className="w-9 h-9 rounded-full bg-white hover:bg-[#0B3C26] text-stone-700 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+                className="w-9 h-9 rounded-full bg-white hover:bg-[#15803D] text-stone-700 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -113,11 +113,11 @@ export default function GlobalDiningTrendsSection() {
               href={TREND_CATEGORY_INFO.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-full bg-[#0B3C26] hover:bg-[#072819] text-white hover:text-[#D4AF37] border border-[#C5A059] font-bold text-xs sm:text-sm shadow-sm transition-all duration-200 group cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-full bg-gradient-to-r from-[#EA580C] to-[#F97316] hover:from-[#C2410C] hover:to-[#EA580C] text-white border border-orange-300 font-black text-xs sm:text-sm shadow-md transition-all duration-200 group cursor-pointer"
               title="글로벌외식정보 포토뉴스 전체보기 (새창)"
             >
               <span>{t('외식 트렌드 전체보기', 'View All Photo News')}</span>
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[#D4AF37]" />
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-white" />
             </a>
           </div>
         </div>
@@ -128,9 +128,9 @@ export default function GlobalDiningTrendsSection() {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none ${
                 activeCategory === cat.id
-                  ? 'bg-[#0B3C26] text-[#D4AF37] shadow-sm font-black'
+                  ? 'bg-gradient-to-r from-[#14532D] to-[#15803D] text-white shadow-sm font-black border border-[#4ADE80]/30'
                   : 'bg-white text-stone-600 border border-stone-200 hover:border-stone-400 hover:text-stone-900'
               }`}
             >
@@ -153,7 +153,7 @@ export default function GlobalDiningTrendsSection() {
               href={article.linkUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="snap-start shrink-0 w-[300px] sm:w-[350px] lg:w-[380px] group bg-white rounded-3xl border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-[#0B3C26] flex flex-col overflow-hidden"
+              className="snap-start shrink-0 w-[300px] sm:w-[350px] lg:w-[380px] group bg-white rounded-3xl border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-[#16A34A]/50 flex flex-col overflow-hidden"
               title={`${article.title} (새창 열기)`}
             >
               {/* Gallery Image Canvas */}
@@ -176,7 +176,7 @@ export default function GlobalDiningTrendsSection() {
                     포토뉴스 #{idx + 1}
                   </span>
                   {idx === 0 && (
-                    <span className="px-2 py-0.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-black shadow-xs">
+                    <span className="px-2 py-0.5 rounded-lg bg-gradient-to-r from-[#EA580C] to-[#F97316] text-white text-[10px] font-black shadow-xs">
                       HOT
                     </span>
                   )}
@@ -184,9 +184,9 @@ export default function GlobalDiningTrendsSection() {
 
                 {/* Hover CTA Indicator */}
                 <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                  <span className="px-3 py-1.5 rounded-full bg-[#0B3C26]/90 backdrop-blur-md text-[#D4AF37] text-xs font-black border border-[#C5A059]/60 shadow-md flex items-center gap-1">
+                  <span className="px-3 py-1.5 rounded-full bg-[#14532D]/90 backdrop-blur-md text-[#86EFAC] text-xs font-black border border-[#4ADE80]/40 shadow-md flex items-center gap-1">
                     <span>기사 읽기</span>
-                    <ExternalLink className="w-3 h-3 text-[#D4AF37]" />
+                    <ExternalLink className="w-3 h-3 text-[#86EFAC]" />
                   </span>
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function GlobalDiningTrendsSection() {
               <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
-                    <span className="flex items-center gap-1 text-[#0B3C26] font-bold">
+                    <span className="flex items-center gap-1 text-[#15803D] font-bold">
                       <Calendar className="w-3.5 h-3.5 text-stone-400" />
                       <span>{article.date}</span>
                     </span>
@@ -204,7 +204,7 @@ export default function GlobalDiningTrendsSection() {
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-[#0B3C26] transition-colors line-clamp-2 tracking-tight leading-snug">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-[#15803D] transition-colors line-clamp-2 tracking-tight leading-snug">
                     {article.title}
                   </h3>
 
@@ -214,9 +214,9 @@ export default function GlobalDiningTrendsSection() {
                 </div>
 
                 {/* Card Footer Link */}
-                <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-bold text-[#0B3C26]">
+                <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-bold text-[#15803D]">
                   <span className="group-hover:underline">글로벌외식정보 기사 전문</span>
-                  <div className="w-7 h-7 rounded-full bg-emerald-50 group-hover:bg-[#0B3C26] group-hover:text-[#D4AF37] flex items-center justify-center transition-colors">
+                  <div className="w-7 h-7 rounded-full bg-[#F0FDF4] group-hover:bg-[#15803D] group-hover:text-white flex items-center justify-center transition-colors">
                     <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </div>
@@ -226,7 +226,7 @@ export default function GlobalDiningTrendsSection() {
         </div>
 
         {/* Gallery Guidance Footer */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#0B3C26]/5 border border-[#0B3C26]/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-700 text-xs sm:text-sm">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#F0FDF4] border border-[#DCFCE7] flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-700 text-xs sm:text-sm">
           <div className="flex items-center gap-2.5">
             <span className="text-base sm:text-lg">💡</span>
             <span>
@@ -238,7 +238,7 @@ export default function GlobalDiningTrendsSection() {
             href={TREND_CATEGORY_INFO.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-black text-[#0B3C26] hover:text-[#164e34] hover:underline flex items-center gap-1 shrink-0"
+            className="text-xs font-black text-[#15803D] hover:text-[#EA580C] hover:underline flex items-center gap-1 shrink-0"
           >
             <span>포토뉴스 페이지 바로가기</span>
             <ExternalLink className="w-3.5 h-3.5" />

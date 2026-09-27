@@ -1,6 +1,6 @@
 import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';
 
-const DB_VERSION = 'v4_curriculums_expanded_20260925';
+const DB_VERSION = 'v6_official_clean_tuition_20260927';
 
 // Fetch all courses from Real REST API Backend DB with fallback
 export async function fetchCoursesFromAPI() {
@@ -33,10 +33,14 @@ export function getCoursesFromDB() {
       const parsed = JSON.parse(saved);
       const hasLegacyMock = parsed.some(
         (c) =>
-          c.title.includes('전통 한식 조리 마스터') ||
-          c.title.includes('일식 횟집') ||
-          c.title.includes('파스타 & 파인다이닝') ||
-          c.title.includes('대박 분식집')
+          (c.id && String(c.id).startsWith('CRS-')) ||
+          (c.category === 'behavior' || c.category === 'petfood') ||
+          c.title?.includes('전통 한식 조리 마스터') ||
+          c.title?.includes('일식 횟집') ||
+          c.title?.includes('파스타 & 파인다이닝') ||
+          c.title?.includes('대박 분식집') ||
+          c.title?.includes('반려견') ||
+          c.title?.includes('펫푸드')
       );
       if (Array.isArray(parsed) && !hasLegacyMock) {
         return parsed;
@@ -71,6 +75,16 @@ export function saveCoursesToDB(courses) {
     window.dispatchEvent(new Event('kfssec_courses_updated'));
   } catch (e) {
     // Ignore in non-browser context
+  }
+  // Asynchronously persist reordered/updated list to backend API if available
+  try {
+    fetch('/api/courses/reorder', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ courses }),
+    }).catch(() => {});
+  } catch (e) {
+    // Ignore offline errors
   }
 }
 

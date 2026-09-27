@@ -26,28 +26,33 @@ function setDeepValue(obj, path, value) {
 
 export function AdminEditProvider({
   children,
-  initialSiteData = {},
-  initialPostsList = [],
+  initialSiteData,
+  siteData,
+  initialPostsList,
+  postsList,
   onUpdateSiteData,
   onUpdatePostsList,
   adminAuth = { authenticated: false },
   onLogout,
 }) {
+  const resolvedSiteData = siteData || initialSiteData || {};
+  const resolvedPostsList = postsList || initialPostsList || [];
+
   const isAdmin = Boolean(adminAuth?.authenticated);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
 
   // Active Draft States
-  const [siteDraft, setSiteDraft] = useState(initialSiteData);
-  const [postsDraft, setPostsDraft] = useState(initialPostsList);
+  const [siteDraft, setSiteDraft] = useState(resolvedSiteData);
+  const [postsDraft, setPostsDraft] = useState(resolvedPostsList);
 
   // Sector Settings (order & visibility) stored in siteData.sectorSettings
-  const [sectorSettings, setSectorSettings] = useState(() => initialSiteData?.sectorSettings || {});
+  const [sectorSettings, setSectorSettings] = useState(() => resolvedSiteData?.sectorSettings || {});
 
   // Saved snapshots for rollback
   const [savedSnapshot, setSavedSnapshot] = useState({
-    site: initialSiteData,
-    posts: initialPostsList,
+    site: resolvedSiteData,
+    posts: resolvedPostsList,
   });
 
   // Track pending changes
@@ -66,17 +71,51 @@ export function AdminEditProvider({
   // Left Block TOC Navigator state (expanded by default on desktop)
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(true);
 
-  // Sync when initial props update externally
+  // Persistent Edit Guides / Highlight State (Enabled by default in edit mode)
+  const [showEditGuides, setShowEditGuides] = useState(() => {
+    try {
+      const saved = localStorage.getItem('kfssec_show_guides');
+      return saved !== null ? saved === 'true' : true;
+    } catch {
+      return true;
+    }
+  });
+
+  const toggleEditGuides = useCallback(() => {
+    setShowEditGuides(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('kfssec_show_guides', String(next));
+      } catch (e) {}
+      return next;
+    });
+  }, []);
+
+  // Sync when initial props update externally (without clobbering active draft edits)
   useEffect(() => {
-    setSiteDraft(initialSiteData);
-    setSectorSettings(initialSiteData?.sectorSettings || {});
-    setSavedSnapshot(prev => ({ ...prev, site: initialSiteData }));
-  }, [initialSiteData]);
+    if (resolvedSiteData && Object.keys(resolvedSiteData).length > 0) {
+      setSavedSnapshot(prev => ({ ...prev, site: resolvedSiteData }));
+      setPendingChanges(currentPending => {
+        if (!currentPending.site) {
+          setSiteDraft(resolvedSiteData);
+          setSectorSettings(resolvedSiteData?.sectorSettings || {});
+        }
+        return currentPending;
+      });
+    }
+  }, [resolvedSiteData]);
 
   useEffect(() => {
-    setPostsDraft(initialPostsList);
-    setSavedSnapshot(prev => ({ ...prev, posts: initialPostsList }));
-  }, [initialPostsList]);
+    if (resolvedPostsList && resolvedPostsList.length > 0) {
+      setSavedSnapshot(prev => ({ ...prev, posts: resolvedPostsList }));
+      setPendingChanges(currentPending => {
+        if (!currentPending.posts) {
+          setPostsDraft(resolvedPostsList);
+        }
+        return currentPending;
+      });
+    }
+  }, [resolvedPostsList]);
 
   // Support opening admin drawer from anywhere (context menu / quick action)
   useEffect(() => {
@@ -241,6 +280,9 @@ export function AdminEditProvider({
     setDrawerTab,
     isNavigatorOpen,
     setIsNavigatorOpen,
+    showEditGuides,
+    setShowEditGuides,
+    toggleEditGuides,
     onLogout,
   }), [
     isAdmin,
@@ -262,6 +304,8 @@ export function AdminEditProvider({
     isDrawerOpen,
     drawerTab,
     isNavigatorOpen,
+    showEditGuides,
+    toggleEditGuides,
     onLogout,
   ]);
 
@@ -284,6 +328,9 @@ export function useAdminEdit() {
       sectorSettings: {},
       pendingChanges: { count: 0 },
       isSaving: false,
+      showEditGuides: true,
+      setShowEditGuides: () => {},
+      toggleEditGuides: () => {},
       updateSiteField: () => {},
       updateSiteDraft: () => {},
       updatePostsDraft: () => {},

@@ -8,11 +8,11 @@ export default function CategoryCourseSection({ onSelectCourse }) {
   const actualCourses = useCourses();
 
   return (
-    <section className="py-12 lg:py-16 bg-[#FAF8F5] text-gray-900 border-b border-stone-200/80 font-sans">
+    <section className="py-12 lg:py-16 bg-[#F8FAF9] text-gray-900 border-b border-[#D0E7DA] font-sans">
       <div className="max-w-[1520px] mx-auto px-4 sm:px-8 lg:px-12">
         <div className="mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B3C26]/10 text-[#0B3C26] border border-[#0B3C26]/20 text-xs font-black mb-2">
-            <BookOpen className="w-3.5 h-3.5 text-[#C5A059]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF6EE] text-[#1E5D3B] border border-[#D0E7DA] text-xs font-black mb-2">
+            <BookOpen className="w-3.5 h-3.5 text-[#2B7752]" />
             <span>KFSSEC DISCIPLINE TRACKS</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight">
@@ -24,9 +24,9 @@ export default function CategoryCourseSection({ onSelectCourse }) {
           {['외식창업', '한국음식'].map((category) => (
             <div key={category} className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               {/* Category Highlight Card */}
-              <div className="bg-[#0B3C26] text-white rounded-3xl p-7 sm:p-8 flex flex-col justify-between border-2 border-[#C5A059] shadow-md relative overflow-hidden">
+              <div className="bg-gradient-to-br from-[#1E5B3C] via-[#2A7550] to-[#388C61] text-white rounded-3xl p-7 sm:p-8 flex flex-col justify-between border border-[#85CFAB]/40 shadow-md relative overflow-hidden">
                 <div className="relative z-10 space-y-3">
-                  <span className="text-[11px] font-mono text-[#D4AF37] font-bold tracking-wider uppercase block">
+                  <span className="text-[11px] font-mono text-[#A7F3D0] font-bold tracking-wider uppercase block">
                     SPECIALIZED TRACK
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-white">{t(category)}</h3>
@@ -39,10 +39,10 @@ export default function CategoryCourseSection({ onSelectCourse }) {
                   </p>
                 </div>
                 <div className="pt-6 relative z-10">
-                  <span className="text-xs text-[#D4AF37] font-bold">1:1 도제식 명장 지도 연계</span>
+                  <span className="text-xs text-[#A7F3D0] font-bold">1:1 도제식 명장 지도 연계</span>
                 </div>
                 {/* Decorative background glow */}
-                <div className="absolute -bottom-8 -right-8 w-36 h-36 bg-[#C5A059]/15 rounded-full blur-2xl pointer-events-none" />
+                <div className="absolute -bottom-8 -right-8 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none" />
               </div>
 
               {/* Course Cards under this Category */}
@@ -53,11 +53,11 @@ export default function CategoryCourseSection({ onSelectCourse }) {
                     <button
                       key={c.id}
                       onClick={onSelectCourse}
-                      className="text-left bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/90 hover:border-[#0B3C26] hover:shadow-lg transition-all flex flex-col justify-between group cursor-pointer"
+                      className="text-left bg-white rounded-3xl p-6 sm:p-7 border border-[#D0E7DA] hover:border-[#32875D] hover:shadow-lg transition-all flex flex-col justify-between group cursor-pointer shadow-xs"
                     >
                       <div>
-                        <p className="text-xs font-black text-[#0B3C26] tracking-tight">{t(c.instructor)}</p>
-                        <h4 className="text-lg sm:text-xl font-black text-gray-900 mt-2 group-hover:text-[#0B3C26] transition-colors leading-snug">
+                        <p className="text-xs font-black text-[#256D48] tracking-tight">{t(c.instructor)}</p>
+                        <h4 className="text-lg sm:text-xl font-black text-gray-900 mt-2 group-hover:text-[#256D48] transition-colors leading-snug">
                           {t(c.title)}
                         </h4>
                         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mt-3 line-clamp-2">
@@ -65,9 +65,9 @@ export default function CategoryCourseSection({ onSelectCourse }) {
                         </p>
                       </div>
 
-                      <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between">
+                      <div className="mt-6 pt-4 border-t border-[#EAF2EC] flex items-center justify-between">
                         <span className="text-xs text-stone-500 font-bold">{t("온라인 · 4주 완성")}</span>
-                        <span className="inline-flex items-center gap-1 text-xs font-black text-[#0B3C26] group-hover:text-[#C5A059] transition-colors">
+                        <span className="inline-flex items-center gap-1 text-xs font-black text-[#2B7752] group-hover:text-[#1E5D3B] transition-colors">
                           <span>{t("과정 자세히 보기")}</span>
                           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                         </span>

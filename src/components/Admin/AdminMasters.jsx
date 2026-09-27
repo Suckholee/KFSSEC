@@ -9,7 +9,7 @@ import MasterPhotoGrid from '../Master/MasterPhotoGrid';
 const inputClass = 'mt-2 w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600';
 const buttonClass = 'inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm font-bold disabled:opacity-50';
 
-export default function AdminMasters() {
+export default function AdminMasters({ initialProfileId = null }) {
   const headingRef = useRef(null);
   const { profiles, error: readError } = useMasterProfiles();
   const [search, setSearch] = useState('');
@@ -33,6 +33,16 @@ export default function AdminMasters() {
     return () => window.removeEventListener('beforeunload', warn);
   }, [dirty]);
   useEffect(() => { headingRef.current?.scrollIntoView({ block: 'start' }); }, [draft?.id]);
+
+  // Auto-open draft if initialProfileId is passed
+  useEffect(() => {
+    if (initialProfileId && profiles.length > 0 && !draft) {
+      const found = profiles.find(p => p.id === initialProfileId || p.name === initialProfileId);
+      if (found) {
+        edit(found);
+      }
+    }
+  }, [initialProfileId, profiles]);
   const filtered = profiles.filter(p => (group === 'all' || p.group === group) && `${p.name} ${p.title}`.includes(search.trim()));
   const canArrange = !search.trim() && !readError;
   const groupIds = profile => profiles.filter(p => p.group === profile.group).map(p => p.id);

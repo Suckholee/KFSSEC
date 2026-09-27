@@ -40,18 +40,18 @@ export default function CertExamGuideModal({ isOpen, course, onClose, onApplyExa
         className="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl transition-all border border-gray-200 max-h-[92vh] flex flex-col cursor-default"
       >
         {/* Header */}
-        <div className="bg-[#0B3C26] text-white p-6 sm:p-7 relative shrink-0 border-b border-[#C5A059]">
+        <div className="bg-gradient-to-r from-[#14532D] via-[#15803D] to-[#16A34A] text-white p-6 sm:p-7 relative shrink-0 border-b border-[#16A34A]/40 shadow-sm">
           <button
             onClick={onClose}
-            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center transition-colors cursor-pointer"
+            className="absolute top-5 right-5 w-9 h-9 rounded-full bg-black/25 hover:bg-black/50 text-white flex items-center justify-center transition-colors cursor-pointer"
             title={tr("닫기 (ESC)")}
           >
             <X className="w-5 h-5" />
           </button>
 
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#D4AF37] text-xs font-black">
-              <Award className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white text-xs font-black">
+              <Award className="w-3.5 h-3.5 text-amber-300" />
               <span>{tr("사단법인 한국외식창업교육원 민간자격검정")}</span>
             </div>
 
@@ -59,7 +59,7 @@ export default function CertExamGuideModal({ isOpen, course, onClose, onApplyExa
               {tr(course.certName || '외식창업 전문 자격증 요강')}
             </h2>
 
-            <p className="text-xs sm:text-sm text-emerald-100/80 font-bold">{tr(" 농림축산식품부 소관 비영리법인 정식 인가 자격검정 시행 요강 및 심사 평가표 ")}</p>
+            <p className="text-xs sm:text-sm text-emerald-100/90 font-medium">{tr(" 농림축산식품부 소관 비영리법인 정식 인가 자격검정 시행 요강 및 심사 평가표 ")}</p>
           </div>
         </div>
 
@@ -67,103 +67,103 @@ export default function CertExamGuideModal({ isOpen, course, onClose, onApplyExa
         <div className="p-6 sm:p-8 space-y-6 overflow-y-auto flex-1 text-xs sm:text-sm font-bold text-gray-800">
           
           {/* Quick Specs Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#F8F6F0] p-4 rounded-2xl border border-[#E5E0D8]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-[#FAF8F5] p-4 rounded-2xl border border-stone-200">
             <div>
               <span className="text-gray-500 block text-[11px]">{tr("검정 과목명")}</span>
               <span className="font-black text-gray-900">{tr(course.title)}</span>
             </div>
             <div>
               <span className="text-gray-500 block text-[11px]">{tr("자격 등록번호")}</span>
-              <span className="font-mono font-black text-[#0B3C26]">{tr("제 2022-004819호")}</span>
+              <span className="font-mono font-black text-[#15803D]">{tr("제 2022-004819호")}</span>
             </div>
             <div>
               <span className="text-gray-500 block text-[11px]">{tr("검정 일자")}</span>
-              <span className="font-mono font-black text-rose-700">{tr(course.examDate || '2026-09-28')}</span>
+              <span className="font-mono font-black text-[#EA580C]">{tr(course.examDate || '2026-09-28')}</span>
             </div>
             <div>
               <span className="text-gray-500 block text-[11px]">{tr("합격 기준")}</span>
-              <span className="font-black text-emerald-800">{tr("100점 만점 중 70점 이상")}</span>
+              <span className="font-black text-[#15803D]">{tr("100점 만점 중 70점 이상")}</span>
             </div>
           </div>
 
           {/* Practical Exam Grading Rubric Table */}
           <div className="space-y-3">
-            <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b-2 border-[#0B3C26] pb-2">
-              <Scale className="w-4 h-4 text-[#0B3C26]" />
+            <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b-2 border-[#16A34A] pb-2">
+              <Scale className="w-4 h-4 text-[#15803D]" />
               <span>{tr("실기 심사 평가 항목 및 배점 기준표")}</span>
             </h3>
 
-            <div className="border border-gray-300 rounded-2xl overflow-hidden shadow-xs text-xs">
-              <div className="grid grid-cols-12 bg-[#0B3C26] text-white font-black p-3 text-center">
+            <div className="border border-stone-200 rounded-2xl overflow-hidden shadow-xs text-xs">
+              <div className="grid grid-cols-12 bg-gradient-to-r from-[#14532D] to-[#15803D] text-white font-black p-3 text-center">
                 <div className="col-span-3">{tr("평가 분야")}</div>
                 <div className="col-span-6">{tr("세부 심사 기준")}</div>
                 <div className="col-span-3">{tr("배점")}</div>
               </div>
 
-              <div className="divide-y divide-gray-200 bg-white">
+              <div className="divide-y divide-[#EAF2EC] bg-white">
                 <div className="grid grid-cols-12 p-3 items-center">
                   <div className="col-span-3 font-black text-gray-900">{tr("레시피 및 원가계산")}</div>
                   <div className="col-span-6 text-gray-600 font-medium">{tr("재료 정량 계량, 식자재 원가 비율 산출 및 메뉴판 구성")}</div>
-                  <div className="col-span-3 text-center font-mono font-black text-[#0B3C26]">{tr("20점")}</div>
+                  <div className="col-span-3 text-center font-mono font-black text-[#15803D]">{tr("20점")}</div>
                 </div>
 
-                <div className="grid grid-cols-12 p-3 items-center bg-stone-50/50">
+                <div className="grid grid-cols-12 p-3 items-center bg-[#FAF8F5]">
                   <div className="col-span-3 font-black text-gray-900">{tr("조리 숙련도 & 테크닉")}</div>
                   <div className="col-span-6 text-gray-600 font-medium">{tr("불 조절, 웍 조리법, 칼질 숙련도 및 불맛 추출 기법")}</div>
-                  <div className="col-span-3 text-center font-mono font-black text-[#0B3C26]">{tr("30점")}</div>
+                  <div className="col-span-3 text-center font-mono font-black text-[#15803D]">{tr("30점")}</div>
                 </div>
 
                 <div className="grid grid-cols-12 p-3 items-center">
                   <div className="col-span-3 font-black text-gray-900">{tr("플레이팅 및 완성도")}</div>
                   <div className="col-span-6 text-gray-600 font-medium">{tr("시각적 미분, 고명 세팅, 용기 담음새 및 판매 상품성")}</div>
-                  <div className="col-span-3 text-center font-mono font-black text-[#0B3C26]">{tr("30점")}</div>
+                  <div className="col-span-3 text-center font-mono font-black text-[#15803D]">{tr("30점")}</div>
                 </div>
 
-                <div className="grid grid-cols-12 p-3 items-center bg-stone-50/50">
+                <div className="grid grid-cols-12 p-3 items-center bg-[#FAF8F5]">
                   <div className="col-span-3 font-black text-gray-900">{tr("위생 & 관능 평가")}</div>
                   <div className="col-span-6 text-gray-600 font-medium">{tr("조리대 위생, 복장 규정, 조리 시간 준수 및 관능 시식")}</div>
-                  <div className="col-span-3 text-center font-mono font-black text-[#0B3C26]">{tr("20점")}</div>
+                  <div className="col-span-3 text-center font-mono font-black text-[#15803D]">{tr("20점")}</div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Exam Benefits & Certificate Sample Notice */}
-          <div className="bg-emerald-50/70 p-5 rounded-2xl border border-emerald-200 space-y-3">
-            <h4 className="font-black text-[#0B3C26] flex items-center gap-2 text-xs sm:text-sm">
-              <ShieldCheck className="w-4 h-4 text-[#0B3C26]" />
+          <div className="bg-[#F0FDF4] p-5 rounded-2xl border border-[#DCFCE7] space-y-3">
+            <h4 className="font-black text-[#15803D] flex items-center gap-2 text-xs sm:text-sm">
+              <ShieldCheck className="w-4 h-4 text-[#15803D]" />
               <span>{tr("자격증 취득 시 특전 혜택")}</span>
             </h4>
             <ul className="space-y-1.5 text-xs text-gray-700 font-medium">
               <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#15803D] shrink-0" />
                 <span>{tr("사단법인 한국외식창업교육원 창업 컨설팅 1:1 무상 우대")}</span>
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#15803D] shrink-0" />
                 <span>{tr("외식창업 명인 심사위원 추천 및 명장·명인 네트워크 멤버십 자격 부여")}</span>
               </li>
               <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26] shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#15803D] shrink-0" />
                 <span>{tr("정부 지원금 및 소상공인 창업 지원 시 가산점 인정서 동봉")}</span>
               </li>
             </ul>
           </div>
 
           {/* Action CTA Bar */}
-          <div className="pt-4 border-t border-gray-200 flex items-center justify-between gap-4">
+          <div className="pt-4 border-t border-stone-200 flex items-center justify-between gap-4">
             <div>
               <span className="block text-xs text-gray-500 font-bold">{tr("검정 응시료 (수강생 100% 면제)")}</span>
-              <span className="text-xl font-black text-[#0B3C26]">{tr("0원 (수강 혜택 포함)")}</span>
+              <span className="text-xl font-black text-[#15803D]">{tr("0원 (수강 혜택 포함)")}</span>
             </div>
 
             <button
               onClick={handleApply}
               disabled={applied}
-              className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
+              className="px-6 py-3 bg-gradient-to-r from-[#EA580C] to-[#F97316] hover:from-[#C2410C] hover:to-[#EA580C] text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-orange-300/40"
             >
               <span>{tr(applied ? '접수 완료 중...' : '⚡ 자격증 응시 즉시 접수')}</span>
-              <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+              <ChevronRight className="w-4 h-4 text-white" />
             </button>
           </div>
 

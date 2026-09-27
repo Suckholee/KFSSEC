@@ -36,7 +36,7 @@ class ErrorBoundary extends React.Component {
               localStorage.clear();
               window.location.href = '/';
             }}
-            style={{ marginTop: '16px', padding: '10px 18px', background: '#0B3C26', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+            style={{ marginTop: '16px', padding: '10px 18px', background: '#2B7752', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
           >
             로컬 캐시 초기화 후 홈으로 이동
           </button>

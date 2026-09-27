@@ -72,7 +72,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
       ],
       status: 'completed',
       date: '2026.09.26 14:15',
-      devReply: '✓ 구현 완료: 한국외식창업교육원 공식 로고 심볼(그린 라운드 프레임, 황금 월계관, 중앙 조리모/나이프/포크) 기반 고화질 멀티 포맷 파비콘 및 모바일 앱 아이콘 제작 및 전역 적용 완료.\n1. public/favicon.svg: SVG 벡터 기반 초고화질 무손실 파비콘 렌더링\n2. public/favicon.ico: 레거시 및 최신 브라우저 호환 16x16, 32x32, 48x48 멀티 레이어 ICO 파일 패키징\n3. public/apple-touch-icon.png: iOS 사파리 및 아이폰/아이패드 홈 화면 추가용 180x180 프리미엄 앱 아이콘 생성\n4. public/android-chrome-192x192.png, public/android-chrome-512x512.png: 안드로이드 크롬 PWA 설치 및 모바일 풀스크린 규격 생성\n5. public/site.webmanifest & index.html 메타 태그 전역 연동 완료 (theme-color: #0B3C26)\n6. Vercel 프로덕션 배포 완료 및 브라우저 캐시 무결성 검증 완료.',
+      devReply: '✓ 구현 완료: 한국외식창업교육원 공식 로고 심볼(그린 라운드 프레임, 황금 월계관, 중앙 조리모/나이프/포크) 기반 고화질 멀티 포맷 파비콘 및 모바일 앱 아이콘 제작 및 전역 적용 완료.\n1. public/favicon.svg: SVG 벡터 기반 초고화질 무손실 파비콘 렌더링\n2. public/favicon.ico: 레거시 및 최신 브라우저 호환 16x16, 32x32, 48x48 멀티 레이어 ICO 파일 패키징\n3. public/apple-touch-icon.png: iOS 사파리 및 아이폰/아이패드 홈 화면 추가용 180x180 프리미엄 앱 아이콘 생성\n4. public/android-chrome-192x192.png, public/android-chrome-512x512.png: 안드로이드 크롬 PWA 설치 및 모바일 풀스크린 규격 생성\n5. public/site.webmanifest & index.html 메타 태그 전역 연동 완료 (theme-color: #2B7752)\n6. Vercel 프로덕션 배포 완료 및 브라우저 캐시 무결성 검증 완료.',
       comments: [
         {
           author: '관리자(대표님)',
@@ -225,7 +225,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
       id: 2,
       type: 'UI개선',
       title: '한국외식창업교육원 헤더 & 히어로 테마 레전드 골드 그린 룩앤필 적용',
-      description: '어둡고 칙칙하던 브랜드 그린을 르 꼬르동 블루 명장 룩앤필의 딥 보틀 그린(#0B3C26)과 샴페인 골드(#C5A059)로 전면 디자인 시스템을 개선해주세요.',
+      description: '어둡고 칙칙하던 브랜드 그린을 르 꼬르동 블루 명장 룩앤필의 딥 보틀 그린(#2B7752)과 샴페인 골드(#C5A059)로 전면 디자인 시스템을 개선해주세요.',
       screenshots: [],
       status: 'completed',
       date: '2026.08.28 15:20',
@@ -675,7 +675,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
     <div className="space-y-6 max-w-6xl mx-auto" onPaste={handleGlobalClipboardPaste}>
       {/* Toast Notice */}
       {savedNotice && (
-        <div className="fixed top-16 right-6 z-50 bg-[#0B3C26] text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl animate-bounce flex items-center gap-2 border border-[#C5A059]">
+        <div className="fixed top-16 right-6 z-50 bg-[#2B7752] text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl animate-bounce flex items-center gap-2 border border-[#C5A059]">
           <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
           <span>{savedNotice}</span>
         </div>
@@ -723,7 +723,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-gray-200 pb-4">
         <div>
           <h2 className="text-xl font-black text-gray-900 tracking-tight flex items-center gap-2.5">
-            <div className="p-2 bg-[#0B3C26] text-[#D4AF37] rounded-xl shadow-md">
+            <div className="p-2 bg-[#2B7752] text-[#D4AF37] rounded-xl shadow-md">
               <Terminal className="w-5 h-5" />
             </div>
             <span>개발자 소통 & 1:1 개발 문의 게시판</span>
@@ -736,7 +736,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsWriteFormOpen(!isWriteFormOpen)}
-            className="px-5 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
+            className="px-5 py-2.5 bg-[#2B7752] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
           >
             <PenTool className="w-4 h-4 text-[#D4AF37]" />
             <span>{isWriteFormOpen ? '✕ 작성 닫기' : '✏️ 개발 문의하기'}</span>
@@ -748,11 +748,11 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
       {isWriteFormOpen && (
         <form
           onSubmit={handleSubmitInquiry}
-          className="bg-white p-6 sm:p-7 rounded-3xl border-2 border-[#0B3C26] shadow-xl space-y-4 text-xs font-bold animate-fadeIn"
+          className="bg-white p-6 sm:p-7 rounded-3xl border-2 border-[#2B7752] shadow-xl space-y-4 text-xs font-bold animate-fadeIn"
         >
           <div className="border-b border-gray-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <h4 className="text-sm font-black text-gray-900 flex items-center gap-2">
-              <Send className="w-4 h-4 text-[#0B3C26]" />
+              <Send className="w-4 h-4 text-[#2B7752]" />
               <span>신규 개발 문의 작성</span>
             </h4>
             <span className="text-[11px] text-gray-500 font-bold">
@@ -766,7 +766,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
               <select
                 value={inquiryType}
                 onChange={(e) => setInquiryType(e.target.value)}
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#0B3C26]"
+                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#2B7752]"
               >
                 <option value="디자인/브랜딩">💎 디자인/브랜딩</option>
                 <option value="신규기능">✨ 신규기능</option>
@@ -784,7 +784,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                 placeholder="예: 수강생 DB 엑셀 다운로드 및 필터링 기능 추가 요청"
                 value={inquiryTitle}
                 onChange={(e) => setInquiryTitle(e.target.value)}
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#0B3C26]"
+                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-xl font-black text-gray-900 focus:outline-none focus:border-[#2B7752]"
               />
             </div>
           </div>
@@ -797,7 +797,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
               placeholder="개발자에게 전달할 요구사항이나 버그 증상을 구체적으로 설명해주세요... (스크린샷은 어디서든 Cmd+V로 바로 붙여넣거나 아래 파일 선택을 이용하세요)"
               value={inquiryDesc}
               onChange={(e) => setInquiryDesc(e.target.value)}
-              className="w-full p-3 bg-gray-50 border border-gray-300 rounded-xl leading-relaxed focus:outline-none focus:border-[#0B3C26] resize-none font-medium text-gray-900"
+              className="w-full p-3 bg-gray-50 border border-gray-300 rounded-xl leading-relaxed focus:outline-none focus:border-[#2B7752] resize-none font-medium text-gray-900"
             />
           </div>
 
@@ -806,10 +806,10 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <span className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                  <Paperclip className="w-4 h-4 text-[#0B3C26]" />
+                  <Paperclip className="w-4 h-4 text-[#2B7752]" />
                   <span>
                     스크린샷 이미지 및 영역별 주석(Annotation){' '}
-                    <span className="text-[#0B3C26] font-black">
+                    <span className="text-[#2B7752] font-black">
                       (현재 {inquiryScreenshots.length}장)
                     </span>
                   </span>
@@ -825,7 +825,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                   onClick={() => fileInputRef.current?.click()}
                   className="px-3.5 py-2 bg-white hover:bg-gray-100 text-gray-900 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 border border-gray-300 flex items-center gap-1.5 shadow-xs"
                 >
-                  <ImageIcon className="w-3.5 h-3.5 text-[#0B3C26]" />
+                  <ImageIcon className="w-3.5 h-3.5 text-[#2B7752]" />
                   <span>📁 여러 장 파일 선택</span>
                 </button>
                 <input
@@ -846,7 +846,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                   {inquiryScreenshots.map((item, index) => (
                     <div
                       key={index}
-                      className="group relative rounded-2xl overflow-hidden border-2 border-gray-200 bg-white shadow-xs transition-all hover:border-[#0B3C26] space-y-2 p-2.5"
+                      className="group relative rounded-2xl overflow-hidden border-2 border-gray-200 bg-white shadow-xs transition-all hover:border-[#2B7752] space-y-2 p-2.5"
                     >
                       <div className="relative h-36 rounded-xl overflow-hidden bg-black flex items-center justify-center">
                         <img
@@ -871,10 +871,10 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
 
                       <div className="flex items-center justify-between gap-2 pt-1">
                         <div className="text-[11px] font-bold text-gray-600 flex items-center gap-1 truncate">
-                          <Target className="w-3.5 h-3.5 text-[#0B3C26]" />
+                          <Target className="w-3.5 h-3.5 text-[#2B7752]" />
                           <span>
                             주석 {item.annotations.length > 0 ? (
-                              <span className="text-[#0B3C26] font-black">
+                              <span className="text-[#2B7752] font-black">
                                 {item.annotations.length}개 설정됨
                               </span>
                             ) : (
@@ -892,7 +892,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                               screenshot: item,
                             })
                           }
-                          className="px-2.5 py-1 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-lg text-[11px] font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-xs"
+                          className="px-2.5 py-1 bg-[#2B7752] hover:bg-[#072819] text-white rounded-lg text-[11px] font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-xs"
                         >
                           <Edit3 className="w-3 h-3 text-[#D4AF37]" />
                           <span>{item.annotations.length > 0 ? '주석 수정' : '🎯 영역 주석 달기'}</span>
@@ -904,9 +904,9 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="h-48 rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#0B3C26] bg-white hover:bg-gray-50 flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-900 transition-all cursor-pointer"
+                    className="h-48 rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#2B7752] bg-white hover:bg-gray-50 flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-900 transition-all cursor-pointer"
                   >
-                    <Plus className="w-6 h-6 text-[#0B3C26]" />
+                    <Plus className="w-6 h-6 text-[#2B7752]" />
                     <span className="text-xs font-bold">+ 이미지 추가 등록</span>
                   </button>
                 </div>
@@ -924,7 +924,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
+              className="px-6 py-2.5 bg-[#2B7752] hover:bg-[#072819] text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
             >
               <Send className="w-4 h-4 text-[#D4AF37]" />
               <span>🚀 개발 문의글 등록하기</span>
@@ -951,7 +951,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                 onClick={() => handleFilterClick(tab.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                   isSelected
-                    ? 'bg-[#0B3C26] text-white shadow-sm border border-[#C5A059]'
+                    ? 'bg-[#2B7752] text-white shadow-sm border border-[#C5A059]'
                     : 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
               >
@@ -973,7 +973,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
 
       {/* BOARD TABLE LIST */}
       <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="bg-[#0B3C26] text-white px-6 py-4 flex items-center justify-between text-xs font-bold border-b border-[#C5A059]">
+        <div className="bg-[#2B7752] text-white px-6 py-4 flex items-center justify-between text-xs font-bold border-b border-[#C5A059]">
           <span>📋 개발 문의 목록 (총 {filteredInquiries.length}건)</span>
           <span className="text-[#D4AF37] font-mono text-[11px]">클릭 시 개발자 조치 및 피드백 확인 가능</span>
         </div>
@@ -1131,7 +1131,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                           <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
                             <div className="flex items-center justify-between">
                               <span className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                                <Paperclip className="w-4 h-4 text-[#0B3C26]" />
+                                <Paperclip className="w-4 h-4 text-[#2B7752]" />
                                 <span>첨부된 스크린샷 ({editInquiryScreenshots.length}장) 및 주석 편집</span>
                               </span>
 
@@ -1194,7 +1194,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                                           screenshot: item,
                                         })
                                       }
-                                      className="px-2.5 py-1 bg-[#0B3C26] text-white rounded-lg text-[11px] font-bold cursor-pointer flex items-center gap-1"
+                                      className="px-2.5 py-1 bg-[#2B7752] text-white rounded-lg text-[11px] font-bold cursor-pointer flex items-center gap-1"
                                     >
                                       <Edit3 className="w-3 h-3 text-[#D4AF37]" />
                                       <span>주석 편집</span>
@@ -1230,7 +1230,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                           <div className="border-b border-gray-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                               <span className="text-sm font-black text-gray-900 flex items-center gap-2">
-                                <PenTool className="w-4 h-4 text-[#0B3C26]" />
+                                <PenTool className="w-4 h-4 text-[#2B7752]" />
                                 <span>상세 문의 내용</span>
                               </span>
                               <span className="text-[11px] text-gray-500 font-mono font-bold">
@@ -1267,7 +1267,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                             <div className="pt-3 border-t border-gray-200 space-y-6">
                               <div className="flex items-center justify-between">
                                 <span className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                                  <Layers className="w-4 h-4 text-[#0B3C26]" />
+                                  <Layers className="w-4 h-4 text-[#2B7752]" />
                                   <span>
                                     첨부된 스크린샷 및 영역별 주석 리포트 ({ticketScreenshots.length}장)
                                   </span>
@@ -1285,7 +1285,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                                   >
                                     <div className="flex items-center justify-between">
                                       <span className="text-xs font-bold text-gray-900 font-mono flex items-center gap-1.5">
-                                        <ImageIcon className="w-3.5 h-3.5 text-[#0B3C26]" />
+                                        <ImageIcon className="w-3.5 h-3.5 text-[#2B7752]" />
                                         <span>스크린샷 #{imgIdx + 1}</span>
                                       </span>
                                       <button
@@ -1370,7 +1370,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                                 <div className="flex items-center justify-between text-gray-500 text-[10px]">
                                   <div className="flex items-center gap-1.5">
                                     {isDev ? (
-                                      <span className="px-2 py-0.5 rounded-md bg-[#0B3C26] text-white font-bold text-[10px] flex items-center gap-1">
+                                      <span className="px-2 py-0.5 rounded-md bg-[#2B7752] text-white font-bold text-[10px] flex items-center gap-1">
                                         <Code2 className="w-3 h-3 text-[#D4AF37]" />
                                         <span>개발자 답변</span>
                                       </span>
@@ -1410,7 +1410,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                                         <div
                                           key={iIdx}
                                           onClick={() => setPreviewImageModal({ url: imgUrl })}
-                                          className="group relative w-32 h-24 rounded-lg overflow-hidden border border-gray-300 bg-black shadow-xs cursor-pointer hover:border-[#0B3C26]"
+                                          className="group relative w-32 h-24 rounded-lg overflow-hidden border border-gray-300 bg-black shadow-xs cursor-pointer hover:border-[#2B7752]"
                                         >
                                           <img
                                             src={imgUrl}
@@ -1435,7 +1435,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                       <div className="bg-white p-5 rounded-2xl border-2 border-gray-200 shadow-sm space-y-3 pt-4">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 pb-2.5">
                           <span className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                            <MessageCircle className="w-4 h-4 text-[#0B3C26]" />
+                            <MessageCircle className="w-4 h-4 text-[#2B7752]" />
                             <span>💬 추가 의견 / 개발 조치 답변 전달하기</span>
                           </span>
 
@@ -1462,7 +1462,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                                 }
                                 className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
                                   currentAuthor === '👨‍💻 개발자(Antigravity)'
-                                    ? 'bg-[#0B3C26] text-white shadow-xs font-black'
+                                    ? 'bg-[#2B7752] text-white shadow-xs font-black'
                                     : 'text-gray-500 hover:text-gray-900'
                                 }`}
                               >
@@ -1480,13 +1480,13 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                             onChange={(e) =>
                               setReplyTexts((prev) => ({ ...prev, [ticket.id]: e.target.value }))
                             }
-                            className="w-full p-3 bg-gray-50 border border-gray-300 rounded-xl text-xs font-medium text-gray-900 focus:outline-none focus:border-[#0B3C26] resize-none leading-relaxed"
+                            className="w-full p-3 bg-gray-50 border border-gray-300 rounded-xl text-xs font-medium text-gray-900 focus:outline-none focus:border-[#2B7752] resize-none leading-relaxed"
                           />
 
                           {currentReplyImages.length > 0 && (
                             <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
                               <span className="text-[11px] font-bold text-gray-900 flex items-center gap-1.5">
-                                <ImageIcon className="w-3.5 h-3.5 text-[#0B3C26]" />
+                                <ImageIcon className="w-3.5 h-3.5 text-[#2B7752]" />
                                 <span>첨부된 답변 스크린샷 ({currentReplyImages.length}장):</span>
                               </span>
                               <div className="flex flex-wrap gap-2">
@@ -1517,7 +1517,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                           <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
                             <div className="flex items-center gap-2">
                               <label className="px-3 py-1.5 bg-white hover:bg-gray-100 text-gray-800 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-gray-300 flex items-center gap-1.5 shadow-xs">
-                                <Paperclip className="w-3.5 h-3.5 text-[#0B3C26]" />
+                                <Paperclip className="w-3.5 h-3.5 text-[#2B7752]" />
                                 <span>📷 캡쳐/파일 첨부</span>
                                 <input
                                   type="file"
@@ -1536,7 +1536,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
                             <button
                               type="button"
                               onClick={() => handleAddComment(ticket.id)}
-                              className="px-5 py-2 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer ml-auto border border-[#C5A059]"
+                              className="px-5 py-2 bg-[#2B7752] hover:bg-[#072819] text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer ml-auto border border-[#C5A059]"
                             >
                               <Send className="w-3.5 h-3.5 text-[#D4AF37]" />
                               <span>답변/피드백 등록</span>
@@ -1679,7 +1679,7 @@ function AnnotationEditorModal({ screenshot, onSave, onClose }) {
     <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-3 sm:p-6 backdrop-blur-xs animate-fadeIn">
       <div className="bg-white w-full max-w-6xl max-h-[95vh] rounded-3xl overflow-hidden shadow-2xl border border-gray-200 flex flex-col">
         {/* Modal Header */}
-        <div className="px-6 py-4 border-b border-gray-200 bg-[#0B3C26] text-white flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-gray-200 bg-[#2B7752] text-white flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <Target className="w-5 h-5 text-[#D4AF37]" />
             <div>
@@ -1765,7 +1765,7 @@ function AnnotationEditorModal({ screenshot, onSave, onClose }) {
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-gray-200 pb-2">
                 <span className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                  <ListTodo className="w-4 h-4 text-[#0B3C26]" />
+                  <ListTodo className="w-4 h-4 text-[#2B7752]" />
                   <span>지정된 영역별 주석 목록 ({annotations.length}개)</span>
                 </span>
                 <span className="text-[11px] text-gray-500 font-mono font-bold">
@@ -1834,7 +1834,7 @@ function AnnotationEditorModal({ screenshot, onSave, onClose }) {
               <button
                 type="button"
                 onClick={() => onSave(annotations)}
-                className="px-5 py-2 bg-[#0B3C26] hover:bg-[#072819] text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer flex items-center gap-1.5 border border-[#C5A059]"
+                className="px-5 py-2 bg-[#2B7752] hover:bg-[#072819] text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer flex items-center gap-1.5 border border-[#C5A059]"
               >
                 <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
                 <span>주석 저장 완료</span>

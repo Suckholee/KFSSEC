@@ -17,8 +17,7 @@ export const actualCourses = [
     stage: '전문 컨설팅',
     format: '온·오프라인 병행',
     duration: '6주 (실전 프로젝트)',
-    price: null,
-    discountRate: 0,
+
     description: '창업의 전략적 판단과 실무적 문제 해결을 위한 최고급 전문 지식과 상권분석, 1:1 창업 컨설팅 지도 역량을 완성합니다.',
     image: '/images/qualifications/advisor.jpg',
     assessment: '외식경영학, 외식창업전략, 상권분석론 심화 평가',
@@ -38,8 +37,7 @@ export const actualCourses = [
     stage: '창업 준비',
     format: '온라인',
     duration: '4주 이내',
-    price: null,
-    discountRate: 0,
+
     description: '외식창업에 필요한 기초 지식과 조언으로 창업 준비와 매장 실무 문제 해결을 지원합니다.',
     image: '/images/qualifications/advisor.jpg',
     assessment: '외식경영학 기초, 점포 운영 실무 능력',
@@ -61,8 +59,7 @@ export const actualCourses = [
     stage: '매장 총괄',
     format: '온·오프라인 병행',
     duration: '6주',
-    price: null,
-    discountRate: 0,
+
     description: '창업의 전체 과정을 기획·실행하고 전략적 방향 수립과 주요 경영 의사결정을 주도하는 매장 총괄 역량을 배양합니다.',
     image: '/images/qualifications/practice.jpg',
     assessment: '사업 방향 설정, 문제 분석 및 매장 경영 혁신 능력',
@@ -82,8 +79,7 @@ export const actualCourses = [
     stage: '실무 보조',
     format: '온라인',
     duration: '4주 이내',
-    price: null,
-    discountRate: 0,
+
     description: '창업 준비부터 매장 운영까지, 외식업 현장에 필요한 조리·고객 응대·위생 실무를 체계적으로 학습합니다.',
     image: '/images/qualifications/practice.jpg',
     assessment: '외식업·조리·창업의 기초 지식과 실무 역량',
@@ -105,8 +101,7 @@ export const actualCourses = [
     stage: '글로벌 마스터',
     format: '실기 현장실습',
     duration: '8주 (궁중·종가음식)',
-    price: null,
-    discountRate: 0,
+
     description: '한국의 일상·전통 및 궁중·종가 음식에 대한 최고급 지식을 바탕으로 K-푸드의 세계화와 명품 한식을 조리·전수합니다.',
     image: '/images/qualifications/kfood.jpg',
     assessment: '전통 장류·발효·궁중 한식 제조 및 관능평가',
@@ -126,8 +121,7 @@ export const actualCourses = [
     stage: '기초 조리',
     format: '온·오프라인',
     duration: '4주 이내',
-    price: null,
-    discountRate: 0,
+
     description: '한국 전통 음식과 식문화의 기본을 이해하고, 대표적인 한국의 맛을 구현하는 표준 조리 역량을 기릅니다.',
     image: '/images/qualifications/kfood.jpg',
     assessment: '한국 음식 기초 이론 및 표준 레시피 조리 실기',
@@ -149,8 +143,7 @@ export const actualCourses = [
     stage: '디지털 혁신',
     format: '온·오프라인 병행',
     duration: '6주 (3D 설계 실무)',
-    price: null,
-    discountRate: 0,
+
     description: 'AI·로봇 조리 자동화, 디지털 운영 동선 설계, 스마트 주방 시스템 도입 기획 및 맞춤형 컨설팅을 총괄합니다.',
     image: '/images/qualifications/advisor.jpg',
     assessment: '푸드테크 개론, 스마트 주방 도면 설계, 디지털 운영 최적화 계획서',
@@ -170,8 +163,7 @@ export const actualCourses = [
     stage: '실무 운용',
     format: '온라인',
     duration: '4주 이내',
-    price: null,
-    discountRate: 0,
+
     description: '스마트 주방 기기 운용, 테이블오더·POS 데이터 관리, 매장 무인화 자동화 시스템의 실무 관리를 수행합니다.',
     image: '/images/qualifications/advisor.jpg',
     assessment: '스마트 주방 기기 운용 및 매장 운영 데이터 관리 실무',
@@ -193,8 +185,7 @@ export const actualCourses = [
     stage: '행사·파티 연출',
     format: '와인 테이스팅 오프라인 실습',
     duration: '5주',
-    price: null,
-    discountRate: 0,
+
     description: '고객의 기호와 행사 목적에 맞는 와인·음료를 선정하고 식음료 페어링, 테이블 코디네이션, 파티 연출과 운영을 총괄 기획합니다.',
     image: '/images/qualifications/practice.jpg',
     assessment: '와인 테이스팅 실기, 푸드 페어링 기획, 테이블 공간 연출 평가',

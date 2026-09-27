@@ -369,7 +369,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
 
             {/* Live Banner Box */}
             {bannerActive ? (
-              <div className="bg-gradient-to-r from-[#0B3C26] via-[#104830] to-[#072517] text-white p-6 rounded-2xl border-2 border-[#C5A059] shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="bg-gradient-to-r from-[#2B7752] via-[#104830] to-[#072517] text-white p-6 rounded-2xl border-2 border-[#C5A059] shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="space-y-1">
                   <div className="inline-block px-2.5 py-0.5 rounded-full bg-[#C5A059] text-stone-950 text-[10px] font-black">
                     {bannerBadgeText}

@@ -17,6 +17,7 @@ import {
   Globe,
   GraduationCap,
   Building,
+  Building2,
   Bell,
   Sliders,
   Users,
@@ -57,6 +58,7 @@ const PAGE_SECTOR_MAP = {
   about: {
     title: '교육원 소개',
     sectors: [
+      { id: 'S-ABOUT-00', name: '교육원 소개 & 12대 방향', subTab: 'greetings', editLabel: '소개·방향' },
       { id: 'S-ABOUT-01', name: '이사장 인사말 및 연설문', subTab: 'speech', editLabel: '인사말' },
       { id: 'S-ABOUT-02', name: '교육원 설립 연혁', subTab: 'history', editLabel: '연혁' },
       { id: 'S-ABOUT-04', name: '이사장 프로필 & 약력', subTab: 'profile', editLabel: '프로필' },
@@ -115,16 +117,6 @@ const PAGE_SECTOR_MAP = {
       { id: 'S-GLOBAL-02', name: '하단 푸터 & 법인 정보', isFooter: true },
     ],
   },
-  gangnam: {
-    title: '강남구 소호창업',
-    sectors: [
-      { id: 'S-GANG-01', name: '강남구 소상공인 연합회 소개', subTab: 'intro', editLabel: '연합회 소개' },
-      { id: 'S-GANG-02', name: '소상공인 회원 가입 혜택', subTab: 'benefits', editLabel: '회원 혜택' },
-      { id: 'S-GANG-03', name: '법률·세무·회계 경영 자문', subTab: 'support', editLabel: '전문가 자문' },
-      { id: 'S-GANG-04', name: '공지 및 행사 소식', subTab: 'notices', editLabel: '공지 소식' },
-      { id: 'S-GLOBAL-02', name: '하단 푸터 & 법인 정보', isFooter: true },
-    ],
-  },
 };
 
 const SECTOR_ICONS = {
@@ -145,6 +137,7 @@ const SECTOR_ICONS = {
   'S-CAT-04': <Award className="w-3.5 h-3.5 text-rose-400 shrink-0" />,
   'S-CAT-05': <Bell className="w-3.5 h-3.5 text-purple-400 shrink-0" />,
   // About
+  'S-ABOUT-00': <Building2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />,
   'S-ABOUT-01': <GraduationCap className="w-3.5 h-3.5 text-emerald-400 shrink-0" />,
   'S-ABOUT-02': <BookOpen className="w-3.5 h-3.5 text-blue-400 shrink-0" />,
   'S-ABOUT-04': <Award className="w-3.5 h-3.5 text-amber-400 shrink-0" />,
@@ -211,12 +204,16 @@ export default function AdminBlockNavigator({
   const handleJumpToSector = (sector, actionToTrigger = null) => {
     setActiveHighlightId(sector.id);
 
+    // If on admin route or other page, ensure onTabChange targets the correct tab
+    const targetTab = activeTab === 'admin' ? 'home' : activeTab;
+
     // If sector requires switching subTab on this page
-    if (sector.subTab && sector.subTab !== subTab && onTabChange) {
-      onTabChange(activeTab, sector.subTab);
+    if ((activeTab === 'admin' || (sector.subTab && sector.subTab !== subTab)) && onTabChange) {
+      onTabChange(targetTab, sector.subTab);
     }
 
-    // Scroll with small delay to ensure any subtab view transition finishes
+    let attempts = 0;
+    // Scroll with small delay and retry to ensure any subtab view transition finishes
     const doScroll = () => {
       const element = document.getElementById(`sector-${sector.id}`);
       if (element) {
@@ -234,10 +231,13 @@ export default function AdminBlockNavigator({
             window.dispatchEvent(new CustomEvent('kfssec:action', { detail: { action: actionToTrigger } }));
           }, 350);
         }
+      } else if (attempts < 5) {
+        attempts++;
+        setTimeout(doScroll, 120);
       }
     };
 
-    setTimeout(doScroll, 120);
+    setTimeout(doScroll, 80);
 
     // Auto-close on mobile screens (<1024px) after selection
     if (window.innerWidth < 1024) {

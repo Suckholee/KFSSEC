@@ -110,8 +110,13 @@ app.post('/api/courses', (req, res) => {
   res.json({ success: true, data: newCourse });
 });
 
-// REST API 4: PUT Update Course
+// REST API 4: PUT Update Course or Reorder
 app.put('/api/courses/:id', (req, res) => {
+  if (req.params.id === 'reorder' && Array.isArray(req.body.courses)) {
+    writeDB(req.body.courses);
+    console.log(`[REAL DB SERVER] Reordered courses: ${req.body.courses.length} items`);
+    return res.json({ success: true, data: req.body.courses });
+  }
   const courses = readDB();
   const index = courses.findIndex((c) => c.id === req.params.id);
   if (index === -1) {

@@ -24,7 +24,7 @@ export default function Header({
         { id: 'greetings', title: t('교육원 소개 & 방향', 'About KFSSEC'), subTab: 'greetings' },
         { id: 'history', title: t('주요 연혁', 'History'), subTab: 'history' },
         { id: 'speech', title: t('이사장 인사말', "Chairman's Greeting"), subTab: 'speech' },
-        { id: 'profile', title: t('이사장 프로필 & MOU', 'Chairman Profile & MOU'), subTab: 'profile' },
+        { id: 'profile', title: t('이사장 프로필 & 약력', 'Chairman Profile & Career'), subTab: 'profile' },
         { id: 'faculty', title: t('교수진 소개', 'Faculty'), subTab: 'faculty' },
         { id: 'organization', title: t('조직도', 'Organization'), subTab: 'organization' },
       ],
@@ -129,7 +129,7 @@ export default function Header({
         {/* Official Logo (Far Left) */}
         <button
           onClick={() => onTabChange && onTabChange('home')}
-          className="flex items-center gap-3 cursor-pointer group shrink-0 focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none rounded-xl p-1"
+          className="flex items-center gap-3 cursor-pointer group shrink-0 focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none rounded-xl p-1"
           title={t('한국외식창업교육원 메인 홈으로 이동', 'KFSSEC home')}
           aria-label={t('한국외식창업교육원 메인 홈으로 이동', 'KFSSEC home')}
         >
@@ -154,22 +154,22 @@ export default function Header({
                       onTabChange(menu.key, menu.defaultSubTab);
                     }
                   }}
-                  className={`text-[13px] 2xl:text-sm font-bold tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap min-h-[44px] px-2.5 rounded-lg focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none ${
+                  className={`text-[13px] 2xl:text-sm font-bold tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap min-h-[44px] px-2.5 rounded-lg focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none ${
                     isMenuActive
-                      ? 'text-[#0B3C26] font-black border-b-2 border-[#C5A059] pb-0.5 scale-105'
-                      : 'text-[#2A3B32] hover:text-[#C5A059]'
+                      ? 'text-[#15803D] font-black border-b-2 border-[#15803D] pb-0.5 scale-105'
+                      : 'text-[#2A3B32] hover:text-[#15803D]'
                   }`}
                 >
                   <span>{menu.title}</span>
                   {hasSub && (
-                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#0B3C26] group-hover:rotate-180 transition-transform duration-200" />
+                    <ChevronDown className="w-3.5 h-3.5 text-stone-400 group-hover:text-[#15803D] group-hover:rotate-180 transition-transform duration-200" />
                   )}
                 </button>
 
                 {/* Submenu Dropdown if present */}
                 {hasSub && (
                   <div className="absolute left-1/2 -translate-x-1/2 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
-                    <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#C5A059]/30 py-1.5 min-w-[170px] whitespace-nowrap animate-fadeIn">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#D0E7DA] py-1.5 min-w-[170px] whitespace-nowrap animate-fadeIn">
 
                       {menu.subItems.map((sub) => {
                         const isSubActive =
@@ -186,12 +186,12 @@ export default function Header({
                             }}
                             className={`w-full px-4 py-2.5 text-left text-xs font-bold transition-all flex items-center justify-between gap-3 ${
                               isSubActive
-                                ? 'bg-[#0B3C26] text-[#D4AF37] font-black'
-                                : 'text-stone-800 hover:bg-emerald-50 hover:text-[#0B3C26]'
+                                ? 'bg-gradient-to-r from-[#15803D] to-[#16A34A] text-white font-black'
+                                : 'text-stone-800 hover:bg-[#F2FAF5] hover:text-[#15803D]'
                             }`}
                           >
                             <span>{sub.title}</span>
-                            {isSubActive && <span className="text-[#D4AF37]">●</span>}
+                            {isSubActive && <span className="text-[#F97316]">●</span>}
                           </button>
                         );
                       })}
@@ -211,7 +211,7 @@ export default function Header({
               href="https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-[#D4C5B0]/80 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none group/link"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-[#D0E7DA] transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none group/link"
               title={t('글로벌외식정보 외식 트렌드 바로가기 (새창 열기)', 'Go to Global Dining News - Trends (New Window)')}
               aria-label="글로벌외식정보 외식 트렌드 바로가기 (새창)"
             >
@@ -220,7 +220,7 @@ export default function Header({
                 alt="글로벌외식정보 (Global Dining News)"
                 className="h-8 2xl:h-9 w-auto object-contain group-hover/link:scale-105 transition-transform drop-shadow-xs"
               />
-              <ExternalLink className="w-3.5 h-3.5 text-stone-400 group-hover/link:text-[#0B3C26] transition-colors" />
+              <ExternalLink className="w-3.5 h-3.5 text-stone-400 group-hover/link:text-[#2B7752] transition-colors" />
             </a>
           </div>
         </nav>
@@ -230,12 +230,22 @@ export default function Header({
           
           {/* 1:1 AI Consultation & Chatbot Trigger */}
           <button
-            onClick={() => window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'))}
-            className="px-3 py-2 bg-gradient-to-r from-[#0B3C26] to-[#164e34] hover:from-[#072819] hover:to-[#0f3a27] text-white text-xs font-black rounded-full flex items-center gap-1.5 cursor-pointer shadow-sm border border-[#C5A059] transition-all hover:scale-105 min-h-[44px]"
+            onClick={() => {
+              if (onTabChange) {
+                onTabChange('ai-assistant');
+              } else {
+                window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'));
+              }
+            }}
+            className={`px-3.5 py-2 text-xs font-black rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs border transition-all hover:scale-105 min-h-[44px] ${
+              activeTab === 'ai-assistant'
+                ? 'bg-amber-400 text-gray-900 border-amber-500 shadow-md ring-2 ring-amber-300'
+                : 'bg-gradient-to-r from-[#15803D] to-[#16A34A] hover:from-[#166534] hover:to-[#15803D] text-white border-[#4ADE80]/50'
+            }`}
             title={t('24시 실시간 1:1 AI 상담 & 챗봇 열기', 'Open 24/7 AI Guide')}
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[#D4AF37]">💬</span>
+            <span className={`w-2 h-2 rounded-full animate-pulse ${activeTab === 'ai-assistant' ? 'bg-emerald-800' : 'bg-[#F97316]'}`} />
+            <span>💬</span>
             <span>{t('1:1 AI 상담', '1:1 AI Guide')}</span>
           </button>
 
@@ -244,11 +254,11 @@ export default function Header({
             <button
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
               aria-label="언어 선택 (Language)"
-              className="px-3 py-2 bg-[#F2ECE0] border border-[#D4C5B0] text-[#0B3C26] text-xs font-bold rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#EBE2D4] transition-colors focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none min-h-[44px]"
+              className="px-3 py-2 bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] text-xs font-bold rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#DCFCE7] transition-colors focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none min-h-[44px]"
             >
               <span>{getLangBadge(language)}</span>
-              <span className="text-[#C5A059]">|</span>
-              <ChevronDown className="w-3.5 h-3.5 text-[#0B3C26]" />
+              <span className="text-[#4ADE80]">|</span>
+              <ChevronDown className="w-3.5 h-3.5 text-[#15803D]" />
             </button>
 
             {langDropdownOpen && (
@@ -266,12 +276,12 @@ export default function Header({
                       setLanguage(l.code);
                       setLangDropdownOpen(false);
                     }}
-                    className={`w-full px-3 py-2 text-left text-xs font-bold flex items-center justify-between hover:bg-emerald-50 transition-colors cursor-pointer ${
-                      language === l.code ? 'text-[#0B3C26] font-black bg-emerald-50/60' : 'text-stone-700'
+                    className={`w-full px-3 py-2 text-left text-xs font-bold flex items-center justify-between hover:bg-[#F0FDF4] transition-colors cursor-pointer ${
+                      language === l.code ? 'text-[#15803D] font-black bg-[#DCFCE7]' : 'text-stone-700'
                     }`}
                   >
                     <span>{l.flag} {l.label}</span>
-                    {language === l.code && <span className="text-[#0B3C26]">✓</span>}
+                    {language === l.code && <span className="text-[#F97316]">✓</span>}
                   </button>
                 ))}
               </div>
@@ -282,10 +292,10 @@ export default function Header({
           {currentUser ? (
             <div className="flex items-center gap-2.5 border-l border-[#E5E0D8] pl-3.5">
               <div className="flex items-center gap-2">
-                <div className="bg-[#0B3C26] p-1.5 rounded-full text-white">
+                <div className="bg-[#15803D] p-1.5 rounded-full text-white">
                   <User className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-xs font-bold text-[#0B3C26]">
+                <span className="text-xs font-bold text-[#166534]">
                   {currentUser.name || t('수강생 회원', 'Member')}{language === 'ko' ? '님' : ''}
                 </span>
               </div>
@@ -301,13 +311,13 @@ export default function Header({
             <button
               onClick={() => onOpenAuth && onOpenAuth('login')}
               aria-label={t('로그인 및 수강 회원가입', 'Log in or sign up')}
-              className="group px-4 lg:px-5 py-2 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-2xl shadow-md transition-all cursor-pointer border border-[#0B3C26] flex items-center gap-2 min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+              className="group px-4 lg:px-5 py-2 bg-gradient-to-r from-[#15803D] to-[#16A34A] hover:from-[#166534] hover:to-[#15803D] text-white rounded-2xl shadow-xs transition-all cursor-pointer border border-[#4ADE80]/40 flex items-center gap-2 min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none"
             >
               <div className="flex items-center gap-1 text-sm font-black">
-                <span className="text-base font-mono text-[#D4AF37]">#</span>
+                <span className="text-base font-mono text-[#F97316]">#</span>
                 <span>{t('로그인', 'LOGIN')}</span>
               </div>
-              <span className="text-[10px] text-[#D4AF37] font-bold tracking-widest border-l border-emerald-800 pl-2">
+              <span className="text-[10px] text-emerald-100 font-bold tracking-widest border-l border-emerald-600 pl-2">
                 {t('회원가입', 'JOIN US')}
               </span>
             </button>
@@ -319,7 +329,7 @@ export default function Header({
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? t('메인 메뉴 닫기', 'Close menu') : t('메인 메뉴 열기', 'Open menu')}
-          className="xl:hidden p-2 text-[#0B3C26] hover:text-black rounded-xl focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="xl:hidden p-2 text-[#2B7752] hover:text-black rounded-xl focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
         >
           {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
@@ -333,7 +343,7 @@ export default function Header({
             <span className="text-xs font-bold text-gray-600">{t('사단법인 한국외식창업교육원')}</span>
             {currentUser ? (
               <div className="flex items-center gap-3">
-                <span className="text-xs font-bold text-[#0B3C26]">{currentUser.name}{language === 'ko' ? '님' : ''}</span>
+                <span className="text-xs font-bold text-[#1E5D3B]">{currentUser.name}{language === 'ko' ? '님' : ''}</span>
                 <button
                   onClick={() => {
                     onLogout();
@@ -350,7 +360,7 @@ export default function Header({
                   onOpenAuth('login');
                   setMobileMenuOpen(false);
                 }}
-                className="px-4 py-2.5 bg-[#0B3C26] text-white text-xs font-bold rounded-xl min-h-[44px]"
+                className="px-4 py-2.5 bg-[#2B7752] hover:bg-[#236344] text-white text-xs font-bold rounded-xl min-h-[44px]"
               >
                 {t('로그인 / 회원가입', 'LOGIN / JOIN US')}
               </button>
@@ -366,7 +376,7 @@ export default function Header({
                   onClick={() => setLanguage(l.code)}
                   className={`min-h-[40px] px-2 py-1.5 text-xs rounded-xl font-bold border transition-all text-center flex flex-col items-center justify-center cursor-pointer ${
                     language === l.code
-                      ? 'bg-[#0B3C26] text-[#D4AF37] border-[#C5A059] shadow-xs font-black'
+                      ? 'bg-gradient-to-r from-[#1B5238] to-[#266847] text-[#A7F3D0] border-[#85CFAB] shadow-xs font-black'
                       : 'bg-white border-stone-200 text-stone-700 hover:border-stone-300'
                   }`}
                 >
@@ -392,11 +402,11 @@ export default function Header({
                       setMobileMenuOpen(false);
                     }}
                     className={`w-full text-left py-3 text-base min-h-[44px] flex items-center justify-between ${
-                      isMenuActive ? 'text-[#0B3C26] font-black pl-2 border-l-4 border-l-[#C5A059]' : 'text-gray-800 font-bold hover:text-[#C5A059]'
+                      isMenuActive ? 'text-[#1E5D3B] font-black pl-2 border-l-4 border-l-[#2B7752]' : 'text-gray-800 font-bold hover:text-[#2B7752]'
                     }`}
                   >
                     <span>{menu.title}</span>
-                    {isMenuActive && <span className="text-[#C5A059]">●</span>}
+                    {isMenuActive && <span className="text-[#2B7752]">●</span>}
                   </button>
 
                   {/* Mobile sub items */}
@@ -417,12 +427,12 @@ export default function Header({
                             }}
                             className={`w-full text-left py-2 px-3 text-xs rounded-lg flex items-center justify-between ${
                               isSubActive
-                                ? 'bg-[#0B3C26] text-[#D4AF37] font-black'
-                                : 'text-stone-700 font-semibold hover:bg-emerald-50'
+                                ? 'bg-gradient-to-r from-[#1B5238] to-[#266847] text-[#A7F3D0] font-black'
+                                : 'text-stone-700 font-semibold hover:bg-[#EAF6EE]'
                             }`}
                           >
                             <span>└ {sub.title}</span>
-                            {isSubActive && <span className="text-[10px] text-[#D4AF37]">선택됨</span>}
+                            {isSubActive && <span className="text-[10px] text-[#A7F3D0]">선택됨</span>}
                           </button>
                         );
                       })}
@@ -438,7 +448,7 @@ export default function Header({
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between p-3.5 bg-white rounded-2xl border border-[#D4C5B0] shadow-xs hover:border-[#0B3C26] transition-all group mt-3"
+              className="flex items-center justify-between p-3.5 bg-white rounded-2xl border border-[#D4C5B0] shadow-xs hover:border-[#85CFAB] transition-all group mt-3"
               title="글로벌외식정보 외식 트렌드 바로가기 (새창)"
             >
               <div className="flex items-center gap-3">
@@ -448,25 +458,29 @@ export default function Header({
                   className="h-10 w-auto object-contain shrink-0"
                 />
                 <div className="text-left">
-                  <div className="text-xs font-black text-stone-900 group-hover:text-[#0B3C26] flex items-center gap-1.5">
+                  <div className="text-xs font-black text-stone-900 group-hover:text-[#2B7752] flex items-center gap-1.5">
                     <span>외식 트렌드 최신 뉴스</span>
-                    <span className="text-[10px] text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded font-bold border border-emerald-200">공식 제휴</span>
+                    <span className="text-[10px] text-[#1E5D3B] bg-[#EAF6EE] px-1.5 py-0.5 rounded font-bold border border-[#D0E7DA]">공식 제휴</span>
                   </div>
                   <div className="text-[10px] text-stone-500 font-mono mt-0.5">글로벌외식정보 바로가기 ↗</div>
                 </div>
               </div>
-              <ExternalLink className="w-4 h-4 text-stone-400 group-hover:text-[#0B3C26] shrink-0" />
+              <ExternalLink className="w-4 h-4 text-stone-400 group-hover:text-[#2B7752] shrink-0" />
             </a>
 
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'));
+                if (onTabChange) {
+                  onTabChange('ai-assistant');
+                } else {
+                  window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'));
+                }
               }}
-              className="w-full py-3 bg-[#0B3C26] text-white font-black text-sm rounded-2xl flex items-center justify-center gap-2 shadow-md border-2 border-[#C5A059] cursor-pointer mt-2"
+              className="w-full py-3 bg-gradient-to-r from-[#1B5238] via-[#266847] to-[#34885E] text-white font-black text-sm rounded-2xl flex items-center justify-center gap-2 shadow-md border border-[#85CFAB]/50 cursor-pointer mt-2"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>💬 {t('24시 실시간 1:1 AI 상담 챗봇 열기', 'Open 24/7 AI Chatbot')}</span>
+              <span className="w-2 h-2 rounded-full bg-[#A7F3D0] animate-pulse" />
+              <span>💬 {t('24시 실시간 1:1 AI 상담 & 챗봇 (전용 포털)', 'Open 24/7 AI Chatbot')}</span>
             </button>
           </div>
         </div>

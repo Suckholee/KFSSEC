@@ -1,8 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Search, X, RotateCcw, Filter, UtensilsCrossed } from 'lucide-react';
+import { Search, X, RotateCcw, Filter, UtensilsCrossed, Plus, Award } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import useMasterProfiles from '../../hooks/useMasterProfiles';
 import MasterPhotoGrid from './MasterPhotoGrid';
+import { useAdminEdit } from '../../context/AdminEditContext';
 
 const SPECIALTIES = [
   { id: 'all', label: '전체 분야', keywords: [] },
@@ -15,9 +16,10 @@ const SPECIALTIES = [
   { id: 'business', label: '외식경영 · R&D', keywords: ['경영', '외식창업', '컨설팅', '비즈니스', '연구원', '대표', '교육', '실무사'] },
 ];
 
-export default function MasterDirectory({ group = 'all', groupLabel = '명장·명인 전체', onSelectGroup }) {
+export default function MasterDirectory({ group = 'all', groupLabel = '명장·명인 전체', onSelectGroup, onEditMaster }) {
   const { tr, t } = useLanguage();
   const { profiles, error } = useMasterProfiles();
+  const { isEditMode } = useAdminEdit();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
 
@@ -75,6 +77,28 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
   return (
     <section className="space-y-6">
       
+      {/* Admin Quick Action Bar in Edit Mode */}
+      {isEditMode && (
+        <div className="bg-gradient-to-r from-amber-500/15 via-amber-400/10 to-emerald-500/10 border-2 border-dashed border-amber-400 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-2.5 text-xs sm:text-sm font-bold text-amber-950">
+            <span className="p-1.5 bg-amber-400 text-slate-950 rounded-lg shadow-xs">
+              <Award className="w-4 h-4" />
+            </span>
+            <span>
+              💡 각 명장 카드의 <strong className="text-amber-700 underline font-black">[프로필 수정]</strong> 버튼을 누르면 해당 명장을 바로 편집할 수 있습니다.
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => onEditMaster?.(null)}
+            className="px-4 py-2 bg-gradient-to-r from-[#EA580C] to-[#F97316] hover:from-[#C2410C] hover:to-[#EA580C] text-white font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer shrink-0 border border-orange-300/50"
+          >
+            <Plus className="w-3.5 h-3.5 text-white" />
+            <span>+ 새 명장·명인 등록 / 순서 변경</span>
+          </button>
+        </div>
+      )}
+
       {/* Search & Specialty Filter Controls */}
       <div className="bg-white rounded-3xl p-5 sm:p-7 border border-stone-200/90 shadow-xs space-y-5">
         
@@ -89,7 +113,7 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={tr("이름, 전문분야, 요리 키워드 검색")}
-              className="bg-stone-50 border border-stone-200 rounded-xl pl-11 pr-10 py-3 w-full text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0B3C26]/20 focus:border-[#0B3C26] transition-all"
+              className="bg-stone-50 border border-stone-200 rounded-xl pl-11 pr-10 py-3 w-full text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#15803D]/20 focus:border-[#15803D] transition-all"
             />
             {search && (
               <button
@@ -106,7 +130,7 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
           {/* Quick Info & Active Filters Badge */}
           <div className="flex items-center justify-between lg:justify-end gap-3 text-xs">
             <span className="font-bold text-stone-500">
-              {tr("검색 결과:")} <span className="font-black text-[#0B3C26] text-sm">{filtered.length}</span>{tr("명")}
+              {tr("검색 결과:")} <span className="font-black text-[#15803D] text-sm">{filtered.length}</span>{tr("명")}
               {baseProfiles.length !== filtered.length && (
                 <span className="text-stone-400 ml-1">({tr("전체")} {baseProfiles.length}{tr("명 중")})</span>
               )}
@@ -128,7 +152,7 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
         {/* Specialty Category Filter Pills */}
         <div className="pt-2 border-t border-stone-100">
           <div className="flex items-center gap-2 mb-2.5">
-            <Filter size={14} className="text-[#0B3C26]" />
+            <Filter size={14} className="text-[#15803D]" />
             <span className="text-xs font-black text-stone-800 tracking-tight">{tr("전문 조리 분야별 보기")}</span>
           </div>
 
@@ -144,13 +168,13 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
                   onClick={() => setActiveCategory(cat.id)}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#0B3C26] text-[#D4AF37] border border-[#C5A059] shadow-xs'
+                      ? 'bg-gradient-to-r from-[#14532D] to-[#15803D] text-white border border-[#4ADE80]/40 shadow-xs'
                       : 'bg-stone-50 hover:bg-stone-100 text-stone-600 hover:text-stone-900 border border-stone-200'
                   }`}
                 >
                   <span>{tr(cat.label)}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
-                    isActive ? 'bg-[#C5A059] text-white' : 'bg-stone-200/80 text-stone-600'
+                    isActive ? 'bg-[#F97316] text-white' : 'bg-stone-200/80 text-stone-600'
                   }`}>
                     {count}
                   </span>
@@ -166,7 +190,7 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
       {error && <p role="alert" className="text-rose-700 font-bold p-4 bg-rose-50 rounded-2xl">{tr(error)}</p>}
 
       {/* Profile Photo Grid */}
-      <MasterPhotoGrid profiles={filtered} />
+      <MasterPhotoGrid profiles={filtered} onEditMaster={onEditMaster} />
 
       {/* Empty State */}
       {!filtered.length && (
@@ -181,7 +205,7 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
           <button
             type="button"
             onClick={resetFilters}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0B3C26] text-white text-xs font-bold hover:bg-[#082d1c] transition-colors cursor-pointer shadow-xs"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#15803D] hover:bg-[#16A34A] text-white text-xs font-bold transition-colors cursor-pointer shadow-xs"
           >
             <RotateCcw size={14} />
             <span>{tr("전체 목록 보기")}</span>

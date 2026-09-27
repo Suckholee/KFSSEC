@@ -1,11 +1,14 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { useAdminEdit } from '../context/AdminEditContext';
 import EditableText from './Admin/InlineEditor/EditableText';
 
 export default function Footer({ onTabChange, siteData = {} }) {
   const { t } = useLanguage();
-  const info = siteData?.institutionInfo || {};
+  const { siteDraft } = useAdminEdit();
+  const currentSite = (siteDraft && Object.keys(siteDraft).length > 0) ? siteDraft : siteData;
+  const info = currentSite?.institutionInfo || {};
   const phone = info.phone || '010-7244-6796';
   const email = info.email || 'contact@kfssec.or.kr';
   const corpName = info.corpName || '사단법인 한국외식창업교육원';
@@ -29,9 +32,9 @@ export default function Footer({ onTabChange, siteData = {} }) {
               />
             </div>
             <p className="text-xs leading-relaxed text-gray-300 font-medium">
-              {t("법인명: ")}{corpName}<br />
-              {t("대표자: ")}{ceoName} | {t("설립일: ")}{establishedDate}<br />
-              {t("분야: 외식·펫 창업 실무 교육 및 전문 자격증 발급")}
+              {t("법인명: ")}<EditableText path="institutionInfo.corpName" value={corpName} /><br />
+              {t("대표자: ")}<EditableText path="institutionInfo.ceoName" value={ceoName} /> | {t("설립일: ")}<EditableText path="institutionInfo.establishedDate" value={establishedDate} /><br />
+              {t("분야: ")}<EditableText path="institutionInfo.field" value={info.field || "외식·펫 창업 실무 교육 및 전문 자격증 발급"} />
             </p>
             <button
               onClick={() => onTabChange?.('about', 'greetings')}

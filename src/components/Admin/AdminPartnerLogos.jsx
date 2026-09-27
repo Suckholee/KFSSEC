@@ -208,7 +208,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
       {/* Top Banner Bar */}
       <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B3C26] text-[#D4AF37] text-xs font-black mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2B7752] text-[#D4AF37] text-xs font-black mb-2">
             <Handshake className="w-3.5 h-3.5" />
             <span>MOU & PARTNER LOGO MANAGER</span>
           </div>
@@ -234,7 +234,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
           <button
             type="button"
             onClick={openAddModal}
-            className="px-4 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center gap-1.5 cursor-pointer border border-[#C5A059]"
+            className="px-4 py-2.5 bg-[#2B7752] hover:bg-[#072819] text-white text-xs font-black rounded-xl transition-all shadow-md flex items-center gap-1.5 cursor-pointer border border-[#C5A059]"
           >
             <Plus className="w-4 h-4 text-[#D4AF37]" />
             <span>신규 협약기관 로고 추가</span>
@@ -256,7 +256,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
             key={item.id}
             className={`p-4 rounded-2xl border transition-all space-y-3 flex flex-col justify-between ${
               item.active !== false
-                ? 'bg-white border-stone-200 hover:border-[#0B3C26] shadow-sm'
+                ? 'bg-white border-stone-200 hover:border-[#2B7752] shadow-sm'
                 : 'bg-stone-100 border-stone-300 opacity-60'
             }`}
           >
@@ -271,7 +271,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                   />
                 ) : (
                   <div className="text-center">
-                    <Building2 className="w-6 h-6 text-[#0B3C26] mx-auto" />
+                    <Building2 className="w-6 h-6 text-[#2B7752] mx-auto" />
                     <span className="text-[9px] font-black font-mono text-stone-500 block truncate max-w-[48px]">
                       {item.logoText || 'MOU'}
                     </span>
@@ -282,7 +282,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
               {/* Info */}
               <div className="space-y-1 min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-[#0B3C26] border border-emerald-100 truncate">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-[#2B7752] border border-emerald-100 truncate">
                     {item.tag || item.category}
                   </span>
                   <span className="text-[10px] text-gray-400 font-mono">#{idx + 1}</span>
@@ -359,11 +359,11 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 border-2 border-[#0B3C26] shadow-2xl animate-fadeIn cursor-default"
+            className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 border-2 border-[#2B7752] shadow-2xl animate-fadeIn cursor-default"
           >
             <div className="flex items-center justify-between border-b pb-3">
               <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-[#0B3C26]" />
+                <Building2 className="w-5 h-5 text-[#2B7752]" />
                 <span>{editingItem ? '협약 기관 정보 수정' : '신규 협약 기관 추가'}</span>
               </h3>
               <button
@@ -384,7 +384,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                   onChange={(e) => setFormName(e.target.value)}
                   placeholder="예: (주)주방뱅크"
                   required
-                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26]"
+                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#2B7752]"
                 />
               </div>
 
@@ -396,7 +396,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                     value={formCategory}
                     onChange={(e) => setFormCategory(e.target.value)}
                     placeholder="예: 주방 설비 1위"
-                    className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26]"
+                    className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#2B7752]"
                   />
                 </div>
                 <div>
@@ -406,7 +406,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                     value={formTag}
                     onChange={(e) => setFormTag(e.target.value)}
                     placeholder="예: 3D 설계 지원"
-                    className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26]"
+                    className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#2B7752]"
                   />
                 </div>
               </div>
@@ -418,7 +418,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                   value={formLogoText}
                   onChange={(e) => setFormLogoText(e.target.value)}
                   placeholder="예: KITCHEN BANK"
-                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26]"
+                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#2B7752]"
                 />
               </div>
 
@@ -430,7 +430,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                     value={formImage}
                     onChange={(e) => setFormImage(e.target.value)}
                     placeholder="https://... 또는 /images/... (직접 링크 입력)"
-                    className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26]"
+                    className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#2B7752]"
                   />
                   <label className="flex items-center justify-center gap-2 py-2 px-3 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl cursor-pointer transition-colors border border-stone-300">
                     <Upload className="w-3.5 h-3.5" />
@@ -471,7 +471,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                   value={formDesc}
                   onChange={(e) => setFormDesc(e.target.value)}
                   placeholder="예: 대한민국 1위 업소용 주방기구 및 설비 토탈 컨설팅 기업으로, 수강생 대상 주방 집기 특별 할인 및 3D 도면 설계를 지원합니다."
-                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26] resize-none text-xs"
+                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#2B7752] resize-none text-xs"
                 />
               </div>
 
@@ -482,7 +482,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                   value={formLinkUrl}
                   onChange={(e) => setFormLinkUrl(e.target.value)}
                   placeholder="https://www.example.com"
-                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#0B3C26]"
+                  className="w-full px-3 py-2 border rounded-xl border-gray-300 focus:outline-none focus:border-[#2B7752]"
                 />
               </div>
 
@@ -509,7 +509,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-xl font-bold border border-[#C5A059]"
+                  className="px-5 py-2 bg-[#2B7752] hover:bg-[#072819] text-white rounded-xl font-bold border border-[#C5A059]"
                 >
                   {editingItem ? '수정 완료' : '추가하기'}
                 </button>

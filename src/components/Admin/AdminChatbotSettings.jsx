@@ -163,7 +163,7 @@ export default function AdminChatbotSettings() {
       {/* Top Banner Header */}
       <div className="bg-white p-6 rounded-3xl border-2 border-gray-300 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-[#0B3C26] text-[#C5A059] flex items-center justify-center shadow-md">
+          <div className="w-12 h-12 rounded-2xl bg-[#2B7752] text-[#C5A059] flex items-center justify-center shadow-md">
             <Bot className="w-7 h-7" />
           </div>
           <div>
@@ -191,7 +191,7 @@ export default function AdminChatbotSettings() {
 
           <button
             onClick={handleSave}
-            className="px-5 py-2.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
+            className="px-5 py-2.5 bg-[#2B7752] hover:bg-[#072819] text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer border border-[#C5A059]"
           >
             <Save className="w-4 h-4 text-[#D4AF37]" />
             <span>설정 저장 및 라이브 적용</span>
@@ -392,8 +392,8 @@ export default function AdminChatbotSettings() {
 
               {/* Editing Modal/Form for Button */}
               {editingButton && (
-                <div className="p-4 bg-stone-50 rounded-2xl border-2 border-[#0B3C26] space-y-3 animate-fadeIn">
-                  <h4 className="text-xs font-black text-[#0B3C26]">
+                <div className="p-4 bg-stone-50 rounded-2xl border-2 border-[#2B7752] space-y-3 animate-fadeIn">
+                  <h4 className="text-xs font-black text-[#2B7752]">
                     {editingButton.id ? '퀵 버튼 수정' : '새 퀵 버튼 등록'}
                   </h4>
 
@@ -431,7 +431,6 @@ export default function AdminChatbotSettings() {
                         <option value="consulting">창업컨설팅 (consulting)</option>
                         <option value="about">교육원 소개 (about)</option>
                         <option value="master">명장·명인 (master)</option>
-                        <option value="gangnam">강남 소호 (gangnam)</option>
                         <option value="community">커뮤니티 / 1:1 문의 (community)</option>
                       </select>
                     </div>
@@ -459,7 +458,7 @@ export default function AdminChatbotSettings() {
                     <button
                       type="button"
                       onClick={() => handleSaveButton(editingButton)}
-                      className="px-4 py-1.5 bg-[#0B3C26] text-white font-black text-xs rounded-xl cursor-pointer shadow-xs"
+                      className="px-4 py-1.5 bg-[#2B7752] text-white font-black text-xs rounded-xl cursor-pointer shadow-xs"
                     >
                       적용
                     </button>
@@ -539,8 +538,8 @@ export default function AdminChatbotSettings() {
 
               {/* Editing Modal/Form for FAQ */}
               {editingFaq && (
-                <div className="p-4 bg-stone-50 rounded-2xl border-2 border-[#0B3C26] space-y-3 animate-fadeIn">
-                  <h4 className="text-xs font-black text-[#0B3C26]">
+                <div className="p-4 bg-stone-50 rounded-2xl border-2 border-[#2B7752] space-y-3 animate-fadeIn">
+                  <h4 className="text-xs font-black text-[#2B7752]">
                     {editingFaq.id ? '지식 규칙 수정' : '새 지식 규칙 추가'}
                   </h4>
 
@@ -595,7 +594,6 @@ export default function AdminChatbotSettings() {
                         <option value="consulting">창업컨설팅 (consulting)</option>
                         <option value="about">교육원 소개 (about)</option>
                         <option value="master">명장·명인 (master)</option>
-                        <option value="gangnam">강남 소호 (gangnam)</option>
                         <option value="community">커뮤니티 / 1:1 문의 (community)</option>
                       </select>
                     </div>
@@ -623,7 +621,7 @@ export default function AdminChatbotSettings() {
                     <button
                       type="button"
                       onClick={() => handleSaveFaq(editingFaq)}
-                      className="px-4 py-1.5 bg-[#0B3C26] text-white font-black text-xs rounded-xl cursor-pointer shadow-xs"
+                      className="px-4 py-1.5 bg-[#2B7752] text-white font-black text-xs rounded-xl cursor-pointer shadow-xs"
                     >
                       적용
                     </button>
@@ -710,12 +708,12 @@ export default function AdminChatbotSettings() {
           </div>
 
           {/* Phone Frame Simulator */}
-          <div className="bg-[#0B3C26] p-2 sm:p-3 rounded-3xl shadow-xl">
+          <div className="bg-[#2B7752] p-2 sm:p-3 rounded-3xl shadow-xl">
             <div className="bg-white rounded-2xl overflow-hidden flex flex-col h-[520px] border border-[#C5A059]">
               {/* Chat Header */}
-              <div className="bg-[#0B3C26] text-white p-3.5 px-4 flex items-center justify-between border-b border-[#C5A059] shrink-0">
+              <div className="bg-[#2B7752] text-white p-3.5 px-4 flex items-center justify-between border-b border-[#C5A059] shrink-0">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-[#C5A059] flex items-center justify-center text-[#0B3C26] shadow-sm">
+                  <div className="w-8 h-8 rounded-full bg-[#C5A059] flex items-center justify-center text-[#2B7752] shadow-sm">
                     <Bot className="w-4 h-4" />
                   </div>
                   <div>
@@ -737,7 +735,7 @@ export default function AdminChatbotSettings() {
                     <div
                       className={`max-w-[85%] p-3 rounded-2xl leading-relaxed text-xs ${
                         msg.sender === 'user'
-                          ? 'bg-[#0B3C26] text-white font-extrabold rounded-tr-none'
+                          ? 'bg-[#2B7752] text-white font-extrabold rounded-tr-none'
                           : 'bg-white text-gray-900 font-bold border border-stone-200 rounded-tl-none shadow-2xs'
                       }`}
                     >
@@ -785,7 +783,7 @@ export default function AdminChatbotSettings() {
                 />
                 <button
                   type="submit"
-                  className="p-2 bg-[#0B3C26] hover:bg-[#072819] text-[#D4AF37] rounded-xl cursor-pointer transition-colors"
+                  className="p-2 bg-[#2B7752] hover:bg-[#072819] text-[#D4AF37] rounded-xl cursor-pointer transition-colors"
                 >
                   <Send className="w-4 h-4" />
                 </button>

@@ -184,7 +184,7 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-40 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-[1520px] mx-auto px-4 sm:px-8 mb-8 text-center space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B3C26] text-[#D4AF37] border border-[#C5A059] text-xs font-black shadow-xs">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#1B5238] to-[#266847] text-[#A7F3D0] border border-[#85CFAB] text-xs font-black shadow-xs">
           <Handshake className="w-3.5 h-3.5" />
           <span>KFSSEC PARTNERS & MOU NETWORK</span>
         </div>
@@ -232,10 +232,10 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
               <CardWrapper
                 key={`${partner.id}-${index}`}
                 {...wrapperProps}
-                className="flex items-center gap-3.5 px-5 py-3.5 bg-white/95 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-md hover:border-[#0B3C26] hover:bg-white transition-all cursor-pointer shrink-0 select-none group/card"
+                className="flex items-center gap-3.5 px-5 py-3.5 bg-white/95 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-md hover:border-[#85CFAB] hover:bg-white transition-all cursor-pointer shrink-0 select-none group/card"
               >
                 {/* Logo Image or Initials Badge */}
-                <div className="w-12 h-12 rounded-xl bg-stone-50 border border-stone-200 flex items-center justify-center p-1.5 overflow-hidden shrink-0 group-hover/card:border-[#C5A059] transition-colors">
+                <div className="w-12 h-12 rounded-xl bg-stone-50 border border-stone-200 flex items-center justify-center p-1.5 overflow-hidden shrink-0 group-hover/card:border-[#85CFAB] transition-colors">
                   {partner.image ? (
                     <img
                       src={partner.image}
@@ -252,7 +252,7 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
                     className="fallback-badge w-full h-full flex flex-col items-center justify-center text-center"
                     style={{ display: partner.image ? 'none' : 'flex' }}
                   >
-                    <Building2 className="w-5 h-5 text-[#0B3C26] group-hover/card:text-[#C5A059] transition-colors" />
+                    <Building2 className="w-5 h-5 text-[#2B7752] group-hover/card:text-[#1E5D3B] transition-colors" />
                     <span className="text-[8px] font-black text-stone-500 font-mono leading-none mt-0.5 truncate max-w-[40px]">
                       {partner.logoText || 'MOU'}
                     </span>
@@ -262,14 +262,14 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
                 {/* Partner Details */}
                 <div className="text-left space-y-0.5 min-w-[130px]">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] font-bold text-[#0B3C26] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
+                    <span className="text-[10px] font-bold text-[#1E5D3B] bg-[#EAF6EE] px-2 py-0.5 rounded-md border border-[#D0E7DA]">
                       {partner.tag || partner.category}
                     </span>
                     {isClickable && (
-                      <ExternalLink className="w-3 h-3 text-stone-400 group-hover/card:text-[#0B3C26] transition-colors" />
+                      <ExternalLink className="w-3 h-3 text-stone-400 group-hover/card:text-[#2B7752] transition-colors" />
                     )}
                   </div>
-                  <h4 className="text-sm font-black text-gray-900 group-hover/card:text-[#0B3C26] transition-colors">
+                  <h4 className="text-sm font-black text-gray-900 group-hover/card:text-[#2B7752] transition-colors">
                     {partner.name}
                   </h4>
                   <p className="text-[11px] text-gray-500 font-medium">

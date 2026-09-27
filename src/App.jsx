@@ -16,11 +16,12 @@ import AboutPage from './components/About/AboutPage';
 import MasterBusinessPage from './components/Master/MasterBusinessPage';
 import CourseCatalogPage from './components/Catalog/CourseCatalogPage';
 import ConsultingPage from './components/Consulting/ConsultingPage';
-import GangnamSohoPage from './components/Gangnam/GangnamSohoPage';
 import GalleryPage from './components/Gallery/GalleryPage';
 import PartnersPage from './components/Partners/PartnersPage';
 import CommunityPage from './components/Community/CommunityPage';
 import CommunityEditorPage from './components/Community/CommunityEditorPage';
+import AiAssistantPage from './components/AiAssistant/AiAssistantPage';
+import { setAiIndexedPosts } from './services/aiKnowledgeEngine';
 import AdminLayout from './components/Admin/AdminLayout';
 import AuthModal from './components/AuthModal';
 import YouTubeModal from './components/YouTubeModal';
@@ -136,9 +137,9 @@ function ScrollToTopButton() {
     <button
       onClick={scrollToTop}
       aria-label="페이지 맨 위로 이동"
-      className="fixed bottom-32 sm:bottom-6 right-3 sm:right-6 z-30 p-3 sm:p-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white rounded-full shadow-2xl transition-all cursor-pointer border border-[#C5A059] flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+      className="fixed bottom-32 sm:bottom-6 right-3 sm:right-6 z-30 p-3 sm:p-3.5 bg-[#2B7752] hover:bg-[#236344] text-white rounded-full shadow-2xl transition-all cursor-pointer border border-[#85CFAB] flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none"
     >
-      <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37] group-hover:-translate-y-0.5 transition-transform" />
+      <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-[#A7F3D0] group-hover:-translate-y-0.5 transition-transform" />
     </button>
   );
 }
@@ -157,6 +158,269 @@ const DEFAULT_INSTITUTION_INFO = {
   establishedDate: '2022년 7월 29일',
   operatingHours: '평일 09:00 - 18:00 (주말/공휴일 휴무)',
 };
+
+function AppInner({
+  activeTab,
+  subTab,
+  handleTabChange,
+  handleOpenAuth,
+  currentUser,
+  handleLogout,
+  siteData,
+  postsList,
+  handleUpdatePostsList,
+  navigateToInquiry,
+  scrollToSection,
+  handleOpenVideo,
+  handleCreatePost,
+  authModalState,
+  handleCloseAuth,
+  activeVideoUrl,
+  handleCloseVideo,
+  isPaymentGuideOpen,
+  setIsPaymentGuideOpen,
+}) {
+  const { siteDraft, postsDraft } = useAdminEdit();
+  const currentSite = (siteDraft && Object.keys(siteDraft).length > 0) ? siteDraft : siteData;
+  const currentPosts = (postsDraft && postsDraft.length > 0) ? postsDraft : postsList;
+
+  return (
+    <>
+      <AdminLiveToolbar />
+      <AdminBlockNavigator
+        activeTab={activeTab}
+        subTab={subTab}
+        onTabChange={handleTabChange}
+      />
+      <AdminDrawer />
+
+      <MainLayout>
+        {/* Top Main Navigation Header */}
+        <Header
+          activeTab={activeTab}
+          subTab={subTab}
+          onTabChange={handleTabChange}
+          onOpenAuth={handleOpenAuth}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+
+        {/* Main Content Area Routing */}
+        <main className="flex-1">
+          {(activeTab === 'home' || activeTab === 'admin') && (
+            <div className="space-y-0">
+              <SectorBlock
+                sectorId="S-HOME-01"
+                sectorName="메인 비주얼 배너"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🖼️ 메인 배너 슬라이드 편집"
+                onEditContent={() => {
+                  handleTabChange('admin', 'legacy');
+                }}
+              >
+                <Hero
+                  heroBanners={currentSite.heroBanners}
+                  onExploreClick={() => handleTabChange('catalog')}
+                  onAboutClick={() => handleTabChange('about', 'greetings')}
+                  onInquiryClick={() => handleTabChange('community', 'inquiry')}
+                />
+              </SectorBlock>
+
+              <SectorBlock
+                sectorId="S-HOME-02"
+                sectorName="수강생 모집 / 이벤트 배너"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🎯 D-Day 배너 설정 수정"
+                onEditContent={() => {
+                  handleTabChange('admin', 'legacy');
+                }}
+              >
+                <AwardCeremonyBannerSection
+                  bannerData={currentSite.banner}
+                  onGoToGallery={() => handleTabChange('gallery', 'awards')}
+                  onGoToInquiry={() => handleTabChange('community', 'inquiry')}
+                />
+              </SectorBlock>
+
+              <SectorBlock
+                sectorId="S-HOME-08"
+                sectorName="공식 유튜브 미디어"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🎥 유튜브 영상 링크 변경"
+                onEditContent={() => {
+                  window.dispatchEvent(new CustomEvent('kfssec:action', { detail: { action: 'edit_youtube' } }));
+                }}
+                customActions={[
+                  {
+                    label: '➕ 새 유튜브 영상 추가 등록',
+                    onClick: () => {
+                      window.dispatchEvent(new CustomEvent('kfssec:action', { detail: { action: 'add_youtube' } }));
+                    },
+                  },
+                ]}
+              >
+                <YouTubeMediaSection
+                  youtubeData={currentSite.youtube}
+                  onPlayVideo={handleOpenVideo}
+                />
+              </SectorBlock>
+
+              <SectorBlock
+                sectorId="S-HOME-03"
+                sectorName="추천 강좌 큐레이션 (넷플릭스형)"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📚 교육 과정 카탈로그 바로가기"
+                onEditContent={() => handleTabChange('catalog', 'courses')}
+              >
+                <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-04" sectorName="글로벌 외식 트렌드 뉴스" sectorList={HOME_SECTORS}>
+                <GlobalDiningTrendsSection />
+              </SectorBlock>
+
+              <SectorBlock
+                sectorId="S-HOME-05"
+                sectorName="자격증·실무 과정 카테고리"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📋 과정 카테고리 둘러보기"
+                onEditContent={() => handleTabChange('catalog', 'courses')}
+              >
+                <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+              </SectorBlock>
+
+              <SectorBlock
+                sectorId="S-HOME-05B"
+                sectorName="분야별 교육 포커스"
+                sectorList={HOME_SECTORS}
+                editContentLabel="🔍 교육 포커스 상세 안내"
+                onEditContent={() => handleTabChange('catalog', 'guide')}
+              >
+                <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS}>
+                <PartnerMarqueeSection partnerLogos={currentSite.partnerLogos} />
+              </SectorBlock>
+
+              <SectorBlock
+                sectorId="S-HOME-07"
+                sectorName="최신 공지사항 & 커뮤니티"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📝 1:1 문의 및 신청 내역 확인"
+                onEditContent={() => handleTabChange('community', 'inquiry')}
+              >
+                <NoticePostSection postsList={currentPosts} onScrollNext={() => scrollToSection('footer')} />
+              </SectorBlock>
+            </div>
+          )}
+
+          {activeTab === 'about' && (
+            <AboutPage initialSubTab={subTab || 'greetings'} siteData={currentSite} onTabChange={handleTabChange} />
+          )}
+
+          {activeTab === 'master' && (
+            <MasterBusinessPage initialSubTab={subTab || 'all'} />
+          )}
+
+          {activeTab === 'catalog' && (
+            <CourseCatalogPage
+              initialSubTab={subTab || 'courses'}
+              onGoToConsulting={() => handleTabChange('consulting', 'consulting')}
+            />
+          )}
+
+          {activeTab === 'consulting' && (
+            <ConsultingPage
+              initialSubTab={subTab || 'consulting'}
+              onGoToApply={() => handleTabChange('consulting', 'apply')}
+              onGoToInquiry={navigateToInquiry}
+            />
+          )}
+
+          {activeTab === 'gallery' && (
+            <GalleryPage initialSubTab={subTab || 'all'} postsList={currentPosts} />
+          )}
+
+          {activeTab === 'partners' && (
+            <PartnersPage initialSubTab={subTab || 'all'} partnerLogos={currentSite.partnerLogos} postsList={currentPosts} />
+          )}
+
+          {activeTab === 'community' && subTab === 'editor' && (
+            <CommunityEditorPage
+              currentUser={currentUser}
+              onCancel={() => handleTabChange('community', 'all')}
+              onSubmitPost={handleCreatePost}
+            />
+          )}
+
+          {activeTab === 'community' && subTab !== 'editor' && (
+            <CommunityPage
+              initialTab={subTab || 'all'}
+              onOpenAuth={handleOpenAuth}
+              isUserLoggedIn={!!currentUser}
+              onGoToEditor={() => handleTabChange('community', 'editor')}
+              onNavigate={handleTabChange}
+              postsList={currentPosts}
+              setPostsList={undefined}
+            />
+          )}
+
+          {activeTab === 'ai-assistant' && (
+            <AiAssistantPage
+              onNavigate={handleTabChange}
+              postsList={currentPosts}
+              siteData={currentSite}
+            />
+          )}
+        </main>
+
+        {/* Mobile 375px Floating Quick Action Bar */}
+        <MobileQuickBar
+          onGoToConsulting={() => handleTabChange('consulting', 'apply')}
+          onOpenEnrollment={() => handleTabChange('catalog', 'courses')}
+          onOpenAiAssistant={() => handleTabChange('ai-assistant')}
+        />
+
+        {/* Visitor Button-based AI Assistant Chatbot (hidden on AI assistant page) */}
+        {activeTab !== 'ai-assistant' && (
+          <VisitorChatbotWidget onNavigate={handleTabChange} />
+        )}
+
+        {/* Footer Component wrapped in SectorBlock for unified context editing */}
+        <SectorBlock
+          sectorId="S-GLOBAL-02"
+          sectorName="하단 푸터 & 법인 정보"
+          editContentLabel="🏢 법인 연락처/사업자정보 수정"
+          onEditContent={() => {
+            window.dispatchEvent(new CustomEvent('kfssec:open-drawer', { detail: { tab: 'info' } }));
+          }}
+        >
+          <Footer onTabChange={handleTabChange} siteData={currentSite} />
+        </SectorBlock>
+
+        {/* Modals */}
+        <AuthModal
+          isOpen={authModalState.isOpen}
+          initialMode={authModalState.initialMode}
+          onClose={handleCloseAuth}
+        />
+
+        <YouTubeModal
+          videoUrl={activeVideoUrl}
+          onClose={handleCloseVideo}
+        />
+
+        <PaymentGuideModal
+          isOpen={isPaymentGuideOpen}
+          onClose={() => setIsPaymentGuideOpen(false)}
+        />
+
+        <ScrollToTopButton />
+      </MainLayout>
+    </>
+  );
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -345,8 +609,8 @@ export default function App() {
       const mainRoute = parts[0];
       const subRoute = parts[1] || null;
 
-      if (['about', 'master', 'catalog', 'consulting', 'gallery', 'partners', 'gangnam', 'community', 'admin'].includes(mainRoute)) {
-        setActiveTab(mainRoute);
+      if (['about', 'master', 'catalog', 'consulting', 'gallery', 'partners', 'community', 'admin', 'ai-assistant', 'ai'].includes(mainRoute)) {
+        setActiveTab(mainRoute === 'ai' ? 'ai-assistant' : mainRoute);
         setSubTab(subRoute);
       } else {
         setActiveTab('home');
@@ -358,6 +622,28 @@ export default function App() {
     window.addEventListener('popstate', parsePath);
     return () => window.removeEventListener('popstate', parsePath);
   }, []);
+
+  // Sync loaded posts to AI knowledge engine
+  useEffect(() => {
+    setAiIndexedPosts(postsList);
+  }, [postsList]);
+
+  // Global listener for open chatbot -> routes to /ai-assistant
+  useEffect(() => {
+    const handleOpenChatbot = () => {
+      handleTabChange('ai-assistant');
+    };
+    window.addEventListener('kfssec_open_chatbot', handleOpenChatbot);
+    return () => window.removeEventListener('kfssec_open_chatbot', handleOpenChatbot);
+  }, []);
+
+  // Auto-redirect from /admin to / when authenticated
+  useEffect(() => {
+    if (activeTab === 'admin' && adminAuth.authenticated && subTab !== 'legacy') {
+      setActiveTab('home');
+      window.history.replaceState({}, '', '/');
+    }
+  }, [activeTab, adminAuth.authenticated, subTab]);
 
   const handleTabChange = (tabId, subTabId = null) => {
     setActiveTab(tabId);
@@ -461,231 +747,27 @@ export default function App() {
       adminAuth={adminAuth}
       onLogout={handleLogout}
     >
-      <AdminLiveToolbar />
-      <AdminBlockNavigator
+      <AppInner
         activeTab={activeTab}
         subTab={subTab}
-        onTabChange={handleTabChange}
+        handleTabChange={handleTabChange}
+        handleOpenAuth={handleOpenAuth}
+        currentUser={currentUser}
+        handleLogout={handleLogout}
+        siteData={siteData}
+        postsList={postsList}
+        handleUpdatePostsList={handleUpdatePostsList}
+        navigateToInquiry={navigateToInquiry}
+        scrollToSection={scrollToSection}
+        handleOpenVideo={handleOpenVideo}
+        handleCreatePost={handleCreatePost}
+        authModalState={authModalState}
+        handleCloseAuth={handleCloseAuth}
+        activeVideoUrl={activeVideoUrl}
+        handleCloseVideo={handleCloseVideo}
+        isPaymentGuideOpen={isPaymentGuideOpen}
+        setIsPaymentGuideOpen={setIsPaymentGuideOpen}
       />
-      <AdminDrawer />
-
-      <MainLayout>
-        {/* Top Main Navigation Header */}
-        <Header
-          activeTab={activeTab}
-          subTab={subTab}
-          onTabChange={handleTabChange}
-          onOpenAuth={handleOpenAuth}
-          currentUser={currentUser}
-          onLogout={handleLogout}
-        />
-
-        {/* Main Content Area Routing */}
-        <main className="flex-1">
-          {activeTab === 'home' && (
-            <div className="space-y-0">
-              <SectorBlock
-                sectorId="S-HOME-01"
-                sectorName="메인 비주얼 배너"
-                sectorList={HOME_SECTORS}
-                editContentLabel="🖼️ 메인 배너 슬라이드 편집"
-                onEditContent={() => {
-                  handleTabChange('admin', 'legacy');
-                }}
-              >
-                <Hero
-                  heroBanners={siteData.heroBanners}
-                  onExploreClick={() => handleTabChange('catalog')}
-                  onAboutClick={() => handleTabChange('about', 'greetings')}
-                  onInquiryClick={() => handleTabChange('community', 'inquiry')}
-                />
-              </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-02"
-                sectorName="수강생 모집 / 이벤트 배너"
-                sectorList={HOME_SECTORS}
-                editContentLabel="🎯 D-Day 배너 설정 수정"
-                onEditContent={() => {
-                  handleTabChange('admin', 'legacy');
-                }}
-              >
-                <AwardCeremonyBannerSection
-                  bannerData={siteData.banner}
-                  onGoToGallery={() => handleTabChange('gallery', 'awards')}
-                  onGoToInquiry={() => handleTabChange('community', 'inquiry')}
-                />
-              </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-08"
-                sectorName="공식 유튜브 미디어"
-                sectorList={HOME_SECTORS}
-                editContentLabel="🎥 유튜브 영상 링크 변경"
-                onEditContent={() => {
-                  window.dispatchEvent(new CustomEvent('kfssec:action', { detail: { action: 'edit_youtube' } }));
-                }}
-                customActions={[
-                  {
-                    label: '➕ 새 유튜브 영상 추가 등록',
-                    onClick: () => {
-                      window.dispatchEvent(new CustomEvent('kfssec:action', { detail: { action: 'add_youtube' } }));
-                    },
-                  },
-                ]}
-              >
-                <YouTubeMediaSection
-                  youtubeData={siteData.youtube}
-                  onPlayVideo={handleOpenVideo}
-                />
-              </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-03"
-                sectorName="추천 강좌 큐레이션 (넷플릭스형)"
-                sectorList={HOME_SECTORS}
-                editContentLabel="📚 교육 과정 카탈로그 바로가기"
-                onEditContent={() => handleTabChange('catalog', 'courses')}
-              >
-                <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
-              </SectorBlock>
-
-              <SectorBlock sectorId="S-HOME-04" sectorName="글로벌 외식 트렌드 뉴스" sectorList={HOME_SECTORS}>
-                <GlobalDiningTrendsSection />
-              </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-05"
-                sectorName="자격증·실무 과정 카테고리"
-                sectorList={HOME_SECTORS}
-                editContentLabel="📋 과정 카테고리 둘러보기"
-                onEditContent={() => handleTabChange('catalog', 'courses')}
-              >
-                <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
-              </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-05B"
-                sectorName="분야별 교육 포커스"
-                sectorList={HOME_SECTORS}
-                editContentLabel="🔍 교육 포커스 상세 안내"
-                onEditContent={() => handleTabChange('catalog', 'guide')}
-              >
-                <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
-              </SectorBlock>
-
-              <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS}>
-                <PartnerMarqueeSection partnerLogos={siteData.partnerLogos} />
-              </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-07"
-                sectorName="최신 공지사항 & 커뮤니티"
-                sectorList={HOME_SECTORS}
-                editContentLabel="📝 1:1 문의 및 신청 내역 확인"
-                onEditContent={() => handleTabChange('community', 'inquiry')}
-              >
-                <NoticePostSection postsList={postsList} onScrollNext={() => scrollToSection('footer')} />
-              </SectorBlock>
-            </div>
-          )}
-
-        {activeTab === 'about' && (
-          <AboutPage initialSubTab={subTab || 'greetings'} siteData={siteData} />
-        )}
-
-        {activeTab === 'master' && (
-          <MasterBusinessPage initialSubTab={subTab || 'all'} />
-        )}
-
-        {activeTab === 'catalog' && (
-          <CourseCatalogPage
-            initialSubTab={subTab || 'courses'}
-            onGoToConsulting={() => handleTabChange('consulting', 'consulting')}
-          />
-        )}
-
-        {activeTab === 'consulting' && (
-          <ConsultingPage
-            initialSubTab={subTab || 'consulting'}
-            onGoToApply={() => handleTabChange('consulting', 'apply')}
-            onGoToInquiry={navigateToInquiry}
-          />
-        )}
-
-        {activeTab === 'gallery' && (
-          <GalleryPage initialSubTab={subTab || 'all'} postsList={postsList} />
-        )}
-
-        {activeTab === 'partners' && (
-          <PartnersPage initialSubTab={subTab || 'all'} partnerLogos={siteData.partnerLogos} postsList={postsList} />
-        )}
-
-        {activeTab === 'gangnam' && (
-          <GangnamSohoPage initialSubTab={subTab || 'intro'} onGoToInquiry={() => navigateToInquiry('강남구 소상공인 회원 가입 상담')} postsList={postsList} />
-        )}
-
-
-        {activeTab === 'community' && subTab === 'editor' && (
-          <CommunityEditorPage
-            currentUser={currentUser}
-            onCancel={() => handleTabChange('community', 'all')}
-            onSubmitPost={handleCreatePost}
-          />
-        )}
-
-        {activeTab === 'community' && subTab !== 'editor' && (
-          <CommunityPage
-            initialTab={subTab || 'all'}
-            onOpenAuth={handleOpenAuth}
-            isUserLoggedIn={!!currentUser}
-            onGoToEditor={() => handleTabChange('community', 'editor')}
-            postsList={postsList}
-            setPostsList={undefined}
-          />
-        )}
-      </main>
-
-      {/* Mobile 375px Floating Quick Action Bar */}
-      <MobileQuickBar
-        onGoToConsulting={() => handleTabChange('consulting', 'apply')}
-        onOpenEnrollment={() => handleTabChange('catalog', 'courses')}
-      />
-
-      {/* Visitor Button-based AI Assistant Chatbot */}
-      <VisitorChatbotWidget onNavigate={handleTabChange} />
-
-      {/* Footer Component wrapped in SectorBlock for unified context editing */}
-      <SectorBlock
-        sectorId="S-GLOBAL-02"
-        sectorName="하단 푸터 & 법인 정보"
-        editContentLabel="🏢 법인 연락처/사업자정보 수정"
-        onEditContent={() => {
-          window.dispatchEvent(new CustomEvent('kfssec:open-drawer', { detail: { tab: 'info' } }));
-        }}
-      >
-        <Footer onTabChange={handleTabChange} siteData={siteData} />
-      </SectorBlock>
-
-      {/* Modals */}
-      <AuthModal
-        isOpen={authModalState.isOpen}
-        initialMode={authModalState.initialMode}
-        onClose={handleCloseAuth}
-      />
-
-      <YouTubeModal
-        videoUrl={activeVideoUrl}
-        onClose={handleCloseVideo}
-      />
-
-      <PaymentGuideModal
-        isOpen={isPaymentGuideOpen}
-        onClose={() => setIsPaymentGuideOpen(false)}
-      />
-
-      <ScrollToTopButton />
-      </MainLayout>
     </AdminEditProvider>
   );
 }

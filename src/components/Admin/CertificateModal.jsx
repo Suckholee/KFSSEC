@@ -50,7 +50,7 @@ export default function CertificateModal({
             margin: 0;
             padding: 20px;
             box-shadow: none !important;
-            border: 4px solid #0B3C26 !important;
+            border: 4px solid #2B7752 !important;
           }
           .no-print {
             display: none !important;
@@ -63,7 +63,7 @@ export default function CertificateModal({
         className="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl transition-all border border-gray-200 max-h-[95vh] flex flex-col cursor-default"
       >
         {/* Top Control Bar (Non-printable) */}
-        <div className="bg-[#0B3C26] text-white p-4 sm:p-5 px-6 flex items-center justify-between shrink-0 border-b border-[#C5A059] no-print">
+        <div className="bg-[#2B7752] text-white p-4 sm:p-5 px-6 flex items-center justify-between shrink-0 border-b border-[#C5A059] no-print">
           <div className="flex items-center gap-2">
             <Award className="w-5 h-5 text-[#D4AF37]" />
             <h3 className="text-base sm:text-lg font-black tracking-tight">
@@ -109,11 +109,11 @@ export default function CertificateModal({
                 <span>농림축산식품부 소관 사단법인</span>
               </div>
 
-              <span className="inline-block px-4 py-1 rounded-full bg-[#0B3C26]/10 text-[#0B3C26] text-xs font-black border border-[#0B3C26]/30 uppercase tracking-widest mt-2">
+              <span className="inline-block px-4 py-1 rounded-full bg-[#2B7752]/10 text-[#2B7752] text-xs font-black border border-[#2B7752]/30 uppercase tracking-widest mt-2">
                 OFFICIAL CERTIFICATE OF COMPLETION
               </span>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B3C26] tracking-widest font-serif pt-2">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2B7752] tracking-widest font-serif pt-2">
                 {isLicense ? '자 격 증' : '수 료 증'}
               </h1>
             </div>
@@ -131,7 +131,7 @@ export default function CertificateModal({
                 </div>
                 <div className="col-span-2 border-t border-gray-200 pt-3">
                   <span className="text-gray-500 block text-xs">교육 과정명</span>
-                  <span className="text-base sm:text-lg font-black text-[#0B3C26]">
+                  <span className="text-base sm:text-lg font-black text-[#2B7752]">
                     {certData.courseTitle}
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export default function CertificateModal({
               <div className="text-center py-4 space-y-3">
                 <p className="text-sm sm:text-base font-extrabold text-gray-800 leading-relaxed font-serif">
                   위 사람은 사단법인 한국외식창업교육원에서 주관하는<br className="hidden sm:inline" />
-                  <strong className="text-[#0B3C26] underline underline-offset-4 font-black">[{certData.courseTitle}]</strong>의 전 과정을 성실히 이수하였으므로<br />
+                  <strong className="text-[#2B7752] underline underline-offset-4 font-black">[{certData.courseTitle}]</strong>의 전 과정을 성실히 이수하였으므로<br />
                   본 수료증을 수여합니다.
                 </p>
               </div>
@@ -163,14 +163,14 @@ export default function CertificateModal({
             <div className="pt-6 border-t-2 border-[#C5A059] flex items-end justify-between relative z-10">
               <div className="space-y-1">
                 <span className="text-xs font-bold text-gray-500 block font-mono">발행일자: {certData.issueDate || '2026년 10월 03일'}</span>
-                <span className="text-xs font-black text-[#0B3C26] block">사단법인 한국외식창업교육원</span>
+                <span className="text-xs font-black text-[#2B7752] block">사단법인 한국외식창업교육원</span>
               </div>
 
               {/* Official Red Seal Stamp Visual */}
               <div className="flex items-center gap-3 relative">
                 <div className="text-right">
                   <span className="text-xs font-black text-gray-700 block">이사장</span>
-                  <span className="text-lg font-black text-[#0B3C26] tracking-widest">안 형 상</span>
+                  <span className="text-lg font-black text-[#2B7752] tracking-widest">안 형 상</span>
                 </div>
                 
                 {/* Red Seal Stamp Badge */}
@@ -188,7 +188,7 @@ export default function CertificateModal({
         {/* Modal Footer Controls */}
         <div className="bg-gray-100 p-4 px-6 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600 font-bold shrink-0 no-print">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-[#0B3C26]" />
+            <CheckCircle2 className="w-4 h-4 text-[#2B7752]" />
             <span>농림축산식품부 소관 비영리 사단법인 정식 인가 증명서</span>
           </div>
           <button

@@ -10,6 +10,10 @@ export default async function handler(req, res) {
     if (!['POST', 'PUT', 'DELETE'].includes(req.method)) return res.status(405).json({ success: false });
     if (!requireAdmin(req, res)) return;
     const id = String(req.query?.id || '');
+    if (req.method === 'PUT' && id === 'reorder' && Array.isArray(req.body?.courses)) {
+      await writeContent('courses', req.body.courses);
+      return res.status(200).json({ success: true, data: req.body.courses });
+    }
     if (req.method === 'POST') {
       if (!req.body?.title) return res.status(400).json({ success: false, message: '과정명이 필요합니다.' });
       const course = await normalizeImages({ ...req.body, id: req.body.id || `c_${Date.now()}` });

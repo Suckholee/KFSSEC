@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useAdminEdit } from '../../context/AdminEditContext';
+import EditableText from '../Admin/InlineEditor/EditableText';
 import {
   Shield,
   Building2,
@@ -186,6 +188,11 @@ export default function OrganizationSection() {
     ? businessFields
     : businessFields.filter((f) => f.id === selectedField);
 
+  const { isEditMode, siteDraft } = useAdminEdit();
+  const displayPartners = (siteDraft?.partnerLogos && siteDraft.partnerLogos.length > 0)
+    ? siteDraft.partnerLogos.map(p => p.name)
+    : partners;
+
   return (
     <div className="space-y-8 sm:space-y-10 animate-fadeIn font-sans text-gray-900 break-keep">
       
@@ -198,7 +205,7 @@ export default function OrganizationSection() {
         </span>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight leading-snug">
           {t("사단법인 한국외식창업교육원")}{' '}
-          <span className="text-[#0B3C26] underline decoration-[#C5A059] decoration-4 underline-offset-8">
+          <span className="text-[#1E5D3B] underline decoration-[#85CFAB] decoration-4 underline-offset-8">
             {t("조직 및 주요 업무")}
           </span>
         </h2>
@@ -207,27 +214,27 @@ export default function OrganizationSection() {
         </p>
 
         {/* Universal View Switcher Tabs (Desktop & Mobile) */}
-        <div className="inline-flex items-center p-1.5 bg-stone-100 rounded-2xl border border-stone-200 mt-3 shadow-xs">
+        <div className="inline-flex items-center p-1.5 bg-[#F2FAF5] rounded-2xl border border-[#D0E7DA] mt-3 shadow-xs">
           <button
             onClick={() => setActiveView('hierarchy')}
             className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 ${
               activeView === 'hierarchy'
-                ? 'bg-[#0B3C26] text-white shadow-md'
+                ? 'bg-[#2B7752] text-white shadow-md'
                 : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <Network className="w-4 h-4 text-[#D4AF37]" />
+            <Network className="w-4 h-4 text-[#A7F3D0]" />
             <span>{t("조직 체계도")}</span>
           </button>
           <button
             onClick={() => setActiveView('domains')}
             className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 ${
               activeView === 'domains'
-                ? 'bg-[#0B3C26] text-white shadow-md'
+                ? 'bg-[#2B7752] text-white shadow-md'
                 : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <Layers className="w-4 h-4 text-[#D4AF37]" />
+            <Layers className="w-4 h-4 text-[#A7F3D0]" />
             <span>{t("16대 주요 업무 안내")}</span>
           </button>
         </div>
@@ -239,7 +246,7 @@ export default function OrganizationSection() {
       {activeView === 'hierarchy' && (
         <div className="space-y-8 animate-fadeIn">
           
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl overflow-x-auto no-scrollbar">
+          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#D0E7DA] shadow-xl overflow-x-auto no-scrollbar">
             
             {/* Desktop / Large Screen Diagram Container */}
             <div className="min-w-[980px] max-w-6xl mx-auto space-y-6 pt-2 pb-6">
@@ -247,25 +254,28 @@ export default function OrganizationSection() {
               {/* 1) TOP LEVEL: CHAIRMAN (이사장 : 안형상) */}
               <div className="flex justify-center">
                 <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#0B3C26] via-[#C5A059] to-[#0B3C26] rounded-2xl blur-xs opacity-50 group-hover:opacity-80 transition duration-300 pointer-events-none" />
-                  <div className="relative bg-gradient-to-b from-[#0B3C26] to-[#072417] text-white border-2 border-[#C5A059] rounded-2xl py-4 px-10 text-center shadow-lg min-w-[320px]">
-                    <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest block mb-1">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-[#1B5238] via-[#85CFAB] to-[#34885E] rounded-2xl blur-xs opacity-40 group-hover:opacity-70 transition duration-300 pointer-events-none" />
+                  <div className="relative bg-gradient-to-br from-[#1E5B3C] via-[#2A7550] to-[#388C61] text-white border border-[#85CFAB]/60 rounded-2xl py-4 px-10 text-center shadow-lg min-w-[320px]">
+                    <span className="text-[10px] font-black text-[#A7F3D0] uppercase tracking-widest block mb-1">
                       {t("사단법인 수장")}
                     </span>
                     <h3 className="text-2xl sm:text-3xl font-black text-white tracking-wider">
-                      {t("이사장 : 안형상")}
+                      <EditableText
+                        path="organization.chairman"
+                        value={siteDraft?.organization?.chairman || t("이사장 : 안형상")}
+                      />
                     </h3>
                   </div>
                 </div>
               </div>
 
               {/* Main Vertical Stem */}
-              <div className="w-0.5 h-6 bg-[#0B3C26]/40 mx-auto" />
+              <div className="w-0.5 h-6 bg-[#2B7752]/30 mx-auto" />
 
               {/* Main Horizontal Connecting Spine */}
               <div className="relative">
-                <div className="absolute top-0 left-[6%] right-[6%] h-0.5 bg-[#0B3C26]/40" />
-                <div className="w-0.5 h-4 bg-[#0B3C26]/40 mx-auto" />
+                <div className="absolute top-0 left-[6%] right-[6%] h-0.5 bg-[#2B7752]/30" />
+                <div className="w-0.5 h-4 bg-[#2B7752]/30 mx-auto" />
               </div>
 
               {/* 2) MIDDLE LEVEL: LEFT (자문·협력) + RIGHT (집행·감사) */}
@@ -273,55 +283,77 @@ export default function OrganizationSection() {
                 
                 {/* ---------------- LEFT BLOCK: 4 COLUMNS ---------------- */}
                 <div className="col-span-6 grid grid-cols-4 gap-3 relative">
-                  <div className="absolute -top-6 left-[12.5%] right-[12.5%] h-0.5 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[12.5%] w-0.5 h-6 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[37.5%] w-0.5 h-6 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[62.5%] w-0.5 h-6 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[87.5%] w-0.5 h-6 bg-[#0B3C26]/30" />
+                  <div className="absolute -top-6 left-[12.5%] right-[12.5%] h-0.5 bg-[#2B7752]/25" />
+                  <div className="absolute -top-6 left-[12.5%] w-0.5 h-6 bg-[#2B7752]/25" />
+                  <div className="absolute -top-6 left-[37.5%] w-0.5 h-6 bg-[#2B7752]/25" />
+                  <div className="absolute -top-6 left-[62.5%] w-0.5 h-6 bg-[#2B7752]/25" />
+                  <div className="absolute -top-6 left-[87.5%] w-0.5 h-6 bg-[#2B7752]/25" />
 
                   {/* Col 1: 자문위원회 */}
                   <div className="space-y-2">
-                    <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
+                    <div className="bg-[#2B7752] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
                       {t("자문위원회")}
                     </div>
                     <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-center space-y-3 min-h-[135px] flex flex-col justify-center">
                       <div>
                         <span className="text-[10px] text-stone-500 font-bold block">{t("자문위원")}</span>
-                        <p className="font-black text-sm text-stone-900 mt-0.5">{t("신충섭")}</p>
+                        <p className="font-black text-sm text-stone-900 mt-0.5">
+                          <EditableText
+                            path="organization.advisors.0.name"
+                            value={siteDraft?.organization?.advisors?.[0]?.name || t("신충섭")}
+                          />
+                        </p>
                       </div>
                       <div className="border-t border-stone-200 pt-2">
                         <span className="text-[10px] text-stone-500 font-bold block">{t("자문위원")}</span>
-                        <p className="font-black text-sm text-stone-900 mt-0.5">{t("진익준")}</p>
+                        <p className="font-black text-sm text-stone-900 mt-0.5">
+                          <EditableText
+                            path="organization.advisors.1.name"
+                            value={siteDraft?.organization?.advisors?.[1]?.name || t("진익준")}
+                          />
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   {/* Col 2: 고문단 */}
                   <div className="space-y-2">
-                    <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
+                    <div className="bg-[#2B7752] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
                       {t("고문단")}
                     </div>
                     <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-center space-y-3 min-h-[135px] flex flex-col justify-center">
                       <div>
                         <span className="text-[10px] text-stone-500 font-bold block">{t("고문")}</span>
-                        <p className="font-black text-sm text-stone-900 mt-0.5">{t("이상정")}</p>
+                        <p className="font-black text-sm text-stone-900 mt-0.5">
+                          <EditableText
+                            path="organization.mentors.0.name"
+                            value={siteDraft?.organization?.mentors?.[0]?.name || t("이상정")}
+                          />
+                        </p>
                       </div>
                       <div className="border-t border-stone-200 pt-2">
                         <span className="text-[10px] text-stone-500 font-bold block">{t("고문")}</span>
-                        <p className="font-black text-sm text-stone-900 mt-0.5">{t("조춘봉")}</p>
+                        <p className="font-black text-sm text-stone-900 mt-0.5">
+                          <EditableText
+                            path="organization.mentors.1.name"
+                            value={siteDraft?.organization?.mentors?.[1]?.name || t("조춘봉")}
+                          />
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   {/* Col 3: 협력업체 (10개사) */}
                   <div className="space-y-2">
-                    <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs flex items-center justify-center gap-1">
+                    <div className="bg-[#2B7752] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs flex items-center justify-center gap-1">
                       <span>{t("협력업체")}</span>
-                      <span className="text-[10px] bg-[#C5A059] text-stone-950 font-black px-1.5 py-0.2 rounded-full">10</span>
+                      <span className="text-[10px] bg-[#EAF6EE] text-[#1E5D3B] border border-[#BEDECB] font-black px-1.5 py-0.2 rounded-full">
+                        {displayPartners.length}
+                      </span>
                     </div>
                     <div className="bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-left text-[11px] leading-tight font-bold text-stone-700 space-y-1 max-h-[155px] overflow-y-auto no-scrollbar">
-                      {partners.map((item, idx) => (
-                        <div key={idx} className="flex items-center gap-1 truncate hover:text-[#0B3C26] transition-colors">
+                      {displayPartners.map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-1 truncate hover:text-[#2B7752] transition-colors">
                           <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600 shrink-0" />
                           <span className="truncate">{item}</span>
                         </div>
@@ -331,15 +363,21 @@ export default function OrganizationSection() {
 
                   {/* Col 4: 공식 언론사 */}
                   <div className="space-y-2">
-                    <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
+                    <div className="bg-[#2B7752] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
                       {t("언론사")}
                     </div>
                     <div className="bg-stone-50 border border-stone-200 rounded-xl p-3 text-center min-h-[135px] flex flex-col items-center justify-center space-y-1">
                       <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                        {t("공식 협력 언론")}
+                        <EditableText
+                          path="organization.press.badge"
+                          value={siteDraft?.organization?.press?.badge || t("공식 협력 언론")}
+                        />
                       </span>
                       <p className="font-black text-sm text-stone-900 leading-snug pt-1">
-                        {t("글로벌")}<br />{t("외식정보")}
+                        <EditableText
+                          path="organization.press.name"
+                          value={siteDraft?.organization?.press?.name || "글로벌 외식정보"}
+                        />
                       </p>
                     </div>
                   </div>
@@ -348,36 +386,51 @@ export default function OrganizationSection() {
 
                 {/* ---------------- RIGHT BLOCK: 2 COLUMNS (사무국 제외 및 명예임원/감사 재편) ---------------- */}
                 <div className="col-span-6 grid grid-cols-2 gap-4 relative">
-                  <div className="absolute -top-6 left-[25%] right-[25%] h-0.5 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[25%] w-0.5 h-6 bg-[#0B3C26]/30" />
-                  <div className="absolute -top-6 left-[75%] w-0.5 h-6 bg-[#0B3C26]/30" />
+                  <div className="absolute -top-6 left-[25%] right-[25%] h-0.5 bg-[#2B7752]/25" />
+                  <div className="absolute -top-6 left-[25%] w-0.5 h-6 bg-[#2B7752]/25" />
+                  <div className="absolute -top-6 left-[75%] w-0.5 h-6 bg-[#2B7752]/25" />
 
                   {/* Col 1: 명예 임원진 */}
                   <div className="space-y-2">
-                    <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
+                    <div className="bg-[#2B7752] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs">
                       {t("명예 임원")}
                     </div>
                     <div className="space-y-1.5">
                       <div className="bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-center">
                         <span className="text-[10px] text-stone-500 font-bold block">{t("명예 이사장")}</span>
-                        <span className="text-sm font-black text-stone-900">{t("이상정")}</span>
+                        <span className="text-sm font-black text-stone-900">
+                          <EditableText
+                            path="organization.honorary.0.name"
+                            value={siteDraft?.organization?.honorary?.[0]?.name || t("이상정")}
+                          />
+                        </span>
                       </div>
                       <div className="bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-center">
                         <span className="text-[10px] text-stone-500 font-bold block">{t("명예 부이사장")}</span>
-                        <span className="text-sm font-black text-stone-900">{t("주정자")}</span>
+                        <span className="text-sm font-black text-stone-900">
+                          <EditableText
+                            path="organization.honorary.1.name"
+                            value={siteDraft?.organization?.honorary?.[1]?.name || t("주정자")}
+                          />
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   {/* Col 2: 감사 기구 */}
                   <div className="space-y-2">
-                    <div className="bg-[#0B3C26] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs flex items-center justify-center gap-1">
-                      <Shield className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    <div className="bg-[#2B7752] text-white rounded-xl text-center py-2 px-1 text-xs sm:text-sm font-black shadow-xs flex items-center justify-center gap-1">
+                      <Shield className="w-3.5 h-3.5 text-[#A7F3D0]" />
                       <span>{t("감사")}</span>
                     </div>
                     <div className="bg-stone-50 border border-stone-200 rounded-xl py-6 px-3 text-center min-h-[135px] flex flex-col justify-center">
                       <span className="text-xs font-bold text-stone-500 block">{t("공인 감사")}</span>
-                      <span className="text-lg font-black text-[#0B3C26] mt-1">{t("권영복")}</span>
+                      <span className="text-lg font-black text-[#1E5D3B] mt-1">
+                        <EditableText
+                          path="organization.auditor.name"
+                          value={siteDraft?.organization?.auditor?.name || t("권영복")}
+                        />
+                      </span>
                     </div>
                   </div>
 
@@ -386,21 +439,21 @@ export default function OrganizationSection() {
               </div>
 
               {/* Main Vertical Connecting Line to 4 Fields */}
-              <div className="w-0.5 h-8 bg-[#0B3C26]/40 mx-auto" />
+              <div className="w-0.5 h-8 bg-[#2B7752]/30 mx-auto" />
 
               {/* 3) LOWER LEVEL: 4 MAJOR BUSINESS FIELDS (16 DIVISIONS) */}
               <div className="relative pt-2">
                 <div className="text-center mb-4">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-stone-100 text-[#0B3C26] text-xs font-black rounded-full border border-stone-300">
-                    <Award className="w-3.5 h-3.5 text-[#C5A059]" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#F2FAF5] text-[#1E5D3B] text-xs font-black rounded-full border border-[#D0E7DA]">
+                    <Award className="w-3.5 h-3.5 text-[#2B7752]" />
                     <span>{t("교육원 4대 주요 사업 분야 (16대 실무 부서)")}</span>
                   </span>
                 </div>
 
                 {/* Connecting horizontal bar across 4 pillars */}
                 <div className="relative">
-                  <div className="absolute -top-3 left-[12.5%] right-[12.5%] h-0.5 bg-[#0B3C26]/40" />
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-[#0B3C26]/40" />
+                  <div className="absolute -top-3 left-[12.5%] right-[12.5%] h-0.5 bg-[#2B7752]/30" />
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-[#2B7752]/30" />
                 </div>
 
                 {/* 4 Pillars Grid */}
@@ -408,7 +461,7 @@ export default function OrganizationSection() {
                   {businessFields.map((field, fIdx) => (
                     <div
                       key={fIdx}
-                      className="bg-stone-50/80 rounded-2xl p-3.5 border border-stone-200/90 shadow-xs hover:border-[#0B3C26] transition-all space-y-2.5"
+                      className="bg-stone-50/80 rounded-2xl p-3.5 border border-stone-200/90 shadow-xs hover:border-[#34885E] transition-all space-y-2.5"
                     >
                       {/* Pillar Header */}
                       <div className="bg-white rounded-xl p-2.5 border border-stone-200 shadow-2xs text-center">
@@ -416,7 +469,10 @@ export default function OrganizationSection() {
                           {t(field.badge)}
                         </span>
                         <h4 className="font-black text-xs sm:text-sm text-stone-900 truncate">
-                          {t(field.title)}
+                          <EditableText
+                            path={`organization.fields.${fIdx}.title`}
+                            value={siteDraft?.organization?.fields?.[fIdx]?.title || field.title}
+                          />
                         </h4>
                       </div>
 
@@ -430,11 +486,14 @@ export default function OrganizationSection() {
                               className="bg-white rounded-xl px-2.5 py-2 border border-stone-200/80 flex items-center justify-between hover:bg-emerald-50/50 hover:border-emerald-300 transition-colors"
                             >
                               <div className="flex items-center gap-2 min-w-0">
-                                <div className="w-6 h-6 rounded-lg bg-stone-100 flex items-center justify-center shrink-0 text-[#0B3C26]">
+                                <div className="w-6 h-6 rounded-lg bg-[#F2FAF5] flex items-center justify-center shrink-0 text-[#2B7752]">
                                   <ItemIcon className="w-3.5 h-3.5" />
                                 </div>
                                 <span className="text-xs font-black text-stone-900 truncate">
-                                  {t(item.name)}
+                                  <EditableText
+                                    path={`organization.fields.${fIdx}.items.${iIdx}.name`}
+                                    value={siteDraft?.organization?.fields?.[fIdx]?.items?.[iIdx]?.name || item.name}
+                                  />
                                 </span>
                               </div>
                               <span className="text-[10px] text-stone-400 font-bold shrink-0">
@@ -456,7 +515,7 @@ export default function OrganizationSection() {
             <div className="mt-8 border-t border-stone-200 pt-6 text-center">
               <button
                 onClick={() => setShowRaw16Columns(!showRaw16Columns)}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-600 hover:text-[#0B3C26] bg-stone-100 px-4 py-2 rounded-xl transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-600 hover:text-[#2B7752] bg-stone-100 px-4 py-2 rounded-xl transition-all cursor-pointer"
               >
                 <span>{showRaw16Columns ? t("원본 16열 펼침 보기 접기") : t("원본 16열 펼침 다이어그램 보기")}</span>
                 {showRaw16Columns ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -503,7 +562,7 @@ export default function OrganizationSection() {
               onClick={() => setSelectedField('all')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
                 selectedField === 'all'
-                  ? 'bg-[#0B3C26] text-white shadow-xs'
+                  ? 'bg-[#2B7752] text-white shadow-xs'
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
@@ -515,7 +574,7 @@ export default function OrganizationSection() {
                 onClick={() => setSelectedField(field.id)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
                   selectedField === field.id
-                    ? 'bg-[#0B3C26] text-white shadow-xs'
+                    ? 'bg-[#2B7752] text-white shadow-xs'
                     : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                 }`}
               >
@@ -557,11 +616,11 @@ export default function OrganizationSection() {
                     return (
                       <div
                         key={iIdx}
-                        className="bg-stone-50 hover:bg-white rounded-2xl p-4 border border-stone-200 hover:border-[#C5A059] hover:shadow-md transition-all duration-200 flex flex-col justify-between space-y-3 group"
+                        className="bg-stone-50 hover:bg-white rounded-2xl p-4 border border-stone-200 hover:border-[#85CFAB] hover:shadow-md transition-all duration-200 flex flex-col justify-between space-y-3 group"
                       >
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-[#0B3C26] shadow-2xs group-hover:scale-105 group-hover:bg-[#0B3C26] group-hover:text-white transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-[#2B7752] shadow-2xs group-hover:scale-105 group-hover:bg-[#2B7752] group-hover:text-white transition-all">
                               <ItemIcon className="w-5 h-5" />
                             </div>
                             <span className="text-[11px] font-black text-stone-400">
@@ -570,7 +629,7 @@ export default function OrganizationSection() {
                           </div>
 
                           <div>
-                            <h4 className="font-black text-sm text-stone-900 group-hover:text-[#0B3C26] transition-colors">
+                            <h4 className="font-black text-sm text-stone-900 group-hover:text-[#2B7752] transition-colors">
                               {t(item.name)}
                             </h4>
                           </div>
@@ -582,7 +641,7 @@ export default function OrganizationSection() {
 
                         <div className="pt-2 border-t border-stone-200/60 flex items-center justify-between text-[11px] text-stone-400 font-bold">
                           <span>{t("전문 실무")}</span>
-                          <span className="text-[#0B3C26] font-black">ACTIVE</span>
+                          <span className="text-[#2B7752] font-black">ACTIVE</span>
                         </div>
                       </div>
                     );

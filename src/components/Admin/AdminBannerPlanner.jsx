@@ -617,7 +617,7 @@ export default function AdminBannerPlanner({
                       {currentSlide.subtitle}
                     </p>
                     {currentSlide.buttonText && (
-                      <span className="mt-0.5 px-3 py-1 bg-gradient-to-r from-[#0B3C26] to-[#146340] text-white font-black text-[10px] rounded-lg border border-[#C5A059] shadow-xs">
+                      <span className="mt-0.5 px-3 py-1 bg-gradient-to-r from-[#2B7752] to-[#146340] text-white font-black text-[10px] rounded-lg border border-[#C5A059] shadow-xs">
                         {currentSlide.buttonText} &gt;
                       </span>
                     )}

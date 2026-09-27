@@ -226,9 +226,9 @@ export async function renderHeroBannerCanvas({
     }
     // If background image fails, draw luxury gradient background
     const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    bgGrad.addColorStop(0, '#050A07');
-    bgGrad.addColorStop(0.5, '#0B3C26');
-    bgGrad.addColorStop(1, '#020C06');
+    bgGrad.addColorStop(0, '#0f291c');
+    bgGrad.addColorStop(0.5, '#1E5D3B');
+    bgGrad.addColorStop(1, '#0c1f15');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
@@ -313,13 +313,13 @@ export async function renderHeroBannerCanvas({
   }
   ctx.restore();
 
-  // 7. Subtle Gold Bottom Border Rule
+  // 7. Subtle Sage Bottom Border Rule
   ctx.save();
   const ruleGrad = ctx.createLinearGradient(0, canvas.height - 4, canvas.width, canvas.height);
-  ruleGrad.addColorStop(0, '#0B3C26');
-  ruleGrad.addColorStop(0.3, '#C5A059');
-  ruleGrad.addColorStop(0.7, '#C5A059');
-  ruleGrad.addColorStop(1, '#0B3C26');
+  ruleGrad.addColorStop(0, '#1E5D3B');
+  ruleGrad.addColorStop(0.3, '#85CFAB');
+  ruleGrad.addColorStop(0.7, '#85CFAB');
+  ruleGrad.addColorStop(1, '#1E5D3B');
   ctx.fillStyle = ruleGrad;
   ctx.fillRect(0, canvas.height - 4, canvas.width, 4);
   ctx.restore();

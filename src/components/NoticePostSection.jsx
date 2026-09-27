@@ -14,14 +14,14 @@ export default function NoticePostSection({ onScrollNext, postsList = [] }) {
   return (
     <section
       id="notice-section"
-      className="relative py-12 lg:py-16 bg-[#FAF8F5] text-gray-900 min-h-[460px] flex flex-col justify-center font-sans border-b border-stone-200/80"
+      className="relative py-12 lg:py-16 bg-[#FAF8F5] text-gray-900 min-h-[460px] flex flex-col justify-center font-sans border-b border-[#E7E2D8]"
     >
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-[1520px] mx-auto space-y-6">
         {/* Header Badge Bar */}
-        <div className="border-b border-stone-200/80 pb-4 flex items-center justify-between">
+        <div className="border-b border-stone-200 pb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <span className="px-3 py-1 bg-[#0B3C26]/10 text-[#0B3C26] border border-[#0B3C26]/20 text-xs font-black rounded-full flex items-center gap-1.5 shadow-xs">
-              <Bell className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span className="px-3 py-1 bg-[#F0FDF4] text-[#15803D] border border-[#DCFCE7] text-xs font-black rounded-full flex items-center gap-1.5 shadow-xs">
+              <Bell className="w-3.5 h-3.5 text-[#15803D]" />
               <span>{t("공지사항 & 소식")}</span>
             </span>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-gray-900 tracking-tight">
@@ -36,9 +36,9 @@ export default function NoticePostSection({ onScrollNext, postsList = [] }) {
                 key={idx}
                 onClick={() => setActiveSlide(idx)}
                 aria-label={`${t('교육원 주요 소식')} ${idx + 1}`}
-                className={`w-3.5 h-3.5 rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none ${
+                className={`w-3.5 h-3.5 rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none ${
                   activeSlide === idx
-                    ? 'bg-[#0B3C26] scale-125 shadow-xs'
+                    ? 'bg-[#F97316] scale-125 shadow-xs'
                     : 'bg-stone-300 hover:bg-stone-400'
                 }`}
               />
@@ -47,23 +47,23 @@ export default function NoticePostSection({ onScrollNext, postsList = [] }) {
         </div>
 
         {/* Card Content View */}
-        <div className="bg-white rounded-3xl border border-stone-200/90 p-5 sm:p-7 lg:p-8 shadow-md hover:shadow-lg transition-all flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 overflow-hidden">
+        <div className="bg-white rounded-3xl border border-stone-200 p-5 sm:p-7 lg:p-8 shadow-xs hover:shadow-md transition-all flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 overflow-hidden">
           {/* Left Photo Container */}
-          <div className="w-full md:w-1/2 relative h-56 sm:h-72 rounded-2xl overflow-hidden shadow-sm border border-stone-200 bg-stone-100 group shrink-0">
+          <div className="w-full md:w-1/2 relative h-56 sm:h-72 rounded-2xl overflow-hidden shadow-xs border border-stone-200 bg-[#F0FDF4] group shrink-0">
             <img
               src={currentPost.image}
               alt={t(currentPost.title)}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div className="absolute top-3 left-3 bg-[#0B3C26]/90 backdrop-blur-md text-[#D4AF37] font-black text-xs px-3 py-1 rounded-lg border border-[#C5A059]/40 shadow-xs">
+            <div className="absolute top-3 left-3 bg-[#14532D]/90 backdrop-blur-md text-white font-black text-xs px-3 py-1 rounded-lg border border-[#4ADE80]/30 shadow-xs">
               {t("사)한국외식창업교육원 공지")}
             </div>
           </div>
 
           {/* Right Info Text & Slide Title */}
           <div className="w-full md:w-1/2 space-y-4 md:pl-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#0B3C26]/10 text-[#0B3C26] border border-[#0B3C26]/20 text-xs font-black">
-              <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#F0FDF4] text-[#15803D] border border-[#DCFCE7] text-xs font-black">
+              <Calendar className="w-3.5 h-3.5 text-[#15803D]" />
               <span>{t(currentPost.date)}</span>
             </div>
 
@@ -78,11 +78,11 @@ export default function NoticePostSection({ onScrollNext, postsList = [] }) {
             <div className="pt-2">
               <button
                 onClick={() => alert(t(currentPost.title))}
-                className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white text-xs sm:text-sm font-black rounded-xl shadow-md transition-all cursor-pointer inline-flex items-center gap-2 border border-[#C5A059] min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#0B3C26] focus-visible:outline-none"
+                className="px-6 py-3 bg-gradient-to-r from-[#EA580C] to-[#F97316] hover:from-[#C2410C] hover:to-[#EA580C] text-white text-xs sm:text-sm font-black rounded-xl shadow-md transition-all cursor-pointer inline-flex items-center gap-2 border border-orange-300/40 min-h-[44px] focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:outline-none"
                 aria-label={`${t(currentPost.title)} — ${t("게시글 전문 읽기")}`}
               >
                 <span>{t("게시글 전문 읽기")}</span>
-                <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+                <ChevronRight className="w-4 h-4 text-white" />
               </button>
             </div>
           </div>

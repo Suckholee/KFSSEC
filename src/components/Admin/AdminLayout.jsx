@@ -555,6 +555,7 @@ export default function AdminLayout({
       case 'community':
         return [
           { id: 'notice_list', label: '📢 공지사항 & 게시글 관리' },
+          { id: 'faq_list', label: '❓ 주요문의 FAQ (13문 13답)' },
         ];
       case 'settings':
         return [
@@ -1241,7 +1242,7 @@ export default function AdminLayout({
                                     issueDate: new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }),
                                   });
                                 }}
-                                className="px-2.5 py-1 bg-[#0B3C26] hover:bg-[#072819] text-white text-[11px] font-black rounded-lg transition-colors cursor-pointer border border-[#C5A059]"
+                                className="px-2.5 py-1 bg-[#2B7752] hover:bg-[#072819] text-white text-[11px] font-black rounded-lg transition-colors cursor-pointer border border-[#C5A059]"
                               >
                                 📜 수료증
                               </button>

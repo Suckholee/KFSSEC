@@ -5,9 +5,12 @@ import { Rocket, Shield, HelpCircle, CheckSquare, ChevronRight, ArrowLeft, FileT
 import ScrollReveal from '../common/ScrollReveal';
 import JinIkjunProfileSection from './JinIkjunProfileSection';
 import SectorBlock from '../Admin/InlineEditor/SectorBlock';
+import { useAdminEdit } from '../../context/AdminEditContext';
+import EditableText from '../Admin/InlineEditor/EditableText';
 
 export default function ConsultingPage({ initialSubTab = 'education', initialTab = 'education', onGoToInquiry }) {
   const { tr, language } = useLanguage();
+  const { isEditMode, siteDraft } = useAdminEdit();
   const resolveTab = value => value === 'apply' ? 'consulting' : ['education', 'consulting', 'professor', 'youth', 'readiness'].includes(value) ? value : 'education';
   const defaultSub = resolveTab(initialSubTab || initialTab);
   const [activeTab, setActiveTab] = useState(defaultSub);
@@ -67,21 +70,28 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
             {activeTab === 'education' && (
               <SectorBlock sectorId="S-CON-01" sectorName="외식 창업 교육 과정 안내" pageKey="consulting">
                 <div className="space-y-8 animate-fadeIn w-full">
-                  <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#0B3C26] shadow-xl space-y-8 w-full">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#0B3C26] pb-4">
+                  <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#D0E7DA] shadow-sm space-y-8 w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#BEDECB] pb-4">
                       <div>
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#0B3C26] text-xs font-black mb-1.5">
-                          <Rocket className="w-3.5 h-3.5 text-[#C5A059]" />
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F2FAF5] border border-[#D0E7DA] text-[#1E5D3B] text-xs font-black mb-1.5">
+                          <Rocket className="w-3.5 h-3.5 text-[#2B7752]" />
                           <span>ENTREPRENEURSHIP CURRICULUM</span>
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                          {tr("외식 창업 전문 교육 프로그램")}
+                          <EditableText
+                            path="consultingPage.education.title"
+                            value={siteDraft?.consultingPage?.education?.title || tr("외식 창업 전문 교육 프로그램")}
+                          />
                         </h3>
                         <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">
-                          {tr("청년 창업부터 중장년 은퇴 창업까지, 정부지원금 연계와 실전 조리 실습이 결합된 맞춤형 교육 과정입니다.")}
+                          <EditableText
+                            path="consultingPage.education.subtitle"
+                            multiline
+                            value={siteDraft?.consultingPage?.education?.subtitle || tr("청년 창업부터 중장년 은퇴 창업까지, 정부지원금 연계와 실전 조리 실습이 결합된 맞춤형 교육 과정입니다.")}
+                          />
                         </p>
                       </div>
-                      <span className="text-xs font-black text-white bg-[#0B3C26] px-4 py-2 rounded-2xl shrink-0 self-start sm:self-auto shadow-md">
+                      <span className="text-xs font-black text-white bg-[#2B7752] px-4 py-2 rounded-2xl shrink-0 self-start sm:self-auto shadow-sm">
                         상시 모집 중
                       </span>
                     </div>
@@ -90,36 +100,51 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                       
                       {/* Card 1: 청년 창업 교육 */}
-                      <div className="bg-stone-50 rounded-2xl p-6 border-2 border-stone-200 hover:border-[#0B3C26] space-y-4 shadow-xs hover:shadow-md transition-all">
+                      <div className="bg-stone-50 rounded-2xl p-6 border-2 border-stone-200 hover:border-[#34885E] space-y-4 shadow-xs hover:shadow-md transition-all">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
                             만 39세 이하 청년 특화
                           </span>
                           <span className="text-xs font-bold text-gray-400">정부지원금 연계</span>
                         </div>
-                        <h4 className="text-xl font-black text-gray-900">{tr("청년 외식창업 사관학교")}</h4>
+                        <h4 className="text-xl font-black text-gray-900">
+                          <EditableText
+                            path="consultingPage.education.card1.title"
+                            value={siteDraft?.consultingPage?.education?.card1?.title || tr("청년 외식창업 사관학교")}
+                          />
+                        </h4>
                         <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
-                          {tr("소자본 트렌디 외식 창업, 배달/밀키트 기획, 소상공인 정책자금 신청을 위한 사업계획서 1:1 코칭을 제공합니다.")}
+                          <EditableText
+                            path="consultingPage.education.card1.desc"
+                            multiline
+                            value={siteDraft?.consultingPage?.education?.card1?.desc || tr("소자본 트렌디 외식 창업, 배달/밀키트 기획, 소상공인 정책자금 신청을 위한 사업계획서 1:1 코칭을 제공합니다.")}
+                          />
                         </p>
                         
                         <ul className="space-y-1.5 text-xs text-gray-700 font-bold border-t border-stone-200 pt-3">
                           <li className="flex items-center gap-2">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26]" />
-                            <span>중소벤처기업부 저금리 정책자금 코칭</span>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752]" />
+                            <EditableText
+                              path="consultingPage.education.card1.feat1"
+                              value={siteDraft?.consultingPage?.education?.card1?.feat1 || "중소벤처기업부 저금리 정책자금 코칭"}
+                            />
                           </li>
                           <li className="flex items-center gap-2">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#0B3C26]" />
-                            <span>SNS 마케팅 & 네이버 플레이스 공략법</span>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752]" />
+                            <EditableText
+                              path="consultingPage.education.card1.feat2"
+                              value={siteDraft?.consultingPage?.education?.card1?.feat2 || "SNS 마케팅 & 네이버 플레이스 공략법"}
+                            />
                           </li>
                         </ul>
 
                         <div className="pt-2">
                           <button
                             onClick={() => handleApplyClick('청년 창업 교육')}
-                            className="w-full py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            className="w-full py-3 bg-[#2B7752] hover:bg-[#236344] text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                           >
                             <span>{tr("청년 창업 교육 문의하기")}</span>
-                            <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+                            <ChevronRight className="w-4 h-4 text-[#A7F3D0]" />
                           </button>
                         </div>
                       </div>
@@ -132,19 +157,34 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                           </span>
                           <span className="text-xs font-bold text-gray-400">업종 전환 / 시니어</span>
                         </div>
-                        <h4 className="text-xl font-black text-gray-900">{tr("실전 외식경영 & 업종전환 마스터")}</h4>
+                        <h4 className="text-xl font-black text-gray-900">
+                          <EditableText
+                            path="consultingPage.education.card2.title"
+                            value={siteDraft?.consultingPage?.education?.card2?.title || tr("실전 외식경영 & 업종전환 마스터")}
+                          />
+                        </h4>
                         <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
-                          {tr("기존 매장 매출 부진 개선, 100년 전통 발효 소스 전수, 안정적 오토 매장 구축 등 실전 성공 솔루션을 전수합니다.")}
+                          <EditableText
+                            path="consultingPage.education.card2.desc"
+                            multiline
+                            value={siteDraft?.consultingPage?.education?.card2?.desc || tr("기존 매장 매출 부진 개선, 100년 전통 발효 소스 전수, 안정적 오토 매장 구축 등 실전 성공 솔루션을 전수합니다.")}
+                          />
                         </p>
 
                         <ul className="space-y-1.5 text-xs text-gray-700 font-bold border-t border-stone-200 pt-3">
                           <li className="flex items-center gap-2">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A059]" />
-                            <span>조리명장 시그니처 레시피 1:1 도제식 전수</span>
+                            <EditableText
+                              path="consultingPage.education.card2.feat1"
+                              value={siteDraft?.consultingPage?.education?.card2?.feat1 || "조리명장 시그니처 레시피 1:1 도제식 전수"}
+                            />
                           </li>
                           <li className="flex items-center gap-2">
                             <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A059]" />
-                            <span>식자재 원가 절감 & 주방 동선 효율화</span>
+                            <EditableText
+                              path="consultingPage.education.card2.feat2"
+                              value={siteDraft?.consultingPage?.education?.card2?.feat2 || "식자재 원가 절감 & 주방 동선 효율화"}
+                            />
                           </li>
                         </ul>
 
@@ -169,19 +209,26 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
             {activeTab === 'consulting' && (
               <SectorBlock sectorId="S-CON-02" sectorName="1:1 맞춤 외식 창업 컨설팅" pageKey="consulting">
                 <div className="space-y-8 animate-fadeIn w-full">
-                  <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#0B3C26] shadow-xl space-y-8 w-full">
+                  <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#D0E7DA] shadow-sm space-y-8 w-full">
                     
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#0B3C26] pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#BEDECB] pb-4">
                       <div>
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#0B3C26] text-xs font-black mb-1.5">
-                          <Shield className="w-3.5 h-3.5 text-[#C5A059]" />
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F2FAF5] border border-[#D0E7DA] text-[#1E5D3B] text-xs font-black mb-1.5">
+                          <Shield className="w-3.5 h-3.5 text-[#2B7752]" />
                           <span>END-TO-END STARTUP CONSULTING</span>
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                          {tr("외식 창업 6단계 토탈 컨설팅 로드맵")}
+                          <EditableText
+                            path="consultingPage.roadmap.title"
+                            value={siteDraft?.consultingPage?.roadmap?.title || tr("외식 창업 6단계 토탈 컨설팅 로드맵")}
+                          />
                         </h3>
                         <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">
-                          {tr("진익준 교수, 조리명장, 주방뱅크 등 최고의 전문가 집단이 개설 전 과정을 밀착 동행합니다.")}
+                          <EditableText
+                            path="consultingPage.roadmap.subtitle"
+                            multiline
+                            value={siteDraft?.consultingPage?.roadmap?.subtitle || tr("진익준 교수, 조리명장, 주방뱅크 등 최고의 전문가 집단이 개설 전 과정을 밀착 동행합니다.")}
+                          />
                         </p>
                       </div>
                     </div>
@@ -220,33 +267,47 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                           desc: '네이버 플레이스 1페이지 노출, 인스타그램 릴스 마케팅, 오픈 당일 현장 밀착 감독 및 사후 모니터링을 보장합니다.',
                         },
                       ].map((item, idx) => (
-                        <div key={idx} className="bg-stone-50 p-5 rounded-2xl border border-stone-200 hover:border-[#0B3C26] transition-all space-y-2 group">
-                          <span className="text-[11px] font-black text-white bg-[#0B3C26] px-2.5 py-0.5 rounded-md group-hover:bg-[#C5A059] transition-colors">
+                        <div key={idx} className="bg-stone-50 p-5 rounded-2xl border border-stone-200 hover:border-[#34885E] transition-all space-y-2 group">
+                          <span className="text-[11px] font-black text-white bg-[#2B7752] px-2.5 py-0.5 rounded-md group-hover:bg-[#34885E] transition-colors">
                             {item.step}
                           </span>
-                          <h4 className="font-black text-gray-900 text-base group-hover:text-[#0B3C26] transition-colors">
-                            {tr(item.title)}
+                          <h4 className="font-black text-gray-900 text-base group-hover:text-[#2B7752] transition-colors">
+                            <EditableText
+                              path={`consultingPage.roadmap.steps.${idx}.title`}
+                              value={siteDraft?.consultingPage?.roadmap?.steps?.[idx]?.title || tr(item.title)}
+                            />
                           </h4>
                           <p className="text-xs text-gray-600 font-medium leading-relaxed">
-                            {tr(item.desc)}
+                            <EditableText
+                              path={`consultingPage.roadmap.steps.${idx}.desc`}
+                              multiline
+                              value={siteDraft?.consultingPage?.roadmap?.steps?.[idx]?.desc || tr(item.desc)}
+                            />
                           </p>
                         </div>
                       ))}
                     </div>
 
                     {/* CTA Banner */}
-                    <div className="bg-emerald-50/80 rounded-2xl p-6 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="bg-[#F2FAF5] rounded-2xl p-6 border border-[#D0E7DA] flex flex-col sm:flex-row items-center justify-between gap-4">
                       <div>
-                        <h4 className="font-black text-base text-[#0B3C26]">
-                          {tr("내 매장 맞춤형 1:1 창업 컨설팅 무료 상담 받기")}
+                        <h4 className="font-black text-base text-[#1E5D3B]">
+                          <EditableText
+                            path="consultingPage.roadmap.bannerTitle"
+                            value={siteDraft?.consultingPage?.roadmap?.bannerTitle || tr("내 매장 맞춤형 1:1 창업 컨설팅 무료 상담 받기")}
+                          />
                         </h4>
                         <p className="text-xs text-stone-600 font-medium mt-0.5">
-                          {tr("전담 전문위원이 24시간 이내에 입지 및 메뉴 진단 제안서를 준비하여 연락드립니다.")}
+                          <EditableText
+                            path="consultingPage.roadmap.bannerSubtitle"
+                            multiline
+                            value={siteDraft?.consultingPage?.roadmap?.bannerSubtitle || tr("전담 전문위원이 24시간 이내에 입지 및 메뉴 진단 제안서를 준비하여 연락드립니다.")}
+                          />
                         </p>
                       </div>
                       <button
                         onClick={() => handleApplyClick('1:1 맞춤형 창업 컨설팅')}
-                        className="px-6 py-3 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer whitespace-nowrap"
+                        className="px-6 py-3 bg-[#2B7752] hover:bg-[#236344] text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all cursor-pointer whitespace-nowrap"
                       >
                         {tr("1:1 컨설팅 문의하기")}
                       </button>
@@ -268,19 +329,26 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
             {activeTab === 'youth' && (
               <SectorBlock sectorId="S-CON-04" sectorName="청년 창업 및 인큐베이팅 상담" pageKey="consulting">
                 <div className="space-y-8 animate-fadeIn w-full">
-                  <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#0B3C26] shadow-xl space-y-8 w-full">
+                  <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#D0E7DA] shadow-sm space-y-8 w-full">
                     
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#0B3C26] pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#BEDECB] pb-4">
                       <div>
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C5A059]/20 border border-[#C5A059]/40 text-[#0B3C26] text-xs font-black mb-1.5">
-                          <Rocket className="w-3.5 h-3.5 text-[#C5A059]" />
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F2FAF5] border border-[#D0E7DA] text-[#1E5D3B] text-xs font-black mb-1.5">
+                          <Rocket className="w-3.5 h-3.5 text-[#2B7752]" />
                           <span>YOUTH ENTREPRENEUR INCUBATING</span>
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                          {tr("청년 외식창업 집중 인큐베이팅")}
+                          <EditableText
+                            path="consultingPage.youth.title"
+                            value={siteDraft?.consultingPage?.youth?.title || tr("청년 외식창업 집중 인큐베이팅")}
+                          />
                         </h3>
                         <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">
-                          {tr("만 39세 이하 청년 창업인을 위한 정부 정책자금, 엔젤투자, 청년몰 입점 및 1:1 멘토링 상담입니다.")}
+                          <EditableText
+                            path="consultingPage.youth.subtitle"
+                            multiline
+                            value={siteDraft?.consultingPage?.youth?.subtitle || tr("만 39세 이하 청년 창업인을 위한 정부 정책자금, 엔젤투자, 청년몰 입점 및 1:1 멘토링 상담입니다.")}
+                          />
                         </p>
                       </div>
                     </div>
@@ -288,28 +356,61 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                       <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-2">
                         <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">지원 01</span>
-                        <h4 className="font-black text-sm text-gray-900">청년 소상공인 정책자금</h4>
-                        <p className="text-xs text-gray-600 font-medium leading-relaxed">최대 1억원 저금리 정책 대출 사업계획서 1:1 첨삭 및 교육원 수료증 발급</p>
+                        <h4 className="font-black text-sm text-gray-900">
+                          <EditableText
+                            path="consultingPage.youth.card0.title"
+                            value={siteDraft?.consultingPage?.youth?.card0?.title || "청년 소상공인 정책자금"}
+                          />
+                        </h4>
+                        <p className="text-xs text-gray-600 font-medium leading-relaxed">
+                          <EditableText
+                            path="consultingPage.youth.card0.desc"
+                            multiline
+                            value={siteDraft?.consultingPage?.youth?.card0?.desc || "최대 1억원 저금리 정책 대출 사업계획서 1:1 첨삭 및 교육원 수료증 발급"}
+                          />
+                        </p>
                       </div>
                       <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-2">
                         <span className="text-xs font-black text-amber-800 bg-amber-100 px-2 py-0.5 rounded">지원 02</span>
-                        <h4 className="font-black text-sm text-gray-900">공유주방 & 팝업스토어</h4>
-                        <p className="text-xs text-gray-600 font-medium leading-relaxed">창업 전 시제품 메뉴 시장성 검증을 위한 테스트 베드 및 조리 시설 무상 지원</p>
+                        <h4 className="font-black text-sm text-gray-900">
+                          <EditableText
+                            path="consultingPage.youth.card1.title"
+                            value={siteDraft?.consultingPage?.youth?.card1?.title || "공유주방 & 팝업스토어"}
+                          />
+                        </h4>
+                        <p className="text-xs text-gray-600 font-medium leading-relaxed">
+                          <EditableText
+                            path="consultingPage.youth.card1.desc"
+                            multiline
+                            value={siteDraft?.consultingPage?.youth?.card1?.desc || "창업 전 시제품 메뉴 시장성 검증을 위한 테스트 베드 및 조리 시설 무상 지원"}
+                          />
+                        </p>
                       </div>
                       <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-2">
                         <span className="text-xs font-black text-purple-800 bg-purple-100 px-2 py-0.5 rounded">지원 03</span>
-                        <h4 className="font-black text-sm text-gray-900">조리명장 1:1 전담 멘토링</h4>
-                        <p className="text-xs text-gray-600 font-medium leading-relaxed">초보 청년 창업자가 겪는 주방 운영, 발주, 위생, 컴플레인 해결 전담 코칭</p>
+                        <h4 className="font-black text-sm text-gray-900">
+                          <EditableText
+                            path="consultingPage.youth.card2.title"
+                            value={siteDraft?.consultingPage?.youth?.card2?.title || "조리명장 1:1 전담 멘토링"}
+                          />
+                        </h4>
+                        <p className="text-xs text-gray-600 font-medium leading-relaxed">
+                          <EditableText
+                            path="consultingPage.youth.card2.desc"
+                            multiline
+                            value={siteDraft?.consultingPage?.youth?.card2?.desc || "초보 청년 창업자가 겪는 주방 운영, 발주, 위생, 컴플레인 해결 전담 코칭"}
+                          />
+                        </p>
                       </div>
                     </div>
 
                     <div className="pt-2">
                       <button
                         onClick={() => handleApplyClick('청년 창업 1:1 심층 상담')}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-[#2B7752] hover:bg-[#236344] text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <span>{tr("청년 창업 상담 문의하기")}</span>
-                        <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
+                        <ChevronRight className="w-4 h-4 text-[#A7F3D0]" />
                       </button>
                     </div>
 
@@ -322,13 +423,20 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
             {activeTab === 'readiness' && (
               <SectorBlock sectorId="S-CON-05" sectorName="창업 준비 자가진단 및 가이드" pageKey="consulting">
                 <div className="space-y-8 animate-fadeIn w-full">
-                  <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#0B3C26] shadow-xl space-y-8 w-full">
-                    <div className="border-b-2 border-[#0B3C26] pb-4">
+                  <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#D0E7DA] shadow-sm space-y-8 w-full">
+                    <div className="border-b border-[#BEDECB] pb-4">
                       <h3 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-                        {tr("외식 창업 필수 자가진단 체크리스트")}
+                        <EditableText
+                          path="consultingPage.readiness.title"
+                          value={siteDraft?.consultingPage?.readiness?.title || tr("외식 창업 필수 자가진단 체크리스트")}
+                        />
                       </h3>
                       <p className="text-xs sm:text-sm text-gray-600 font-medium mt-1">
-                        {tr("창업 전 반드시 점검해야 할 핵심 10대 요소를 확인하고 부족한 부분을 교육원과 함께 보완하세요.")}
+                        <EditableText
+                          path="consultingPage.readiness.subtitle"
+                          multiline
+                          value={siteDraft?.consultingPage?.readiness?.subtitle || tr("창업 전 반드시 점검해야 할 핵심 10대 요소를 확인하고 부족한 부분을 교육원과 함께 보완하세요.")}
+                        />
                       </p>
                     </div>
 
@@ -344,7 +452,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                         '8. 안정적인 식자재 B2B 발주 및 식자재 공급 계약이 완료되었는가?',
                       ].map((item, idx) => (
                         <div key={idx} className="bg-stone-50 p-4 rounded-xl border border-stone-200 flex items-start gap-2.5">
-                          <CheckSquare className="w-4 h-4 text-[#0B3C26] shrink-0 mt-0.5" />
+                          <CheckSquare className="w-4 h-4 text-[#2B7752] shrink-0 mt-0.5" />
                           <span className="text-xs sm:text-sm text-gray-800 font-bold">{item}</span>
                         </div>
                       ))}
@@ -353,7 +461,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                     <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
                       <button
                         onClick={() => handleApplyClick('창업 준비 종합 진단')}
-                        className="w-full sm:w-auto px-8 py-3.5 bg-[#0B3C26] hover:bg-[#072819] text-white font-black text-sm rounded-xl shadow-md transition-all cursor-pointer"
+                        className="w-full sm:w-auto px-8 py-3.5 bg-[#2B7752] hover:bg-[#236344] text-white font-black text-sm rounded-xl shadow-md transition-all cursor-pointer"
                       >
                         {tr("창업 준비 종합 진단 문의하기")}
                       </button>
@@ -371,8 +479,19 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
                   <div className="inline-block bg-black text-white text-xl font-black px-8 py-2.5 rounded-2xl shadow-md">{tr(" 창업 준비 ")}</div>
 
                   <div className="space-y-4 max-w-3xl">
-                    <h3 className="text-xl sm:text-2xl font-black text-black">{tr(" 성공 창업을 위한 Step-by-Step 가이드라인 ")}</h3>
-                    <p className="text-sm text-gray-700 font-bold leading-relaxed">{tr(" 체계적인 창업 준비 프로세스로 실패 없는 외식 창업을 가꾸어 드립니다. ")}</p>
+                    <h3 className="text-xl sm:text-2xl font-black text-black">
+                      <EditableText
+                        path="consultingPage.readiness.guideTitle"
+                        value={siteDraft?.consultingPage?.readiness?.guideTitle || tr(" 성공 창업을 위한 Step-by-Step 가이드라인 ")}
+                      />
+                    </h3>
+                    <p className="text-sm text-gray-700 font-bold leading-relaxed">
+                      <EditableText
+                        path="consultingPage.readiness.guideSubtitle"
+                        multiline
+                        value={siteDraft?.consultingPage?.readiness?.guideSubtitle || tr(" 체계적인 창업 준비 프로세스로 실패 없는 외식 창업을 가꾸어 드립니다. ")}
+                      />
+                    </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">

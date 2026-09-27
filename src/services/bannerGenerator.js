@@ -54,13 +54,13 @@ export const PRESET_THEMES = [
     dDay: 'D-7일 마감임박',
     buttonText: '얼리버드 장학 신청하기 >',
     palette: {
-      name: '헤리티지 딥그린 & 골드 (Heritage Forest)',
-      bgGradient: 'from-[#0B3C26] via-[#104830] to-[#072517]',
-      accentBg: '#C5A059',
-      accentText: '#1c1503',
+      name: '내추럴 세이지 & 민트 (Natural Sage & Mint)',
+      bgGradient: 'from-[#1E5B3C] via-[#2A7550] to-[#388C61]',
+      accentBg: '#85CFAB',
+      accentText: '#1E5D3B',
       textColor: '#FFFFFF',
       subTextColor: '#A7F3D0',
-      borderStyle: 'border-2 border-[#C5A059]',
+      borderStyle: 'border border-[#85CFAB]/50',
     },
     designGuide: {
       mood: '신뢰감과 품격을 주는 정통 학술·사단법인 분위기',
@@ -253,7 +253,7 @@ export function generateDesignerBrief(bannerData, selectedSpec) {
 3. 비주얼 및 디자인 가이드라인
  - 테마/무드: ${bannerData.designGuide?.mood || '사단법인 공식 교육기관으로서의 높은 신뢰감과 품격'}
  - 추천 컬러 팔레트: ${bannerData.palette?.name || '헤리티지 딥그린 & 골드'}
-   * 배경 그라디언트: ${bannerData.palette?.bgGradient || 'from-[#0B3C26] to-[#072517]'}
+   * 배경 그라디언트: ${bannerData.palette?.bgGradient || 'from-[#1E5B3C] to-[#2A7550]'}
    * 포인트/액센트 색상: ${bannerData.palette?.accentBg || '#C5A059'}
    * 메인 텍스트: ${bannerData.palette?.textColor || '#FFFFFF'}
  - 추천 시각 요소: ${bannerData.designGuide?.visualElements || '골드 테두리, 공식 인증 뱃지, 실루엣 그래픽'}

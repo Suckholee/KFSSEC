@@ -28,6 +28,8 @@ export default function AdminLiveToolbar() {
     setIsDrawerOpen,
     isNavigatorOpen,
     setIsNavigatorOpen,
+    showEditGuides,
+    toggleEditGuides,
     onLogout,
   } = useAdminEdit();
 
@@ -70,7 +72,7 @@ export default function AdminLiveToolbar() {
               setIsEditMode(!rawEditMode);
               if (isPreviewMode) setIsPreviewMode(false);
             }}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md font-medium transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md font-medium transition-all cursor-pointer ${
               rawEditMode && !isPreviewMode
                 ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm ring-2 ring-emerald-400/40'
                 : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
@@ -80,11 +82,28 @@ export default function AdminLiveToolbar() {
             <span>{rawEditMode && !isPreviewMode ? '편집 모드 켜짐' : '편집 모드 꺼짐'}</span>
           </button>
 
+          {/* Highlight Editable Areas Toggle Switch */}
+          {rawEditMode && !isPreviewMode && (
+            <button
+              type="button"
+              onClick={toggleEditGuides}
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md font-bold transition-all cursor-pointer ${
+                showEditGuides
+                  ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-md ring-2 ring-amber-300'
+                  : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40'
+              }`}
+              title="화면 내 수정 가능한 모든 글자와 사진을 은은한 점선과 아이콘으로 한눈에 표시"
+            >
+              <Sparkles className={`w-3.5 h-3.5 ${showEditGuides ? 'fill-slate-950 text-slate-950' : 'text-amber-400'}`} />
+              <span>{showEditGuides ? '👁️ 수정 영역 강조 켜짐' : '👁️ 수정 영역 강조'}</span>
+            </button>
+          )}
+
           {/* Visitor Preview Mode Toggle */}
           <button
             type="button"
             onClick={() => setIsPreviewMode(!isPreviewMode)}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-medium transition-all ${
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
               isPreviewMode
                 ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-400/40'
                 : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
@@ -155,15 +174,16 @@ export default function AdminLiveToolbar() {
             <span className="hidden sm:inline">관리 서랍</span>
           </button>
 
-          {/* Logout */}
+          {/* Logout / Exit Editor */}
           {onLogout && (
             <button
               type="button"
               onClick={onLogout}
-              className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-slate-400 hover:text-red-400 hover:bg-slate-800 transition"
-              title="관리자 로그아웃"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/40 transition-all font-bold text-xs cursor-pointer shadow-xs active:scale-95"
+              title="관리자 모드를 종료하고 일반 방문자 화면으로 돌아갑니다."
             >
               <LogOut className="w-3.5 h-3.5" />
+              <span>편집기 닫기 (로그아웃)</span>
             </button>
           )}
         </div>
