@@ -43,7 +43,7 @@ export default function SectorBlock({
   // In Edit Mode, but sector is marked hidden: Show a gentle placeholder so the admin can un-hide it anytime
   if (!isVisible) {
     return (
-      <div className="my-4 mx-4 p-4 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-100/90 text-slate-500 flex items-center justify-between gap-4 transition select-none">
+      <div id={`sector-${sectorId}`} className="my-4 mx-4 p-4 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-100/90 text-slate-500 flex items-center justify-between gap-4 transition select-none">
         <div className="flex items-center gap-2">
           <EyeOff className="w-4 h-4 text-slate-400" />
           <span className="font-semibold text-xs tracking-wider uppercase bg-slate-200 px-2 py-0.5 rounded text-slate-600">
@@ -101,6 +101,7 @@ export default function SectorBlock({
 
   return (
     <section
+      id={`sector-${sectorId}`}
       aria-label={`${sectorName} 섹터`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -26,6 +26,8 @@ export default function AdminLiveToolbar() {
     saveAllChanges,
     revertAllChanges,
     setIsDrawerOpen,
+    isNavigatorOpen,
+    setIsNavigatorOpen,
     onLogout,
   } = useAdminEdit();
 
@@ -43,6 +45,23 @@ export default function AdminLiveToolbar() {
             <Shield className="w-3.5 h-3.5" />
             <span>KFSSEC 라이브 편집기</span>
           </div>
+
+          {/* Block TOC Navigator Toggle Button */}
+          {rawEditMode && !isPreviewMode && (
+            <button
+              type="button"
+              onClick={() => setIsNavigatorOpen(!isNavigatorOpen)}
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md font-bold transition-all cursor-pointer ${
+                isNavigatorOpen
+                  ? 'bg-amber-500 text-black shadow-md ring-2 ring-amber-400/60'
+                  : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40'
+              }`}
+              title="수정 가능한 블록 목차 사이드바 열기/닫기"
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>블록 목차</span>
+            </button>
+          )}
 
           {/* Edit Mode Toggle Switch */}
           <button

@@ -28,10 +28,24 @@ import PaymentGuideModal from './components/PaymentGuideModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
-import { AdminEditProvider } from './context/AdminEditContext';
+import { AdminEditProvider, useAdminEdit } from './context/AdminEditContext';
 import AdminLiveToolbar from './components/Admin/InlineEditor/AdminLiveToolbar';
 import SectorBlock from './components/Admin/InlineEditor/SectorBlock';
 import AdminDrawer from './components/Admin/InlineEditor/AdminDrawer';
+import AdminBlockNavigator from './components/Admin/InlineEditor/AdminBlockNavigator';
+
+function MainLayout({ children }) {
+  const { isNavigatorOpen, isEditMode } = useAdminEdit();
+  return (
+    <div
+      className={`min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white overflow-x-clip transition-all duration-300 ${
+        isNavigatorOpen && isEditMode ? 'lg:pl-[280px]' : ''
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
 
 const HOME_SECTORS = [
   { id: 'S-HOME-01', name: '메인 비주얼 배너' },
@@ -448,9 +462,13 @@ export default function App() {
       onLogout={handleLogout}
     >
       <AdminLiveToolbar />
+      <AdminBlockNavigator
+        activeTab={activeTab}
+        homeSectors={HOME_SECTORS}
+      />
       <AdminDrawer />
 
-      <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white overflow-x-clip">
+      <MainLayout>
         {/* Top Main Navigation Header */}
         <Header
           activeTab={activeTab}
@@ -666,7 +684,7 @@ export default function App() {
       />
 
       <ScrollToTopButton />
-      </div>
+      </MainLayout>
     </AdminEditProvider>
   );
 }

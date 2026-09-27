@@ -63,6 +63,9 @@ export function AdminEditProvider({
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccessNotice, setSaveSuccessNotice] = useState(false);
 
+  // Left Block TOC Navigator state (expanded by default on desktop)
+  const [isNavigatorOpen, setIsNavigatorOpen] = useState(true);
+
   // Sync when initial props update externally
   useEffect(() => {
     setSiteDraft(initialSiteData);
@@ -236,6 +239,8 @@ export function AdminEditProvider({
     setIsDrawerOpen,
     drawerTab,
     setDrawerTab,
+    isNavigatorOpen,
+    setIsNavigatorOpen,
     onLogout,
   }), [
     isAdmin,
@@ -256,6 +261,7 @@ export function AdminEditProvider({
     revertAllChanges,
     isDrawerOpen,
     drawerTab,
+    isNavigatorOpen,
     onLogout,
   ]);
 
@@ -286,6 +292,8 @@ export function useAdminEdit() {
       saveAllChanges: () => {},
       revertAllChanges: () => {},
       setIsDrawerOpen: () => {},
+      isNavigatorOpen: true,
+      setIsNavigatorOpen: () => {},
       setIsEditMode: () => {},
       setIsPreviewMode: () => {},
     };
