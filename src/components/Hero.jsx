@@ -11,6 +11,9 @@ import {
   Play,
   Sparkles,
 } from 'lucide-react';
+import { useAdminEdit } from '../context/AdminEditContext';
+import EditableText from './Admin/InlineEditor/EditableText';
+import EditableImage from './Admin/InlineEditor/EditableImage';
 
 export const DEFAULT_HERO_BANNERS = [
   {
@@ -57,6 +60,7 @@ export default function Hero({
   onScrollNext,
 }) {
   const { t } = useLanguage();
+  const { isEditMode, updateSiteField, updateSiteDraft } = useAdminEdit();
 
   const banners = (heroBanners && heroBanners.length > 0 ? heroBanners : DEFAULT_HERO_BANNERS)
     .filter((b) => b.active !== false);
@@ -73,9 +77,9 @@ export default function Hero({
     }
   }, [banners.length, currentIndex]);
 
-  // Auto-play rotation (every 5.5s)
+  // Auto-play rotation (every 5.5s) - pause if admin edit mode is active
   useEffect(() => {
-    if (!isPlaying || isHovered || banners.length <= 1) {
+    if (isEditMode || !isPlaying || isHovered || banners.length <= 1) {
       if (timerRef.current) clearInterval(timerRef.current);
       return;
     }
@@ -138,21 +142,39 @@ export default function Hero({
               >
                 {banner.imageOnly ? (
                   /* TYPE 1: GRAPHIC BANNER WITH BAKED-IN DESIGN (Image 2 style) */
-                  <div className="w-full flex justify-center items-center bg-black">
-                    <img
-                      src={banner.imageUrl}
-                      alt={banner.title || '사단법인 한국외식창업교육원 대한민국 명인·명장'}
-                      className="w-full h-auto max-h-[640px] object-contain block mx-auto transition-transform duration-1000"
-                    />
-                  </div>
+                  <EditableImage
+                    src={banner.imageUrl}
+                    alt={banner.title || '사단법인 한국외식창업교육원 대한민국 명인·명장'}
+                    onChange={(newUrl) => {
+                      updateSiteDraft((prev) => {
+                        const list = prev?.heroBanners || DEFAULT_HERO_BANNERS;
+                        return {
+                          ...prev,
+                          heroBanners: list.map((b) => (b.id === banner.id ? { ...b, imageUrl: newUrl } : b)),
+                        };
+                      });
+                    }}
+                    className="w-full flex justify-center items-center bg-black min-h-[280px]"
+                    imageClassName="w-full h-auto max-h-[640px] object-contain block mx-auto transition-transform duration-1000"
+                  />
                 ) : (
                   /* TYPE 2: CINEMATIC PHOTO + OVERLAY TYPOGRAPHY */
                   <div className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] lg:h-[580px] flex items-center justify-center overflow-hidden">
                     {/* Background Image */}
-                    <img
+                    <EditableImage
                       src={banner.imageUrl}
                       alt={banner.title}
-                      className="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000"
+                      onChange={(newUrl) => {
+                        updateSiteDraft((prev) => {
+                          const list = prev?.heroBanners || DEFAULT_HERO_BANNERS;
+                          return {
+                            ...prev,
+                            heroBanners: list.map((b) => (b.id === banner.id ? { ...b, imageUrl: newUrl } : b)),
+                          };
+                        });
+                      }}
+                      className="absolute inset-0 w-full h-full"
+                      imageClassName="w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000"
                     />
 
                     {/* Dark Luxury Dimming Gradient */}
@@ -168,16 +190,50 @@ export default function Hero({
                       {banner.tag && (
                         <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#C5A059]/90 text-black font-black text-[11px] sm:text-xs shadow-lg">
                           <Sparkles className="w-3.5 h-3.5 fill-black" />
-                          <span>{banner.tag}</span>
+                          <EditableText
+                            value={banner.tag}
+                            onChange={(val) => {
+                              updateSiteDraft((prev) => {
+                                const list = prev?.heroBanners || DEFAULT_HERO_BANNERS;
+                                return {
+                                  ...prev,
+                                  heroBanners: list.map((b) => (b.id === banner.id ? { ...b, tag: val } : b)),
+                                };
+                              });
+                            }}
+                          />
                         </div>
                       )}
 
                       <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-                        {banner.title}
+                        <EditableText
+                          value={banner.title}
+                          onChange={(val) => {
+                            updateSiteDraft((prev) => {
+                              const list = prev?.heroBanners || DEFAULT_HERO_BANNERS;
+                              return {
+                                ...prev,
+                                heroBanners: list.map((b) => (b.id === banner.id ? { ...b, title: val } : b)),
+                              };
+                            });
+                          }}
+                        />
                       </h1>
 
                       <p className="text-xs sm:text-base md:text-lg text-emerald-100/90 font-medium max-w-2xl leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                        {banner.subtitle}
+                        <EditableText
+                          value={banner.subtitle}
+                          multiline
+                          onChange={(val) => {
+                            updateSiteDraft((prev) => {
+                              const list = prev?.heroBanners || DEFAULT_HERO_BANNERS;
+                              return {
+                                ...prev,
+                                heroBanners: list.map((b) => (b.id === banner.id ? { ...b, subtitle: val } : b)),
+                              };
+                            });
+                          }}
+                        />
                       </p>
 
                       {banner.buttonText && (
@@ -185,7 +241,18 @@ export default function Hero({
                           onClick={() => handleBannerButtonClick(banner)}
                           className="mt-2 px-6 sm:px-8 py-2.5 sm:py-3.5 bg-gradient-to-r from-[#0B3C26] to-[#146340] hover:from-[#072819] hover:to-[#0B3C26] text-white font-black text-xs sm:text-sm rounded-xl sm:rounded-2xl border-2 border-[#C5A059] shadow-2xl transition-all cursor-pointer flex items-center gap-2 group/btn"
                         >
-                          <span>{banner.buttonText}</span>
+                          <EditableText
+                            value={banner.buttonText}
+                            onChange={(val) => {
+                              updateSiteDraft((prev) => {
+                                const list = prev?.heroBanners || DEFAULT_HERO_BANNERS;
+                                return {
+                                  ...prev,
+                                  heroBanners: list.map((b) => (b.id === banner.id ? { ...b, buttonText: val } : b)),
+                                };
+                              });
+                            }}
+                          />
                           <ChevronRight className="w-4 h-4 text-[#D4AF37] group-hover/btn:translate-x-1 transition-transform" />
                         </button>
                       )}

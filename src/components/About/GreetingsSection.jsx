@@ -14,6 +14,7 @@ import {
   Building2,
   BookmarkCheck,
 } from 'lucide-react';
+import EditableText from '../Admin/InlineEditor/EditableText';
 
 export default function GreetingsSection({ viewMode = 'all', speech }) {
   const { t } = useLanguage();
@@ -182,7 +183,12 @@ export default function GreetingsSection({ viewMode = 'all', speech }) {
             {/* Opening Paragraphs */}
             <ScrollReveal direction="up" delay={150}>
               <div className="space-y-5 border-b border-gray-100 pb-8">
-                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-black text-gray-900 tracking-tight leading-snug">{t("안녕하십니까? 사단법인 한국외식창업교육원 이사장 안형상입니다.")}{' '}</h3>
+                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-black text-gray-900 tracking-tight leading-snug">
+                  <EditableText
+                    path="speech.title"
+                    value={speech?.title || "안녕하십니까? 사단법인 한국외식창업교육원 이사장 안형상입니다."}
+                  />
+                </h3>
                 <p className="text-gray-900 font-bold leading-relaxed">{t("먼저 저희 한국외식창업교육원 홈페이지를 방문해 주신 여러분께 깊은 감사의 말씀을 전합니다.")}{' '}</p>
                 <p className="leading-relaxed">{t("외식산업은 단순히 먹거리를 제공하는 것을 넘어, 사람들의 삶에 풍요와 행복을 더하며, 문화와 가치를 창출하는 중요한 산업으로 자리 잡았습니다. 급변하는 시대 속에서 외식산업은 창의성과 혁신, 그리고 진정성을 요구받고 있으며, 이러한 변화는 무한한 가능성과 도전의 기회를 열어주고 있습니다.")}{' '}</p>
                 <p className="leading-relaxed">{t("사단법인 한국외식창업교육원은 \"미래를 선도하는 외식산업의 동반자\"라는 사명을 바탕으로, 창업을 준비하시는 분들과 현업에서 활동하고 계신 분들께 실질적이고 미래 지향적인 교육을 제공하기 위해 최선을 다하고 있습니다.")}{' '}</p>

@@ -1,6 +1,7 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import EditableText from './Admin/InlineEditor/EditableText';
 
 export default function Footer({ onTabChange, siteData = {} }) {
   const { t } = useLanguage();
@@ -67,12 +68,16 @@ export default function Footer({ onTabChange, siteData = {} }) {
             <div className="space-y-2.5 text-xs">
               <div className="flex items-center gap-2 text-white font-black text-base">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{phone}</span>
+                <EditableText path="institutionInfo.phone" value={phone} />
               </div>
-              <p className="text-gray-300 font-medium">{hours}</p>
+              <p className="text-gray-300 font-medium">
+                <EditableText path="institutionInfo.operatingHours" value={hours} />
+              </p>
               <div className="flex items-center gap-2 text-gray-300 font-medium pt-1">
                 <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="font-mono text-emerald-300">{email}</span>
+                <span className="font-mono text-emerald-300">
+                  <EditableText path="institutionInfo.email" value={email} />
+                </span>
               </div>
             </div>
           </div>
@@ -82,7 +87,7 @@ export default function Footer({ onTabChange, siteData = {} }) {
             <h4 className="text-sm font-black text-white mb-3 tracking-tight">{t("교육원 위치")}</h4>
             <div className="flex items-start gap-2 text-xs leading-relaxed text-gray-300 font-medium">
               <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <span>{address}</span>
+              <EditableText path="institutionInfo.headquartersAddress" multiline value={address} />
             </div>
           </div>
 

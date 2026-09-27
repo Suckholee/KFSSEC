@@ -4,6 +4,8 @@ import { Youtube, Play, ExternalLink, ChevronDown } from 'lucide-react';
 import YouTubeModal from './YouTubeModal';
 import { extractYoutubeId } from '../utils/youtube';
 
+import EditableText from './Admin/InlineEditor/EditableText';
+
 function YouTubeCardImage({ videoId, alt }) {
   const { t } = useLanguage();
   const [failed, setFailed] = useState(false);
@@ -75,10 +77,17 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext }) {
               <span>YOUTUBE OFFICIAL</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              {t(title)}
+              <EditableText
+                path="youtube.title"
+                value={title}
+              />
             </h2>
             <p className="text-xs sm:text-sm text-emerald-100/90 font-semibold mt-1">
-              {t(subtitle)}
+              <EditableText
+                path="youtube.subtitle"
+                multiline
+                value={subtitle}
+              />
             </p>
           </div>
           

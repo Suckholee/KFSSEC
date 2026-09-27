@@ -28,6 +28,22 @@ import PaymentGuideModal from './components/PaymentGuideModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
+import { AdminEditProvider } from './context/AdminEditContext';
+import AdminLiveToolbar from './components/Admin/InlineEditor/AdminLiveToolbar';
+import SectorBlock from './components/Admin/InlineEditor/SectorBlock';
+import AdminDrawer from './components/Admin/InlineEditor/AdminDrawer';
+
+const HOME_SECTORS = [
+  { id: 'S-HOME-01', name: '메인 비주얼 배너' },
+  { id: 'S-HOME-02', name: '수강생 모집 / 이벤트 배너' },
+  { id: 'S-HOME-08', name: '공식 유튜브 미디어' },
+  { id: 'S-HOME-03', name: '추천 강좌 큐레이션 (넷플릭스형)' },
+  { id: 'S-HOME-04', name: '글로벌 외식 트렌드 뉴스' },
+  { id: 'S-HOME-05', name: '자격증·실무 과정 카테고리' },
+  { id: 'S-HOME-05B', name: '분야별 교육 포커스' },
+  { id: 'S-HOME-06', name: '공식 제휴 & 파트너사 로고' },
+  { id: 'S-HOME-07', name: '최신 공지사항 & 커뮤니티' },
+];
 
 function AdminAccess({ onAuthenticated, configured }) {
   const [password, setPassword] = useState('');
@@ -362,59 +378,108 @@ export default function App() {
 
   if (activeTab === 'admin') {
     if (!adminAuth.checked) return <div className="min-h-screen grid place-items-center">관리자 인증 확인 중…</div>;
-    if (!adminAuth.authenticated) return <AdminAccess configured={adminAuth.configured} onAuthenticated={() => setAdminAuth({ checked: true, authenticated: true, configured: true })} />;
-    return (
-      <AdminLayout
-        siteData={siteData}
-        onUpdateSiteData={handleUpdateSiteData}
-        onExitAdmin={() => handleTabChange('home')}
-        onLogout={handleLogout}
-        postsList={postsList}
-        setPostsList={handleUpdatePostsList}
-      />
-    );
+    if (!adminAuth.authenticated) {
+      return (
+        <AdminAccess
+          configured={adminAuth.configured}
+          onAuthenticated={() => {
+            setAdminAuth({ checked: true, authenticated: true, configured: true });
+            handleTabChange('home');
+          }}
+        />
+      );
+    }
+    // If specifically requested legacy back-office
+    if (subTab === 'legacy') {
+      return (
+        <AdminLayout
+          siteData={siteData}
+          onUpdateSiteData={handleUpdateSiteData}
+          onExitAdmin={() => handleTabChange('home')}
+          onLogout={handleLogout}
+          postsList={postsList}
+          setPostsList={handleUpdatePostsList}
+        />
+      );
+    }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white overflow-x-clip">
-      {/* Top Main Navigation Header */}
-      <Header
-        activeTab={activeTab}
-        subTab={subTab}
-        onTabChange={handleTabChange}
-        onOpenAuth={handleOpenAuth}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-      />
+    <AdminEditProvider
+      initialSiteData={siteData}
+      initialPostsList={postsList}
+      onUpdateSiteData={handleUpdateSiteData}
+      onUpdatePostsList={handleUpdatePostsList}
+      adminAuth={adminAuth}
+      onLogout={handleLogout}
+    >
+      <AdminLiveToolbar />
+      <AdminDrawer />
 
-      {/* Main Content Area Routing */}
-      <main className="flex-1">
-        {activeTab === 'home' && (
-          <div className="space-y-0">
-            <Hero
-              heroBanners={siteData.heroBanners}
-              onExploreClick={() => handleTabChange('catalog')}
-              onAboutClick={() => handleTabChange('about', 'greetings')}
-              onInquiryClick={() => handleTabChange('community', 'inquiry')}
-            />
-            <AwardCeremonyBannerSection
-              bannerData={siteData.banner}
-              onGoToGallery={() => handleTabChange('gallery', 'awards')}
-              onGoToInquiry={() => handleTabChange('community', 'inquiry')}
-            />
-            <YouTubeMediaSection
-              youtubeData={siteData.youtube}
-              onPlayVideo={handleOpenVideo}
-            />
-            <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
-            <GlobalDiningTrendsSection />
-            <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
-            <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
-            <PartnerMarqueeSection partnerLogos={siteData.partnerLogos} />
-            <NoticePostSection postsList={postsList} onScrollNext={() => scrollToSection('footer')} />
+      <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-emerald-500 selection:text-white overflow-x-clip">
+        {/* Top Main Navigation Header */}
+        <Header
+          activeTab={activeTab}
+          subTab={subTab}
+          onTabChange={handleTabChange}
+          onOpenAuth={handleOpenAuth}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
 
-          </div>
-        )}
+        {/* Main Content Area Routing */}
+        <main className="flex-1">
+          {activeTab === 'home' && (
+            <div className="space-y-0">
+              <SectorBlock sectorId="S-HOME-01" sectorName="메인 비주얼 배너" sectorList={HOME_SECTORS}>
+                <Hero
+                  heroBanners={siteData.heroBanners}
+                  onExploreClick={() => handleTabChange('catalog')}
+                  onAboutClick={() => handleTabChange('about', 'greetings')}
+                  onInquiryClick={() => handleTabChange('community', 'inquiry')}
+                />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-02" sectorName="수강생 모집 / 이벤트 배너" sectorList={HOME_SECTORS}>
+                <AwardCeremonyBannerSection
+                  bannerData={siteData.banner}
+                  onGoToGallery={() => handleTabChange('gallery', 'awards')}
+                  onGoToInquiry={() => handleTabChange('community', 'inquiry')}
+                />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-08" sectorName="공식 유튜브 미디어" sectorList={HOME_SECTORS}>
+                <YouTubeMediaSection
+                  youtubeData={siteData.youtube}
+                  onPlayVideo={handleOpenVideo}
+                />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-03" sectorName="추천 강좌 큐레이션 (넷플릭스형)" sectorList={HOME_SECTORS}>
+                <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-04" sectorName="글로벌 외식 트렌드 뉴스" sectorList={HOME_SECTORS}>
+                <GlobalDiningTrendsSection />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-05" sectorName="자격증·실무 과정 카테고리" sectorList={HOME_SECTORS}>
+                <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-05B" sectorName="분야별 교육 포커스" sectorList={HOME_SECTORS}>
+                <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS}>
+                <PartnerMarqueeSection partnerLogos={siteData.partnerLogos} />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-07" sectorName="최신 공지사항 & 커뮤니티" sectorList={HOME_SECTORS}>
+                <NoticePostSection postsList={postsList} onScrollNext={() => scrollToSection('footer')} />
+              </SectorBlock>
+            </div>
+          )}
 
         {activeTab === 'about' && (
           <AboutPage initialSubTab={subTab || 'greetings'} siteData={siteData} />
@@ -502,6 +567,7 @@ export default function App() {
       />
 
       <ScrollToTopButton />
-    </div>
+      </div>
+    </AdminEditProvider>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { Handshake, ExternalLink, Sparkles, Building2 } from 'lucide-react';
+import EditableText from '../Admin/InlineEditor/EditableText';
 
 export const DEFAULT_PARTNER_LOGOS = [
   {
@@ -188,12 +189,17 @@ export default function PartnerMarqueeSection({ partnerLogos = [] }) {
           <span>KFSSEC PARTNERS & MOU NETWORK</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-          {t('주요 협력 기관 및 산학 업무협약(MOU) 기업')}
+          <EditableText
+            path="partnerSection.title"
+            value="주요 협력 기관 및 산학 업무협약(MOU) 기업"
+          />
         </h2>
         <p className="text-xs sm:text-sm text-gray-600 font-medium max-w-2xl mx-auto">
-          {t(
-            '농림축산식품부 인가 사단법인 한국외식창업교육원과 함께 외식 산업의 미래를 열어가는 공식 파트너 네트워크입니다.'
-          )}
+          <EditableText
+            path="partnerSection.subtitle"
+            multiline
+            value="농림축산식품부 인가 사단법인 한국외식창업교육원과 함께 외식 산업의 미래를 열어가는 공식 파트너 네트워크입니다."
+          />
         </p>
       </div>
 

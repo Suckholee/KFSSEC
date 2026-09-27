@@ -38,6 +38,16 @@ import {
 } from 'lucide-react';
 
 import FacultySection from './FacultySection';
+import SectorBlock from '../Admin/InlineEditor/SectorBlock';
+
+const ABOUT_SECTORS = [
+  { id: 'S-ABOUT-01', name: '이사장 인사말' },
+  { id: 'S-ABOUT-02', name: '교육원 설립 연혁' },
+  { id: 'S-ABOUT-03', name: '정기총회 특별 연설문' },
+  { id: 'S-ABOUT-04', name: '이사장 프로필 & 약력' },
+  { id: 'S-ABOUT-05', name: '교수진 및 자문위원' },
+  { id: 'S-ABOUT-06', name: '조직도 및 법인정보' },
+];
 
 export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'greetings', siteData = {} }) {
   const { t } = useLanguage();
@@ -292,27 +302,37 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
 
             {/* SUB-TAB 2: 주요 연혁 */}
             {activeTab === 'history' && (
-              <HistorySection milestones={siteData?.history} />
+              <SectorBlock sectorId="S-ABOUT-02" sectorName="교육원 설립 연혁" pageKey="about" sectorList={ABOUT_SECTORS}>
+                <HistorySection milestones={siteData?.history} />
+              </SectorBlock>
             )}
 
             {/* SUB-TAB 3: 원장 인사말 */}
             {activeTab === 'speech' && (
-              <GreetingsSection viewMode="speech" speech={siteData?.speech} />
+              <SectorBlock sectorId="S-ABOUT-01" sectorName="이사장 인사말 및 연설문" pageKey="about" sectorList={ABOUT_SECTORS}>
+                <GreetingsSection viewMode="speech" speech={siteData?.speech} />
+              </SectorBlock>
             )}
 
             {/* SUB-TAB 3: 원장 프로필 & MOU */}
             {activeTab === 'profile' && (
-              <GreetingsSection viewMode="profile" />
+              <SectorBlock sectorId="S-ABOUT-04" sectorName="이사장 프로필 & 약력" pageKey="about" sectorList={ABOUT_SECTORS}>
+                <GreetingsSection viewMode="profile" />
+              </SectorBlock>
             )}
 
             {/* SUB-TAB 4: 교수진 소개 */}
             {activeTab === 'faculty' && (
-              <FacultySection facultyList={siteData?.faculty} />
+              <SectorBlock sectorId="S-ABOUT-05" sectorName="교수진 및 자문위원" pageKey="about" sectorList={ABOUT_SECTORS}>
+                <FacultySection facultyList={siteData?.faculty} />
+              </SectorBlock>
             )}
 
             {/* SUB-TAB 5: 조직도 */}
             {activeTab === 'organization' && (
-              <OrganizationSection />
+              <SectorBlock sectorId="S-ABOUT-06" sectorName="조직도 및 법인정보" pageKey="about" sectorList={ABOUT_SECTORS}>
+                <OrganizationSection />
+              </SectorBlock>
             )}
 
           </div>
