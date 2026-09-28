@@ -32,6 +32,7 @@ const PAGE_SECTOR_MAP = {
   home: {
     title: '홈 메인',
     sectors: [
+      { id: 'S-HOME-00', name: '🪟 행사 공지 팝업 (오늘 다시보지 않기)', isPopup: true, editLabel: '팝업 관리' },
       { id: 'S-HOME-01', name: '메인 비주얼 배너', editLabel: '배너 편집' },
       { id: 'S-HOME-02', name: '수강생 모집 / 이벤트 배너', editLabel: '배너 설정' },
       { id: 'S-HOME-08', name: '공식 유튜브 미디어', editLabel: '영상 링크', isYoutube: true },
@@ -120,6 +121,7 @@ const PAGE_SECTOR_MAP = {
 };
 
 const SECTOR_ICONS = {
+  'S-HOME-00': <Bell className="w-3.5 h-3.5 text-amber-400 shrink-0" />,
   'S-HOME-01': <Image className="w-3.5 h-3.5 text-amber-400 shrink-0" />,
   'S-HOME-02': <Award className="w-3.5 h-3.5 text-rose-400 shrink-0" />,
   'S-HOME-08': <Tv className="w-3.5 h-3.5 text-red-500 shrink-0" />,
@@ -203,6 +205,16 @@ export default function AdminBlockNavigator({
   // Scroll to targeted sector block and apply an eye-catching highlight glow
   const handleJumpToSector = (sector, actionToTrigger = null) => {
     setActiveHighlightId(sector.id);
+
+    // If popup notice sector, open the drawer popup tab directly
+    if (sector.isPopup) {
+      setDrawerTab('popup');
+      setIsDrawerOpen(true);
+      if (window.innerWidth < 1024) {
+        setIsNavigatorOpen(false);
+      }
+      return;
+    }
 
     // If on admin route or other page, ensure onTabChange targets the correct tab
     const targetTab = activeTab === 'admin' ? 'home' : activeTab;
@@ -405,6 +417,26 @@ export default function AdminBlockNavigator({
 
                 {/* Right Quick Controls on each item */}
                 <div className="flex items-center gap-1 shrink-0 opacity-80 group-hover:opacity-100">
+                  {/* Popup Specific Fast Trigger */}
+                  {sector.isPopup && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDrawerTab('popup');
+                        setIsDrawerOpen(true);
+                        if (window.innerWidth < 1024) {
+                          setIsNavigatorOpen(false);
+                        }
+                      }}
+                      className="p-1 rounded-md bg-amber-500/30 hover:bg-amber-500 text-amber-300 hover:text-slate-950 transition cursor-pointer text-[10px] font-bold flex items-center gap-0.5 px-1.5 border border-amber-500/40"
+                      title="행사 공지 팝업 설정 열기"
+                    >
+                      <Sliders className="w-2.5 h-2.5" />
+                      <span>설정</span>
+                    </button>
+                  )}
+
                   {/* YouTube Specific Fast Trigger */}
                   {sector.isYoutube && (
                     <button

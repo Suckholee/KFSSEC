@@ -11,6 +11,7 @@ import {
   Shield,
   Layers,
   Sparkles,
+  Bell,
 } from 'lucide-react';
 
 export default function AdminLiveToolbar() {
@@ -26,6 +27,7 @@ export default function AdminLiveToolbar() {
     saveAllChanges,
     revertAllChanges,
     setIsDrawerOpen,
+    setDrawerTab,
     isNavigatorOpen,
     setIsNavigatorOpen,
     showEditGuides,
@@ -172,6 +174,20 @@ export default function AdminLiveToolbar() {
           >
             <Sliders className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">관리 서랍</span>
+          </button>
+
+          {/* Popup Notice Direct Button */}
+          <button
+            type="button"
+            onClick={() => {
+              setDrawerTab('popup');
+              setIsDrawerOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+            title="홈페이지 첫 화면 행사/공지 팝업창 설정 (기간, 이미지, 오늘 다시보지 않기)"
+          >
+            <Bell className="w-3.5 h-3.5" />
+            <span>🪟 공지 팝업 관리</span>
           </button>
 
           {/* Logout / Exit Editor */}

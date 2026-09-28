@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useAdminEdit } from '../../../context/AdminEditContext';
+import { saveSharedContent } from '../../../services/contentApi.js';
+import AdminPopupNotice from '../AdminPopupNotice';
 import {
   X,
   MessageSquare,
@@ -13,6 +15,7 @@ import {
   Mail,
   MapPin,
   FileText,
+  Bell,
 } from 'lucide-react';
 
 export default function AdminDrawer() {
@@ -65,7 +68,7 @@ export default function AdminDrawer() {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-lg h-full bg-white shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200"
+        className={`w-full ${drawerTab === 'popup' ? 'max-w-2xl' : 'max-w-lg'} h-full bg-white shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200`}
       >
         {/* Drawer Header */}
         <div className="p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
@@ -83,24 +86,37 @@ export default function AdminDrawer() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-slate-200 bg-slate-50 text-xs sm:text-sm font-medium">
+        <div className="flex border-b border-slate-200 bg-slate-50 text-xs sm:text-sm font-medium overflow-x-auto">
+          <button
+            type="button"
+            onClick={() => setDrawerTab('popup')}
+            className={`flex-1 min-w-[95px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
+              drawerTab === 'popup'
+                ? 'border-amber-500 text-amber-700 bg-white font-bold'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Bell className="w-4 h-4 text-amber-600" />
+            <span>🪟 공지 팝업</span>
+          </button>
+
           <button
             type="button"
             onClick={() => setDrawerTab('inquiry')}
-            className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
+            className={`flex-1 min-w-[110px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
               drawerTab === 'inquiry'
                 ? 'border-amber-500 text-amber-700 bg-white font-bold'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <MessageSquare className="w-4 h-4" />
-            <span>1:1 문의·상담 ({inquiries.length})</span>
+            <span>1:1 문의 ({inquiries.length})</span>
           </button>
 
           <button
             type="button"
             onClick={() => setDrawerTab('info')}
-            className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
+            className={`flex-1 min-w-[95px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
               drawerTab === 'info'
                 ? 'border-amber-500 text-amber-700 bg-white font-bold'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
@@ -113,14 +129,14 @@ export default function AdminDrawer() {
           <button
             type="button"
             onClick={() => setDrawerTab('database')}
-            className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
+            className={`flex-1 min-w-[95px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
               drawerTab === 'database'
                 ? 'border-amber-500 text-amber-700 bg-white font-bold'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Database className="w-4 h-4" />
-            <span>데이터 동기화</span>
+            <span>동기화</span>
           </button>
         </div>
 
@@ -317,6 +333,26 @@ export default function AdminDrawer() {
                   <span>지금 바로 Supabase에 영구 저장</span>
                 </button>
               </div>
+            </div>
+          )}
+
+          {/* 4. Notice Popup Management Tab */}
+          {drawerTab === 'popup' && (
+            <div className="space-y-4">
+              <AdminPopupNotice
+                siteData={siteDraft}
+                onUpdateSiteData={async (newSiteData) => {
+                  const updatedPopup = newSiteData?.popupNotice;
+                  updateSiteField('popupNotice', updatedPopup);
+                  try {
+                    const payload = { ...siteDraft, popupNotice: updatedPopup };
+                    await saveSharedContent('site', payload);
+                  } catch (e) {
+                    console.warn('Auto-save popup failed:', e);
+                  }
+                  await saveAllChanges();
+                }}
+              />
             </div>
           )}
         </div>
