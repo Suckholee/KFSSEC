@@ -545,6 +545,7 @@ export default function AdminLayout({
           { id: 'banner_planner', label: '🖼️ 메인 히어로 배너 관리 (슬라이더)' },
           { id: 'banner_edit', label: '📢 행사 띠배너 문구 설정' },
           { id: 'youtube_edit', label: '📺 유튜브 방송 미디어' },
+          { id: 'popup_notice', label: '🪟 공지 팝업 관리 (오늘 다시보지 않기)' },
         ];
       case 'about':
         return [

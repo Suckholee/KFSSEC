@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { extractYoutubeId } from '../../utils/youtube';
 import AdminBannerPlanner from './AdminBannerPlanner';
+import AdminPopupNotice from './AdminPopupNotice';
 
 export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab = 'visual_editor', onSubTabChange }) {
   const [activeSubTab, setActiveSubTab] = useState(subTab || 'visual_editor');
@@ -335,6 +336,16 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
           >
             📺 유튜브 영상 관리
           </button>
+          <button
+            onClick={() => handleSubTabSwitch('popup_notice')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+              activeSubTab === 'popup_notice'
+                ? 'bg-amber-600 text-white shadow-xs'
+                : 'text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200'
+            }`}
+          >
+            🪟 공지 팝업 관리 (오늘 다시보지 않기)
+          </button>
         </div>
       </div>
 
@@ -474,6 +485,14 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
             setSavedSuccess(true);
             setTimeout(() => setSavedSuccess(false), 3000);
           }}
+        />
+      )}
+
+      {/* SUBTAB: POPUP NOTICE MANAGEMENT */}
+      {activeSubTab === 'popup_notice' && (
+        <AdminPopupNotice
+          siteData={siteData}
+          onUpdateSiteData={onUpdateSiteData}
         />
       )}
 

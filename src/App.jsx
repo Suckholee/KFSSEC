@@ -26,6 +26,7 @@ import AdminLayout from './components/Admin/AdminLayout';
 import AuthModal from './components/AuthModal';
 import YouTubeModal from './components/YouTubeModal';
 import PaymentGuideModal from './components/PaymentGuideModal';
+import NoticePopupModal from './components/common/NoticePopupModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
@@ -416,6 +417,12 @@ function AppInner({
           onClose={() => setIsPaymentGuideOpen(false)}
         />
 
+        {/* Notice Popup Modal (2026 선정식 안내 & 오늘 다시보지 않기) */}
+        <NoticePopupModal
+          popupData={currentSite.popupNotice}
+          onNavigate={handleTabChange}
+        />
+
         <ScrollToTopButton />
       </MainLayout>
     </>
@@ -455,6 +462,18 @@ export default function App() {
   const DEFAULT_SITE_DATA = {
     partnerLogos: DEFAULT_PARTNER_LOGOS,
     institutionInfo: DEFAULT_INSTITUTION_INFO,
+    popupNotice: {
+      enabled: true,
+      title: '2026 대한민국 자랑스런 명인·명장 선정식',
+      imageUrl: '/images/popup_award_ceremony_2026.jpg',
+      linkUrl: '/gallery/ceremony',
+      linkText: '선정식 및 행사 상세 안내 바로가기',
+      linkTarget: '_self',
+      startDate: '2026-09-01',
+      endDate: '2026-10-31',
+      showOnMobile: true,
+      width: 440,
+    },
     youtube: {
       title: '한국외식창업교육원 미디어',
       subtitle: '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.',
@@ -565,6 +584,12 @@ export default function App() {
         ? saved.heroBanners
         : DEFAULT_SITE_DATA.heroBanners;
 
+    // 6. Popup Notice: fallback to defaults or merge saved popup config
+    const popupNotice = {
+      ...DEFAULT_SITE_DATA.popupNotice,
+      ...(saved.popupNotice || {}),
+    };
+
     return {
       ...DEFAULT_SITE_DATA,
       ...saved,
@@ -573,6 +598,7 @@ export default function App() {
       youtube,
       banner,
       heroBanners,
+      popupNotice,
     };
   };
 
