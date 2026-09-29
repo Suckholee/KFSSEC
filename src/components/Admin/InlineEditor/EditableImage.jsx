@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import { Camera, Upload, Link as LinkIcon, X, Loader2, Check, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 
@@ -32,6 +33,18 @@ export default function EditableImage({
       setSelectedSlideIdx(currentSlideIndex);
     }
   }, [isOpen, currentSlideIndex]);
+
+  // Close modal on Escape key press
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
 
   if (!isEditMode) {
     if (children) return <div className={className}>{children}</div>;
@@ -167,16 +180,17 @@ export default function EditableImage({
         </button>
       </div>
 
-      {/* Image Edit Modal Popover */}
-      {isOpen && (
+      {/* Image Edit Modal Popover (Rendered in document.body via Portal to prevent container clipping) */}
+      {isOpen && typeof document !== 'undefined' && createPortal(
         <div
-          onClick={(e) => e.stopPropagation()}
-          className="fixed inset-0 z-[10000] flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm"
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-[100000] flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm"
         >
           <div
+            onClick={(e) => e.stopPropagation()}
             className={`w-full ${
               slides && slides.length > 1 ? 'max-w-xl sm:max-w-2xl' : 'max-w-sm'
-            } max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl border border-slate-200 space-y-4 text-slate-800 animate-in fade-in zoom-in-95 duration-150`}
+            } max-h-[88vh] overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl border border-slate-200 space-y-4 text-slate-800 animate-in fade-in zoom-in-95 duration-150`}
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b pb-3">
@@ -204,7 +218,7 @@ export default function EditableImage({
                 type="button"
                 onClick={() => setIsOpen(false)}
                 className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition cursor-pointer"
-                title="닫기"
+                title="닫기 (ESC)"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -392,7 +406,8 @@ export default function EditableImage({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
