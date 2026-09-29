@@ -547,6 +547,19 @@ export default function App() {
         buttonLink: 'community',
       },
     ],
+    jinIkjun: {
+      category: '외식경영 · 공간전략 전문가',
+      headline: '외식 공간을 설계하고,\n경영의 방향을 제안합니다.',
+      name: '진익준',
+      engName: 'JIN IK JUN',
+      role: '비엑스디(BXD) 대표 · 교육분과이사',
+      bio: '상권 입지부터 주방 설계, 브랜드 콘셉트와 고객 경험까지.\n20여 년의 현장 경험을 바탕으로 외식 공간을 설계합니다.',
+      image: '/images/faculty/jin_ikjun_expert.png',
+      caption: '공간과 경영을 함께 바라보는 전문가',
+      email: 'ikjunjin@naver.com',
+      phone: '010-8563-8440',
+      tags: ['상권·입지 분석', '3D 주방 설계', '브랜드 콘셉트', '고객 경험 디자인'],
+    },
   };
 
   const mergeSiteData = (saved) => {
@@ -590,6 +603,12 @@ export default function App() {
       ...(saved.popupNotice || {}),
     };
 
+    // 7. Jin Ikjun Expert Profile
+    const jinIkjun = {
+      ...DEFAULT_SITE_DATA.jinIkjun,
+      ...(saved.jinIkjun || {}),
+    };
+
     return {
       ...DEFAULT_SITE_DATA,
       ...saved,
@@ -599,6 +618,7 @@ export default function App() {
       banner,
       heroBanners,
       popupNotice,
+      jinIkjun,
     };
   };
 

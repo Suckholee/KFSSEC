@@ -36,7 +36,7 @@ export default function FacultySection({ facultyList: propFaculty }) {
       name: '진익준',
       role: '외식 공간디자인 & 상권분석 전담교수',
       title: '브랜드경험디자인연구소 대표 / 청운대학교 외식조리경영학과 겸임교수',
-      image: '/images/dir_1.jpg',
+      image: '/images/faculty/jin_ikjun_expert.png',
       badge: '외식 상권 & 인테리어 석학',
       badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
       intro:
@@ -291,6 +291,18 @@ export default function FacultySection({ facultyList: propFaculty }) {
                           </span>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  {member.id === 'prof-jin' && (
+                    <div className="pt-3 border-t border-stone-100 flex justify-end">
+                      <a
+                        href="/consulting?tab=professor"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FAF9F5] hover:bg-[#F2EFE9] text-[#2F6B55] border border-[#E7E3DA] text-xs font-bold transition shadow-2xs"
+                      >
+                        <span>진익준 교수 외식경영 & 공간전략 프로필(Expert Profile) 상세 보기</span>
+                        <span>↗</span>
+                      </a>
                     </div>
                   )}
 

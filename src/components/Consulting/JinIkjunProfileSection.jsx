@@ -32,6 +32,11 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
   const [activeSubTab, setActiveSubTab] = useState('profile');
   const [refCategory, setRefCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showMoreEdu, setShowMoreEdu] = useState(false);
+  const [showMorePublic, setShowMorePublic] = useState(false);
+  const [showMoreMedia, setShowMoreMedia] = useState(false);
+
+  const jinData = siteDraft?.jinIkjun || {};
 
   // 100+ Reference Projects Database
   const references = [
@@ -216,286 +221,260 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
       </div>
 
       {/* ========================================================================= */}
-      {/* VIEW 1: 진익준교수 소개 프로필 (PROFILE)                                */}
+      {/* VIEW 1: 진익준교수 소개 프로필 (EXPERT PROFILE - Monograph Editorial)   */}
       {/* ========================================================================= */}
       {activeSubTab === 'profile' && (
-        <div className="space-y-8 animate-fadeIn">
-          {/* Main Visual Profile Card */}
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-stone-200 shadow-lg">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              
-              {/* Left Column: Official Profile Photo & QR Links */}
-              <div className="lg:col-span-4 flex flex-col items-center text-center space-y-4">
-                <div className="relative group w-full max-w-[280px] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#2B7752]/20 bg-amber-50">
-                  <EditableImage
-                    path="jinIkjun.image"
-                    src={siteDraft?.jinIkjun?.image || "/images/faculty/jin_ikjun_profile.png"}
-                    alt="진익준 교수 공식 프로필"
-                    className="w-full h-auto"
-                    imageClassName="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500"
+        <div className="w-full bg-[#FAF9F5] rounded-3xl border border-[#E7E3DA] p-6 sm:p-12 lg:p-16 text-stone-900 shadow-sm animate-fadeIn">
+          {/* 1. Top Header Bar */}
+          <div className="flex items-center justify-between text-xs sm:text-sm text-stone-600 font-medium pb-4 border-b border-[#E5E1D8]">
+            <span>한국외식창업교육원</span>
+            <span className="tracking-[0.25em] text-stone-400 font-semibold text-xs uppercase">
+              EXPERT PROFILE
+            </span>
+          </div>
+
+          {/* 2. Main Hero Split: Left Info + Right Portrait Photo */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start pt-8 sm:pt-10 pb-6 sm:pb-8">
+            {/* Left Content */}
+            <div className="lg:col-span-7 xl:col-span-8 space-y-5 sm:space-y-6">
+              {/* Category Eyebrow */}
+              <div className="text-[#2F6B55] font-semibold text-sm sm:text-base tracking-tight">
+                <EditableText
+                  path="jinIkjun.category"
+                  value={jinData.category || "외식경영 · 공간전략 전문가"}
+                />
+              </div>
+
+              {/* Big Bold Headline */}
+              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-stone-900 leading-[1.28] tracking-tight whitespace-pre-line">
+                <EditableText
+                  multiline
+                  path="jinIkjun.headline"
+                  value={jinData.headline || "외식 공간을 설계하고,\n경영의 방향을 제안합니다."}
+                />
+              </h1>
+
+              {/* Name & English Name */}
+              <div className="pt-1 flex items-baseline gap-3">
+                <span className="text-2xl sm:text-3xl font-bold text-stone-900">
+                  <EditableText
+                    path="jinIkjun.name"
+                    value={jinData.name || "진익준"}
                   />
-                  <div className="absolute top-3 left-3 bg-[#2B7752] text-white text-[11px] font-black px-2.5 py-1 rounded-full border border-[#85CFAB] pointer-events-none">
-                    KFSSEC 교육분과이사
-                  </div>
-                </div>
-
-                <div className="w-full max-w-[280px] bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2 text-left text-xs">
-                  <div className="flex items-center gap-2 text-gray-700 font-bold">
-                    <Mail className="w-4 h-4 text-[#2B7752] shrink-0" />
-                    <span className="truncate">
-                      <EditableText path="jinIkjun.email" value={siteDraft?.jinIkjun?.email || "ikjunjin@naver.com"} />
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-700 font-bold">
-                    <Phone className="w-4 h-4 text-[#2B7752] shrink-0" />
-                    <span>
-                      <EditableText path="jinIkjun.phone" value={siteDraft?.jinIkjun?.phone || "010-8563-8440"} />
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-700 font-bold pt-1 border-t border-stone-200">
-                    <Building className="w-4 h-4 text-[#2B7752] shrink-0" />
-                    <span className="truncate">
-                      <EditableText path="jinIkjun.company" value={siteDraft?.jinIkjun?.company || "비엑스디(BXD) 대표"} />
-                    </span>
-                  </div>
-                </div>
-
-                {/* QR Codes for Direct Column/SNS Reading */}
-                <div className="w-full max-w-[280px] bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2">
-                  <span className="text-[11px] font-black text-gray-500 block uppercase tracking-wider">
-                    공식 칼럼 & 모바일 연결 QR
-                  </span>
-                  <div className="rounded-xl overflow-hidden border border-stone-200 shadow-inner bg-white p-1">
-                    <EditableImage
-                      path="jinIkjun.qrImage"
-                      src={siteDraft?.jinIkjun?.qrImage || "/images/faculty/jin_ikjun_qr.png"}
-                      alt="진익준 교수 칼럼 및 네이버 블로그 QR"
-                      className="w-full h-auto"
-                      imageClassName="w-full h-auto object-cover"
-                    />
-                  </div>
-                </div>
+                </span>
+                <span className="text-xs sm:text-sm font-semibold text-stone-400 tracking-[0.22em] uppercase">
+                  <EditableText
+                    path="jinIkjun.engName"
+                    value={jinData.engName || "JIN IK JUN"}
+                  />
+                </span>
               </div>
 
-              {/* Right Column: Detailed Biography & Academic Roles */}
-              <div className="lg:col-span-8 space-y-6">
+              {/* Title / Role */}
+              <p className="text-base sm:text-lg font-medium text-stone-700">
+                <EditableText
+                  path="jinIkjun.role"
+                  value={jinData.role || "비엑스디(BXD) 대표 · 교육분과이사"}
+                />
+              </p>
+
+              {/* Summary Description */}
+              <p className="text-stone-600 text-sm sm:text-base leading-relaxed max-w-2xl whitespace-pre-line">
+                <EditableText
+                  multiline
+                  path="jinIkjun.bio"
+                  value={jinData.bio || "상권 입지부터 주방 설계, 브랜드 콘셉트와 고객 경험까지.\n20여 년의 현장 경험을 바탕으로 외식 공간을 설계합니다."}
+                />
+              </p>
+            </div>
+
+            {/* Right Column: Portrait Photo with Amber/Yellow Background */}
+            <div className="lg:col-span-5 xl:col-span-4 flex flex-col items-center sm:items-start lg:items-end">
+              <div className="w-full max-w-[280px] sm:max-w-[320px] aspect-square overflow-hidden rounded-xs border border-stone-200/80 shadow-xs bg-[#E5A01E]">
+                <EditableImage
+                  path="jinIkjun.image"
+                  src={jinData.image || "/images/faculty/jin_ikjun_expert.png"}
+                  alt="진익준 교수"
+                  className="w-full h-full"
+                  imageClassName="w-full h-full object-cover"
+                />
+              </div>
+              <p className="w-full max-w-[280px] sm:max-w-[320px] text-xs sm:text-sm text-stone-500 mt-2.5 text-center sm:text-left">
+                <EditableText
+                  path="jinIkjun.caption"
+                  value={jinData.caption || "공간과 경영을 함께 바라보는 전문가"}
+                />
+              </p>
+            </div>
+          </div>
+
+          {/* 3. Horizontal Core Focus / Keyword Tags Bar */}
+          <div className="border-y border-[#E5E1D8] py-4 sm:py-5 my-6 sm:my-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-stone-800 text-sm sm:text-base font-medium text-center sm:text-left">
+              <div>상권·입지 분석</div>
+              <div>3D 주방 설계</div>
+              <div>브랜드 콘셉트</div>
+              <div>고객 경험 디자인</div>
+            </div>
+          </div>
+
+          {/* 4. Two-Column Careers & Activities */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 py-4 sm:py-6">
+            {/* Left: 교육 및 학술 */}
+            <div className="space-y-4">
+              <h2 className="text-lg sm:text-xl font-bold text-stone-900">교육 및 학술</h2>
+              <ul className="space-y-3 text-sm sm:text-base text-stone-800">
+                <li className="flex items-center gap-3">
+                  <span className="text-[#2F6B55] font-semibold text-xs sm:text-sm shrink-0">현재</span>
+                  <span>청운대학교 외래교수</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#2F6B55] font-semibold text-xs sm:text-sm shrink-0">현재</span>
+                  <span>세종사이버대학교 외래교수</span>
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                onClick={() => setShowMoreEdu(!showMoreEdu)}
+                className="text-stone-500 hover:text-stone-900 text-xs sm:text-sm font-medium flex items-center gap-1.5 pt-2 transition cursor-pointer"
+              >
+                <span>{showMoreEdu ? '▼ 교육 경력 접기' : '▶ 그 외 교육 경력 보기'}</span>
+              </button>
+
+              {showMoreEdu && (
+                <div className="pt-2 pl-3 space-y-2 text-xs sm:text-sm text-stone-600 border-l-2 border-[#2F6B55]/30 animate-fadeIn">
+                  <p>충청대학교 외식조리경영학과 외래교수</p>
+                  <p>혜전대학교 호텔조리외식계열 외래교수</p>
+                  <p>한양사이버대학교 경영학부 외식프랜차이즈경영학과 강사</p>
+                  <p>경기대학교 서비스경영전문대학원 외식경영전공 외래교수</p>
+                  <p>세종대학교 일반대학원 조리외식경영학 박사수료</p>
+                  <p>홍익대학교 건축도시대학원 실내설계 석사</p>
+                </div>
+              )}
+            </div>
+
+            {/* Right: 공직 및 협회 활동 */}
+            <div className="space-y-4">
+              <h2 className="text-lg sm:text-xl font-bold text-stone-900">공직 및 협회 활동</h2>
+              <ul className="space-y-3 text-sm sm:text-base text-stone-800">
+                <li className="flex items-center gap-3">
+                  <span className="text-[#2F6B55] font-semibold text-xs sm:text-sm shrink-0">현재</span>
+                  <span>한국외식창업교육원 교육분과이사</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#2F6B55] font-semibold text-xs sm:text-sm shrink-0">현재</span>
+                  <span>국가보훈처 자문위원</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#2F6B55] font-semibold text-xs sm:text-sm shrink-0">현재</span>
+                  <span>한국외식경영학회 부회장</span>
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                onClick={() => setShowMorePublic(!showMorePublic)}
+                className="text-stone-500 hover:text-stone-900 text-xs sm:text-sm font-medium flex items-center gap-1.5 pt-2 transition cursor-pointer"
+              >
+                <span>{showMorePublic ? '▼ 전체 활동 접기' : '▶ 전체 활동 보기'}</span>
+              </button>
+
+              {showMorePublic && (
+                <div className="pt-2 pl-3 space-y-2 text-xs sm:text-sm text-stone-600 border-l-2 border-[#2F6B55]/30 animate-fadeIn">
+                  <p>(사)한국전통주학회 부회장</p>
+                  <p>(사)한국외식업중앙회 신규영업자교육 교수</p>
+                  <p>(사)한국외식창업교육원 상권분석 및 공간기획 수석자문위원</p>
+                  <p>중소벤처기업부·소상공인시장진흥공단 소상공인 전문컨설턴트</p>
+                  <p>aT 한국농수산식품유통공사 해외 한식당 경쟁력 강화 디자인 컨설턴트 (미국, 프랑스, 중국 등)</p>
+                  <p>(주)한솔요리학원 고문 및 공간설계 총괄</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 5. Divider Line */}
+          <div className="border-t border-[#E5E1D8] my-6 sm:my-8" />
+
+          {/* 6. 글로 전하는 외식경영 인사이트 */}
+          <div className="space-y-3 py-2">
+            <h2 className="text-lg sm:text-xl font-bold text-stone-900">글로 전하는 외식경영 인사이트</h2>
+            <p className="text-stone-700 text-sm sm:text-base leading-relaxed">
+              식품저널 · 월간 음식과사람 · 매일경제신문 · 월간 호텔&레스토랑
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setShowMoreMedia(!showMoreMedia)}
+              className="text-stone-500 hover:text-stone-900 text-xs sm:text-sm font-medium flex items-center gap-1.5 pt-1 transition cursor-pointer"
+            >
+              <span>{showMoreMedia ? '▼ 전체 기고 매체 및 저서 접기' : '▶ 전체 기고 매체 보기'}</span>
+            </button>
+
+            {showMoreMedia && (
+              <div className="pt-3 pl-3 space-y-3 text-xs sm:text-sm text-stone-600 border-l-2 border-[#2F6B55]/30 animate-fadeIn">
                 <div>
-                  <span className="text-xs font-black text-[#2B7752] tracking-widest uppercase">PROFILE & EXPERTISE</span>
-                  <h3 className="text-3xl font-black text-gray-950 mt-1">
-                    <EditableText path="jinIkjun.name" value={siteDraft?.jinIkjun?.name || "진 익 준"} />{' '}
-                    <span className="text-lg font-bold text-gray-500">/ JIN IK JUN</span>
-                  </h3>
-                  <p className="text-sm font-bold text-[#1E5D3B] mt-1">
-                    <EditableText path="jinIkjun.currentRole" value={siteDraft?.jinIkjun?.currentRole || "現 비엑스디 대표 (외식경영 및 공간전략 기획 컨설팅 / 외식관련 도서 출판사)"} />
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
-                    <EditableText multiline path="jinIkjun.bio" value={siteDraft?.jinIkjun?.bio || "상권 입지 분석부터 3D 주방 설계, 브랜드 콘셉트, 고객 경험 디자인(CX)까지 외식 공간의 모든 것을 과학적 데이터와 20여 년의 현장 실전 노하우로 설계하는 대한민국 대표 외식 경영 컨설턴트입니다."} />
+                  <h3 className="font-bold text-stone-800 mb-1">정기 언론 & 전문지 기고 칼럼</h3>
+                  <p className="text-stone-600">
+                    글로벌 외식정보 논설위원, 월간 외식경영, 월간 창업&프랜차이즈, 월간 뚝배기, 매일경제신문, 창업경영신문, 월간 주류저널, 포털 야후 등 11개 유력 전문 매체 정기 칼럼니스트
                   </p>
                 </div>
-
-                {/* Academic & Professional Affiliations Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Faculty Appointments */}
-                  <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2.5">
-                    <div className="flex items-center gap-2 text-xs font-black text-[#1E5D3B] border-b border-stone-200 pb-1.5">
-                      <GraduationCap className="w-4 h-4 text-[#2B7752]" />
-                      <span>외래교수 및 학술 직책</span>
-                    </div>
-                    <ul className="text-xs space-y-1.5 text-gray-700 font-medium">
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
-                        <span><strong>現 청운대학교</strong> 외래교수</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
-                        <span><strong>現 세종사이버대학교</strong> 외래교수</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5" />
-                        <span>경기대학교 외래교수</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5" />
-                        <span>한양사이버대학교 MBA 외래교수</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Public & Corporate Advisory */}
-                  <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2.5">
-                    <div className="flex items-center gap-2 text-xs font-black text-[#1E5D3B] border-b border-stone-200 pb-1.5">
-                      <Award className="w-4 h-4 text-[#2B7752]" />
-                      <span>공직 및 협회 임원</span>
-                    </div>
-                    <ul className="text-xs space-y-1.5 text-gray-700 font-medium">
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
-                        <span><strong>現 (사)한국외식창업교육원</strong> 교육분과이사</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
-                        <span><strong>現 국가보훈처</strong> 자문위원</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
-                        <span><strong>現 (사)한국외식경영학회</strong> 부회장</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
-                        <span><strong>現 (사)한국전통주학회</strong> 부회장</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B7752] shrink-0 mt-0.5" />
-                        <span><strong>現 (사)한국외식업중앙회</strong> 신규영업자교육 교수</span>
-                      </li>
-                      <li className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-gray-500 shrink-0 mt-0.5" />
-                        <span>(주)한솔요리학원 고문</span>
-                      </li>
-                    </ul>
-                  </div>
+                <div>
+                  <h3 className="font-bold text-stone-800 mb-1">대표 출간 저서</h3>
+                  <ul className="list-disc list-inside space-y-1 text-stone-600">
+                    <li>『푸드테크 주방경영 시스템』 (비엑스디, 2026)</li>
+                    <li>『그래서, 어디서 가게 열 건데요』 (비엑스디, 2026)</li>
+                    <li>『창업성공의 인테리어 디자인 전략』 (크라운출판사)</li>
+                    <li>『외식업 성공지침서』 (백산출판사)</li>
+                  </ul>
                 </div>
-
-                {/* Columnist & Media Articles */}
-                <div className="bg-amber-50/60 rounded-2xl p-5 border border-amber-200 space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-black text-amber-950">
-                    <Newspaper className="w-4 h-4 text-[#C5A059]" />
-                    <span>전문지 및 유력 언론 칼럼니스트 활동</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    {[
-                      '식품저널 칼럼니스트',
-                      '월간 음식과사람 칼럼니스트',
-                      '글로벌 외식정보 논설위원',
-                      '월간 외식경영 칼럼니스트',
-                      '월간 호텔&레스토랑 칼럼니스트',
-                      '월간 창업&프랜차이즈 칼럼니스트',
-                      '월간 뚝배기 칼럼니스트',
-                      '매일경제신문 칼럼니스트',
-                      '창업경영신문 칼럼니스트',
-                      '월간 주류저널 칼럼니스트',
-                      '포털 야후 칼럼니스트',
-                    ].map((col, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 bg-white border border-amber-200 rounded-lg text-gray-800 font-bold shadow-2xs"
-                      >
-                        {col}
-                      </span>
-                    ))}
-                  </div>
+                <div>
+                  <h3 className="font-bold text-stone-800 mb-1">주요 학술 연구 논문</h3>
+                  <ul className="list-disc list-inside space-y-1 text-stone-600">
+                    <li>소비가치에 따른 밀레니얼세대 카페 소비자 세분화에 관한 연구 (외식경영연구)</li>
+                    <li>외식창업자의 지식이 외식업종 선택 및 공간디자인 결정에 미치는 영향 (한국실내디자인학회)</li>
+                    <li>Q방법론에 의한 레스토랑 이용자의 실내디자인 선호유형에 관한 연구 (외식경영학회)</li>
+                  </ul>
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
-          {/* Section: Books & Academic Theses */}
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-stone-200 shadow-lg space-y-6">
-            <div className="flex items-center gap-2 border-b-2 border-stone-200 pb-4">
-              <BookOpen className="w-6 h-6 text-[#2B7752]" />
-              <h4 className="text-xl sm:text-2xl font-black text-gray-950">저서(著書) 및 학술 연구 논문</h4>
-            </div>
+          {/* 7. Divider Line */}
+          <div className="border-t border-[#E5E1D8] my-6 sm:my-8" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Major Books */}
-              <div className="space-y-4">
-                <span className="text-xs font-black text-[#2B7752] uppercase tracking-wider block">
-                  MAJOR PUBLICATIONS (대표 출간 저서)
+          {/* 8. Bottom Inquiry Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+            <div className="text-stone-800 font-medium text-sm sm:text-base">
+              강의 · 컨설팅 문의
+            </div>
+            <div className="flex flex-wrap items-center gap-5 sm:gap-7 text-sm sm:text-base font-medium text-[#2F6B55]">
+              <a
+                href={`mailto:${jinData.email || 'ikjunjin@naver.com'}`}
+                className="hover:underline flex items-center gap-1 group"
+              >
+                <span>
+                  <EditableText path="jinIkjun.email" value={jinData.email || "ikjunjin@naver.com"} />
                 </span>
-                <div className="space-y-3">
-                  {[
-                    { title: '푸드테크 주방경영 시스템', publisher: '비엑스디 (2026)', desc: 'AI·로봇 자동화 및 최적 주방 동선 혁신 가이드' },
-                    { title: '그래서, 어디서 가게 열 건데요', publisher: '비엑스디 (2026)', desc: '빅데이터 기반 외식 상권분석 및 입지 선정 바이블' },
-                    { title: '창업성공의 인테리어 디자인 전략', publisher: '크라운출판사 (2008 / 2010)', desc: '매출을 극대화하는 외식 공간 기획의 정석' },
-                    { title: '외식업 성공지침서', publisher: '백산출판사 (2009)', desc: '예비창업자와 점포 경영자를 위한 실전 솔루션' },
-                  ].map((book, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#34885E] transition-all">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-md">
-                          {book.publisher}
-                        </span>
-                      </div>
-                      <h5 className="text-base font-black text-gray-950 mt-1.5">{book.title}</h5>
-                      <p className="text-xs text-gray-600 font-medium mt-1">{book.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                <span className="text-xs transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+              </a>
+              <a
+                href={`tel:${(jinData.phone || '010-8563-8440').replace(/[^0-9]/g, '')}`}
+                className="hover:underline"
+              >
+                <EditableText path="jinIkjun.phone" value={jinData.phone || "010-8563-8440"} />
+              </a>
 
-              {/* Research Papers */}
-              <div className="space-y-4">
-                <span className="text-xs font-black text-[#2B7752] uppercase tracking-wider block">
-                  ACADEMIC RESEARCH & PAPERS (학술 논문)
-                </span>
-                <div className="space-y-3">
-                  {[
-                    {
-                      title: '소비가치에 따른 밀레니얼세대 카페 소비자 세분화에 관한 연구',
-                      date: '2022.02.28',
-                      journal: '외식경영연구',
-                      desc: 'MZ세대 소비자 취향 및 공간 소비 행태에 따른 카페 브랜딩 전략'
-                    },
-                    {
-                      title: '외식창업자의 지식이 외식업종(태) 선택 및 공간디자인 결정에 미치는 영향',
-                      date: '2015.11',
-                      journal: '한국실내디자인학회논문집',
-                      desc: '창업자의 전문 지식이 매장 디자인 성공 및 생존율에 미치는 실증 분석'
-                    },
-                    {
-                      title: 'Q방법론에 의한 레스토랑 이용자의 실내디자인 선호유형에 관한 연구',
-                      date: '2014.02',
-                      journal: '외식경영학회',
-                      desc: '고객 심리와 감성 반응을 반영한 맞춤형 인테리어 선호 유형 분석'
-                    },
-                  ].map((paper, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-stone-50 border border-stone-200 hover:border-[#85CFAB] transition-all">
-                      <span className="text-[11px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md">
-                        {paper.date} | {paper.journal}
-                      </span>
-                      <h5 className="text-sm font-black text-gray-950 mt-1.5 leading-snug">{paper.title}</h5>
-                      <p className="text-xs text-gray-600 font-medium mt-1">{paper.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {onConsultClick && (
+                <button
+                  type="button"
+                  onClick={() => onConsultClick('진익준 교수 1:1 외식 컨설팅 신청')}
+                  className="px-4 py-1.5 rounded-full bg-[#2F6B55] hover:bg-[#235341] text-white text-xs font-semibold shadow-xs transition active:scale-95 cursor-pointer ml-auto sm:ml-0"
+                >
+                  1:1 상담 신청
+                </button>
+              )}
             </div>
-          </div>
-
-          {/* Section: Universities & Government Lectures (출강 이력) */}
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-stone-200 shadow-lg space-y-6">
-            <div className="flex items-center gap-2 border-b-2 border-stone-200 pb-4">
-              <Briefcase className="w-6 h-6 text-[#2B7752]" />
-              <h4 className="text-xl sm:text-2xl font-black text-gray-950">대학 최고경영자과정 및 사회단체 출강 이력</h4>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { title: '연세대학교', prog: '‘외식산업최고경영자과정’ 강사' },
-                { title: '중앙대학교', prog: '‘외식산업경영자과정’ 강사' },
-                { title: '강남구-중앙대학교', prog: '‘외식최고경영자과정’ 강사' },
-                { title: '서초구-중앙대학교', prog: '‘외식최고경영자과정’ 강사' },
-                { title: '경희대학교', prog: '‘프랜차이즈최고경영자과정’ 강사' },
-                { title: '숭실대학교', prog: '‘한식글로벌 전문MBA과정’ 강사' },
-                { title: '동아대학교', prog: '‘외식산업 최고경영자과정’ 강사' },
-                { title: '공주대학교', prog: '‘식품프랜차이즈 전문경영자과정’ 강사' },
-                { title: '영산대학교', prog: '‘외식산업경영개선과정’ 강사' },
-                { title: '대구가톨릭대학교', prog: '‘외식최고경영자과정’ 강사' },
-                { title: '인제대학교 / 부경대학교', prog: '‘외식최고경영자과정’ 강사' },
-                { title: '중국 연변대학교', prog: '‘외식최고위과정’ 강사' },
-                { title: '숙명여자대학교 대학원', prog: '르 꼬르동 블루(Le Cordon Bleu) 특강' },
-                { title: '서울특별시', prog: '하이서울 실전창업스쿨 강사' },
-                { title: '한국프랜차이즈산업협회', prog: '상업공간 인테리어 전문과정 담임강사' },
-                { title: '중소기업청·소상공인진흥원', prog: '‘자영업컨설턴트 등록과정’ 교재개발 및 강사' },
-                { title: '매일경제신문', prog: '실전창업아카데미 외식공간 강사' },
-                { title: '외식업중앙회 경기지회', prog: '신규영업자 위생교육 및 경영개선 강사' },
-              ].map((item, idx) => (
-                <div key={idx} className="p-3.5 bg-stone-50 rounded-xl border border-stone-200">
-                  <div className="font-black text-xs text-[#2B7752]">{item.title}</div>
-                  <div className="text-xs text-gray-700 font-medium mt-0.5">{item.prog}</div>
-                </div>
-              ))}
-            </div>
-            <div className="text-right text-xs text-gray-400 font-bold">이외 전국 주요 지자체 및 공공기관 출강 다수</div>
           </div>
         </div>
       )}
