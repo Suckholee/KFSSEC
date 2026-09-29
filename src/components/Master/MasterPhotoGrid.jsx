@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Award, Medal, ArrowUpRight, CheckCircle2, ChevronRight, Edit3 } from 'lucide-react';
+import { Award, Medal, ArrowUpRight, CheckCircle2, ChevronRight, Edit3, Youtube, Instagram, Globe } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import MasterDetailModal from './MasterDetailModal';
 import { useAdminEdit } from '../../context/AdminEditContext';
@@ -148,34 +148,61 @@ export default function MasterPhotoGrid({ profiles, onEditMaster }) {
                     <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>
 
-                  {isEditMode ? (
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        onEditMaster?.(profile.id || profile.name);
-                      }}
-                      className="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
-                      title="이 명장 프로필 편집"
-                    >
-                      <Edit3 className="w-3 h-3 text-amber-700" />
-                      <span>수정</span>
-                    </button>
-                  ) : (
-                    /* Media Icons Preview Indicators */
-                    <div className="flex items-center gap-1.5">
-                      {profile.youtubeUrl && (
-                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500" title="YouTube" />
-                      )}
-                      {profile.blogUrl && (
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" title="Blog" />
-                      )}
-                      {profile.instagramUrl && (
-                        <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" title="Instagram" />
-                      )}
-                    </div>
-                  )}
+                  <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                    {/* Media Icons / Links */}
+                    {profile.youtubeUrl && (
+                      <a
+                        href={profile.youtubeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-6 h-6 rounded-full bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center transition shadow-xs hover:scale-110 active:scale-95 cursor-pointer"
+                        title="유튜브 채널 바로가기"
+                        aria-label="유튜브 채널"
+                      >
+                        <Youtube className="w-3.5 h-3.5 fill-white" />
+                      </a>
+                    )}
+                    {profile.instagramUrl && (
+                      <a
+                        href={profile.instagramUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center transition shadow-xs hover:scale-110 active:scale-95 cursor-pointer"
+                        title="인스타그램 바로가기"
+                        aria-label="인스타그램"
+                      >
+                        <Instagram className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {profile.blogUrl && (
+                      <a
+                        href={profile.blogUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-6 h-6 rounded-full bg-[#03C75A] hover:bg-[#02B150] text-white flex items-center justify-center transition shadow-xs hover:scale-110 active:scale-95 cursor-pointer"
+                        title="블로그 / 공식 홈페이지 바로가기"
+                        aria-label="블로그 / 웹사이트"
+                      >
+                        <Globe className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+
+                    {isEditMode && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          onEditMaster?.(profile.id || profile.name);
+                        }}
+                        className="ml-1 px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 font-bold text-[11px] flex items-center gap-1 cursor-pointer transition shadow-xs"
+                        title="이 명장 프로필 편집"
+                      >
+                        <Edit3 className="w-3 h-3 text-amber-700" />
+                        <span>수정</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
 
               </div>
