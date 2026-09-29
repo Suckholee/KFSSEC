@@ -3,6 +3,26 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5170",
+    "title": "“농안법, 생산자·소비자 넘어 중소상인까지”…국회서 농수산물 유통혁신 해법 모색",
+    "summary": "생산자·소비자·소상공인·법제·유통 전문가가 한자리에 모여 현행 농안법의 한계를 진단하고, 실질적인 농수산물 유통 혁신 방안을 논의하는 국회 정책세미나가 성황리에 열렸다...",
+    "author": "글로벌 외식정보=발행인 안형상 대표기자",
+    "date": "2026.09.29",
+    "imageUrl": "/images/trends/trend_5170.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/9f349118a12635f6cea9c7cb5584d756de000e6f.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5170&mcode=m247tk9"
+  },
+  {
+    "id": "5167",
+    "title": "“농민에게는 판매선택권, 외식업 소상공인에게는 구매선택권을”…안형상 이사장, 국회서 농안법 개정 방향 제시",
+    "summary": "안형상 사단법인 한국외식창업교육원 이사장이 국회의원회관에서 열린 정책세미나에서 외식업 소상공인의 구매선택권 보장과 농안법 개정 7대 방향을 강력히 제안했다...",
+    "author": "글로벌 외식정보=조범진 기자",
+    "date": "2026.09.29",
+    "imageUrl": "/images/trends/trend_5167.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/a97240bdc8fd026736923ba03c0fdb0faf14c87e.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5167&mcode=m247tk9"
+  },
+  {
     "id": "5172",
     "title": "매출이 떨어졌다면 매출부터 보지 마라",
     "summary": "월요일 오전 10시. 아직 점심 영업을 시작하기 전인데 사장님의 표정은 이미 하루 장사를 끝낸 사람처럼 무거웠다. 테이블 위에는 지난달 POS 매출표가 놓여 있...",
@@ -31,6 +51,16 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5127.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/d478a21a284389c1ea0a44bd4b7d5db03e7efd24.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5127&mcode=m247tk9"
+  },
+  {
+    "id": "5079",
+    "title": "비엠스인터내셔날, 강남 ‘벨라몬테(Bella Monte)’에서 프리미엄 비즈니스 생태계 열다",
+    "summary": "㈜비엠스인터내셔날이 와인을 매개로 사람과 문화, 비즈니스를 연결하는 새로운 프리미엄 비즈니스 커뮤니티 생태계를 구축했다...",
+    "author": "글로벌 외식정보=안형상 기자",
+    "date": "2026.09.11",
+    "imageUrl": "/images/trends/trend_5079.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/a257d282b645663f57a5cf4c02f61f8018b7e566.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5079&mcode=m247tk9"
   },
   {
     "id": "5032",
@@ -129,5 +159,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.09.21'
+  lastUpdated: '2026.09.29'
 };
