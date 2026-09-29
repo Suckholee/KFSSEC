@@ -29,8 +29,9 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
 
   const galleryCategories = [
     { id: 'all', label: t('전체 갤러리') },
-    { id: 'competition', label: t('요리대회') },
+    { id: 'partners', label: t('산학협력 & MOU') },
     { id: 'ceremony', label: t('시상식 & 인증패') },
+    { id: 'competition', label: t('요리대회') },
     { id: 'consulting', label: t('지자체 컨설팅') },
     { id: 'training', label: t('조리 실습 현장') },
   ];
