@@ -272,7 +272,10 @@ export default function AdminBlockNavigator({
         <button
           type="button"
           onClick={() => setIsNavigatorOpen(true)}
-          className="fixed left-0 top-24 z-40 hidden lg:flex items-center gap-2 px-3 py-2.5 bg-slate-900/95 hover:bg-slate-800 text-amber-300 font-extrabold text-xs rounded-r-2xl border-y border-r border-amber-500/40 shadow-2xl transition-all transform hover:translate-x-1 cursor-pointer select-none backdrop-blur-md"
+          style={{
+            top: 'calc(var(--admin-toolbar-height, 0px) + 6rem)',
+          }}
+          className="fixed left-0 z-40 hidden lg:flex items-center gap-2 px-3 py-2.5 bg-slate-900/95 hover:bg-slate-800 text-amber-300 font-extrabold text-xs rounded-r-2xl border-y border-r border-amber-500/40 shadow-2xl transition-all transform hover:translate-x-1 cursor-pointer select-none backdrop-blur-md"
           title="수정 가능한 블록 목차 사이드바 열기"
         >
           <Layers className="w-4 h-4 text-amber-400 animate-pulse" />
@@ -292,14 +295,13 @@ export default function AdminBlockNavigator({
       {/* 3. MAIN BLOCK NAVIGATOR (Left Sidebar on PC, Slide-over Drawer on Mobile) */}
       <aside
         aria-label="수정 블록 목차 카테고리 네비게이터"
-        className={`fixed left-0 z-[9999] lg:z-40 transition-all duration-300 ease-in-out select-none flex flex-col bg-slate-900/95 backdrop-blur-xl border-r border-amber-500/30 text-white shadow-2xl ${
-          // Mobile Positioning: full screen height slide-in drawer
-          'inset-y-0 w-[84vw] max-w-[310px] ' +
-          // Desktop Positioning: below toolbar, full remaining height
-          'lg:top-[49px] lg:bottom-0 lg:w-[280px] ' +
-          (isNavigatorOpen
+        style={{
+          top: 'var(--admin-toolbar-height, 0px)',
+        }}
+        className={`fixed left-0 z-[55] transition-all duration-300 ease-in-out select-none flex flex-col bg-slate-900/95 backdrop-blur-xl border-r border-amber-500/30 text-white shadow-2xl bottom-0 w-[84vw] max-w-[310px] lg:w-[280px] ${
+          isNavigatorOpen
             ? 'translate-x-0 opacity-100'
-            : '-translate-x-full lg:-translate-x-full pointer-events-none opacity-0')
+            : '-translate-x-full lg:-translate-x-full pointer-events-none opacity-0'
         }`}
       >
         {/* Sidebar Header with Page Selector */}

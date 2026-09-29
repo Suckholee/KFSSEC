@@ -146,7 +146,10 @@ export default function Header({
   return (
     <>
       <header
-        className={`fixed top-0 right-0 z-50 transition-all duration-200 font-sans text-gray-900 ${
+        style={{
+          top: 'var(--admin-toolbar-height, 0px)',
+        }}
+        className={`fixed right-0 z-50 transition-all duration-200 font-sans text-gray-900 ${
           isNavOpen && isEdit ? 'lg:left-[280px] left-0' : 'left-0'
         } ${
           isScrolled
@@ -520,8 +523,14 @@ export default function Header({
 
     </header>
 
-    {/* Spacer to prevent content jump under fixed header */}
-    <div className="h-20 sm:h-22 shrink-0" aria-hidden="true" />
+    {/* Spacer to prevent content jump under fixed header and admin toolbar */}
+    <div
+      style={{
+        paddingTop: 'var(--admin-toolbar-height, 0px)',
+      }}
+      className="h-20 sm:h-22 shrink-0 box-content transition-all duration-200"
+      aria-hidden="true"
+    />
   </>
   );
 }

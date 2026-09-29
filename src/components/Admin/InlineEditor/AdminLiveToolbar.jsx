@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import {
   Edit3,
@@ -35,12 +35,48 @@ export default function AdminLiveToolbar() {
     onLogout,
   } = useAdminEdit();
 
+  const toolbarRef = useRef(null);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      if (typeof document !== 'undefined') {
+        document.documentElement.style.removeProperty('--admin-toolbar-height');
+      }
+      return;
+    }
+
+    const updateHeight = () => {
+      if (toolbarRef.current && typeof document !== 'undefined') {
+        const height = toolbarRef.current.offsetHeight;
+        document.documentElement.style.setProperty('--admin-toolbar-height', `${height}px`);
+      }
+    };
+
+    updateHeight();
+
+    let resizeObserver;
+    if (typeof ResizeObserver !== 'undefined' && toolbarRef.current) {
+      resizeObserver = new ResizeObserver(updateHeight);
+      resizeObserver.observe(toolbarRef.current);
+    }
+
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      if (resizeObserver) resizeObserver.disconnect();
+      window.removeEventListener('resize', updateHeight);
+      if (typeof document !== 'undefined') {
+        document.documentElement.style.removeProperty('--admin-toolbar-height');
+      }
+    };
+  }, [isAdmin, rawEditMode, pendingChanges.count, isNavigatorOpen]);
+
   if (!isAdmin) return null;
 
   return (
     <aside
+      ref={toolbarRef}
       aria-label="관리자 라이브 편집 툴바"
-      className="sticky top-0 z-[9999] w-full bg-slate-900/95 backdrop-blur-md text-white border-b border-amber-500/30 shadow-2xl px-3 sm:px-6 py-2.5 transition-all select-none"
+      className="fixed top-0 left-0 right-0 z-[60] w-full bg-slate-900/95 backdrop-blur-md text-white border-b border-amber-500/30 shadow-2xl px-3 sm:px-6 py-2.5 transition-all select-none"
     >
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
         {/* Left: Badge & Mode Controls */}
