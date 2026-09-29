@@ -11,6 +11,7 @@ import {
   Award,
   CheckCircle2,
   ExternalLink,
+  ChevronLeft,
   ChevronRight,
   ShieldCheck,
   Send,
@@ -32,6 +33,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
   const { isEditMode, siteDraft, updateSiteDraft, postsDraft, updatePostsDraft } = useAdminEdit();
 
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const [isMouModalOpen, setIsMouModalOpen] = useState(false);
 
@@ -88,6 +90,16 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
     'VEN60': '호텔식 고급 디저트 및 제과제빵 전문 브랜드로, 수강생을 위한 바리스타 및 베이킹 실습 환경을 지원합니다.',
     '진도울돌목가는길': '청정 남도 해역 수산물 직거래 유통 및 특산물 기반 메뉴 개발을 협업하는 산지 직송 파트너입니다.',
     '닥터장 베이킹랩': '제과기능장의 천연효모종 발효 빵 및 쌀 베이킹 레시피를 공동 개발하고 지도하는 전문 연구소입니다.',
+    '글로벌외식정보': '외식업 창업과 경영 인사이트, 현장 포토뉴스 및 칼럼을 전하는 공식 미디어 파트너입니다.',
+    '(사)한국외식경영학회': '외식산업의 학술 발전 및 산학협력 연구를 선도하며 정책 세미나 및 실무형 창업 커리큘럼을 공동 개발합니다.',
+    '주식회사 TONICHI': '일본 도쿄 소재 글로벌 무역·유통 기업으로 K-FOOD 브랜드의 일본 현지 진출 및 유통 네트워크를 지원합니다.',
+    'ITALIA MORINI SRL': '정통 이탈리아 식자재 직수입 및 미식 문화 마스터클래스 운영을 위한 이탈리아 글로벌 협약 파트너입니다.',
+    '대만 타이베이 외식공회': '대만 타이베이시 외식업직업공회 및 닝샤야시장 관광협회와 아시아 외식 조리기술 및 야시장 문화를 교류합니다.',
+    '(재)청년상인육성재단': '전통시장 및 골목상권 청년 외식 창업자의 성공 모델 육성을 위한 실전 교육과 매장 인큐베이팅을 지원합니다.',
+    '강남구소상공인연합회': '강남구 관내 골목상권 외식 소상공인의 자생력 강화와 창업 멘토링을 상생 협력하는 법정단체 파트너입니다.',
+    '(주)이지디 (EDG)': '분당 야탑역 중심 복합 외식문화공간 개발 및 수강생 실전 팝업스토어 입점 인큐베이팅을 협력합니다.',
+    '(주)굿콜좋은선택': '외식 소상공인의 유통 원가 절감 및 식자재 공동구매 직배송 솔루션을 지원하는 물류 유통 파트너입니다.',
+    '(주)시사코리아뉴스': '외식 소상공인의 정책적 권익 대변 및 건전한 외식문화 정착을 위해 대외 언론홍보를 지원하는 미디어 파트너입니다.',
   };
 
   // Dynamic Official Partner Companies from Admin or Defaults
@@ -111,9 +123,16 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
 
   // MOU Event Photos from draft or prop
   const currentPosts = (postsDraft && postsDraft.length > 0) ? postsDraft : postsList;
-  const mouPhotos = currentPosts.filter(post => post.category === '갤러리' && post.galleryCategory === 'partners' && (post.image || post.coverImage)).map(post => ({
-    id: post.id, title: post.title, date: post.date, image: post.image || post.coverImage, desc: post.content,
-  }));
+  const mouPhotos = currentPosts
+    .filter(post => post.category === '갤러리' && post.galleryCategory === 'partners' && (post.image || post.coverImage))
+    .map(post => ({
+      id: post.id,
+      title: post.title,
+      date: post.date,
+      image: post.image || post.coverImage,
+      desc: post.content,
+      images: Array.isArray(post.images) && post.images.length > 0 ? post.images : [post.image || post.coverImage],
+    }));
 
   // Upload MOU Photo file
   const handleMouFileChange = async (e) => {
@@ -438,7 +457,10 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
             {mouPhotos.map((photo, index) => (
               <ScrollReveal key={photo.id} direction="up" delay={index * 80}>
                 <div
-                  onClick={() => setSelectedPhoto(photo)}
+                  onClick={() => {
+                    setSelectedPhoto(photo);
+                    setSelectedPhotoIndex(0);
+                  }}
                   className="group bg-white rounded-2xl overflow-hidden border border-stone-200 hover:border-[#34885E] shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col h-full"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-stone-100">
@@ -450,6 +472,12 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
                     <div className="absolute top-3 left-3 bg-[#2B7752]/90 text-white text-[10px] font-black px-2.5 py-1 rounded-md">
                       MOU 협약식
                     </div>
+                    {photo.images && photo.images.length > 1 && (
+                      <div className="absolute top-3 right-3 bg-stone-900/85 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-xs border border-white/20">
+                        <Layers className="w-3 h-3 text-[#A7F3D0]" />
+                        <span>{photo.images.length}P 문서</span>
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white">
                       <Maximize2 className="w-6 h-6 drop-shadow-md" />
                     </div>
@@ -618,9 +646,16 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
             className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-[#D0E7DA] cursor-default flex flex-col max-h-[90vh]"
           >
             <div className="bg-gradient-to-r from-[#1B5238] via-[#266847] to-[#34885E] text-white p-4 px-6 flex items-center justify-between">
-              <span className="text-xs font-black text-[#A7F3D0]">
-                MOU 공식 협약 기록
-              </span>
+              <div className="flex items-center gap-2.5">
+                <span className="text-xs font-black text-[#A7F3D0]">
+                  MOU 공식 협약 기록
+                </span>
+                {selectedPhoto.images && selectedPhoto.images.length > 1 && (
+                  <span className="text-[11px] font-bold bg-white/20 px-2 py-0.5 rounded-full text-white">
+                    {selectedPhotoIndex + 1} / {selectedPhoto.images.length} 페이지
+                  </span>
+                )}
+              </div>
               <button
                 onClick={() => setSelectedPhoto(null)}
                 className="w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition-colors cursor-pointer"
@@ -629,13 +664,68 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
               </button>
             </div>
 
-            <div className="relative aspect-[16/10] bg-stone-900 overflow-hidden">
+            <div className="relative aspect-[16/10] bg-stone-900 overflow-hidden flex items-center justify-center group/viewer">
               <img
-                src={selectedPhoto.image}
-                alt={selectedPhoto.title}
-                className="w-full h-full object-contain"
+                src={
+                  selectedPhoto.images && selectedPhoto.images[selectedPhotoIndex]
+                    ? selectedPhoto.images[selectedPhotoIndex]
+                    : selectedPhoto.image
+                }
+                alt={`${selectedPhoto.title} (페이지 ${selectedPhotoIndex + 1})`}
+                className="w-full h-full object-contain select-none"
               />
+
+              {selectedPhoto.images && selectedPhoto.images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPhotoIndex((prev) => (prev > 0 ? prev - 1 : selectedPhoto.images.length - 1));
+                    }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/85 text-white flex items-center justify-center transition-all cursor-pointer shadow-lg backdrop-blur-xs border border-white/20 active:scale-95"
+                    title="이전 페이지"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPhotoIndex((prev) => (prev < selectedPhoto.images.length - 1 ? prev + 1 : 0));
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/85 text-white flex items-center justify-center transition-all cursor-pointer shadow-lg backdrop-blur-xs border border-white/20 active:scale-95"
+                    title="다음 페이지"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
             </div>
+
+            {/* Thumbnail pagination strip for multi-page agreements */}
+            {selectedPhoto.images && selectedPhoto.images.length > 1 && (
+              <div className="bg-stone-950 px-4 py-2.5 flex items-center gap-2 overflow-x-auto border-t border-stone-800 scrollbar-thin">
+                <span className="text-[10px] font-bold text-stone-400 shrink-0 mr-1">문서 페이지:</span>
+                {selectedPhoto.images.map((imgUrl, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setSelectedPhotoIndex(i)}
+                    className={`relative w-14 h-11 rounded-lg overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                      selectedPhotoIndex === i
+                        ? 'border-emerald-400 ring-2 ring-emerald-500/50 scale-105'
+                        : 'border-stone-700 opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <img src={imgUrl} alt={`p${i + 1}`} className="w-full h-full object-cover" />
+                    <span className="absolute bottom-0 right-0 bg-black/85 text-[9px] font-bold text-white px-1 leading-none rounded-tl">
+                      {i + 1}P
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="p-6 space-y-3 overflow-y-auto">
               <span className="text-xs text-stone-500 font-bold block">

@@ -30,8 +30,13 @@ async function supabaseRequest(route, options = {}) {
 export async function readContent(type) {
   checkType(type);
   if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
-    const response = await supabaseRequest(`/rest/v1/site_content?key=eq.${type}&select=value`);
-    return (await response.json())[0]?.value ?? null;
+    try {
+      const response = await supabaseRequest(`/rest/v1/site_content?key=eq.${type}&select=value`);
+      const val = (await response.json())[0]?.value;
+      if (val !== undefined && val !== null) return val;
+    } catch (e) {
+      console.warn(`[store] Supabase read failed for ${type}, falling back to local file:`, e.message);
+    }
   }
   try { return JSON.parse(await fs.readFile(path.join(LOCAL_DIR, `${type}.json`), 'utf8')); }
   catch (error) { if (error.code === 'ENOENT') return null; throw error; }
@@ -39,19 +44,27 @@ export async function readContent(type) {
 
 export async function writeContent(type, value) {
   checkType(type);
-  const data = JSON.stringify(value);
-  if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
-    await supabaseRequest('/rest/v1/site_content?on_conflict=key', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' },
-      body: JSON.stringify({ key: type, value }),
-    });
-  } else {
+  const data = JSON.stringify(value, null, 2);
+  try {
     await fs.mkdir(LOCAL_DIR, { recursive: true });
     const destination = path.join(LOCAL_DIR, `${type}.json`);
     const temporary = `${destination}.${crypto.randomUUID()}.tmp`;
     await fs.writeFile(temporary, data);
     await fs.rename(temporary, destination);
+  } catch (err) {
+    console.warn(`[store] Local file write warning for ${type}:`, err.message);
+  }
+
+  if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
+    try {
+      await supabaseRequest('/rest/v1/site_content?on_conflict=key', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' },
+        body: JSON.stringify({ key: type, value }),
+      });
+    } catch (err) {
+      console.warn(`[store] Supabase write warning for ${type}:`, err.message);
+    }
   }
 }
 

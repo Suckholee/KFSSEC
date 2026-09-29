@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100" width="240" height="100">
+  <g transform="translate(10, 15)">
+    <rect x="10" y="10" width="50" height="50" rx="14" fill="#4338CA"/>
+    <path d="M 25 43 L 35 22 L 45 43" stroke="#F59E0B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="35" cy="27" r="3" fill="#FFFFFF"/>
+    <text x="72" y="32" font-family="'Pretendard', sans-serif" font-size="14" font-weight="900" fill="#1E293B" letter-spacing="-0.5">(재)청년상인육성재단</text>
+    <text x="73" y="50" font-family="'Pretendard', sans-serif" font-size="9" font-weight="800" fill="#6366F1" letter-spacing="0.5">YOUTH MERCHANT FOUNDATION</text>
+  </g>
+</svg>

@@ -30,6 +30,7 @@ import NoticePopupModal from './components/common/NoticePopupModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
+import { DEFAULT_POSTS } from './data/defaultPosts';
 import { AdminEditProvider, useAdminEdit } from './context/AdminEditContext';
 import AdminLiveToolbar from './components/Admin/InlineEditor/AdminLiveToolbar';
 import SectorBlock from './components/Admin/InlineEditor/SectorBlock';
@@ -622,7 +623,7 @@ export default function App() {
     };
   };
 
-  const [postsList, setPostsList] = useState([]);
+  const [postsList, setPostsList] = useState(DEFAULT_POSTS);
 
   const handleUpdatePostsList = async (newList) => {
     const resolved = typeof newList === 'function' ? newList(postsList) : newList;

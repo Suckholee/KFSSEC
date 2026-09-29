@@ -22,6 +22,7 @@ import {
   AlertCircle,
   Pin,
 } from 'lucide-react';
+import { DEFAULT_POSTS } from '../../data/defaultPosts';
 
 export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCancel, currentUser }) {
   const { tr, language } = useLanguage();
@@ -52,11 +53,25 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
 
   // Preset cover image choices for quick selection
   const presetCoverImages = [
+    { label: '국회 세미나 (이사장님)', url: '/images/news/nongahn_ahn_chairman_memo.jpg' },
+    { label: '국회 세미나 (단체)', url: '/images/news/nongahn_seminar_group_1.jpg' },
+    { label: '국회 회의장 전경', url: '/images/news/nongahn_seminar_room_1.jpg' },
     { label: '조리 실습실', url: '/images/course_menu_dev.jpg' },
     { label: '세미나 현장', url: '/images/dir_1.jpg' },
     { label: '메뉴 개발', url: '/images/course_restaurant.jpg' },
     { label: '명인 요리', url: '/images/course_cafe.jpg' },
   ];
+
+  const handleLoadNewsTemplate = () => {
+    const post = DEFAULT_POSTS[0];
+    if (!post) return;
+    setTitle(post.title);
+    setContent(post.content);
+    setCategory('공지 사항');
+    setCoverImage(post.coverImage || post.image);
+    setTags(post.tags || ['농안법개정', '국회정책세미나', '한국외식창업교육원', '안형상이사장']);
+    setIsPinned(true);
+  };
 
   const handleAddTag = (e) => {
     if (e.key === 'Enter' || e.key === ',') {
@@ -152,6 +167,17 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Load News Template Button */}
+            <button
+              type="button"
+              onClick={handleLoadNewsTemplate}
+              className="px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-black rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer border border-emerald-400/40"
+              title={tr("국회 농안법 개정 세미나 기사 초안 불러오기")}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>{tr("국회 세미나 기사 초안 불러오기")}</span>
+            </button>
+
             {/* Draft Save Status Indicator */}
             {isDraftSaved && (
               <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1 animate-fadeIn">
@@ -368,6 +394,36 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
               >
                 <Code className="w-4 h-4" />
               </button>
+
+              <span className="w-px h-5 bg-stone-300 mx-1 hidden sm:inline" />
+
+              <div className="hidden sm:flex items-center gap-1.5 pl-1">
+                <span className="text-[10px] font-black text-stone-500 uppercase tracking-wider">세미나 사진:</span>
+                <button
+                  type="button"
+                  onClick={() => handleInsertFormat('\n![국회 의원회관 정책세미나 전경](/images/news/nongahn_seminar_room_1.jpg)\n')}
+                  className="px-2 py-1 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-lg text-[11px] font-bold cursor-pointer hover:border-emerald-400 transition-colors"
+                  title={tr("회의장 전경 사진 본문 삽입")}
+                >
+                  📷 회의장 전경
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleInsertFormat('\n![안형상 이사장 토론 및 발제 발표](/images/news/nongahn_ahn_chairman_panel.jpg)\n')}
+                  className="px-2 py-1 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-lg text-[11px] font-bold cursor-pointer hover:border-emerald-400 transition-colors"
+                  title={tr("이사장님 발제 사진 본문 삽입")}
+                >
+                  📷 이사장님 발제
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleInsertFormat('\n![참석자 전원 농안법 개정 상생 화이팅 기념촬영](/images/news/nongahn_seminar_fighting.jpg)\n')}
+                  className="px-2 py-1 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-lg text-[11px] font-bold cursor-pointer hover:border-emerald-400 transition-colors"
+                  title={tr("단체 화이팅 사진 본문 삽입")}
+                >
+                  📷 단체 화이팅
+                </button>
+              </div>
             </div>
           )}
 

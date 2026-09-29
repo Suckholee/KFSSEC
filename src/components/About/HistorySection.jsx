@@ -28,7 +28,7 @@ export default function HistorySection({ milestones: propMilestones }) {
   const defaultMilestones = [
     {
       year: '2026',
-      badge: '도약과 결실',
+      badge: '글로벌 도약과 결실',
       badgeColor: 'bg-[#C5A059] text-stone-950 font-black',
       events: [
         {
@@ -44,6 +44,12 @@ export default function HistorySection({ milestones: propMilestones }) {
           tag: '교육 혁신',
         },
         {
+          date: '2026.05',
+          title: t('주식회사 TONICHI(일본 동일상사) 한·일 외식 유통 업무협약(MOU)'),
+          desc: t('일본 도쿄 소재 글로벌 무역·유통 기업과 전략적 제휴를 맺고 K-FOOD 브랜드 일본 진출 및 유통망 구축 착수'),
+          tag: '글로벌 MOU',
+        },
+        {
           date: '2026.03',
           title: t('소믈리에 파티컨설턴트 및 푸드테크 설계사 1·2급 자격 과정 정식 론칭'),
           desc: t('외식 트렌드 변화에 발맞춘 신개념 융합 전문 자격 검정 체계 구축'),
@@ -53,9 +59,15 @@ export default function HistorySection({ milestones: propMilestones }) {
     },
     {
       year: '2025',
-      badge: '전국 확장',
+      badge: '산학협력 및 전국 확장',
       badgeColor: 'bg-[#2B7752] text-white border border-[#85CFAB]/40',
       events: [
+        {
+          date: '2025.12',
+          title: t('(주)이지디(EDG) 분당 야탑역 복합외식문화공간 및 창업 인큐베이팅 협약(MOU)'),
+          desc: t('복합 외식문화공간 개발 및 수강생·청년 창업자의 실전 팝업스토어 입점 운영 지원 협약'),
+          tag: '인큐베이팅 MOU',
+        },
         {
           date: '2025.09',
           title: t('제01회 K-FOOD 지역 특산물 연계 조리 경연대회 주관'),
@@ -63,23 +75,47 @@ export default function HistorySection({ milestones: propMilestones }) {
           tag: '요리대회',
         },
         {
+          date: '2025.07',
+          title: t('(사)한국외식경영학회(KFMA) 산학협력 연구 및 정책 세미나 업무협약(MOU)'),
+          desc: t('외식산업 정책 공동 연구, 산학 정책 세미나 개최 및 현장 맞춤형 외식창업 커리큘럼 공동 개발'),
+          tag: '학술 산학 MOU',
+        },
+        {
           date: '2025.04',
           title: t('한국음식능력(K-FOOD) 1·2급 및 외식창업실무사 1·2급 검정 확대 인가'),
           desc: t('농림축산식품부 등록 민간자격 기준에 따른 현장 실기 중심 검정 라인업 완성'),
           tag: '자격 확대',
         },
+        {
+          date: '2025.03',
+          title: t('강남구 소상공인연합회 골목상권 자생력 강화 업무협약(MOU)'),
+          desc: t('강남구 관내 골목상권 외식 소상공인 권익 보호 및 창업 맞춤형 멘토링 프로그램 상생 협력'),
+          tag: '지역 상생 MOU',
+        },
       ],
     },
     {
       year: '2024',
-      badge: '산학 협력 & 언론 보도',
+      badge: '글로벌 국제협력 & 지자체',
       badgeColor: 'bg-stone-800 text-stone-200',
       events: [
+        {
+          date: '2024.10',
+          title: t('ITALIA MORINI SRL & (주)비엠스인터내셔날 3자 국제 식문화 협약(MOU)'),
+          desc: t('이탈리아 정통 식재료 직수입 유통망 확충 및 프리미엄 조리 마스터클래스 글로벌 협력 체결'),
+          tag: '글로벌 3자 MOU',
+        },
         {
           date: '2024.06',
           title: t('강남구 및 전국 지자체 소상공인 외식창업 경영개선 현장 컨설팅 협약'),
           desc: t('골목상권 활성화 및 예비·청년 창업가를 위한 지자체 연계 맞춤형 밀착 컨설팅 시행'),
           tag: '지자체 협력',
+        },
+        {
+          date: '2024.03',
+          title: t('대만 타이베이시 외식업직업공회 & 닝샤야시장 관광협회 국제협약(MOU)'),
+          desc: t('대만 타이베이 외식공회 및 야시장 관광협회와 아시아 외식 조리기술 및 스트리트 푸드 문화 교류 협력'),
+          tag: '해외 제휴 MOU',
         },
         {
           date: '2024.02',
@@ -91,7 +127,7 @@ export default function HistorySection({ milestones: propMilestones }) {
     },
     {
       year: '2023',
-      badge: '10대 기업 MOU',
+      badge: '산학 인프라 & 청년 육성',
       badgeColor: 'bg-stone-700 text-stone-300',
       events: [
         {
@@ -99,6 +135,12 @@ export default function HistorySection({ milestones: propMilestones }) {
           title: t('10대 산학 협력업체 전략적 업무협약(MOU) 체결'),
           desc: t('(주)주방뱅크, (주)세진, (주)비엠스 인터내셔날, (주)자인 등 외식 인프라 1위 기업들과 설비·위생·식자재 상생 네트워크 구축'),
           tag: '산학 MOU',
+        },
+        {
+          date: '2023.04',
+          title: t('(재)청년상인육성재단 청년 외식창업 육성 업무협약(MOU)'),
+          desc: t('전국 전통시장 및 골목상권 청년 창업자의 실전 조리·경영 교육과 매장 인큐베이팅 지원 체계 구축'),
+          tag: '청년 창업 MOU',
         },
         {
           date: '2023.03',
