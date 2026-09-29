@@ -73,11 +73,11 @@ export default function Header({
       defaultSubTab: 'all',
       subItems: [
         { id: 'all', title: t('전체 갤러리', 'All Photos'), subTab: 'all' },
-        { id: 'partners', title: t('산학협력 & MOU', 'MOU Archives'), subTab: 'partners' },
         { id: 'ceremony', title: t('시상식 & 인증패', 'Awards & Ceremonies'), subTab: 'ceremony' },
         { id: 'competition', title: t('요리대회', 'Cooking Contests'), subTab: 'competition' },
         { id: 'consulting', title: t('지자체 컨설팅', 'Municipality Consulting'), subTab: 'consulting' },
         { id: 'training', title: t('조리 실습 현장', 'Culinary Training'), subTab: 'training' },
+        { id: 'partners', title: t('산학협력 & MOU', 'MOU Archives'), subTab: 'partners' },
       ],
     },
     {

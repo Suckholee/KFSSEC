@@ -106,6 +106,7 @@ const PAGE_SECTOR_MAP = {
       { id: 'S-GAL-03', name: '시상식 & 인증패 갤러리', subTab: 'ceremony', editLabel: '시상식' },
       { id: 'S-GAL-04', name: '지자체 컨설팅 포토', subTab: 'consulting', editLabel: '컨설팅' },
       { id: 'S-GAL-05', name: '조리 실습 현장 스케치', subTab: 'training', editLabel: '실습현장' },
+      { id: 'S-GAL-06', name: '산학협력 & MOU 아카이브', subTab: 'partners', editLabel: 'MOU' },
       { id: 'S-GLOBAL-02', name: '하단 푸터 & 법인 정보', isFooter: true },
     ],
   },
