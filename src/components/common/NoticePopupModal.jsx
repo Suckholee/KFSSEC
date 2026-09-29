@@ -50,10 +50,6 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
     setIsOpen(true);
   }, [popupData]);
 
-  if (!isOpen || !popupData || popupData.enabled === false) {
-    return null;
-  }
-
   const handleClose = () => {
     if (dontShowToday) {
       // Calculate end of today (23:59:59.999)
@@ -67,6 +63,24 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
     }
     setIsOpen(false);
   };
+
+  // Close popup on Escape key press
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, dontShowToday]);
+
+  if (!isOpen || !popupData || popupData.enabled === false) {
+    return null;
+  }
 
   const handleDismissTodayImmediately = () => {
     const endOfToday = new Date();
