@@ -1,5 +1,6 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState } from 'react';
+import { useAdminEdit } from '../context/AdminEditContext';
 import { ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers, LogOut, ShieldCheck, ExternalLink } from 'lucide-react';
 
 export default function Header({
@@ -120,8 +121,38 @@ export default function Header({
     }
   };
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 8);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  let isNavOpen = false;
+  let isEdit = false;
+  try {
+    const adminEdit = useAdminEdit();
+    isNavOpen = Boolean(adminEdit?.isNavigatorOpen);
+    isEdit = Boolean(adminEdit?.isEditMode);
+  } catch {
+    // safe fallback if outside provider
+  }
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#FDFBF7]/95 backdrop-blur-md border-b-2 border-[#E7E2D8] transition-all font-sans text-gray-900 shadow-sm">
+    <>
+      <header
+        className={`fixed top-0 right-0 z-50 transition-all duration-200 font-sans text-gray-900 ${
+          isNavOpen && isEdit ? 'lg:left-[280px] left-0' : 'left-0'
+        } ${
+          isScrolled
+            ? 'bg-[#FDFBF7]/98 backdrop-blur-md border-b-2 border-[#E7E2D8] shadow-md'
+            : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b-2 border-[#E7E2D8] shadow-sm'
+        }`}
+      >
       
       {/* Full Width Top Header Bar */}
       <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-center justify-between gap-3 sm:gap-4 max-w-[1600px] mx-auto">
@@ -487,5 +518,9 @@ export default function Header({
       )}
 
     </header>
+
+    {/* Spacer to prevent content jump under fixed header */}
+    <div className="h-20 sm:h-22 shrink-0" aria-hidden="true" />
+  </>
   );
 }
