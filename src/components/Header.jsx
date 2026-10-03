@@ -151,13 +151,12 @@ export default function Header({
       <header
         style={{
           top: 'var(--admin-toolbar-height, 0px)',
+          backgroundColor: '#ffffff',
         }}
-        className={`fixed right-0 z-50 transition-all duration-200 font-sans text-gray-900 border-b-[3px] border-[#C5A059] ${
+        className={`fixed right-0 z-50 transition-all duration-200 font-sans text-gray-900 border-b-[3px] border-[#C5A059] bg-white ${
           isNavOpen && isEdit ? 'lg:left-[280px] left-0' : 'left-0'
         } ${
-          isScrolled
-            ? 'bg-[#FDFBF7]/98 backdrop-blur-md shadow-md'
-            : 'bg-[#FDFBF7]/95 backdrop-blur-md shadow-sm'
+          isScrolled ? 'shadow-md' : 'shadow-sm'
         }`}
         onMouseLeave={() => {
           setIsMegaMenuOpen(false);
@@ -366,9 +365,10 @@ export default function Header({
 
       </div>
 
-      {/* Desktop Full-Width 2-Tier Mega Dropdown Panel */}
+      {/* Desktop Full-Width 2-Tier Mega Dropdown Panel (100% Solid Opaque Pure White) */}
       <div
-        className={`hidden xl:block absolute left-0 right-0 top-full w-full bg-white/98 backdrop-blur-md border-b-2 border-[#C5A059] shadow-2xl transition-all duration-200 ease-out z-40 overflow-hidden ${
+        style={{ backgroundColor: '#ffffff' }}
+        className={`hidden xl:block absolute left-0 right-0 top-full w-full bg-white border-b-2 border-stone-200 shadow-2xl transition-all duration-200 ease-out z-50 overflow-hidden ${
           isMegaMenuOpen
             ? 'opacity-100 translate-y-0 pointer-events-auto visible max-h-[520px]'
             : 'opacity-0 -translate-y-2 pointer-events-none invisible max-h-0'
@@ -379,35 +379,24 @@ export default function Header({
           setHoveredMenuKey(null);
         }}
       >
-        <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-7">
-          <div className="grid grid-cols-7 gap-3 2xl:gap-4">
+        <div style={{ backgroundColor: '#ffffff' }} className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
+          <div style={{ backgroundColor: '#ffffff' }} className="grid grid-cols-7 gap-4 2xl:gap-6 bg-white">
             {mainMenuItems.map((menu) => {
-              const isColumnHovered = hoveredMenuKey === menu.key;
               return (
                 <div
                   key={menu.id}
-                  className={`rounded-2xl p-3 transition-colors ${
-                    isColumnHovered ? 'bg-[#FDF8EE] ring-1 ring-[#C5A059]/40' : 'bg-transparent'
-                  }`}
+                  style={{ backgroundColor: '#ffffff' }}
+                  className="px-2 py-1 bg-white"
                   onMouseEnter={() => setHoveredMenuKey(menu.key)}
                 >
-                  {/* Column Header Category Label */}
-                  <div className="pb-2 border-b border-stone-200 mb-2.5 flex items-center justify-between">
-                    <span className={`text-xs font-black tracking-tight ${
-                      isColumnHovered ? 'text-[#C5A059]' : 'text-stone-500'
-                    }`}>
-                      {menu.title}
-                    </span>
-                  </div>
-
-                  {/* Submenu Vertical Item List */}
-                  <ul className="space-y-1">
+                  {/* Submenu Vertical Item List - Pure Solid High-Contrast Styling Matching Reference Image */}
+                  <ul className="space-y-3 bg-white">
                     {menu.subItems.map((sub) => {
                       const isSubActive =
                         activeTab === menu.key &&
                         (subTab === sub.subTab || (!subTab && sub.subTab === menu.defaultSubTab));
                       return (
-                        <li key={sub.id}>
+                        <li key={sub.id} className="bg-white">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
@@ -417,14 +406,14 @@ export default function Header({
                                 onTabChange(menu.key, sub.subTab);
                               }
                             }}
-                            className={`w-full text-left text-xs 2xl:text-[13px] py-1.5 px-2 rounded-lg font-bold transition-all flex items-center justify-between group cursor-pointer ${
+                            className={`w-full text-left text-[13px] 2xl:text-sm py-1 font-bold transition-all flex items-center justify-between cursor-pointer ${
                               isSubActive
-                                ? 'text-[#15803D] font-black bg-emerald-50 translate-x-1 shadow-xs'
-                                : 'text-stone-700 hover:text-[#15803D] hover:bg-[#F2FAF5] hover:translate-x-1 duration-150'
+                                ? 'text-[#15803D] font-black'
+                                : 'text-stone-800 hover:text-[#15803D] hover:font-black'
                             }`}
                           >
                             <span className="truncate">{sub.title}</span>
-                            {isSubActive && <span className="text-[#F97316] text-xs">●</span>}
+                            {isSubActive && <span className="text-[#15803D] text-xs font-black">●</span>}
                           </button>
                         </li>
                       );
