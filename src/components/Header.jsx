@@ -165,10 +165,10 @@ export default function Header({
       >
       
       {/* Full Width Top Header Bar */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-stretch justify-between gap-3 sm:gap-4 max-w-[1600px] mx-auto">
+      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-stretch justify-between max-w-[1600px] mx-auto">
         
         {/* Official Logo (Far Left) */}
-        <div className="flex items-center shrink-0">
+        <div className="flex items-center shrink-0 w-[200px] 2xl:w-[230px]">
           <button
             onClick={() => {
               setIsMegaMenuOpen(false);
@@ -189,10 +189,10 @@ export default function Header({
 
         {/* Centered Desktop Main Navigation Bar */}
         <nav
-          className="hidden xl:flex flex-1 items-stretch justify-center h-full"
+          className="hidden xl:flex flex-1 items-stretch h-full mx-2 2xl:mx-4"
           onMouseEnter={() => setIsMegaMenuOpen(true)}
         >
-          <div className="flex items-stretch h-full">
+          <div className="grid grid-cols-7 w-full h-full">
             {mainMenuItems.map((menu) => {
               const isHovered = hoveredMenuKey === menu.key;
               const isCurrentActive = activeTab === menu.key && !hoveredMenuKey;
@@ -201,7 +201,7 @@ export default function Header({
               return (
                 <div
                   key={menu.id}
-                  className="relative flex items-stretch h-full"
+                  className="relative flex items-stretch h-full justify-center"
                   onMouseEnter={() => {
                     setHoveredMenuKey(menu.key);
                     setIsMegaMenuOpen(true);
@@ -216,7 +216,7 @@ export default function Header({
                         onTabChange(menu.key, menu.defaultSubTab);
                       }
                     }}
-                    className={`px-3.5 2xl:px-4.5 flex items-center justify-center font-black tracking-tight text-sm 2xl:text-base transition-all cursor-pointer whitespace-nowrap h-full relative select-none ${
+                    className={`w-full flex items-center justify-center font-black tracking-tight text-sm 2xl:text-base transition-all cursor-pointer whitespace-nowrap h-full relative select-none ${
                       isHighlighted
                         ? 'bg-[#C59B58] text-stone-950 font-black shadow-inner'
                         : isCurrentActive
@@ -229,34 +229,31 @@ export default function Header({
                 </div>
               );
             })}
-
-            {/* Subtle Vertical Divider */}
-            <div className="h-6 w-px bg-stone-300 mx-1 2xl:mx-1.5 self-center shrink-0" />
-
-            {/* 글로벌외식정보 로고 (게시판 우측) */}
-            <div className="flex items-center shrink-0 px-2">
-              <a
-                href="https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-[#D0E7DA] transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none group/link"
-                title={t('글로벌외식정보 외식 트렌드 바로가기 (새창 열기)', 'Go to Global Dining News - Trends (New Window)')}
-                aria-label="글로벌외식정보 외식 트렌드 바로가기 (새창)"
-              >
-                <img
-                  src="/images/logo_global_dining.png"
-                  alt="글로벌외식정보 (Global Dining News)"
-                  className="h-8 2xl:h-9 w-auto object-contain group-hover/link:scale-105 transition-transform drop-shadow-xs"
-                />
-                <ExternalLink className="w-3.5 h-3.5 text-stone-400 group-hover/link:text-[#2B7752] transition-colors" />
-              </a>
-            </div>
           </div>
         </nav>
 
-        {/* Right Top Utility Buttons (KOR Selector & User Auth) */}
-        <div className="hidden xl:flex items-center gap-2.5 shrink-0">
+        {/* Right Top Utility Buttons (Global Dining News, 1:1 AI Guide, Lang, Login) */}
+        <div className="hidden xl:flex items-center justify-end gap-2 2xl:gap-2.5 shrink-0 w-[420px] 2xl:w-[460px]">
           
+          {/* 글로벌외식정보 로고 */}
+          <a
+            href="https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 px-2 py-1.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-[#D0E7DA] transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none group/link shrink-0"
+            title={t('글로벌외식정보 외식 트렌드 바로가기 (새창 열기)', 'Go to Global Dining News - Trends (New Window)')}
+            aria-label="글로벌외식정보 외식 트렌드 바로가기 (새창)"
+          >
+            <img
+              src="/images/logo_global_dining.png"
+              alt="글로벌외식정보 (Global Dining News)"
+              className="h-7 2xl:h-8 w-auto object-contain group-hover/link:scale-105 transition-transform drop-shadow-xs"
+            />
+            <ExternalLink className="w-3 h-3 text-stone-400 group-hover/link:text-[#2B7752] transition-colors" />
+          </a>
+
+          <div className="h-5 w-px bg-stone-200 mx-0.5 shrink-0" />
+
           {/* 1:1 AI Consultation & Chatbot Trigger */}
           <button
             onClick={() => {
@@ -266,7 +263,7 @@ export default function Header({
                 window.dispatchEvent(new CustomEvent('kfssec_open_chatbot'));
               }
             }}
-            className={`px-3.5 py-2 text-xs font-black rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs border transition-all hover:scale-105 min-h-[44px] ${
+            className={`px-3 py-1.5 text-xs font-black rounded-full flex items-center gap-1 cursor-pointer shadow-xs border transition-all hover:scale-105 min-h-[38px] shrink-0 ${
               activeTab === 'ai-assistant'
                 ? 'bg-amber-400 text-gray-900 border-amber-500 shadow-md ring-2 ring-amber-300'
                 : 'bg-gradient-to-r from-[#15803D] to-[#16A34A] hover:from-[#166534] hover:to-[#15803D] text-white border-[#4ADE80]/50'
@@ -279,15 +276,15 @@ export default function Header({
           </button>
 
           {/* Multi-Language Selector Dropdown */}
-          <div className="relative">
+          <div className="relative shrink-0">
             <button
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
               aria-label="언어 선택 (Language)"
-              className="px-3 py-2 bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] text-xs font-bold rounded-full flex items-center gap-1.5 cursor-pointer shadow-xs hover:bg-[#DCFCE7] transition-colors focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none min-h-[44px]"
+              className="px-2.5 py-1.5 bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] text-xs font-bold rounded-full flex items-center gap-1 cursor-pointer shadow-xs hover:bg-[#DCFCE7] transition-colors focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none min-h-[38px]"
             >
               <span>{getLangBadge(language)}</span>
               <span className="text-[#4ADE80]">|</span>
-              <ChevronDown className="w-3.5 h-3.5 text-[#15803D]" />
+              <ChevronDown className="w-3 h-3 text-[#15803D]" />
             </button>
 
             {langDropdownOpen && (
@@ -319,20 +316,20 @@ export default function Header({
 
           {/* USER AUTH / LOGIN STATUS BUTTON */}
           {currentUser ? (
-            <div className="flex items-center gap-2.5 border-l border-[#E5E0D8] pl-3.5">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 border-l border-[#E5E0D8] pl-2.5 shrink-0">
+              <div className="flex items-center gap-1.5">
                 <div className="bg-[#15803D] p-1.5 rounded-full text-white">
-                  <User className="w-3.5 h-3.5" />
+                  <User className="w-3 h-3" />
                 </div>
-                <span className="text-xs font-bold text-[#166534]">
-                  {currentUser.name || t('수강생 회원', 'Member')}{language === 'ko' ? '님' : ''}
+                <span className="text-xs font-bold text-[#166534] max-w-[80px] truncate">
+                  {currentUser.name || t('수강생 회원', 'Member')}
                 </span>
               </div>
               <button
                 onClick={onLogout}
-                className="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold rounded-xl border border-rose-300 transition-colors cursor-pointer flex items-center gap-1 min-h-[44px] focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:outline-none"
+                className="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold rounded-xl border border-rose-300 transition-colors cursor-pointer flex items-center gap-1 min-h-[38px] focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:outline-none"
               >
-                <LogOut className="w-3.5 h-3.5" />
+                <LogOut className="w-3 h-3" />
                 <span>{t('로그아웃', 'Log out')}</span>
               </button>
             </div>
@@ -340,13 +337,13 @@ export default function Header({
             <button
               onClick={() => onOpenAuth && onOpenAuth('login')}
               aria-label={t('로그인 및 수강 회원가입', 'Log in or sign up')}
-              className="group px-4 lg:px-5 py-2 bg-gradient-to-r from-[#15803D] to-[#16A34A] hover:from-[#166534] hover:to-[#15803D] text-white rounded-2xl shadow-xs transition-all cursor-pointer border border-[#4ADE80]/40 flex items-center gap-2 min-h-[44px] focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none"
+              className="group px-3.5 2xl:px-4 py-1.5 bg-gradient-to-r from-[#15803D] to-[#16A34A] hover:from-[#166534] hover:to-[#15803D] text-white rounded-2xl shadow-xs transition-all cursor-pointer border border-[#4ADE80]/40 flex items-center gap-1.5 min-h-[38px] shrink-0 focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none"
             >
-              <div className="flex items-center gap-1 text-sm font-black">
-                <span className="text-base font-mono text-[#F97316]">#</span>
+              <div className="flex items-center gap-1 text-xs 2xl:text-sm font-black">
+                <span className="text-sm font-mono text-[#F97316]">#</span>
                 <span>{t('로그인', 'LOGIN')}</span>
               </div>
-              <span className="text-[10px] text-emerald-100 font-bold tracking-widest border-l border-emerald-600 pl-2">
+              <span className="text-[10px] text-emerald-100 font-bold tracking-wider border-l border-emerald-600 pl-1.5">
                 {t('회원가입', 'JOIN US')}
               </span>
             </button>
@@ -358,7 +355,7 @@ export default function Header({
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? t('메인 메뉴 닫기', 'Close menu') : t('메인 메뉴 열기', 'Open menu')}
-          className="xl:hidden p-2 text-[#2B7752] hover:text-black rounded-xl focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="xl:hidden p-2 text-[#2B7752] hover:text-black rounded-xl focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center self-center"
         >
           {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
@@ -379,50 +376,61 @@ export default function Header({
           setHoveredMenuKey(null);
         }}
       >
-        <div style={{ backgroundColor: '#ffffff' }} className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
-          <div style={{ backgroundColor: '#ffffff' }} className="grid grid-cols-7 gap-4 2xl:gap-6 bg-white">
-            {mainMenuItems.map((menu) => {
-              return (
-                <div
-                  key={menu.id}
-                  style={{ backgroundColor: '#ffffff' }}
-                  className="px-2 py-1 bg-white"
-                  onMouseEnter={() => setHoveredMenuKey(menu.key)}
-                >
-                  {/* Submenu Vertical Item List - Pure Solid High-Contrast Styling Matching Reference Image */}
-                  <ul className="space-y-3 bg-white">
-                    {menu.subItems.map((sub) => {
-                      const isSubActive =
-                        activeTab === menu.key &&
-                        (subTab === sub.subTab || (!subTab && sub.subTab === menu.defaultSubTab));
-                      return (
-                        <li key={sub.id} className="bg-white">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsMegaMenuOpen(false);
-                              setHoveredMenuKey(null);
-                              if (onTabChange) {
-                                onTabChange(menu.key, sub.subTab);
-                              }
-                            }}
-                            className={`w-full text-left text-[13px] 2xl:text-sm py-1 font-bold transition-all flex items-center justify-between cursor-pointer ${
-                              isSubActive
-                                ? 'text-[#15803D] font-black'
-                                : 'text-stone-800 hover:text-[#15803D] hover:font-black'
-                            }`}
-                          >
-                            <span className="truncate">{sub.title}</span>
-                            {isSubActive && <span className="text-[#15803D] text-xs font-black">●</span>}
-                          </button>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              );
-            })}
+        <div
+          style={{ backgroundColor: '#ffffff' }}
+          className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white flex items-start justify-between"
+        >
+          {/* 1. Left Spacer - EXACTLY matches Top Logo Width (w-[200px] 2xl:w-[230px]) */}
+          <div className="shrink-0 w-[200px] 2xl:w-[230px]" aria-hidden="true" />
+
+          {/* 2. Center 7 Columns - EXACTLY matches Top Main Nav Grid */}
+          <div style={{ backgroundColor: '#ffffff' }} className="flex-1 mx-2 2xl:mx-4 bg-white">
+            <div style={{ backgroundColor: '#ffffff' }} className="grid grid-cols-7 w-full bg-white">
+              {mainMenuItems.map((menu) => {
+                return (
+                  <div
+                    key={menu.id}
+                    style={{ backgroundColor: '#ffffff' }}
+                    className="flex flex-col items-center bg-white px-1"
+                    onMouseEnter={() => setHoveredMenuKey(menu.key)}
+                  >
+                    {/* Submenu Vertical Item List - Centered under each Top Menu Title */}
+                    <ul className="space-y-3.5 bg-white w-full text-center">
+                      {menu.subItems.map((sub) => {
+                        const isSubActive =
+                          activeTab === menu.key &&
+                          (subTab === sub.subTab || (!subTab && sub.subTab === menu.defaultSubTab));
+                        return (
+                          <li key={sub.id} className="bg-white">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setIsMegaMenuOpen(false);
+                                setHoveredMenuKey(null);
+                                if (onTabChange) {
+                                  onTabChange(menu.key, sub.subTab);
+                                }
+                              }}
+                              className={`inline-block py-1 text-[13px] 2xl:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                                isSubActive
+                                  ? 'text-[#15803D] font-black'
+                                  : 'text-stone-700 hover:text-[#15803D] hover:font-black'
+                              }`}
+                            >
+                              <span>{sub.title}</span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
           </div>
+
+          {/* 3. Right Spacer - EXACTLY matches Top Utility Width (w-[420px] 2xl:w-[460px]) */}
+          <div className="shrink-0 w-[420px] 2xl:w-[460px]" aria-hidden="true" />
         </div>
       </div>
 
