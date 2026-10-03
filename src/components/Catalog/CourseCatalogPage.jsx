@@ -46,7 +46,11 @@ export default function CourseCatalogPage({ initialSubTab = 'courses', onGoToCon
             { id: 'exam_schedule', label: '시험 일정' },
           ]}
         />
-        <div className="w-full flex-1 min-w-0">
+        <div
+          id="subsidebar-content-anchor"
+          key={subTab}
+          className="w-full flex-1 min-w-0 animate-content-slide-up"
+        >
           {subTab === 'courses' && (
             <SectorBlock
               sectorId="S-CAT-01"

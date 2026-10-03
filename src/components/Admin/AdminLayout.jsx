@@ -66,6 +66,7 @@ import {
   Handshake,
   Bot,
   Building2,
+  Briefcase,
 } from 'lucide-react';
 import Hero from '../Hero';
 import EventBannerSection from '../EventBannerSection';
@@ -94,6 +95,7 @@ import AdminPartnerLogos from './AdminPartnerLogos';
 import AdminContent from './AdminContent';
 import AdminCommunity from './AdminCommunity';
 import AdminAbout from './AdminAbout';
+import AdminConsulting from './AdminConsulting';
 import AdminSettings from './AdminSettings';
 import CoursePosterGeneratorModal from './CoursePosterGeneratorModal';
 
@@ -553,6 +555,13 @@ export default function AdminLayout({
           { id: 'faculty_manage', label: '👨‍🏫 명문 교수진 소개' },
           { id: 'speech_manage', label: '📜 이사장 인사말' },
         ];
+      case 'consulting':
+        return [
+          { id: 'faculty_manage', label: '👨‍🏫 컨설팅 전담 교수진' },
+          { id: 'cases_manage', label: '🏢 프랜차이즈 사례 (100+)' },
+          { id: 'process_manage', label: '📌 로드맵 & 성공사례' },
+          { id: 'inquiry_manage', label: '📥 1:1 상담 접수함' },
+        ];
       case 'community':
         return [
           { id: 'notice_list', label: '📢 공지사항 & 게시글 관리' },
@@ -712,6 +721,19 @@ export default function AdminLayout({
           </button>
 
           <button
+            onClick={() => switchPrimaryMenu('consulting', 'faculty_manage', null)}
+            className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
+              primaryMenu === 'consulting'
+                ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+            title="창업 컨설팅 통합 관리 (교수진/100+ 사례/접수내역)"
+          >
+            <Briefcase className="w-5 h-5" />
+            <span className="text-[9px] font-black mt-0.5">창업컨설팅</span>
+          </button>
+
+          <button
             onClick={() => switchPrimaryMenu('courses', 'course_list', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'courses'
@@ -839,6 +861,7 @@ export default function AdminLayout({
               {primaryMenu === 'dashboard' && '통합 운영 대시보드'}
               {primaryMenu === 'home' && '홈화면 비주얼 관리'}
               {primaryMenu === 'about' && '교육원 소개 & 연혁'}
+              {primaryMenu === 'consulting' && '창업 컨설팅 관리센터'}
               {primaryMenu === 'courses' && '교육과정 DB 컨트롤'}
               {primaryMenu === 'masters' && '명장·명인 프로필 관리'}
               {primaryMenu === 'partner_logos' && '협약기관/MOU 로고'}
@@ -2289,6 +2312,16 @@ export default function AdminLayout({
               onUpdateSiteData={onUpdateSiteData}
               subTab={secondarySubTab}
               onSubTabChange={(st) => switchPrimaryMenu('about', st)}
+            />
+          )}
+
+          {/* CONSULTING SCREENS */}
+          {primaryMenu === 'consulting' && (
+            <AdminConsulting
+              siteData={siteData}
+              onUpdateSiteData={onUpdateSiteData}
+              subTab={secondarySubTab}
+              onSubTabChange={(st) => switchPrimaryMenu('consulting', st)}
             />
           )}
 

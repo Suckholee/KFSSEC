@@ -147,7 +147,7 @@ const DEFAULT_PILLARS = [
   },
 ];
 
-export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'greetings', siteData = {}, onTabChange }) {
+export default function AboutPage({ initialSubTab = 'speech', initialTab = 'speech', siteData = {}, onTabChange }) {
   const { t } = useLanguage();
   const { isEditMode, siteDraft, updateSiteDraft } = useAdminEdit();
   const currentSite = (siteDraft && Object.keys(siteDraft).length > 0) ? siteDraft : siteData;
@@ -163,8 +163,8 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
   const pillarsTitle = currentSite?.strategicPillarsTitle || '교육원 공식 12대 핵심 사업방향';
   const pillarsSubtitle = currentSite?.strategicPillarsSubtitle || '대한민국 외식산업의 선진화와 창업 성공률 제고를 위한 교육원의 12가지 중점 추진 과제입니다.';
 
-  const validSubTabs = ['greetings', 'history', 'speech', 'profile', 'faculty', 'organization'];
-  const resolveTab = (val) => (validSubTabs.includes(val) ? val : 'greetings');
+  const validSubTabs = ['speech', 'profile', 'greetings', 'history', 'faculty', 'organization'];
+  const resolveTab = (val) => (validSubTabs.includes(val) ? val : 'speech');
   const defaultSub = resolveTab(initialSubTab || initialTab);
   const [activeTab, setActiveTab] = useState(defaultSub);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -231,10 +231,10 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
   };
 
   const aboutSubItems = [
-    { id: 'greetings', label: t("교육원 소개 & 12대 방향") },
-    { id: 'history', label: t("주요 연혁") },
     { id: 'speech', label: t("이사장 인사말") },
     { id: 'profile', label: t("이사장 프로필 & 약력") },
+    { id: 'greetings', label: t("교육원 소개 & 12대 방향") },
+    { id: 'history', label: t("주요 연혁") },
     { id: 'faculty', label: t("교수진 소개") },
     { id: 'organization', label: t("조직도") },
   ];
@@ -343,8 +343,12 @@ export default function AboutPage({ initialSubTab = 'greetings', initialTab = 'g
             onSelectTab={(tabId) => setActiveTab(tabId)}
           />
 
-          {/* Right Main Content Panel */}
-          <div className="flex-1 w-full space-y-6 min-w-0">
+          {/* Right Main Content Panel with dynamic slide-up animation on tab change */}
+          <div
+            id="subsidebar-content-anchor"
+            key={activeTab}
+            className="flex-1 w-full space-y-6 min-w-0 animate-content-slide-up"
+          >
             
             {/* SUB-TAB 1: 교육원 소개 & 12대 방향 */}
             {activeTab === 'greetings' && (

@@ -3,9 +3,6 @@ import { useLanguage } from '../i18n/LanguageContext';
 import {
   ChevronRight,
   ChevronLeft,
-  GraduationCap,
-  Award,
-  Building2,
   ChevronDown,
   Pause,
   Play,
@@ -126,7 +123,7 @@ export default function Hero({
       <div className="absolute top-0 inset-x-0 h-96 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(34,197,94,0.12),transparent)] pointer-events-none" />
 
       {/* HERO SLIDER CAROUSEL CONTAINER (Framed Modern Showcase) */}
-      <div className="w-full max-w-[1520px] mx-auto px-2 sm:px-6 lg:px-8 pt-3 sm:pt-6 relative z-10">
+      <div className="w-full max-w-[1520px] mx-auto px-2 sm:px-6 lg:px-8 pt-3 sm:pt-6 pb-6 sm:pb-8 relative z-10">
         <div
           className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-stone-200/80 bg-stone-950 flex justify-center items-center group/hero select-none"
           onMouseEnter={() => setIsHovered(true)}
@@ -397,79 +394,6 @@ export default function Hero({
         </div>
       </div>
 
-      {/* Floating Action Buttons & 3 Core Stats Area */}
-      <div className="relative z-10 py-7 sm:py-9 px-4 sm:px-8">
-        <div className="max-w-[1520px] mx-auto flex flex-col items-center gap-5 sm:gap-6">
-          
-          {/* Action Buttons Row */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
-            <button
-              onClick={onExploreClick}
-              className="px-7 sm:px-9 py-3.5 bg-gradient-to-r from-[#EA580C] to-[#F97316] hover:from-[#C2410C] hover:to-[#EA580C] text-white font-black text-xs sm:text-sm rounded-2xl shadow-xl shadow-orange-500/20 transition-all flex items-center justify-center gap-2 border border-orange-300/40 cursor-pointer group"
-              aria-label={t("교육과정 둘러보기 목록으로 이동")}
-            >
-              <span>{t("교육과정 둘러보기")}</span>
-              <ChevronRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <button
-              onClick={onAboutClick}
-              className="px-7 sm:px-9 py-3.5 bg-white hover:bg-[#F0FDF4] text-[#14532D] font-black text-xs sm:text-sm rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 border-2 border-[#15803D]/25 hover:border-[#15803D] cursor-pointer group"
-              aria-label={t("교육원 상세 소개 페이지로 이동")}
-            >
-              <span>{t("교육원 소개")}</span>
-              <ChevronRight className="w-4 h-4 text-[#16A34A] group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-
-          {/* 3 Core Stats Card - Fresh Sage & Emerald Glassmorphism */}
-          <div className="w-full max-w-2xl bg-gradient-to-r from-[#14532D] via-[#15803D] to-[#16A34A] text-white border border-[#4ADE80]/30 rounded-2xl p-4 sm:p-5 shadow-xl shadow-emerald-900/10">
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 divide-x divide-emerald-500/30">
-              
-              {/* Stat 1: 1·2급 자격과정 */}
-              <div className="flex flex-col items-center text-center px-1">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center mb-1 text-[#86efac] shadow-xs">
-                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
-                </div>
-                <span className="text-sm sm:text-base lg:text-lg font-black text-white tracking-tight leading-tight">
-                  {t("온·오프라인")}
-                </span>
-                <span className="text-[11px] sm:text-xs font-bold text-emerald-100/90 mt-0.5">
-                  {t("1·2급 자격과정")}
-                </span>
-              </div>
-
-              {/* Stat 2: 수강 기간 */}
-              <div className="flex flex-col items-center text-center px-1">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center mb-1 text-[#86efac] shadow-xs">
-                  <Award className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
-                </div>
-                <span className="text-sm sm:text-base lg:text-lg font-black text-white tracking-tight leading-tight">
-                  {t("4~8주 완성")}
-                </span>
-                <span className="text-[11px] sm:text-xs font-bold text-emerald-100/90 mt-0.5">
-                  {t("수강 기간")}
-                </span>
-              </div>
-
-              {/* Stat 3: 5대 전문과정 */}
-              <div className="flex flex-col items-center text-center px-1">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center mb-1 text-[#86efac] shadow-xs">
-                  <Building2 className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2]" />
-                </div>
-                <span className="text-sm sm:text-base lg:text-lg font-black text-white tracking-tight leading-tight">
-                  {t("5대 전문과정")}
-                </span>
-                <span className="text-[11px] sm:text-xs font-bold text-emerald-100/90 mt-0.5 truncate max-w-[120px] sm:max-w-none">
-                  {t("창업·푸드테크·와인")}
-                </span>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
 
       {/* Scroll Down Indicator */}
       {onScrollNext && (

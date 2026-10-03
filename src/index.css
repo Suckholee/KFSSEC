@@ -97,9 +97,58 @@
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 @keyframes master-content-out { to { opacity: 0; } }
 @keyframes master-content-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+/* Smooth Dropdown Slide-Down Animation */
+@keyframes dropdown-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-dropdown-slide {
+  animation: dropdown-slide-down 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth Upward Content Slide-In on Tab Switch */
+@keyframes content-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-content-slide-up {
+  animation: content-slide-up 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Page Level Enter Animation (resets transform to none upon finish to preserve sticky sidebar) */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-page-enter {
+  animation: page-enter 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .master-profile-backdrop { animation: none !important; transition: none !important; }
   ::view-transition-old(master-content), ::view-transition-new(master-content) { animation: none; }
+  .animate-dropdown-slide { animation: none !important; }
 }
 
 /* Infinite Marquee Rolling Animation for Partners & Logos */
@@ -117,12 +166,20 @@
   display: flex;
   width: max-content;
   animation: marquee-left 25s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .animate-marquee-right {
   display: flex;
   width: max-content;
   animation: marquee-right 25s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .animate-marquee-left:hover, .animate-marquee-right:hover {

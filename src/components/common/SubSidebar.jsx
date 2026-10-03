@@ -16,6 +16,22 @@ export default function SubSidebar({
   const handleSelect = (id) => {
     if (onSelectTab) onSelectTab(id);
     if (onTabChange) onTabChange(id);
+
+    // Smoothly scroll up to the content top for natural UX
+    requestAnimationFrame(() => {
+      const anchor = document.getElementById('subsidebar-content-anchor');
+      if (anchor) {
+        const headerOffset = 110;
+        const elementPosition = anchor.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: Math.max(0, offsetPosition),
+          behavior: 'smooth',
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   };
 
   return (

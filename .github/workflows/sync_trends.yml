@@ -1,0 +1,42 @@
+name: Sync Global Dining Trends (외식 트렌드 자동 동기화)
+
+on:
+  schedule:
+    # 매일 2회 자동 실행 (UTC 기준)
+    # 23:00 UTC = 08:00 KST (매일 아침 8시)
+    - cron: '0 23 * * *'
+    # 05:00 UTC = 14:00 KST (매일 오후 2시)
+    - cron: '0 5 * * *'
+  workflow_dispatch: # GitHub 웹 콘솔에서 수동으로 'Run workflow' 즉시 실행 지원
+
+permissions:
+  contents: write
+
+jobs:
+  sync-trends:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch and Sync Latest Dining Trends
+        run: node scripts/sync_trends.js
+
+      - name: Commit and Push if changes exist
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/globalDiningTrends.js public/images/trends/
+          if git diff --staged --quiet; then
+            echo "✅ No new articles or images detected. Nothing to commit."
+          else
+            echo "🚀 New articles detected! Committing and pushing to repository..."
+            git commit -m "chore: auto-sync latest global dining trends ($(date +'%Y-%m-%d'))"
+            git push
+            echo "🎉 Successfully pushed updated trends to main! Vercel auto-deployment will trigger."
+          fi

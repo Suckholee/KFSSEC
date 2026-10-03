@@ -189,8 +189,10 @@ export default function MasterDirectory({ group = 'all', groupLabel = '명장·�
       {/* Error alert if any */}
       {error && <p role="alert" className="text-rose-700 font-bold p-4 bg-rose-50 rounded-2xl">{tr(error)}</p>}
 
-      {/* Profile Photo Grid */}
-      <MasterPhotoGrid profiles={filtered} onEditMaster={onEditMaster} />
+      {/* Profile Photo Grid with smooth float-in on filter change */}
+      <div key={`${activeCategory}-${search}`} className="animate-content-slide-up">
+        <MasterPhotoGrid profiles={filtered} onEditMaster={onEditMaster} />
+      </div>
 
       {/* Empty State */}
       {!filtered.length && (

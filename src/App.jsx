@@ -55,11 +55,11 @@ const HOME_SECTORS = [
   { id: 'S-HOME-02', name: '수강생 모집 / 이벤트 배너' },
   { id: 'S-HOME-08', name: '공식 유튜브 미디어' },
   { id: 'S-HOME-03', name: '추천 강좌 큐레이션 (넷플릭스형)' },
+  { id: 'S-HOME-07', name: '교육원 주요 소식 & 공지' },
   { id: 'S-HOME-04', name: '글로벌 외식 트렌드 뉴스' },
   { id: 'S-HOME-05', name: '자격증·실무 과정 카테고리' },
   { id: 'S-HOME-05B', name: '분야별 교육 포커스' },
   { id: 'S-HOME-06', name: '공식 제휴 & 파트너사 로고' },
-  { id: 'S-HOME-07', name: '최신 공지사항 & 커뮤니티' },
 ];
 
 function AdminAccess({ onAuthenticated, configured }) {
@@ -207,9 +207,10 @@ function AppInner({
           onLogout={handleLogout}
         />
 
-        {/* Main Content Area Routing */}
+        {/* Main Content Area Routing with smooth page entrance */}
         <main className="flex-1">
-          {(activeTab === 'home' || activeTab === 'admin') && (
+          <div key={activeTab} className="animate-page-enter">
+            {(activeTab === 'home' || activeTab === 'admin') && (
             <div className="space-y-0">
               <SectorBlock
                 sectorId="S-HOME-01"
@@ -277,6 +278,21 @@ function AppInner({
                 <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
               </SectorBlock>
 
+              <SectorBlock
+                sectorId="S-HOME-07"
+                sectorName="교육원 주요 소식 & 공지"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📝 1:1 문의 및 신청 내역 확인"
+                onEditContent={() => handleTabChange('community', 'inquiry')}
+              >
+                <NoticePostSection
+                  postsList={currentPosts}
+                  onViewAll={() => handleTabChange('community', 'notice')}
+                  onSelectPost={() => handleTabChange('community', 'notice')}
+                  onScrollNext={() => scrollToSection('footer')}
+                />
+              </SectorBlock>
+
               <SectorBlock sectorId="S-HOME-04" sectorName="글로벌 외식 트렌드 뉴스" sectorList={HOME_SECTORS}>
                 <GlobalDiningTrendsSection />
               </SectorBlock>
@@ -304,21 +320,11 @@ function AppInner({
               <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS}>
                 <PartnerMarqueeSection partnerLogos={currentSite.partnerLogos} />
               </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-07"
-                sectorName="최신 공지사항 & 커뮤니티"
-                sectorList={HOME_SECTORS}
-                editContentLabel="📝 1:1 문의 및 신청 내역 확인"
-                onEditContent={() => handleTabChange('community', 'inquiry')}
-              >
-                <NoticePostSection postsList={currentPosts} onScrollNext={() => scrollToSection('footer')} />
-              </SectorBlock>
             </div>
           )}
 
           {activeTab === 'about' && (
-            <AboutPage initialSubTab={subTab || 'greetings'} siteData={currentSite} onTabChange={handleTabChange} />
+            <AboutPage initialSubTab={subTab || 'speech'} siteData={currentSite} onTabChange={handleTabChange} />
           )}
 
           {activeTab === 'master' && (
@@ -375,6 +381,7 @@ function AppInner({
               siteData={currentSite}
             />
           )}
+          </div>
         </main>
 
         {/* Mobile 375px Floating Quick Action Bar */}
@@ -650,6 +657,7 @@ export default function App() {
       if (parts.length === 0) {
         setActiveTab('home');
         setSubTab(null);
+        window.scrollTo(0, 0);
         return;
       }
 
@@ -663,6 +671,7 @@ export default function App() {
         setActiveTab('home');
         setSubTab(null);
       }
+      window.scrollTo(0, 0);
     };
 
     parsePath();
@@ -693,6 +702,7 @@ export default function App() {
   }, [activeTab, adminAuth.authenticated, subTab]);
 
   const handleTabChange = (tabId, subTabId = null) => {
+    const isDifferentPage = tabId !== activeTab;
     setActiveTab(tabId);
     setSubTab(subTabId);
     
@@ -702,7 +712,29 @@ export default function App() {
     }
     
     window.history.pushState({}, '', targetPath);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (isDifferentPage) {
+      window.scrollTo(0, 0);
+    } else {
+      // SubTab changed within the same page - smoothly scroll to anchor
+      requestAnimationFrame(() => {
+        const anchor =
+          document.getElementById('subsidebar-content-anchor') ||
+          document.getElementById('master-content-anchor') ||
+          document.getElementById('gallery-content-anchor');
+        if (anchor) {
+          const headerOffset = 110;
+          const elementPosition = anchor.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: 'smooth',
+          });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
   };
 
   const handleOpenAuth = (initialMode = 'login') => {

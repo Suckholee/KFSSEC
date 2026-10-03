@@ -3,6 +3,36 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5324",
+    "title": "리뷰 9천 개가 부러운 사장님에게",
+    "summary": "장사하는 사람에게 숫자는 잔인하다.매출이 떨어지면 기분도 떨어진다. 주문이 늘면 잠깐 마음이 놓인다. 옆집에 줄이 서...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.02",
+    "imageUrl": "/images/trends/trend_5324.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/2ca5ca8d6a4a8701698cfa6feb6f3db12d6784bb.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5324&mcode=m247tk9"
+  },
+  {
+    "id": "5282",
+    "title": "식당은 인테리어가 아니라 장면을 설계해야 한다",
+    "summary": "한 장의 식당 사진을 보았다. 검은 천장 아래로 거대한 발광 구조물이 물결처럼 내려와 있었다. 반투명한 표면에는 세로로 ...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.09.30",
+    "imageUrl": "/images/trends/trend_5282.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/2fbdf2d7149825e37843f0892e8b84ef83e82e0f.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5282&mcode=m247tk9"
+  },
+  {
+    "id": "5281",
+    "title": "식당의 천장은 왜 거대한 메뉴판이 되었는가",
+    "summary": "한 식당의 사진을 보았다.검게 노출된 천장 아래로 거대한 반투명 구조물이 물결처럼 내려와 있었다. 안쪽에서 번지는 크...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.09.30",
+    "imageUrl": "/images/trends/trend_5281.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/6dfdebf26c0a5f60d184c874c1f874fad807eac1.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5281&mcode=m247tk9"
+  },
+  {
     "id": "5170",
     "title": "“농안법, 생산자·소비자 넘어 중소상인까지”…국회서 농수산물 유통혁신 해법 모색",
     "summary": "생산자·소비자·소상공인·법제·유통 전문가가 한자리에 모여 현행 농안법의 한계를 진단하고, 실질적인 농수산물 유통 혁신 방안을 논의하는 국회 정책세미나가 성황리에 열렸다...",
@@ -63,6 +93,16 @@ export const GLOBAL_DINING_TRENDS = [
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5079&mcode=m247tk9"
   },
   {
+    "id": "5034",
+    "title": "K-푸드 세계시장 진출에 투자금 수혈…농식품 금융투자 로드쇼에 300여명 집결",
+    "summary": "K-푸드에 대한 세계적인 관심이 높아지는 가운데 농식품 기업의 글로벌 시장 진출에 필요한 투자와 수출, 유통을 한자리에서 연결하는 대규모 금융투자 행사가 열렸다.농림축산식품부는 9일 서울에서 농...",
+    "author": "글로벌외식정보",
+    "date": "2026.09.10",
+    "imageUrl": "/images/trends/trend_5034.jpg",
+    "remoteImageUrl": null,
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5034&mcode=m247tk9"
+  },
+  {
     "id": "5032",
     "title": "손님을 늘리는 것보다 어려운 것은 없다",
     "summary": "장사가 잘 안된다는 푸념을 들을 때마다 마주하는 광경이 있다. 대개는 머리를 감싸 쥔 사장님이 한숨을 푹 쉬며 묻는다. &l...",
@@ -109,7 +149,7 @@ export const GLOBAL_DINING_TRENDS = [
     "author": "글로벌 외식정보=진익준 논설위원",
     "date": "2026.09.04",
     "imageUrl": "/images/trends/trend_4946.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/file/article/thumb/350x270_100/3695849969_4LIaXrk1_EBACB8ECA09CEAB080_EC8381EAB68.png",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/news/../data/file/article/thumb/350x270_100/3695849969_4LIaXrk1_EBACB8ECA09CEAB080_EC8381EAB68.png",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4946&mcode=m247tk9"
   },
   {
@@ -135,22 +175,12 @@ export const GLOBAL_DINING_TRENDS = [
   {
     "id": "4812",
     "title": "통제하지 말고 흐르게 하라",
-    "summary": "1. 무한리필 매장의 승패는 &#39;고기&#39;가 아닌 &#39;동선&#39;에서 갈린다외식업계에서 &#39;무한리필&#39;이라는 간판을 내건...",
+    "summary": "1. 무한리필 매장의 승패는 '고기'가 아닌 '동선'에서 갈린다외식업계에서 '무한리필'이라는 간판을 내건...",
     "author": "글로벌 외식정보=진익준 논설위원",
     "date": "2026.08.26",
     "imageUrl": "/images/trends/trend_4812.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2608/thumb/350x270_100/c91c7ae73da6a3420b5da9ac7ea749250ac262b6.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4812&mcode=m247tk9"
-  },
-  {
-    "id": "4811",
-    "title": "사장의 정성은 왜 '야박한 인심'이 되었을까?",
-    "summary": "1. 어느 자영업자의 한숨, \"장사 때려치울까 봅니다\"얼마 전 자영업자 커뮤니티에 올라온 어느 고깃집 사장님의 글 하나가 ...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.08.26",
-    "imageUrl": "/images/trends/trend_4811.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2608/thumb/350x270_100/7181badccc6be5d9a6c2c775931bf55da37678e5.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4811&mcode=m247tk9"
   }
 ];
 
@@ -159,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.09.29'
+  lastUpdated: '2026.10.03'
 };

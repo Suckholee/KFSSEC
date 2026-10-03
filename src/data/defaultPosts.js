@@ -29,7 +29,8 @@ export const DEFAULT_POSTS = [
     "date": "2026.08.30",
     "author": "사단법인 한국외식창업교육원",
     "views": 1450,
-    "image": "/images/hero_bg.jpg",
+    "image": "/images/popup_award_ceremony_2026.jpg",
+    "coverImage": "/images/popup_award_ceremony_2026.jpg",
     "content": "사단법인 한국외식창업교육원 2026년 3분기 외식 창업 성과 발표 및 글로벌 K-FOOD 조리 명장 인증서 수여식 총회가 개최됩니다."
   },
   {
@@ -41,7 +42,8 @@ export const DEFAULT_POSTS = [
     "date": "2026.08.28",
     "author": "사단법인 한국외식창업교육원",
     "views": 1120,
-    "image": "/images/course_menu_dev.jpg",
+    "image": "/images/news/nongahn_seminar_room_1.jpg",
+    "coverImage": "/images/news/nongahn_seminar_room_1.jpg",
     "content": "128명 가입 수강생 1인이 다수의 조리/창업 커리큘럼을 연계하여 수강하고 정부지원금 혜택을 제공받을 수 있는 N:N 매칭 포트폴리오 시스템이 공식 도입되었습니다."
   },
   {
@@ -53,8 +55,253 @@ export const DEFAULT_POSTS = [
     "date": "2026.08.25",
     "author": "사단법인 한국외식창업교육원",
     "views": 2340,
-    "image": "/images/course_restaurant.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "coverImage": "/images/chef_tossing_food.jpg",
     "content": "전국 128명 수강생 및 외식 창업 준비생 대상 K-FOOD 지역 농수축산물 활성화 요리대회 참가를 위한 규정집 다운로드 및 접수 안내입니다."
+  },
+  {
+    "id": "gal-ceremony-1",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": true,
+    "title": "2026 대한민국 K-FOOD 조리명장 및 조리명인 공식 인증패 수여식",
+    "date": "2026.09.20",
+    "location": "서울 프레스센터 국제회의장",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 2150,
+    "coverImage": "/images/popup_award_ceremony_2026.jpg",
+    "image": "/images/popup_award_ceremony_2026.jpg",
+    "images": [
+      "/images/popup_award_ceremony_2026.jpg",
+      "/images/master_focus_1.jpg",
+      "/images/master_focus_2.jpg"
+    ],
+    "tags": ["명장수여식", "조리명인", "공식인증패", "KFSSEC", "외식산업발전"],
+    "content": "사단법인 한국외식창업교육원이 주관하는 2026 대한민국 K-FOOD 조리명장 및 조리명인 공식 인증패 수여식이 성황리에 개최되었습니다. 평생을 한국 전통 식문화 계승과 외식산업 혁신에 헌신한 명인·명장님들께 정부 부처 및 교육원 공동 인증패를 수여하였습니다."
+  },
+  {
+    "id": "gal-ceremony-2",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "title": "한국외식산업 발전 공로 대상 및 외식문화 혁신 공헌패 전달식",
+    "date": "2026.07.15",
+    "location": "국회의원회관 대회의실",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1640,
+    "coverImage": "/images/master_focus_2.jpg",
+    "image": "/images/master_focus_2.jpg",
+    "images": [
+      "/images/master_focus_2.jpg",
+      "/images/master_focus_3.jpg"
+    ],
+    "tags": ["공로대상", "외식문화혁신", "국회시상식", "공헌패"],
+    "content": "국회 정책세미나와 연계하여 대한민국 외식산업의 선진화 및 식자재 유통 혁신에 기여한 우수 외식 기업 및 지도자들을 대상으로 외식문화 혁신 공헌패 전달식이 진행되었습니다."
+  },
+  {
+    "id": "gal-ceremony-3",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "title": "전통 장류 및 발효 조리명인 특별 명판 헌액 기념식",
+    "date": "2026.05.28",
+    "location": "KFSSEC 본관 대강당",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1320,
+    "coverImage": "/images/master_focus_3.jpg",
+    "image": "/images/master_focus_3.jpg",
+    "images": [
+      "/images/master_focus_3.jpg",
+      "/images/master_focus_1.jpg"
+    ],
+    "tags": ["전통장류", "발효조리", "명판헌액", "조리명인"],
+    "content": "수십 년간 전통 발효 조리 비법을 발전시켜 온 조리명인들의 위상을 드높이고 교육원 명예의 전당에 헌액하는 공식 현판 전달 기념식을 가졌습니다."
+  },
+  {
+    "id": "gal-comp-1",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": true,
+    "title": "2026 전국 청년 외식창업 조리경연대회 본선 및 라이브 쿠킹 콘테스트",
+    "date": "2026.08.22",
+    "location": "양재 aT센터 제1전시장",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 2890,
+    "coverImage": "/images/chef_tossing_food.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "images": [
+      "/images/chef_tossing_food.jpg",
+      "/images/course_net_1.jpg",
+      "/images/course_net_2.jpg"
+    ],
+    "tags": ["청년조리경연대회", "라이브쿠킹", "K-FOOD", "현장실습"],
+    "content": "전국 128명 청년 외식 창업 수강생 및 예비 셰프들이 참가한 라이브 조리경연대회가 aT센터에서 열렸습니다. 심사위원단의 엄정한 실시간 평가와 함께 K-FOOD 글로벌 창작 요리들이 대거 출품되었습니다."
+  },
+  {
+    "id": "gal-comp-2",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "title": "K-FOOD 로컬 농특산물 연계 시그니처 레시피 개발 경진대회",
+    "date": "2026.06.30",
+    "location": "KFSSEC 조리실습관 A홀",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1940,
+    "coverImage": "/images/course_menu_dev.jpg",
+    "image": "/images/course_menu_dev.jpg",
+    "images": [
+      "/images/course_menu_dev.jpg",
+      "/images/course_net_3.jpg"
+    ],
+    "tags": ["로컬푸드", "시그니처메뉴", "레시피개발", "경진대회"],
+    "content": "지역 농수축산물 소비 활성화를 위해 지자체와 연계하여 진행된 시그니처 메뉴 개발 경진대회 현장입니다. 실전 매장 적용 가능한 실용적이고 창의적인 레시피가 대거 발굴되었습니다."
+  },
+  {
+    "id": "gal-comp-3",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "title": "글로벌 소스 & K-드레싱 페스티벌 창작 요리대전",
+    "date": "2026.05.14",
+    "location": "부산 벡스코 컨벤션홀",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1580,
+    "coverImage": "/images/course_net_4.jpg",
+    "image": "/images/course_net_4.jpg",
+    "images": [
+      "/images/course_net_4.jpg",
+      "/images/course_net_5.jpg"
+    ],
+    "tags": ["글로벌소스", "드레싱페스티벌", "벡스코", "창작요리"],
+    "content": "해외 수출형 K-소스 및 간편식 조리 메뉴를 겨루는 페스티벌 현장입니다. 국내외 바이어와 외식 프랜차이즈 R&D 전문가들이 참여하여 상품성을 검증했습니다."
+  },
+  {
+    "id": "gal-consult-1",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": true,
+    "title": "전국 지자체 골목상권 100대 소상공인 메뉴 리뉴얼 현장 코칭",
+    "date": "2026.09.05",
+    "location": "강원도 원주시 중앙시장 골목상권",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1820,
+    "coverImage": "/images/course_restaurant.jpg",
+    "image": "/images/course_restaurant.jpg",
+    "images": [
+      "/images/course_restaurant.jpg",
+      "/images/startup_focus_1.jpg",
+      "/images/dir_1.jpg"
+    ],
+    "tags": ["골목상권", "소상공인컨설팅", "메뉴리뉴얼", "현장코칭"],
+    "content": "지자체 소상공인 상권활성화 프로젝트의 일환으로 전문 교수진이 현장 매장을 직접 방문하여 매출 증대를 위한 시그니처 메뉴 리뉴얼과 원가 절감 코칭을 전수하였습니다."
+  },
+  {
+    "id": "gal-consult-2",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "title": "지자체 대표 향토 음식점 위생 진단 및 주방 동선 3D 최적화 컨설팅",
+    "date": "2026.07.22",
+    "location": "충남 공주시 백제문화 음식거리",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1410,
+    "coverImage": "/images/startup_focus_2.jpg",
+    "image": "/images/startup_focus_2.jpg",
+    "images": [
+      "/images/startup_focus_2.jpg",
+      "/images/dir_2.jpg"
+    ],
+    "tags": ["향토음식점", "주방동선", "위생진단", "3D설계"],
+    "content": "지역 대표 향토 음식점들의 조리 효율 향상과 위생 등급 향상을 위하여 주방 설비 3D 동선 최적화 컨설팅을 제공하고 조리 환경을 대폭 개선하였습니다."
+  },
+  {
+    "id": "gal-consult-3",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "title": "외식업 소상공인 재도약 희망리턴 1:1 심층 경영클리닉",
+    "date": "2026.06.11",
+    "location": "전남 순천시 원도심 상권활성화구역",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1290,
+    "coverImage": "/images/course_delivery.jpg",
+    "image": "/images/course_delivery.jpg",
+    "images": [
+      "/images/course_delivery.jpg",
+      "/images/startup_focus_3.jpg"
+    ],
+    "tags": ["희망리턴패키지", "경영클리닉", "소상공인재도약", "배달외식"],
+    "content": "경영 위기에 직면한 외식 소상공인 사업장을 대상으로 원인 분석, 손익 구조 재설계, 배달 및 온라인 판매 채널 다각화 솔루션을 1:1 맞춤으로 제공하였습니다."
+  },
+  {
+    "id": "gal-train-1",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": true,
+    "title": "대용량 업소용 육수 및 특제 비법 양념 추출 국가공인 조리 실습",
+    "date": "2026.09.12",
+    "location": "KFSSEC 제1외식조리 실습실",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 2420,
+    "coverImage": "/images/behavior_card_2.jpg",
+    "image": "/images/behavior_card_2.jpg",
+    "images": [
+      "/images/behavior_card_2.jpg",
+      "/images/dir_1.jpg",
+      "/images/dir_6.jpg"
+    ],
+    "tags": ["업소용육수", "비법양념", "국가공인실습", "외식창업실습"],
+    "content": "창업 후 가장 핵심이 되는 대용량 업소용 육수 추출 및 비법 숙성 양념 제조 노하우를 국가공인 조리 실습장에서 1:1 실전 전수하는 모습입니다."
+  },
+  {
+    "id": "gal-train-2",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "title": "외식업 시그니처 탕·찌개 및 볶음 조리 표준화 마스터클래스",
+    "date": "2026.08.14",
+    "location": "KFSSEC 제2한식연구관",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1850,
+    "coverImage": "/images/behavior_card_3.jpg",
+    "image": "/images/behavior_card_3.jpg",
+    "images": [
+      "/images/behavior_card_3.jpg",
+      "/images/dir_7.jpg"
+    ],
+    "tags": ["시그니처메뉴", "표준화레시피", "탕찌개마스터", "창업조리"],
+    "content": "가맹 사업 및 체계적인 매장 운영을 위한 핵심 조리 공정의 계량화와 레시피 표준화 과정을 실습생들이 직접 조리하며 체득하는 수업 현장입니다."
+  },
+  {
+    "id": "gal-train-3",
+    "category": "갤러리",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "title": "트렌드 베이커리 & 디저트 카페 메뉴 실무 집중 실습 과정",
+    "date": "2026.07.03",
+    "location": "KFSSEC 제3베이킹랩",
+    "author": "사단법인 한국외식창업교육원",
+    "views": 1730,
+    "coverImage": "/images/course_cafe.jpg",
+    "image": "/images/course_cafe.jpg",
+    "images": [
+      "/images/course_cafe.jpg",
+      "/images/dir_8.jpg"
+    ],
+    "tags": ["베이커리카페", "디저트실습", "카페창업", "제과제빵"],
+    "content": "요즘 외식 트렌드를 이끄는 베이커리 및 디저트 메뉴를 개발하고 실제 카페 매장에서 빠르게 서비스할 수 있는 베이킹 실전 조리 실습을 진행했습니다."
   },
   {
     "id": "mou-post-tonichi",

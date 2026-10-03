@@ -45,7 +45,20 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
     const update = () => {
       setActiveTab(id);
       window.history.pushState({}, '', `/master/${id}`);
-      window.dispatchEvent(new PopStateEvent('popstate'));
+      requestAnimationFrame(() => {
+        const anchor = document.getElementById('master-content-anchor');
+        if (anchor) {
+          const headerOffset = 110;
+          const elementPosition = anchor.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          if (window.pageYOffset > offsetPosition) {
+            window.scrollTo({
+              top: Math.max(0, offsetPosition),
+              behavior: 'smooth',
+            });
+          }
+        }
+      });
     };
     if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.startViewTransition(() => flushSync(update));
@@ -200,8 +213,8 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
           </div>
         </section>
 
-        {/* Master Directory Content Panel */}
-        <main className="w-full min-w-0">
+        {/* Master Directory Content Panel with smooth slide-up */}
+        <main id="master-content-anchor" className="w-full min-w-0">
           <SectorBlock
             sectorId={activeTab === 'profiles' ? 'S-MAS-02' : activeTab === 'directory' ? 'S-MAS-03' : 'S-MAS-01'}
             sectorName={activeTab === 'profiles' ? '대한민국 조리명장 명단' : activeTab === 'directory' ? '외식창업 조리명인 명단' : '명장·명인 전체 목록'}
@@ -215,13 +228,14 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
               },
             ]}
           >
-            <MasterDirectory
-              key={activeTab}
-              group={currentItem.group}
-              groupLabel={currentItem.label}
-              onSelectGroup={selectTab}
-              onEditMaster={handleOpenMasterEdit}
-            />
+            <div key={activeTab} className="animate-content-slide-up">
+              <MasterDirectory
+                group={currentItem.group}
+                groupLabel={currentItem.label}
+                onSelectGroup={selectTab}
+                onEditMaster={handleOpenMasterEdit}
+              />
+            </div>
           </SectorBlock>
         </main>
 

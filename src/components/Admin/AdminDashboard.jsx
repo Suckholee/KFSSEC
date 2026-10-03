@@ -16,6 +16,7 @@ import {
   Settings,
   Image,
   Star,
+  Briefcase,
 } from 'lucide-react';
 import { maskName, maskPhone, maskId } from '../../utils/security';
 
@@ -112,6 +113,14 @@ export default function AdminDashboard({
       label: '배너 AI 생성기',
       desc: '1920 띠배너·카드뉴스',
       accent: 'text-amber-600',
+    },
+    {
+      tab: 'consulting',
+      subTab: 'cases_manage',
+      icon: Briefcase,
+      label: '창업컨설팅 관리',
+      desc: '100+ 사례 & 1:1 상담',
+      accent: 'text-emerald-700',
     },
     {
       tab: 'courses',

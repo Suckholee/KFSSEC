@@ -183,8 +183,12 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
             onSelectTab={(tabId) => setActiveTab(tabId)}
           />
 
-          {/* Right Main Content Panel */}
-          <div className="flex-1 w-full space-y-6 min-w-0">
+          {/* Right Main Content Panel with dynamic slide-up animation on tab change */}
+          <div
+            id="subsidebar-content-anchor"
+            key={activeTab}
+            className="flex-1 w-full space-y-6 min-w-0 animate-content-slide-up"
+          >
             <SectorBlock
               sectorId={activeTab === 'notice' ? 'S-COM-02' : activeTab === 'faq' ? 'S-COM-03' : activeTab === 'inquiry' ? 'S-COM-04' : 'S-COM-01'}
               sectorName={activeTab === 'notice' ? '공식 공지사항' : activeTab === 'faq' ? '주요 문의 (FAQ 10문 10답)' : activeTab === 'inquiry' ? '1:1 온라인 문의 및 수강 상담' : '전체 게시글 & 공지사항'}

@@ -36,6 +36,11 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
     }
   }, [initialSubTab, initialTab]);
 
+  // Whenever activeTab changes, scroll to the top so user is never stuck at the bottom
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [activeTab]);
+
   const consultingSubItems = [
     { id: 'education', label: '창업 교육' },
     { id: 'consulting', label: '창업 컨설팅' },
@@ -43,6 +48,17 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
     { id: 'youth', label: '청년 창업 상담' },
     { id: 'readiness', label: '창업 준비' },
   ];
+
+  const handleSelectTab = (tabId) => {
+    setActiveTab(tabId);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    if (typeof window !== 'undefined' && window.history && window.history.replaceState) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', tabId);
+      window.history.replaceState({}, '', url.toString());
+    }
+  };
 
   const handleApplyClick = (type) => {
     onGoToInquiry?.(type);
@@ -60,11 +76,15 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
             title={tr("창업컨설팅")}
             items={consultingSubItems}
             activeId={activeTab}
-            onSelectTab={(tabId) => setActiveTab(tabId)}
+            onSelectTab={handleSelectTab}
           />
 
-          {/* Right Main Content Panel */}
-          <div className="flex-1 w-full space-y-6 min-w-0">
+          {/* Right Main Content Panel with dynamic slide-up animation on tab change */}
+          <div
+            id="subsidebar-content-anchor"
+            key={activeTab}
+            className="flex-1 w-full space-y-6 min-w-0 animate-content-slide-up"
+          >
             
             {/* SUB-TAB 1: 창업 교육 */}
             {activeTab === 'education' && (

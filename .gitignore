@@ -11,3 +11,10 @@ mou 자료/
 mou 자료/
 기사자료/
 기사자료/
+a.out
+chrome_tmp/
+*.pptx
+*.docx
+test_rtf.pdf
+generate_perfect_pptx.py
+*회의록*.pdf
