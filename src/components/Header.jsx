@@ -125,15 +125,44 @@ export default function Header({
     }
   };
 
+  const headerRef = useRef(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 8);
+      // Immediately close mega menu on scroll so it never obstructs page content
+      if (window.scrollY > 15) {
+        setIsMegaMenuOpen(false);
+        setHoveredMenuKey(null);
+      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Dismiss mega menu on outside click or Escape key
+  React.useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        setIsMegaMenuOpen(false);
+        setHoveredMenuKey(null);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsMegaMenuOpen(false);
+        setHoveredMenuKey(null);
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   let isNavOpen = false;
@@ -149,6 +178,7 @@ export default function Header({
   return (
     <>
       <header
+        ref={headerRef}
         style={{
           top: 'var(--admin-toolbar-height, 0px)',
           backgroundColor: '#ffffff',
@@ -168,7 +198,7 @@ export default function Header({
       <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-stretch justify-between max-w-[1600px] mx-auto">
         
         {/* Official Logo (Far Left) */}
-        <div className="flex items-center shrink-0 w-[200px] 2xl:w-[230px]">
+        <div className="flex items-center shrink-0 w-[190px] 2xl:w-[220px]">
           <button
             onClick={() => {
               setIsMegaMenuOpen(false);
@@ -233,7 +263,7 @@ export default function Header({
         </nav>
 
         {/* Right Top Utility Buttons (Global Dining News, 1:1 AI Guide, Lang, Login) */}
-        <div className="hidden xl:flex items-center justify-end gap-2 2xl:gap-2.5 shrink-0 w-[420px] 2xl:w-[460px]">
+        <div className="hidden xl:flex items-center justify-end gap-2 2xl:gap-2.5 shrink-0 w-[360px] 2xl:w-[400px]">
           
           {/* 글로벌외식정보 로고 */}
           <a
@@ -367,7 +397,7 @@ export default function Header({
         style={{ backgroundColor: '#ffffff' }}
         className={`hidden xl:block absolute left-0 right-0 top-full w-full bg-white border-b-2 border-stone-200 shadow-2xl transition-all duration-200 ease-out z-50 overflow-hidden ${
           isMegaMenuOpen
-            ? 'opacity-100 translate-y-0 pointer-events-auto visible max-h-[520px]'
+            ? 'opacity-100 translate-y-0 pointer-events-auto visible max-h-[480px]'
             : 'opacity-0 -translate-y-2 pointer-events-none invisible max-h-0'
         }`}
         onMouseEnter={() => setIsMegaMenuOpen(true)}
@@ -378,10 +408,10 @@ export default function Header({
       >
         <div
           style={{ backgroundColor: '#ffffff' }}
-          className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white flex items-start justify-between"
+          className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-7 bg-white flex items-start justify-between"
         >
-          {/* 1. Left Spacer - EXACTLY matches Top Logo Width (w-[200px] 2xl:w-[230px]) */}
-          <div className="shrink-0 w-[200px] 2xl:w-[230px]" aria-hidden="true" />
+          {/* 1. Left Spacer - EXACTLY matches Top Logo Width (w-[190px] 2xl:w-[220px]) */}
+          <div className="shrink-0 w-[190px] 2xl:w-[220px]" aria-hidden="true" />
 
           {/* 2. Center 7 Columns - EXACTLY matches Top Main Nav Grid */}
           <div style={{ backgroundColor: '#ffffff' }} className="flex-1 mx-2 2xl:mx-4 bg-white">
@@ -395,7 +425,7 @@ export default function Header({
                     onMouseEnter={() => setHoveredMenuKey(menu.key)}
                   >
                     {/* Submenu Vertical Item List - Centered under each Top Menu Title */}
-                    <ul className="space-y-3.5 bg-white w-full text-center">
+                    <ul className="space-y-2.5 bg-white w-full text-center">
                       {menu.subItems.map((sub) => {
                         const isSubActive =
                           activeTab === menu.key &&
@@ -411,10 +441,10 @@ export default function Header({
                                   onTabChange(menu.key, sub.subTab);
                                 }
                               }}
-                              className={`inline-block py-1 text-[13px] 2xl:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                              className={`inline-block py-1.5 px-2.5 rounded-xl text-[13px] 2xl:text-sm font-bold transition-all cursor-pointer whitespace-nowrap text-center ${
                                 isSubActive
-                                  ? 'text-[#15803D] font-black'
-                                  : 'text-stone-700 hover:text-[#15803D] hover:font-black'
+                                  ? 'text-[#15803D] font-black bg-emerald-50 border border-emerald-200/80 shadow-2xs'
+                                  : 'text-stone-800 hover:text-[#15803D] hover:bg-stone-50 hover:font-black'
                               }`}
                             >
                               <span>{sub.title}</span>
@@ -429,8 +459,8 @@ export default function Header({
             </div>
           </div>
 
-          {/* 3. Right Spacer - EXACTLY matches Top Utility Width (w-[420px] 2xl:w-[460px]) */}
-          <div className="shrink-0 w-[420px] 2xl:w-[460px]" aria-hidden="true" />
+          {/* 3. Right Spacer - EXACTLY matches Top Utility Width (w-[360px] 2xl:w-[400px]) */}
+          <div className="shrink-0 w-[360px] 2xl:w-[400px]" aria-hidden="true" />
         </div>
       </div>
 
