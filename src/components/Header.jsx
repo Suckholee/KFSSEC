@@ -13,7 +13,8 @@ export default function Header({
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [hoveredMenuId, setHoveredMenuId] = useState(null);
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  const [hoveredMenuKey, setHoveredMenuKey] = useState(null);
   const { language, setLanguage, t } = useLanguage();
 
   const mainMenuItems = [
@@ -52,6 +53,7 @@ export default function Header({
         { id: 'guide', title: t('자격과정 안내', 'Certification Guide'), subTab: 'guide' },
         { id: 'schedule', title: t('교육 일정', 'Course Schedule'), subTab: 'schedule' },
         { id: 'cert_exam', title: t('자격 시험', 'Qualification Exam'), subTab: 'cert_exam' },
+        { id: 'exam_schedule', title: t('시험 일정', 'Exam Schedule'), subTab: 'exam_schedule' },
       ],
     },
     {
@@ -69,7 +71,7 @@ export default function Header({
     },
     {
       id: 'gallery',
-      title: t('갤러리', 'Gallery'),
+      title: t('현장 갤러리', 'Gallery'),
       key: 'gallery',
       defaultSubTab: 'all',
       subItems: [
@@ -83,7 +85,7 @@ export default function Header({
     },
     {
       id: 'partners',
-      title: t('파트너사', 'Partners'),
+      title: t('산학·파트너', 'Partners'),
       key: 'partners',
       defaultSubTab: 'all',
       subItems: [
@@ -94,7 +96,7 @@ export default function Header({
     },
     {
       id: 'community',
-      title: t('게시판', 'Board'),
+      title: t('커뮤니티', 'Community'),
       key: 'community',
       defaultSubTab: 'all',
       subItems: [
@@ -150,137 +152,106 @@ export default function Header({
         style={{
           top: 'var(--admin-toolbar-height, 0px)',
         }}
-        className={`fixed right-0 z-50 transition-all duration-200 font-sans text-gray-900 ${
+        className={`fixed right-0 z-50 transition-all duration-200 font-sans text-gray-900 border-b-[3px] border-[#C5A059] ${
           isNavOpen && isEdit ? 'lg:left-[280px] left-0' : 'left-0'
         } ${
           isScrolled
-            ? 'bg-[#FDFBF7]/98 backdrop-blur-md border-b-2 border-[#E7E2D8] shadow-md'
-            : 'bg-[#FDFBF7]/95 backdrop-blur-md border-b-2 border-[#E7E2D8] shadow-sm'
+            ? 'bg-[#FDFBF7]/98 backdrop-blur-md shadow-md'
+            : 'bg-[#FDFBF7]/95 backdrop-blur-md shadow-sm'
         }`}
+        onMouseLeave={() => {
+          setIsMegaMenuOpen(false);
+          setHoveredMenuKey(null);
+        }}
       >
       
       {/* Full Width Top Header Bar */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-center justify-between gap-3 sm:gap-4 max-w-[1600px] mx-auto">
+      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-stretch justify-between gap-3 sm:gap-4 max-w-[1600px] mx-auto">
         
         {/* Official Logo (Far Left) */}
-        <button
-          onClick={() => onTabChange && onTabChange('home')}
-          className="flex items-center gap-3 cursor-pointer group shrink-0 focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none rounded-xl p-1"
-          title={t('한국외식창업교육원 메인 홈으로 이동', 'KFSSEC home')}
-          aria-label={t('한국외식창업교육원 메인 홈으로 이동', 'KFSSEC home')}
-        >
-          <img
-            src="/images/logo-transparent.svg"
-            alt={t('사단법인 한국외식창업교육원')}
-            className="h-12 sm:h-15 w-auto object-contain"
-          />
-        </button>
+        <div className="flex items-center shrink-0">
+          <button
+            onClick={() => {
+              setIsMegaMenuOpen(false);
+              setHoveredMenuKey(null);
+              if (onTabChange) onTabChange('home');
+            }}
+            className="flex items-center gap-3 cursor-pointer group shrink-0 focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none rounded-xl p-1"
+            title={t('한국외식창업교육원 메인 홈으로 이동', 'KFSSEC home')}
+            aria-label={t('한국외식창업교육원 메인 홈으로 이동', 'KFSSEC home')}
+          >
+            <img
+              src="/images/logo-transparent.svg"
+              alt={t('사단법인 한국외식창업교육원')}
+              className="h-12 sm:h-15 w-auto object-contain"
+            />
+          </button>
+        </div>
 
         {/* Centered Desktop Main Navigation Bar */}
-        <nav className="hidden xl:flex flex-1 items-center justify-center gap-1.5 2xl:gap-3">
-          {mainMenuItems.map((menu) => {
-            const isMenuActive = activeTab === menu.key;
-            const hasSub = Boolean(menu.subItems);
+        <nav
+          className="hidden xl:flex flex-1 items-stretch justify-center h-full"
+          onMouseEnter={() => setIsMegaMenuOpen(true)}
+        >
+          <div className="flex items-stretch h-full">
+            {mainMenuItems.map((menu) => {
+              const isHovered = hoveredMenuKey === menu.key;
+              const isCurrentActive = activeTab === menu.key && !hoveredMenuKey;
+              const isHighlighted = isHovered;
 
-            const isDropdownOpen = hoveredMenuId === menu.id;
-
-            return (
-              <div
-                key={menu.id}
-                className="relative py-4"
-                onMouseEnter={() => {
-                  if (hasSub) setHoveredMenuId(menu.id);
-                  else setHoveredMenuId(null);
-                }}
-                onMouseLeave={() => setHoveredMenuId(null)}
-              >
-                <button
-                  onClick={(e) => {
-                    e.currentTarget.blur();
-                    setHoveredMenuId(null);
-                    if (onTabChange) {
-                      onTabChange(menu.key, menu.defaultSubTab);
-                    }
+              return (
+                <div
+                  key={menu.id}
+                  className="relative flex items-stretch h-full"
+                  onMouseEnter={() => {
+                    setHoveredMenuKey(menu.key);
+                    setIsMegaMenuOpen(true);
                   }}
-                  className={`text-[13px] 2xl:text-sm font-bold tracking-tight transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap min-h-[44px] px-2.5 rounded-lg focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none ${
-                    isMenuActive
-                      ? 'text-[#15803D] font-black border-b-2 border-[#15803D] pb-0.5 scale-105'
-                      : 'text-[#2A3B32] hover:text-[#15803D]'
-                  }`}
                 >
-                  <span>{menu.title}</span>
-                  {hasSub && (
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${
-                        isDropdownOpen ? 'text-[#15803D] rotate-180' : ''
-                      }`}
-                    />
-                  )}
-                </button>
-
-                {/* Submenu Dropdown with controlled hover and clean dismiss */}
-                {hasSub && (
-                  <div
-                    className={`absolute left-1/2 -translate-x-1/2 top-full pt-1.5 z-50 transition-all duration-200 ease-out ${
-                      isDropdownOpen
-                        ? 'opacity-100 pointer-events-auto translate-y-0 scale-100'
-                        : 'opacity-0 pointer-events-none -translate-y-2 scale-95'
+                  <button
+                    onClick={(e) => {
+                      e.currentTarget.blur();
+                      setIsMegaMenuOpen(false);
+                      setHoveredMenuKey(null);
+                      if (onTabChange) {
+                        onTabChange(menu.key, menu.defaultSubTab);
+                      }
+                    }}
+                    className={`px-3.5 2xl:px-4.5 flex items-center justify-center font-black tracking-tight text-sm 2xl:text-base transition-all cursor-pointer whitespace-nowrap h-full relative select-none ${
+                      isHighlighted
+                        ? 'bg-[#C59B58] text-stone-950 font-black shadow-inner'
+                        : isCurrentActive
+                        ? 'text-[#15803D] font-black'
+                        : 'text-[#2A3B32] hover:text-[#15803D] font-bold'
                     }`}
                   >
-                    <div className="bg-white rounded-2xl shadow-2xl shadow-stone-900/15 border border-stone-200 py-2 min-w-[180px] whitespace-nowrap overflow-hidden ring-1 ring-black/5 transform origin-top transition-transform duration-200">
-                      {menu.subItems.map((sub) => {
-                        const isSubActive =
-                          isMenuActive &&
-                          (subTab === sub.subTab || (!subTab && sub.subTab === menu.defaultSubTab));
-                        return (
-                          <button
-                            key={sub.id}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.currentTarget.blur();
-                              setHoveredMenuId(null);
-                              if (onTabChange) {
-                                onTabChange(menu.key, sub.subTab);
-                              }
-                            }}
-                            className={`w-full px-4 py-2.5 text-left text-xs font-bold transition-all flex items-center justify-between gap-3 cursor-pointer ${
-                              isSubActive
-                                ? 'bg-[#15803D] text-white font-black'
-                                : 'text-stone-700 hover:bg-[#F0FDF4] hover:text-[#15803D] hover:translate-x-1 duration-150'
-                            }`}
-                          >
-                            <span>{sub.title}</span>
-                            {isSubActive && <span className="text-[#F97316]">●</span>}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                    <span>{menu.title}</span>
+                  </button>
+                </div>
+              );
+            })}
 
-          {/* Subtle Vertical Divider */}
-          <div className="h-5 w-px bg-stone-300 mx-1 2xl:mx-1.5 self-center shrink-0" />
+            {/* Subtle Vertical Divider */}
+            <div className="h-6 w-px bg-stone-300 mx-1 2xl:mx-1.5 self-center shrink-0" />
 
-          {/* 글로벌외식정보 로고 (게시판 우측) */}
-          <div className="relative group py-4 flex items-center shrink-0">
-            <a
-              href="https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-[#D0E7DA] transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none group/link"
-              title={t('글로벌외식정보 외식 트렌드 바로가기 (새창 열기)', 'Go to Global Dining News - Trends (New Window)')}
-              aria-label="글로벌외식정보 외식 트렌드 바로가기 (새창)"
-            >
-              <img
-                src="/images/logo_global_dining.png"
-                alt="글로벌외식정보 (Global Dining News)"
-                className="h-8 2xl:h-9 w-auto object-contain group-hover/link:scale-105 transition-transform drop-shadow-xs"
-              />
-              <ExternalLink className="w-3.5 h-3.5 text-stone-400 group-hover/link:text-[#2B7752] transition-colors" />
-            </a>
+            {/* 글로벌외식정보 로고 (게시판 우측) */}
+            <div className="flex items-center shrink-0 px-2">
+              <a
+                href="https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-emerald-50/70 border border-transparent hover:border-[#D0E7DA] transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none group/link"
+                title={t('글로벌외식정보 외식 트렌드 바로가기 (새창 열기)', 'Go to Global Dining News - Trends (New Window)')}
+                aria-label="글로벌외식정보 외식 트렌드 바로가기 (새창)"
+              >
+                <img
+                  src="/images/logo_global_dining.png"
+                  alt="글로벌외식정보 (Global Dining News)"
+                  className="h-8 2xl:h-9 w-auto object-contain group-hover/link:scale-105 transition-transform drop-shadow-xs"
+                />
+                <ExternalLink className="w-3.5 h-3.5 text-stone-400 group-hover/link:text-[#2B7752] transition-colors" />
+              </a>
+            </div>
           </div>
         </nav>
 
@@ -393,6 +364,77 @@ export default function Header({
           {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
 
+      </div>
+
+      {/* Desktop Full-Width 2-Tier Mega Dropdown Panel */}
+      <div
+        className={`hidden xl:block absolute left-0 right-0 top-full w-full bg-white/98 backdrop-blur-md border-b-2 border-[#C5A059] shadow-2xl transition-all duration-200 ease-out z-40 overflow-hidden ${
+          isMegaMenuOpen
+            ? 'opacity-100 translate-y-0 pointer-events-auto visible max-h-[520px]'
+            : 'opacity-0 -translate-y-2 pointer-events-none invisible max-h-0'
+        }`}
+        onMouseEnter={() => setIsMegaMenuOpen(true)}
+        onMouseLeave={() => {
+          setIsMegaMenuOpen(false);
+          setHoveredMenuKey(null);
+        }}
+      >
+        <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-7">
+          <div className="grid grid-cols-7 gap-3 2xl:gap-4">
+            {mainMenuItems.map((menu) => {
+              const isColumnHovered = hoveredMenuKey === menu.key;
+              return (
+                <div
+                  key={menu.id}
+                  className={`rounded-2xl p-3 transition-colors ${
+                    isColumnHovered ? 'bg-[#FDF8EE] ring-1 ring-[#C5A059]/40' : 'bg-transparent'
+                  }`}
+                  onMouseEnter={() => setHoveredMenuKey(menu.key)}
+                >
+                  {/* Column Header Category Label */}
+                  <div className="pb-2 border-b border-stone-200 mb-2.5 flex items-center justify-between">
+                    <span className={`text-xs font-black tracking-tight ${
+                      isColumnHovered ? 'text-[#C5A059]' : 'text-stone-500'
+                    }`}>
+                      {menu.title}
+                    </span>
+                  </div>
+
+                  {/* Submenu Vertical Item List */}
+                  <ul className="space-y-1">
+                    {menu.subItems.map((sub) => {
+                      const isSubActive =
+                        activeTab === menu.key &&
+                        (subTab === sub.subTab || (!subTab && sub.subTab === menu.defaultSubTab));
+                      return (
+                        <li key={sub.id}>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setIsMegaMenuOpen(false);
+                              setHoveredMenuKey(null);
+                              if (onTabChange) {
+                                onTabChange(menu.key, sub.subTab);
+                              }
+                            }}
+                            className={`w-full text-left text-xs 2xl:text-[13px] py-1.5 px-2 rounded-lg font-bold transition-all flex items-center justify-between group cursor-pointer ${
+                              isSubActive
+                                ? 'text-[#15803D] font-black bg-emerald-50 translate-x-1 shadow-xs'
+                                : 'text-stone-700 hover:text-[#15803D] hover:bg-[#F2FAF5] hover:translate-x-1 duration-150'
+                            }`}
+                          >
+                            <span className="truncate">{sub.title}</span>
+                            {isSubActive && <span className="text-[#F97316] text-xs">●</span>}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* MOBILE MENU DROPDOWN */}
@@ -546,6 +588,17 @@ export default function Header({
       )}
 
     </header>
+
+    {/* Dimmed backdrop when Mega Menu is open */}
+    {isMegaMenuOpen && (
+      <div
+        className="fixed inset-0 top-20 sm:top-[88px] bg-black/25 backdrop-blur-[1px] z-40 transition-opacity duration-200 hidden xl:block animate-fadeIn"
+        onClick={() => {
+          setIsMegaMenuOpen(false);
+          setHoveredMenuKey(null);
+        }}
+      />
+    )}
 
     {/* Spacer to prevent content jump under fixed header and admin toolbar */}
     <div
