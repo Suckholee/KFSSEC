@@ -1,5 +1,5 @@
 import { useLanguage } from '../i18n/LanguageContext';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAdminEdit } from '../context/AdminEditContext';
 import { ChevronDown, User, LogIn, Globe, Search, Menu, X, BookOpen, Layers, LogOut, ShieldCheck, ExternalLink } from 'lucide-react';
 
