@@ -87,6 +87,7 @@ export default function AdminDrawer() {
 
         {/* Tab Navigation */}
         <div className="flex border-b border-slate-200 bg-slate-50 text-xs sm:text-sm font-medium overflow-x-auto">
+          <button type="button" onClick={() => window.location.assign('/admin/members')} className={`flex-1 min-w-[95px] py-3 px-2 border-b-2 ${drawerTab === 'members' ? 'border-emerald-600 text-emerald-800 bg-white font-bold' : 'border-transparent text-slate-600'}`}>회원관리</button>
           <button
             type="button"
             onClick={() => setDrawerTab('popup')}
@@ -142,6 +143,7 @@ export default function AdminDrawer() {
 
         {/* Tab Content Area */}
         <div className="flex-1 overflow-y-auto p-5 space-y-5 text-slate-800 text-sm">
+
           {/* 1. Inquiries Tab */}
           {drawerTab === 'inquiry' && (
             <div className="space-y-4">

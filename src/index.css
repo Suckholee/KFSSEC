@@ -186,3 +186,18 @@
   animation-play-state: paused;
 }
 
+
+/* Use the available header width when the live editor sidebar is open. */
+@media (min-width: 1280px) {
+  header[data-compact="true"] .site-main-nav,
+  header[data-compact="true"] .site-utilities,
+  header[data-compact="true"] .site-mega-menu {
+    display: none;
+  }
+  header[data-compact="true"] .site-menu-toggle {
+    display: flex;
+  }
+  header[data-compact="true"] .site-mobile-menu {
+    display: block;
+  }
+}

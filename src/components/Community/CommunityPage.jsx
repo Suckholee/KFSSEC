@@ -11,6 +11,17 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPost, setSelectedPost] = useState(null);
 
+  useEffect(() => {
+    const openLinkedPost = () => {
+      const id = new URL(window.location.href).searchParams.get('post');
+      const post = postsList.find(item => String(item.id) === id && item.categoryType !== 'inquiry' && item.category !== '문의');
+      if (post) setSelectedPost(post);
+    };
+    openLinkedPost();
+    window.addEventListener('popstate', openLinkedPost);
+    return () => window.removeEventListener('popstate', openLinkedPost);
+  }, [postsList]);
+
   // Close post modal on Escape key press
   useEffect(() => {
     if (!selectedPost) return;
@@ -272,9 +283,6 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                         자주 묻는 질문 10대 핵심 질의응답 & 진익준 교수 컨설팅 FAQ
                       </span>
                     </div>
-                    <span className="text-xs text-stone-600 font-bold">
-                      질문을 클릭하시면 상세 답변을 확인하실 수 있습니다.
-                    </span>
                   </div>
 
                   {/* FAQ Category Pills */}

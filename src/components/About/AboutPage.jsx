@@ -156,7 +156,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
   const engName = info.engName || 'Korea Food Service Startup Education Center';
   const ceoName = info.ceoName || '안형상 이사장';
   const establishedDate = info.establishedDate || '2022년 7월 29일';
-  const fieldName = info.field || '창업 외식 교육 & 펫창업 특화 과정';
+  const fieldName = info.field || '외식 창업 실무 교육 및 전문 자격증 발급';
 
   const purpose = currentSite?.establishmentPurpose || DEFAULT_PURPOSE;
   const pillars = currentSite?.strategicPillars || DEFAULT_PILLARS;
@@ -786,7 +786,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
                           info: { ...formData.info, field: e.target.value },
                         })}
                         className="w-full px-3.5 py-2.5 text-xs border border-gray-300 rounded-xl font-bold focus:outline-none focus:border-[#2B7752]"
-                        placeholder="창업 외식 교육 & 펫창업 특화 과정"
+                        placeholder="외식 창업 실무 교육 및 전문 자격증 발급"
                       />
                     </div>
                   </div>
@@ -957,7 +957,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
                       engName: 'Korea Food Service Startup Education Center',
                       ceoName: '안형상 이사장',
                       establishedDate: '2022년 7월 29일',
-                      field: '창업 외식 교육 & 펫창업 특화 과정',
+                      field: '외식 창업 실무 교육 및 전문 자격증 발급',
                       logo: '/images/logo-transparent.svg',
                     },
                     purpose: DEFAULT_PURPOSE,

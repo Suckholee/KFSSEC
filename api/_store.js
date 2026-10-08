@@ -44,27 +44,23 @@ export async function readContent(type) {
 
 export async function writeContent(type, value) {
   checkType(type);
+  if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
+    await supabaseRequest('/rest/v1/site_content?on_conflict=key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' },
+      body: JSON.stringify({ key: type, value }),
+    });
+    return;
+  }
   const data = JSON.stringify(value, null, 2);
+  await fs.mkdir(LOCAL_DIR, { recursive: true });
+  const destination = path.join(LOCAL_DIR, `${type}.json`);
+  const temporary = `${destination}.${crypto.randomUUID()}.tmp`;
   try {
-    await fs.mkdir(LOCAL_DIR, { recursive: true });
-    const destination = path.join(LOCAL_DIR, `${type}.json`);
-    const temporary = `${destination}.${crypto.randomUUID()}.tmp`;
     await fs.writeFile(temporary, data);
     await fs.rename(temporary, destination);
-  } catch (err) {
-    console.warn(`[store] Local file write warning for ${type}:`, err.message);
-  }
-
-  if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
-    try {
-      await supabaseRequest('/rest/v1/site_content?on_conflict=key', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' },
-        body: JSON.stringify({ key: type, value }),
-      });
-    } catch (err) {
-      console.warn(`[store] Supabase write warning for ${type}:`, err.message);
-    }
+  } finally {
+    await fs.rm(temporary, { force: true });
   }
 }
 

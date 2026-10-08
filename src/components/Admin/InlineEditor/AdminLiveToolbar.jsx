@@ -201,6 +201,7 @@ export default function AdminLiveToolbar() {
             <span>{isSaving ? '저장 중…' : '지금 화면 저장'}</span>
           </button>
 
+          <button type="button" onClick={() => { window.location.assign('/admin/members'); }} className="px-3 py-1.5 rounded-md bg-emerald-700 hover:bg-emerald-600 text-white font-bold">회원관리</button>
           {/* Management Drawer Opener */}
           <button
             type="button"

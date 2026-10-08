@@ -118,6 +118,7 @@ const PRESET_BANNER_TEMPLATES = [
 
 export default function AdminBannerPlanner({
   siteData = {},
+  postsList = [],
   onUpdateSiteData,
 }) {
   const initialBanners =
@@ -978,6 +979,7 @@ export default function AdminBannerPlanner({
                       <option value="catalog">교육과정 둘러보기</option>
                       <option value="about">교육원 소개</option>
                       <option value="community">1:1 수강 상담</option>
+                      {postsList.filter(post => post.categoryType !== 'inquiry' && post.category !== '문의').map(post => <option key={post.id} value={`post:${post.id}`}>{post.title}</option>)}
                     </select>
                   </div>
                 </div>

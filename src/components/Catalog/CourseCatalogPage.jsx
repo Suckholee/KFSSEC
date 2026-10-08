@@ -131,7 +131,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses', onGoToCon
                 <h2 className="text-xl font-bold">{tr("일정은 교육원으로 문의해 주세요.")}</h2>
                 <p className="mt-3 text-gray-600">{tr("온라인 2급 과정의 수강 기간은 4주 이내입니다. 개강일과 검정일은 상담을 통해 안내해 드립니다.")}</p>
                 <div className="flex flex-wrap gap-3 mt-5">
-                  <a href="tel:01072446796" className="inline-flex items-center gap-1.5 font-bold text-[#15803D] bg-[#F0FDF4] border border-[#DCFCE7] px-4 py-2.5 rounded-xl">📞 010-7244-6796</a>
+                  
                   {onGoToConsulting && <button onClick={onGoToConsulting} className="bg-gradient-to-r from-[#EA580C] to-[#F97316] hover:from-[#C2410C] hover:to-[#EA580C] text-white font-black px-4 py-2.5 rounded-xl shadow-xs cursor-pointer border border-orange-300/40">⚡ 1:1 상담 신청하기</button>}
                 </div>
               </div>

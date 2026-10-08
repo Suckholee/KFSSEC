@@ -157,7 +157,6 @@ export default function CalendarDateCoursesModal({
                     >
                       <option value="신규 창업 준비생">{tr("신규 창업 준비생 (6개월 이내 오픈)")}</option>
                       <option value="기존 업종 변경/재창업">{tr("기존 업종 변경 / 재창업 희망자")}</option>
-                      <option value="수제간식/펫창업">{tr("펫푸드 & 수제간식 전문 창업")}</option>
                       <option value="반려견 행동교정">{tr("반려견 행동교정 코칭 자격증")}</option>
                       <option value="단순 취미/역량강화">{tr("단순 수강 및 자격증 취득 목적")}</option>
                     </select>

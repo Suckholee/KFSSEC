@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import NetflixCard from './NetflixCard';
 
 export default function NetflixCategoryRow({
   category,
+  rowIndex = 0,
+  isMotionPaused = false,
   items = [],
   isEditMode = false,
   onSelectPhoto,
@@ -15,6 +17,39 @@ export default function NetflixCategoryRow({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  const hovering = useRef(false);
+  const touching = useRef(false);
+  const pauseUntil = useRef(0);
+
+  useEffect(() => {
+    const track = scrollRef.current;
+    if (!track || isMotionPaused) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let visible = false;
+    let previousTime = 0;
+    let frame;
+    let direction = rowIndex % 2 === 0 ? 1 : -1;
+    let position = direction === 1 ? track.scrollLeft : track.scrollWidth - track.clientWidth;
+    if (!reducedMotion.matches && direction === -1) track.scrollLeft = position;
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    observer.observe(track);
+    const animate = time => {
+      const seconds = previousTime ? Math.min((time - previousTime) / 1000, 0.05) : 0;
+      previousTime = time;
+      const paused = reducedMotion.matches || !visible || document.hidden || hovering.current || touching.current || track.contains(document.activeElement) || time < pauseUntil.current;
+      const max = track.scrollWidth - track.clientWidth;
+      if (!paused && max > 0) {
+        position = Math.max(0, Math.min(max, position + direction * seconds * (12 + rowIndex % 3 * 2)));
+        track.scrollLeft = position;
+        if (position >= max) direction = -1;
+        if (position <= 0) direction = 1;
+      } else position = track.scrollLeft;
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); };
+  }, [items, rowIndex, isEditMode, isMotionPaused]);
+
   const checkScroll = () => {
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -24,6 +59,7 @@ export default function NetflixCategoryRow({
 
   const handleScroll = (direction) => {
     if (!scrollRef.current) return;
+    pauseUntil.current = performance.now() + 4000;
     const scrollAmount = scrollRef.current.clientWidth * 0.75;
     scrollRef.current.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
@@ -90,7 +126,13 @@ export default function NetflixCategoryRow({
         <div
           ref={scrollRef}
           onScroll={checkScroll}
-          className="flex gap-2 sm:gap-2.5 overflow-x-auto scrollbar-none scroll-smooth py-3 px-1 -mx-1"
+          onMouseEnter={() => { hovering.current = true; }}
+          onMouseLeave={() => { hovering.current = false; }}
+          onTouchStart={() => { touching.current = true; }}
+          onTouchEnd={() => { touching.current = false; pauseUntil.current = performance.now() + 4000; }}
+          onTouchCancel={() => { touching.current = false; }}
+          onWheel={() => { pauseUntil.current = performance.now() + 4000; }}
+          className="flex gap-2 sm:gap-2.5 overflow-x-auto scrollbar-none py-3 px-1 -mx-1"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {items.map((item) => (

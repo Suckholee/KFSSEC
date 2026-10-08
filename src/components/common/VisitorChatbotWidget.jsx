@@ -190,8 +190,8 @@ export default function VisitorChatbotWidget({ onNavigate }) {
       {/* 1. FLOATING LAUNCHER BUTTON (When Closed) */}
       {!isOpen && (
         <aside
-          aria-label="24시 AI 상담 챗봇"
-          className="fixed bottom-6 right-6 z-50 flex items-center group animate-bounce-soft"
+          aria-label={t('24시 AI 상담 챗봇')}
+          className="fixed bottom-6 right-6 z-30 hidden sm:flex items-center group animate-bounce-soft"
         >
           <button
             onClick={() => {
@@ -212,10 +212,10 @@ export default function VisitorChatbotWidget({ onNavigate }) {
             </div>
             <div className="text-left pr-1">
               <div className="text-[10px] font-bold text-emerald-200 tracking-wide">
-                공공데이터 AI 포털 엔진
+                {t('공공데이터 AI 포털 엔진')}
               </div>
               <div className="text-xs sm:text-sm font-black text-white flex items-center gap-1.5">
-                <span>외식창업 AI 지식 검색 & 상담</span>
+                <span>{t('외식창업 AI 지식 검색 & 상담')}</span>
                 <ChevronRight className="w-3.5 h-3.5 text-emerald-300" />
               </div>
             </div>

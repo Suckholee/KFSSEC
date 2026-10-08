@@ -10,6 +10,7 @@ export default function Header({
   onOpenAuth,
   currentUser,
   onLogout,
+  onOpenProfile,
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -126,6 +127,9 @@ export default function Header({
   };
 
   const headerRef = useRef(null);
+  const utilityRef = useRef(null);
+  const [utilityWidth, setUtilityWidth] = useState(420);
+  const [compactHeader, setCompactHeader] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   React.useEffect(() => {
@@ -142,12 +146,14 @@ export default function Header({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Dismiss mega menu on outside click or Escape key
+  // Dismiss menus on outside click or Escape key
   React.useEffect(() => {
     const handleClickOutside = (e) => {
       if (headerRef.current && !headerRef.current.contains(e.target)) {
         setIsMegaMenuOpen(false);
         setHoveredMenuKey(null);
+        setLangDropdownOpen(false);
+        setMobileMenuOpen(false);
       }
     };
     const handleKeyDown = (e) => {
@@ -155,6 +161,7 @@ export default function Header({
         setIsMegaMenuOpen(false);
         setHoveredMenuKey(null);
         setMobileMenuOpen(false);
+        setLangDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -163,6 +170,49 @@ export default function Header({
       document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('keydown', handleKeyDown);
     };
+  }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setIsMegaMenuOpen(false);
+    setHoveredMenuKey(null);
+    setLangDropdownOpen(false);
+  }, [activeTab, subTab]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!utilityRef.current) return;
+    const observer = new ResizeObserver(entries => {
+      const width = entries[0]?.target.getBoundingClientRect().width;
+      if (width) setUtilityWidth(Math.ceil(width));
+    });
+    observer.observe(utilityRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1280px)');
+    const closeUnusedMenu = () => {
+      if (desktop.matches) setMobileMenuOpen(false);
+      else { setIsMegaMenuOpen(false); setHoveredMenuKey(null); }
+    };
+    desktop.addEventListener('change', closeUnusedMenu);
+    return () => desktop.removeEventListener('change', closeUnusedMenu);
+  }, []);
+
+  useEffect(() => {
+    if (!headerRef.current) return;
+    const observer = new ResizeObserver(entries => {
+      setCompactHeader(entries[0].contentRect.width < 1200);
+    });
+    observer.observe(headerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   let isNavOpen = false;
@@ -179,9 +229,11 @@ export default function Header({
     <>
       <header
         ref={headerRef}
+        data-compact={compactHeader}
         style={{
           top: 'var(--admin-toolbar-height, 0px)',
           backgroundColor: '#ffffff',
+          '--header-utility-width': `${utilityWidth}px`,
         }}
         className={`fixed right-0 z-50 transition-all duration-200 font-sans text-gray-900 border-b-[3px] border-[#C5A059] bg-white ${
           isNavOpen && isEdit ? 'lg:left-[280px] left-0' : 'left-0'
@@ -195,10 +247,10 @@ export default function Header({
       >
       
       {/* Full Width Top Header Bar */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-stretch justify-between max-w-[1600px] mx-auto">
+      <div className="w-full px-4 sm:px-6 lg:px-8 h-20 sm:h-[88px] flex items-stretch justify-between max-w-[1600px] mx-auto">
         
         {/* Official Logo (Far Left) */}
-        <div className="flex items-center shrink-0 w-[190px] 2xl:w-[220px]">
+        <div className="flex items-center shrink-0 w-[120px] 2xl:w-[140px]">
           <button
             onClick={() => {
               setIsMegaMenuOpen(false);
@@ -212,15 +264,17 @@ export default function Header({
             <img
               src="/images/logo-transparent.svg"
               alt={t('사단법인 한국외식창업교육원')}
-              className="h-12 sm:h-15 w-auto object-contain"
+              className="h-14 sm:h-[60px] w-auto object-contain"
             />
           </button>
         </div>
 
         {/* Centered Desktop Main Navigation Bar */}
         <nav
-          className="hidden xl:flex flex-1 items-stretch h-full mx-2 2xl:mx-4"
+          className="site-main-nav hidden xl:flex min-w-0 flex-1 items-stretch h-full mx-2 2xl:mx-4"
           onMouseEnter={() => setIsMegaMenuOpen(true)}
+          onFocusCapture={() => setIsMegaMenuOpen(true)}
+          aria-label={t('주요 메뉴', 'Main navigation')}
         >
           <div className="grid grid-cols-7 w-full h-full">
             {mainMenuItems.map((menu) => {
@@ -246,7 +300,7 @@ export default function Header({
                         onTabChange(menu.key, menu.defaultSubTab);
                       }
                     }}
-                    className={`w-full flex items-center justify-center font-black tracking-tight text-sm 2xl:text-base transition-all cursor-pointer whitespace-nowrap h-full relative select-none ${
+                    className={`w-full flex items-center justify-center font-black tracking-tight text-[13px] 2xl:text-sm px-1 leading-snug transition-all cursor-pointer whitespace-normal break-words h-full relative select-none ${
                       isHighlighted
                         ? 'bg-[#C59B58] text-stone-950 font-black shadow-inner'
                         : isCurrentActive
@@ -263,7 +317,7 @@ export default function Header({
         </nav>
 
         {/* Right Top Utility Buttons (Global Dining News, 1:1 AI Guide, Lang, Login) */}
-        <div className="hidden xl:flex items-center justify-end gap-2 2xl:gap-2.5 shrink-0 w-[360px] 2xl:w-[400px]">
+        <div ref={utilityRef} className="site-utilities hidden xl:flex items-center justify-end gap-2 2xl:gap-2.5 shrink-0">
           
           {/* 글로벌외식정보 로고 */}
           <a
@@ -355,6 +409,7 @@ export default function Header({
                   {currentUser.name || t('수강생 회원', 'Member')}
                 </span>
               </div>
+              <button onClick={onOpenProfile} className="px-2.5 py-1.5 text-xs font-bold text-emerald-800 rounded-xl border border-emerald-200 min-h-[38px]">내 정보 설정</button>
               <button
                 onClick={onLogout}
                 className="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs font-bold rounded-xl border border-rose-300 transition-colors cursor-pointer flex items-center gap-1 min-h-[38px] focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:outline-none"
@@ -384,8 +439,10 @@ export default function Header({
         {/* Mobile Hamburger Toggle Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
           aria-label={mobileMenuOpen ? t('메인 메뉴 닫기', 'Close menu') : t('메인 메뉴 열기', 'Open menu')}
-          className="xl:hidden p-2 text-[#2B7752] hover:text-black rounded-xl focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center self-center"
+          className="site-menu-toggle xl:hidden p-2 text-[#2B7752] hover:text-black rounded-xl focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center self-center"
         >
           {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
@@ -395,9 +452,9 @@ export default function Header({
       {/* Desktop Full-Width 2-Tier Mega Dropdown Panel (100% Solid Opaque Pure White) */}
       <div
         style={{ backgroundColor: '#ffffff' }}
-        className={`hidden xl:block absolute left-0 right-0 top-full w-full bg-white border-b-2 border-stone-200 shadow-2xl transition-all duration-200 ease-out z-50 overflow-hidden ${
+        className={`site-mega-menu hidden xl:block absolute left-0 right-0 top-full w-full bg-white border-b-2 border-stone-200 shadow-2xl transition-[transform,max-height] duration-200 ease-out z-50 overflow-x-hidden overflow-y-auto overscroll-contain ${
           isMegaMenuOpen
-            ? 'opacity-100 translate-y-0 pointer-events-auto visible max-h-[480px]'
+            ? 'opacity-100 translate-y-0 pointer-events-auto visible max-h-[min(480px,calc(100dvh-91px-var(--admin-toolbar-height,0px)))]'
             : 'opacity-0 -translate-y-2 pointer-events-none invisible max-h-0'
         }`}
         onMouseEnter={() => setIsMegaMenuOpen(true)}
@@ -410,18 +467,18 @@ export default function Header({
           style={{ backgroundColor: '#ffffff' }}
           className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-7 bg-white flex items-start justify-between"
         >
-          {/* 1. Left Spacer - EXACTLY matches Top Logo Width (w-[190px] 2xl:w-[220px]) */}
-          <div className="shrink-0 w-[190px] 2xl:w-[220px]" aria-hidden="true" />
+          {/* Match the logo column to keep submenu columns aligned. */}
+          <div className="shrink-0 w-[120px] 2xl:w-[140px]" aria-hidden="true" />
 
           {/* 2. Center 7 Columns - EXACTLY matches Top Main Nav Grid */}
-          <div style={{ backgroundColor: '#ffffff' }} className="flex-1 mx-2 2xl:mx-4 bg-white">
+          <div style={{ backgroundColor: '#ffffff' }} className="min-w-0 flex-1 mx-2 2xl:mx-4 bg-white">
             <div style={{ backgroundColor: '#ffffff' }} className="grid grid-cols-7 w-full bg-white">
               {mainMenuItems.map((menu) => {
                 return (
                   <div
                     key={menu.id}
                     style={{ backgroundColor: '#ffffff' }}
-                    className="flex flex-col items-center bg-white px-1"
+                    className="min-w-0 flex flex-col items-center bg-white px-1"
                     onMouseEnter={() => setHoveredMenuKey(menu.key)}
                   >
                     {/* Submenu Vertical Item List - Centered under each Top Menu Title */}
@@ -441,7 +498,7 @@ export default function Header({
                                   onTabChange(menu.key, sub.subTab);
                                 }
                               }}
-                              className={`inline-block py-1.5 px-2.5 rounded-xl text-[13px] 2xl:text-sm font-bold transition-all cursor-pointer whitespace-nowrap text-center ${
+                              className={`block w-full min-h-[44px] py-2 px-1 rounded-xl text-xs 2xl:text-[13px] font-bold transition-all cursor-pointer whitespace-normal break-words leading-relaxed text-center ${
                                 isSubActive
                                   ? 'text-[#15803D] font-black bg-emerald-50 border border-emerald-200/80 shadow-2xs'
                                   : 'text-stone-800 hover:text-[#15803D] hover:bg-stone-50 hover:font-black'
@@ -459,19 +516,20 @@ export default function Header({
             </div>
           </div>
 
-          {/* 3. Right Spacer - EXACTLY matches Top Utility Width (w-[360px] 2xl:w-[400px]) */}
-          <div className="shrink-0 w-[360px] 2xl:w-[400px]" aria-hidden="true" />
+          {/* Mirror the measured utility width, including translated labels. */}
+          <div className="shrink-0 w-[var(--header-utility-width)]" aria-hidden="true" />
         </div>
       </div>
 
       {/* MOBILE MENU DROPDOWN */}
       {mobileMenuOpen && (
-        <div className="xl:hidden bg-[#F8F6F0] border-b border-[#E7E2D8] p-6 space-y-6 animate-fadeIn">
-          <div className="flex items-center justify-between pb-4 border-b border-[#E7E2D8]">
+        <div id="mobile-navigation" className="site-mobile-menu xl:hidden max-h-[calc(100dvh-83px-var(--admin-toolbar-height,0px))] sm:max-h-[calc(100dvh-91px-var(--admin-toolbar-height,0px))] overflow-y-auto overscroll-contain bg-[#F8F6F0] border-b border-[#E7E2D8] p-4 sm:p-6 pb-24 space-y-6 animate-fadeIn">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E7E2D8]">
             <span className="text-xs font-bold text-gray-600">{t('사단법인 한국외식창업교육원')}</span>
             {currentUser ? (
               <div className="flex items-center gap-3">
                 <span className="text-xs font-bold text-[#1E5D3B]">{currentUser.name}{language === 'ko' ? '님' : ''}</span>
+                <button onClick={() => { onOpenProfile?.(); setMobileMenuOpen(false); }} className="text-xs font-bold text-emerald-800 min-h-[44px]">내 정보 설정</button>
                 <button
                   onClick={() => {
                     onLogout();
@@ -617,9 +675,10 @@ export default function Header({
     </header>
 
     {/* Dimmed backdrop when Mega Menu is open */}
-    {isMegaMenuOpen && (
+    {isMegaMenuOpen && !compactHeader && (
       <div
-        className="fixed inset-0 top-20 sm:top-[88px] bg-black/25 backdrop-blur-[1px] z-40 transition-opacity duration-200 hidden xl:block animate-fadeIn"
+        style={{ top: 'calc(91px + var(--admin-toolbar-height, 0px))' }}
+        className="fixed inset-0 top-[83px] sm:top-[91px] bg-black/25 backdrop-blur-[1px] z-40 transition-opacity duration-200 hidden xl:block animate-fadeIn"
         onClick={() => {
           setIsMegaMenuOpen(false);
           setHoveredMenuKey(null);
@@ -632,7 +691,7 @@ export default function Header({
       style={{
         paddingTop: 'var(--admin-toolbar-height, 0px)',
       }}
-      className="h-20 sm:h-22 shrink-0 box-content transition-all duration-200"
+      className="h-[83px] sm:h-[91px] shrink-0 box-content transition-all duration-200"
       aria-hidden="true"
     />
   </>

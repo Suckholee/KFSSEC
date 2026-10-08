@@ -20,7 +20,7 @@ import { extractYoutubeId } from '../../utils/youtube';
 import AdminBannerPlanner from './AdminBannerPlanner';
 import AdminPopupNotice from './AdminPopupNotice';
 
-export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab = 'visual_editor', onSubTabChange }) {
+export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab = 'visual_editor', postsList = [], onSubTabChange }) {
   const [activeSubTab, setActiveSubTab] = useState(subTab || 'visual_editor');
 
   useEffect(() => {
@@ -472,6 +472,7 @@ export default function AdminContent({ siteData = {}, onUpdateSiteData, subTab =
       {/* SUBTAB: AI VISUAL BANNER PLANNER STUDIO */}
       {activeSubTab === 'banner_planner' && (
         <AdminBannerPlanner
+          postsList={postsList}
           siteData={siteData}
           onUpdateSiteData={onUpdateSiteData}
           onApplyToLiveBanner={(newBanner) => {

@@ -77,7 +77,13 @@ export const DEFAULT_POSTS = [
       "/images/master_focus_1.jpg",
       "/images/master_focus_2.jpg"
     ],
-    "tags": ["명장수여식", "조리명인", "공식인증패", "KFSSEC", "외식산업발전"],
+    "tags": [
+      "명장수여식",
+      "조리명인",
+      "공식인증패",
+      "KFSSEC",
+      "외식산업발전"
+    ],
     "content": "사단법인 한국외식창업교육원이 주관하는 2026 대한민국 K-FOOD 조리명장 및 조리명인 공식 인증패 수여식이 성황리에 개최되었습니다. 평생을 한국 전통 식문화 계승과 외식산업 혁신에 헌신한 명인·명장님들께 정부 부처 및 교육원 공동 인증패를 수여하였습니다."
   },
   {
@@ -97,7 +103,12 @@ export const DEFAULT_POSTS = [
       "/images/master_focus_2.jpg",
       "/images/master_focus_3.jpg"
     ],
-    "tags": ["공로대상", "외식문화혁신", "국회시상식", "공헌패"],
+    "tags": [
+      "공로대상",
+      "외식문화혁신",
+      "국회시상식",
+      "공헌패"
+    ],
     "content": "국회 정책세미나와 연계하여 대한민국 외식산업의 선진화 및 식자재 유통 혁신에 기여한 우수 외식 기업 및 지도자들을 대상으로 외식문화 혁신 공헌패 전달식이 진행되었습니다."
   },
   {
@@ -117,7 +128,12 @@ export const DEFAULT_POSTS = [
       "/images/master_focus_3.jpg",
       "/images/master_focus_1.jpg"
     ],
-    "tags": ["전통장류", "발효조리", "명판헌액", "조리명인"],
+    "tags": [
+      "전통장류",
+      "발효조리",
+      "명판헌액",
+      "조리명인"
+    ],
     "content": "수십 년간 전통 발효 조리 비법을 발전시켜 온 조리명인들의 위상을 드높이고 교육원 명예의 전당에 헌액하는 공식 현판 전달 기념식을 가졌습니다."
   },
   {
@@ -138,7 +154,12 @@ export const DEFAULT_POSTS = [
       "/images/course_net_1.jpg",
       "/images/course_net_2.jpg"
     ],
-    "tags": ["청년조리경연대회", "라이브쿠킹", "K-FOOD", "현장실습"],
+    "tags": [
+      "청년조리경연대회",
+      "라이브쿠킹",
+      "K-FOOD",
+      "현장실습"
+    ],
     "content": "전국 128명 청년 외식 창업 수강생 및 예비 셰프들이 참가한 라이브 조리경연대회가 aT센터에서 열렸습니다. 심사위원단의 엄정한 실시간 평가와 함께 K-FOOD 글로벌 창작 요리들이 대거 출품되었습니다."
   },
   {
@@ -158,7 +179,12 @@ export const DEFAULT_POSTS = [
       "/images/course_menu_dev.jpg",
       "/images/course_net_3.jpg"
     ],
-    "tags": ["로컬푸드", "시그니처메뉴", "레시피개발", "경진대회"],
+    "tags": [
+      "로컬푸드",
+      "시그니처메뉴",
+      "레시피개발",
+      "경진대회"
+    ],
     "content": "지역 농수축산물 소비 활성화를 위해 지자체와 연계하여 진행된 시그니처 메뉴 개발 경진대회 현장입니다. 실전 매장 적용 가능한 실용적이고 창의적인 레시피가 대거 발굴되었습니다."
   },
   {
@@ -178,7 +204,12 @@ export const DEFAULT_POSTS = [
       "/images/course_net_4.jpg",
       "/images/course_net_5.jpg"
     ],
-    "tags": ["글로벌소스", "드레싱페스티벌", "벡스코", "창작요리"],
+    "tags": [
+      "글로벌소스",
+      "드레싱페스티벌",
+      "벡스코",
+      "창작요리"
+    ],
     "content": "해외 수출형 K-소스 및 간편식 조리 메뉴를 겨루는 페스티벌 현장입니다. 국내외 바이어와 외식 프랜차이즈 R&D 전문가들이 참여하여 상품성을 검증했습니다."
   },
   {
@@ -199,7 +230,12 @@ export const DEFAULT_POSTS = [
       "/images/startup_focus_1.jpg",
       "/images/dir_1.jpg"
     ],
-    "tags": ["골목상권", "소상공인컨설팅", "메뉴리뉴얼", "현장코칭"],
+    "tags": [
+      "골목상권",
+      "소상공인컨설팅",
+      "메뉴리뉴얼",
+      "현장코칭"
+    ],
     "content": "지자체 소상공인 상권활성화 프로젝트의 일환으로 전문 교수진이 현장 매장을 직접 방문하여 매출 증대를 위한 시그니처 메뉴 리뉴얼과 원가 절감 코칭을 전수하였습니다."
   },
   {
@@ -219,7 +255,12 @@ export const DEFAULT_POSTS = [
       "/images/startup_focus_2.jpg",
       "/images/dir_2.jpg"
     ],
-    "tags": ["향토음식점", "주방동선", "위생진단", "3D설계"],
+    "tags": [
+      "향토음식점",
+      "주방동선",
+      "위생진단",
+      "3D설계"
+    ],
     "content": "지역 대표 향토 음식점들의 조리 효율 향상과 위생 등급 향상을 위하여 주방 설비 3D 동선 최적화 컨설팅을 제공하고 조리 환경을 대폭 개선하였습니다."
   },
   {
@@ -239,7 +280,12 @@ export const DEFAULT_POSTS = [
       "/images/course_delivery.jpg",
       "/images/startup_focus_3.jpg"
     ],
-    "tags": ["희망리턴패키지", "경영클리닉", "소상공인재도약", "배달외식"],
+    "tags": [
+      "희망리턴패키지",
+      "경영클리닉",
+      "소상공인재도약",
+      "배달외식"
+    ],
     "content": "경영 위기에 직면한 외식 소상공인 사업장을 대상으로 원인 분석, 손익 구조 재설계, 배달 및 온라인 판매 채널 다각화 솔루션을 1:1 맞춤으로 제공하였습니다."
   },
   {
@@ -260,7 +306,12 @@ export const DEFAULT_POSTS = [
       "/images/dir_1.jpg",
       "/images/dir_6.jpg"
     ],
-    "tags": ["업소용육수", "비법양념", "국가공인실습", "외식창업실습"],
+    "tags": [
+      "업소용육수",
+      "비법양념",
+      "국가공인실습",
+      "외식창업실습"
+    ],
     "content": "창업 후 가장 핵심이 되는 대용량 업소용 육수 추출 및 비법 숙성 양념 제조 노하우를 국가공인 조리 실습장에서 1:1 실전 전수하는 모습입니다."
   },
   {
@@ -280,7 +331,12 @@ export const DEFAULT_POSTS = [
       "/images/behavior_card_3.jpg",
       "/images/dir_7.jpg"
     ],
-    "tags": ["시그니처메뉴", "표준화레시피", "탕찌개마스터", "창업조리"],
+    "tags": [
+      "시그니처메뉴",
+      "표준화레시피",
+      "탕찌개마스터",
+      "창업조리"
+    ],
     "content": "가맹 사업 및 체계적인 매장 운영을 위한 핵심 조리 공정의 계량화와 레시피 표준화 과정을 실습생들이 직접 조리하며 체득하는 수업 현장입니다."
   },
   {
@@ -300,7 +356,12 @@ export const DEFAULT_POSTS = [
       "/images/course_cafe.jpg",
       "/images/dir_8.jpg"
     ],
-    "tags": ["베이커리카페", "디저트실습", "카페창업", "제과제빵"],
+    "tags": [
+      "베이커리카페",
+      "디저트실습",
+      "카페창업",
+      "제과제빵"
+    ],
     "content": "요즘 외식 트렌드를 이끄는 베이커리 및 디저트 메뉴를 개발하고 실제 카페 매장에서 빠르게 서비스할 수 있는 베이킹 실전 조리 실습을 진행했습니다."
   },
   {
@@ -677,5 +738,869 @@ export const DEFAULT_POSTS = [
       "골목상권"
     ],
     "content": "전국 전통시장 및 골목상권 청년 외식 창업자의 성공 모델 육성을 위해 (재)청년상인육성재단과 상호 업무협약(MOU)을 체결하였습니다. 청년 맞춤형 조리 및 실전 경영 교육, 매장 인큐베이팅, 사후 멘토링 시스템을 종합 연계합니다."
+  },
+  {
+    "id": "gal-demo-ceremony-01",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "조리명장 인증패 전달식",
+    "date": "2026.09.24",
+    "location": "KFSSEC 교육원 대강당",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_menu_dev.jpg",
+    "image": "/images/course_menu_dev.jpg",
+    "images": [
+      "/images/course_menu_dev.jpg",
+      "/images/dir_9.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "조리명장 인증패 전달식의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-02",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "외식문화 공로상 시상 현장",
+    "date": "2026.09.17",
+    "location": "서울 행사장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_9.jpg",
+    "image": "/images/dir_9.jpg",
+    "images": [
+      "/images/dir_9.jpg",
+      "/images/dir_12.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "외식문화 공로상 시상 현장의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-03",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "K-FOOD 명인 기념 촬영",
+    "date": "2026.09.10",
+    "location": "교육원 세미나실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_12.jpg",
+    "image": "/images/dir_12.jpg",
+    "images": [
+      "/images/dir_12.jpg",
+      "/images/course_delivery.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "K-FOOD 명인 기념 촬영의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-04",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "청년 조리인 우수상 수여식",
+    "date": "2026.08.24",
+    "location": "KFSSEC 교육원 대강당",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_delivery.jpg",
+    "image": "/images/course_delivery.jpg",
+    "images": [
+      "/images/course_delivery.jpg",
+      "/images/chef_tossing_food.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "청년 조리인 우수상 수여식의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-05",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "전통음식 계승 명인 간담회",
+    "date": "2026.08.17",
+    "location": "서울 행사장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/chef_tossing_food.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "images": [
+      "/images/chef_tossing_food.jpg",
+      "/images/course_cafe.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "전통음식 계승 명인 간담회의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-06",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "조리명장 특별 강연 및 교류회",
+    "date": "2026.08.10",
+    "location": "교육원 세미나실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_cafe.jpg",
+    "image": "/images/course_cafe.jpg",
+    "images": [
+      "/images/course_cafe.jpg",
+      "/images/course_menu_dev.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "조리명장 특별 강연 및 교류회의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-07",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "외식창업 교육 우수 수료생 시상",
+    "date": "2026.07.24",
+    "location": "KFSSEC 교육원 대강당",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_menu_dev.jpg",
+    "image": "/images/course_menu_dev.jpg",
+    "images": [
+      "/images/course_menu_dev.jpg",
+      "/images/dir_9.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "외식창업 교육 우수 수료생 시상의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-08",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "지역 음식문화 발전 공헌패 전달",
+    "date": "2026.07.17",
+    "location": "서울 행사장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_9.jpg",
+    "image": "/images/dir_9.jpg",
+    "images": [
+      "/images/dir_9.jpg",
+      "/images/dir_12.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "지역 음식문화 발전 공헌패 전달의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-ceremony-09",
+    "category": "시상식 & 인증패",
+    "categoryType": "gallery",
+    "galleryCategory": "ceremony",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "대한민국 조리명인 작품 전시",
+    "date": "2026.07.10",
+    "location": "교육원 세미나실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_12.jpg",
+    "image": "/images/dir_12.jpg",
+    "images": [
+      "/images/dir_12.jpg",
+      "/images/course_delivery.jpg"
+    ],
+    "tags": [
+      "시상식 & 인증패",
+      "현장교육"
+    ],
+    "content": "대한민국 조리명인 작품 전시의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-01",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "청년 셰프 창작 한식 경연",
+    "date": "2026.09.24",
+    "location": "교육원 조리 실습실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_delivery.jpg",
+    "image": "/images/course_delivery.jpg",
+    "images": [
+      "/images/course_delivery.jpg",
+      "/images/chef_tossing_food.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "청년 셰프 창작 한식 경연의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-02",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "지역 식재료 활용 메뉴 경연",
+    "date": "2026.09.17",
+    "location": "지역 식문화 행사장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/chef_tossing_food.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "images": [
+      "/images/chef_tossing_food.jpg",
+      "/images/course_cafe.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "지역 식재료 활용 메뉴 경연의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-03",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "디저트 플레이팅 챌린지",
+    "date": "2026.09.10",
+    "location": "KFSSEC 경연장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_cafe.jpg",
+    "image": "/images/course_cafe.jpg",
+    "images": [
+      "/images/course_cafe.jpg",
+      "/images/course_menu_dev.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "디저트 플레이팅 챌린지의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-04",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "외식창업 시그니처 메뉴 경연",
+    "date": "2026.08.24",
+    "location": "교육원 조리 실습실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_menu_dev.jpg",
+    "image": "/images/course_menu_dev.jpg",
+    "images": [
+      "/images/course_menu_dev.jpg",
+      "/images/dir_9.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "외식창업 시그니처 메뉴 경연의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-05",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "전통 발효 소스 응용 요리대회",
+    "date": "2026.08.17",
+    "location": "지역 식문화 행사장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_9.jpg",
+    "image": "/images/dir_9.jpg",
+    "images": [
+      "/images/dir_9.jpg",
+      "/images/dir_12.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "전통 발효 소스 응용 요리대회의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-06",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "로컬푸드 한 접시 경연",
+    "date": "2026.08.10",
+    "location": "KFSSEC 경연장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_12.jpg",
+    "image": "/images/dir_12.jpg",
+    "images": [
+      "/images/dir_12.jpg",
+      "/images/course_delivery.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "로컬푸드 한 접시 경연의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-07",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "팀별 라이브 쿠킹 챌린지",
+    "date": "2026.07.24",
+    "location": "교육원 조리 실습실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_delivery.jpg",
+    "image": "/images/course_delivery.jpg",
+    "images": [
+      "/images/course_delivery.jpg",
+      "/images/chef_tossing_food.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "팀별 라이브 쿠킹 챌린지의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-08",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "브런치 메뉴 개발 경연",
+    "date": "2026.07.17",
+    "location": "지역 식문화 행사장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/chef_tossing_food.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "images": [
+      "/images/chef_tossing_food.jpg",
+      "/images/course_cafe.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "브런치 메뉴 개발 경연의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-competition-09",
+    "category": "요리대회",
+    "categoryType": "gallery",
+    "galleryCategory": "competition",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "청년 조리경연 수상작 전시",
+    "date": "2026.07.10",
+    "location": "KFSSEC 경연장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_cafe.jpg",
+    "image": "/images/course_cafe.jpg",
+    "images": [
+      "/images/course_cafe.jpg",
+      "/images/course_menu_dev.jpg"
+    ],
+    "tags": [
+      "요리대회",
+      "현장교육"
+    ],
+    "content": "청년 조리경연 수상작 전시의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-01",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "전통시장 음식점 메뉴 개선 상담",
+    "date": "2026.09.24",
+    "location": "지역 소상공인 지원센터",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_menu_dev.jpg",
+    "image": "/images/course_menu_dev.jpg",
+    "images": [
+      "/images/course_menu_dev.jpg",
+      "/images/dir_9.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "전통시장 음식점 메뉴 개선 상담의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-02",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "골목상권 외식 매장 운영 진단",
+    "date": "2026.09.17",
+    "location": "전통시장 교육장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_9.jpg",
+    "image": "/images/dir_9.jpg",
+    "images": [
+      "/images/dir_9.jpg",
+      "/images/dir_12.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "골목상권 외식 매장 운영 진단의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-03",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "청년 창업자 주방 동선 컨설팅",
+    "date": "2026.09.10",
+    "location": "외식 창업 현장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_12.jpg",
+    "image": "/images/dir_12.jpg",
+    "images": [
+      "/images/dir_12.jpg",
+      "/images/course_delivery.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "청년 창업자 주방 동선 컨설팅의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-04",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "지역 소상공인 원가 관리 워크숍",
+    "date": "2026.08.24",
+    "location": "지역 소상공인 지원센터",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_delivery.jpg",
+    "image": "/images/course_delivery.jpg",
+    "images": [
+      "/images/course_delivery.jpg",
+      "/images/chef_tossing_food.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "지역 소상공인 원가 관리 워크숍의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-05",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "카페 신메뉴 개발 현장 상담",
+    "date": "2026.08.17",
+    "location": "전통시장 교육장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/chef_tossing_food.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "images": [
+      "/images/chef_tossing_food.jpg",
+      "/images/course_cafe.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "카페 신메뉴 개발 현장 상담의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-06",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "배달 전문점 포장 품질 컨설팅",
+    "date": "2026.08.10",
+    "location": "외식 창업 현장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_cafe.jpg",
+    "image": "/images/course_cafe.jpg",
+    "images": [
+      "/images/course_cafe.jpg",
+      "/images/course_menu_dev.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "배달 전문점 포장 품질 컨설팅의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-07",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "로컬 식당 서비스 개선 교육",
+    "date": "2026.07.24",
+    "location": "지역 소상공인 지원센터",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_menu_dev.jpg",
+    "image": "/images/course_menu_dev.jpg",
+    "images": [
+      "/images/course_menu_dev.jpg",
+      "/images/dir_9.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "로컬 식당 서비스 개선 교육의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-08",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "외식 매장 위생 관리 현장 점검",
+    "date": "2026.07.17",
+    "location": "전통시장 교육장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_9.jpg",
+    "image": "/images/dir_9.jpg",
+    "images": [
+      "/images/dir_9.jpg",
+      "/images/dir_12.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "외식 매장 위생 관리 현장 점검의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-consulting-09",
+    "category": "지자체 컨설팅",
+    "categoryType": "gallery",
+    "galleryCategory": "consulting",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "소상공인 브랜드 기획 멘토링",
+    "date": "2026.07.10",
+    "location": "외식 창업 현장",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_12.jpg",
+    "image": "/images/dir_12.jpg",
+    "images": [
+      "/images/dir_12.jpg",
+      "/images/course_delivery.jpg"
+    ],
+    "tags": [
+      "지자체 컨설팅",
+      "현장교육"
+    ],
+    "content": "소상공인 브랜드 기획 멘토링의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-01",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "한식 기본 육수와 소스 실습",
+    "date": "2026.09.24",
+    "location": "KFSSEC 조리 실습실 A홀",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_delivery.jpg",
+    "image": "/images/course_delivery.jpg",
+    "images": [
+      "/images/course_delivery.jpg",
+      "/images/chef_tossing_food.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "한식 기본 육수와 소스 실습의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-02",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "제철 채소 손질 및 플레이팅 실습",
+    "date": "2026.09.17",
+    "location": "교육원 메뉴 개발실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/chef_tossing_food.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "images": [
+      "/images/chef_tossing_food.jpg",
+      "/images/course_cafe.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "제철 채소 손질 및 플레이팅 실습의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-03",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "외식창업 실전 메뉴 개발 수업",
+    "date": "2026.09.10",
+    "location": "교육원 실습 주방",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_cafe.jpg",
+    "image": "/images/course_cafe.jpg",
+    "images": [
+      "/images/course_cafe.jpg",
+      "/images/course_menu_dev.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "외식창업 실전 메뉴 개발 수업의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-04",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "브런치 조리 및 카페 메뉴 실습",
+    "date": "2026.08.24",
+    "location": "KFSSEC 조리 실습실 A홀",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_menu_dev.jpg",
+    "image": "/images/course_menu_dev.jpg",
+    "images": [
+      "/images/course_menu_dev.jpg",
+      "/images/dir_9.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "브런치 조리 및 카페 메뉴 실습의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-05",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "대량 조리와 식재료 관리 수업",
+    "date": "2026.08.17",
+    "location": "교육원 메뉴 개발실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_9.jpg",
+    "image": "/images/dir_9.jpg",
+    "images": [
+      "/images/dir_9.jpg",
+      "/images/dir_12.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "대량 조리와 식재료 관리 수업의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-06",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "전통 발효 양념 활용 실습",
+    "date": "2026.08.10",
+    "location": "교육원 실습 주방",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/dir_12.jpg",
+    "image": "/images/dir_12.jpg",
+    "images": [
+      "/images/dir_12.jpg",
+      "/images/course_delivery.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "전통 발효 양념 활용 실습의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-07",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "디저트 메뉴 제작 실습",
+    "date": "2026.07.24",
+    "location": "KFSSEC 조리 실습실 A홀",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_delivery.jpg",
+    "image": "/images/course_delivery.jpg",
+    "images": [
+      "/images/course_delivery.jpg",
+      "/images/chef_tossing_food.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "디저트 메뉴 제작 실습의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-08",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "팀별 시그니처 메뉴 발표",
+    "date": "2026.07.17",
+    "location": "교육원 메뉴 개발실",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/chef_tossing_food.jpg",
+    "image": "/images/chef_tossing_food.jpg",
+    "images": [
+      "/images/chef_tossing_food.jpg",
+      "/images/course_cafe.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "팀별 시그니처 메뉴 발표의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
+  },
+  {
+    "id": "gal-demo-training-09",
+    "category": "조리 실습 현장",
+    "categoryType": "gallery",
+    "galleryCategory": "training",
+    "isPinned": false,
+    "isDemo": true,
+    "title": "조리 실무 집중 과정 수료 현장",
+    "date": "2026.07.10",
+    "location": "교육원 실습 주방",
+    "author": "한국외식창업교육원",
+    "views": 0,
+    "coverImage": "/images/course_cafe.jpg",
+    "image": "/images/course_cafe.jpg",
+    "images": [
+      "/images/course_cafe.jpg",
+      "/images/course_menu_dev.jpg"
+    ],
+    "tags": [
+      "조리 실습 현장",
+      "현장교육"
+    ],
+    "content": "조리 실무 집중 과정 수료 현장의 갤러리 화면 구성을 위한 예시 게시물입니다. 교육 및 행사 현장의 사진, 활동 소개, 참여자 교류 모습을 확인할 수 있습니다.\n\n※ 화면 확인용 더미 데이터이며 실제 행사 기록이 아닙니다."
   }
 ];

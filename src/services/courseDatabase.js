@@ -2,6 +2,15 @@ import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';
 
 const DB_VERSION = 'v6_official_clean_tuition_20260927';
 
+// Upgrade reused default covers while preserving administrator uploads.
+function withCourseCovers(courses) {
+  return courses.map(course => {
+    const id = course.qualificationId || (course.id?.includes('foodtech') ? 'foodtech' : course.id?.includes('sommelier') ? 'sommelier' : null);
+    if (!['foodtech', 'sommelier'].includes(id) || !['/images/qualifications/advisor.jpg', '/images/qualifications/practice.jpg'].includes(course.image)) return course;
+    return { ...course, image: `/images/qualifications/${id}.jpg` };
+  });
+}
+
 // Fetch all courses from Real REST API Backend DB with fallback
 export async function fetchCoursesFromAPI() {
   // Always retrieve authoritative synced DB (auto-purging old legacy mock cache)
@@ -12,8 +21,9 @@ export async function fetchCoursesFromAPI() {
       if (contentType && contentType.includes('application/json')) {
         const json = await res.json();
         if (json.success && Array.isArray(json.data)) {
-          saveCoursesToDB(json.data);
-          return json.data;
+          const courses = withCourseCovers(json.data);
+          cacheCourses(courses);
+          return courses;
         }
       }
     }
@@ -43,7 +53,7 @@ export function getCoursesFromDB() {
           c.title?.includes('펫푸드')
       );
       if (Array.isArray(parsed) && !hasLegacyMock) {
-        return parsed;
+        return withCourseCovers(parsed);
       }
     } catch (e) {
       console.error('Failed to parse courses DB from localStorage:', e);
@@ -67,7 +77,7 @@ export function resetCoursesToDefault() {
   return DEFAULT_COURSES;
 }
 
-export function saveCoursesToDB(courses) {
+function cacheCourses(courses) {
   if (!Array.isArray(courses)) return;
   localStorage.setItem('kfssec_courses_version', DB_VERSION);
   localStorage.setItem('kfssec_courses_db', JSON.stringify(courses));
@@ -76,16 +86,22 @@ export function saveCoursesToDB(courses) {
   } catch (e) {
     // Ignore in non-browser context
   }
-  // Asynchronously persist reordered/updated list to backend API if available
-  try {
-    fetch('/api/courses/reorder', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courses }),
-    }).catch(() => {});
-  } catch (e) {
-    // Ignore offline errors
+}
+
+export async function saveCoursesToDB(courses) {
+  if (!Array.isArray(courses)) throw new Error('교육 목록 형식이 올바르지 않습니다.');
+  const res = await fetch('/api/courses?id=reorder', {
+    method: 'PUT',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ courses }),
+  });
+  const json = await res.json();
+  if (!res.ok || !json.success || !Array.isArray(json.data)) {
+    throw new Error(json.message || '교육 목록 저장에 실패했습니다.');
   }
+  cacheCourses(json.data);
+  return json.data;
 }
 
 // REST API POST Create Course
@@ -102,13 +118,13 @@ export async function createCourseAPI(courseData) {
     });
   const json = await res.json();
   if (!res.ok || !json.success || !json.data) throw new Error(json.message || '과정 등록 실패');
-  saveCoursesToDB([json.data, ...getCoursesFromDB()]);
+  cacheCourses([json.data, ...getCoursesFromDB()]);
   return json.data;
 }
 
 // REST API PUT Update Course with 100% robust string ID matching
 export async function updateCourseAPI(id, courseData) {
-    const res = await fetch(`/api/courses/${id}`, {
+    const res = await fetch(`/api/courses?id=${encodeURIComponent(id)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(courseData),
@@ -129,13 +145,13 @@ export async function updateCourseAPI(id, courseData) {
     return c;
   });
 
-  saveCoursesToDB(updated);
+  cacheCourses(updated);
   return updatedPayload;
 }
 
 // REST API DELETE Course
 export async function deleteCourseAPI(id) {
-    const res = await fetch(`/api/courses/${id}`, {
+    const res = await fetch(`/api/courses?id=${encodeURIComponent(id)}`, {
       method: 'DELETE',
     });
   const json = await res.json();
@@ -147,7 +163,7 @@ export async function deleteCourseAPI(id) {
     const cIdStr = String(c.id);
     return !(cIdStr === idStr || cIdStr === `c${idStr}` || `c${cIdStr}` === idStr);
   });
-  saveCoursesToDB(updated);
+  cacheCourses(updated);
   return true;
 }
 

@@ -6,6 +6,8 @@ import { fileURLToPath } from 'url';
 import { GLOBAL_DINING_TRENDS, TREND_CATEGORY_INFO } from '../src/data/globalDiningTrends.js';
 import { handleGenerateAiImage } from '../api/generate-ai-image.js';
 import authHandler from '../api/auth.js';
+import memberAuthHandler from '../api/member-auth.js';
+import membersHandler from '../api/members.js';
 import contentHandler from '../api/content.js';
 import coursesHandler from '../api/courses.js';
 import mediaHandler from '../api/media.js';
@@ -36,6 +38,8 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.all('/api/auth', (req, res) => authHandler(req, res));
+app.all('/api/members', (req, res) => membersHandler(req, res));
+app.all('/api/member-auth', (req, res) => memberAuthHandler(req, res));
 app.all('/api/content', (req, res) => contentHandler(req, res));
 app.all('/api/media', (req, res) => mediaHandler(req, res));
 app.all('/api/upload', (req, res) => uploadHandler(req, res));

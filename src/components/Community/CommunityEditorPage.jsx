@@ -1,472 +1,111 @@
+import React, { useState } from 'react';
+import { ArrowLeft, Send, Save, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import React, { useState, useEffect } from 'react';
-import {
-  ArrowLeft,
-  Image as ImageIcon,
-  Send,
-  Save,
-  Bold,
-  Italic,
-  List,
-  Heading1,
-  Heading2,
-  Quote,
-  Code,
-  Link as LinkIcon,
-  Tag,
-  Eye,
-  Edit3,
-  CheckCircle2,
-  Sparkles,
-  HelpCircle,
-  AlertCircle,
-  Pin,
-} from 'lucide-react';
-import { DEFAULT_POSTS } from '../../data/defaultPosts';
+
+const DRAFT_KEY = 'kfssec_consulting_survey_draft';
+const QUESTIONS = [
+  { id: 'consultingType', label: '신청할 상담을 선택해 주세요.', options: ['청년 창업 상담', '일반 창업 상담'] },
+  { id: 'age', label: '연령대를 선택해 주세요.', options: ['만 19세 미만', '만 19~24세', '만 25~29세', '만 30~34세', '만 35~39세', '만 40세 이상', '응답하지 않음'] },
+  { id: 'stage', label: '현재 창업 준비 단계는 어디인가요?', options: ['창업에 관심이 있어 정보를 찾는 중', '아이템을 검토하는 중', '사업계획을 준비하는 중', '점포·자금 등을 준비하는 중', '이미 운영 중이며 개선을 희망'] },
+  { id: 'industry', label: '관심 있는 창업 업종은 무엇인가요?', multiple: true, options: ['한식', '중식', '일식', '양식', '카페·음료', '베이커리·디저트', '배달·포장 전문', '기타 외식업', '아직 미정'] },
+  { id: 'experience', label: '외식업·조리 관련 경험은 어느 정도인가요?', options: ['경험 없음', '교육·자격증 취득 경험', '1년 미만 근무', '1~3년 근무', '3년 이상 근무', '매장 운영 경험'] },
+  { id: 'budget', label: '예상 창업 예산은 얼마인가요? (점포·시설·운영 자금 포함)', options: ['3천만 원 미만', '3천만~5천만 원 미만', '5천만~1억 원 미만', '1억~2억 원 미만', '2억 원 이상', '아직 미정'] },
+  { id: 'region', label: '창업을 희망하는 지역은 어디인가요?', options: ['서울', '경기·인천', '대전·세종·충청', '광주·전라', '대구·경북', '부산·울산·경남', '강원', '제주', '해외', '아직 미정'] },
+  { id: 'timing', label: '언제 창업을 계획하고 있나요?', options: ['3개월 이내', '3~6개월 이내', '6개월~1년 이내', '1년 이후', '시기 미정', '현재 운영 중'] },
+  { id: 'topics', label: '어떤 분야의 상담이 필요한가요?', multiple: true, options: ['창업 아이템·사업계획', '메뉴 개발·조리 교육', '상권·입지 분석', '창업 비용·자금 계획', '지원사업·정책자금 정보', '매장 운영·인력 관리', '홍보·마케팅', '인허가·위생 관리', '전반적인 창업 방향'] },
+  { id: 'format', label: '선호하는 상담 방식은 무엇인가요?', options: ['온라인 화상 상담', '방문 상담', '상담 방식 무관'] },
+];
 
 export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCancel, currentUser }) {
-  const { tr, language } = useLanguage();
-  const [category, setCategory] = useState('문의');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [coverImage, setCoverImage] = useState('');
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState(['외식창업', '수강문의']);
-  const [isPinned, setIsPinned] = useState(false);
-  const [previewMode, setPreviewMode] = useState(false);
-  const [isDraftSaved, setIsDraftSaved] = useState(false);
+  const { tr } = useLanguage();
+  const [answers, setAnswers] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}'); } catch { return {}; }
+  });
+  const [saved, setSaved] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
-  // Check for auto-draft from AI Chatbot bridge
-  useEffect(() => {
-    try {
-      const savedInquiry = localStorage.getItem('kfssec_inquiry_draft');
-      if (savedInquiry) {
-        const parsed = JSON.parse(savedInquiry);
-        if (parsed.title) setTitle(parsed.title);
-        if (parsed.content) setContent(parsed.content);
-        setCategory('문의');
-        localStorage.removeItem('kfssec_inquiry_draft');
-      }
-    } catch (e) {}
-  }, []);
-
-  // Preset cover image choices for quick selection
-  const presetCoverImages = [
-    { label: '국회 세미나 (이사장님)', url: '/images/news/nongahn_ahn_chairman_memo.jpg' },
-    { label: '국회 세미나 (단체)', url: '/images/news/nongahn_seminar_group_1.jpg' },
-    { label: '국회 회의장 전경', url: '/images/news/nongahn_seminar_room_1.jpg' },
-    { label: '조리 실습실', url: '/images/course_menu_dev.jpg' },
-    { label: '세미나 현장', url: '/images/dir_1.jpg' },
-    { label: '메뉴 개발', url: '/images/course_restaurant.jpg' },
-    { label: '명인 요리', url: '/images/course_cafe.jpg' },
-  ];
-
-  const handleLoadNewsTemplate = () => {
-    const post = DEFAULT_POSTS[0];
-    if (!post) return;
-    setTitle(post.title);
-    setContent(post.content);
-    setCategory('공지 사항');
-    setCoverImage(post.coverImage || post.image);
-    setTags(post.tags || ['농안법개정', '국회정책세미나', '한국외식창업교육원', '안형상이사장']);
-    setIsPinned(true);
+  const selectAnswer = (question, option) => {
+    setAnswers(previous => {
+      if (!question.multiple) return { ...previous, [question.id]: option };
+      const selected = Array.isArray(previous[question.id]) ? previous[question.id] : [];
+      // Undecided is mutually exclusive with specific industries.
+      const next = selected.includes(option) ? selected.filter(item => item !== option)
+        : option === '아직 미정' ? [option] : [...selected.filter(item => item !== '아직 미정'), option];
+      return { ...previous, [question.id]: next };
+    });
+    setSaved(false);
+    setError('');
   };
 
-  const handleAddTag = (e) => {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault();
-      const cleaned = tagInput.trim().replace(/^#/, '');
-      if (cleaned && !tags.includes(cleaned)) {
-        setTags([...tags, cleaned]);
-        setTagInput('');
-      }
-    }
+  const saveDraft = () => {
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(answers)); setSaved(true); setError(''); }
+    catch { setError('임시저장에 실패했습니다. 브라우저 저장 공간을 확인해 주세요.'); }
   };
 
-  const handleRemoveTag = (tagToRemove) => {
-    setTags(tags.filter((t) => t !== tagToRemove));
-  };
-
-  const handleInsertFormat = (formatSymbol) => {
-    setContent((prev) => prev + `\n${formatSymbol} `);
-  };
-
-  const handleSaveDraft = () => {
-    localStorage.setItem('kfssec_inquiry_draft', JSON.stringify({ title, content }));
-    setIsDraftSaved(true);
-    setTimeout(() => setIsDraftSaved(false), 3000);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async event => {
+    event.preventDefault();
     if (submitting) return;
-    if (!title.trim()) {
-      alert(tr('게시글 제목을 입력해 주세요.'));
+    const missing = QUESTIONS.find(question => question.multiple
+      ? !Array.isArray(answers[question.id]) || answers[question.id].length === 0
+      : !question.options.includes(answers[question.id]));
+    if (missing) {
+      setError('모든 질문에 답변해 주세요. 미정인 항목은 ‘아직 미정’을 선택할 수 있습니다.');
+      document.getElementById(`survey-${missing.id}`)?.focus();
       return;
     }
-    if (!content.trim()) {
-      alert(tr('게시글 본문 내용을 작성해 주세요.'));
-      return;
-    }
-
-    const categoryTypeMap = {
-      '공지 사항': 'notice',
-      '갤러리': 'gallery',
-      '요리대회': 'competition',
-      '문의': 'inquiry',
-    };
-
-    const newPost = {
-      category,
-      categoryType: categoryTypeMap[category] || 'inquiry',
-      title,
-      content,
-      coverImage: coverImage || null,
-      tags,
-      isPinned: category === '공지 사항' || isPinned,
-      author: currentUser?.name || '방문자',
-      date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-      views: 1,
-    };
-
+    const content = [`${answers.consultingType} 사전 정보`, ...QUESTIONS.map((question, index) =>
+      `${index + 1}. ${question.label}\n답변: ${Array.isArray(answers[question.id]) ? answers[question.id].join(', ') : answers[question.id]}`)].join('\n\n');
     setSubmitting(true);
+    setError('');
     try {
-      if (onSubmitPost) await onSubmitPost(newPost);
-      else if (onPublishPost) await onPublishPost(newPost);
+      const submit = onSubmitPost || onPublishPost;
+      if (!submit) throw new Error('상담 신청을 처리할 수 없습니다. 잠시 후 다시 시도해 주세요.');
+      await submit({ category: '문의', categoryType: 'inquiry', title: `${answers.consultingType} 사전 상담 신청`, content,
+        coverImage: null, tags: [answers.consultingType, '창업컨설팅'], isPinned: false, author: currentUser?.name || '방문자' });
+      localStorage.removeItem(DRAFT_KEY);
       localStorage.removeItem('kfssec_inquiry_draft');
-    } catch (error) {
-      alert(error.message || tr('문의 등록에 실패했습니다.'));
-    } finally {
-      setSubmitting(false);
-    }
+    } catch (submitError) { setError(submitError.message || '상담 신청에 실패했습니다.'); }
+    finally { setSubmitting(false); }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen py-6 font-sans text-gray-900 animate-fadeIn">
-      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto space-y-6">
-        
-        {/* Top Header Bar with Actions */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-3xl border-2 border-black shadow-md">
-          
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="p-2.5 bg-gray-100 hover:bg-black hover:text-white rounded-2xl transition-all cursor-pointer"
-              title={tr("게시판으로 돌아가기")}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <div>
-              <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full uppercase">
-                COMMUNITY BLOG EDITOR
-              </span>
-              <h1 className="text-2xl font-black text-black tracking-tight mt-1">{tr(" 새 게시글 작성 ")}</h1>
-            </div>
+    <div className="bg-gray-50 min-h-screen py-6 text-gray-900">
+      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto px-4 sm:px-8 space-y-6">
+        <div className="bg-white p-5 sm:p-8 rounded-3xl border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <button type="button" onClick={onCancel} aria-label={tr('게시판으로 돌아가기')} className="p-3 rounded-full bg-gray-100 hover:bg-gray-200"><ArrowLeft className="w-5 h-5" /></button>
+            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-2 rounded-full">{tr('청년 및 일반 창업 컨설팅')}</span>
           </div>
-
-          <div className="flex items-center gap-3">
-            {/* Load News Template Button */}
-            <button
-              type="button"
-              onClick={handleLoadNewsTemplate}
-              className="px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white text-xs font-black rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer border border-emerald-400/40"
-              title={tr("국회 농안법 개정 세미나 기사 초안 불러오기")}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>{tr("국회 세미나 기사 초안 불러오기")}</span>
-            </button>
-
-            {/* Draft Save Status Indicator */}
-            {isDraftSaved && (
-              <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1 animate-fadeIn">
-                <CheckCircle2 className="w-4 h-4" />{tr(" 임시 저장 완료! ")}</span>
-            )}
-
-            {/* Toggle Preview Mode */}
-            <button
-              type="button"
-              onClick={() => setPreviewMode(!previewMode)}
-              className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer ${
-                previewMode
-                  ? 'bg-black text-white'
-                  : 'bg-stone-100 text-stone-800 hover:bg-stone-200'
-              }`}
-            >
-              {previewMode ? <Edit3 className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              <span>{tr(previewMode ? '편집기로 변경' : '미리보기')}</span>
-            </button>
-
-            {/* Save Draft */}
-            <button
-              type="button"
-              onClick={handleSaveDraft}
-              className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-            >
-              <Save className="w-4 h-4 text-gray-600" />
-              <span>{tr("임시저장")}</span>
-            </button>
-
-            {/* Publish Post Button */}
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={submitting}
-              className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <Send className="w-4 h-4 text-emerald-400" />
-              <span>{submitting ? tr("등록 중…") : tr("문의 등록")}</span>
-            </button>
-          </div>
-
+          <h1 className="text-2xl sm:text-3xl font-black">{tr('창업 상담 사전 정보')}</h1>
+          <p className="mt-3 text-sm text-gray-600 leading-relaxed">{tr('맞춤형 상담을 준비하기 위한 설문입니다. 현재 상황과 관심 분야를 선택해 주세요. 준비 중인 항목은 미정으로 선택해도 됩니다.')}</p>
+          <p className="mt-2 text-xs text-gray-500">{tr('모든 문항은 필수입니다. 복수 선택 문항은 해당 항목을 모두 선택해 주세요.')}</p>
         </div>
-
-        {/* Main Editor Body */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-xl space-y-6">
-          
-          {/* 1. Category Selection, Pin Toggle & Cover Image Selector Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 pb-6 border-b border-gray-200 items-center">
-            
-            {/* Category Dropdown */}
-            <div className="sm:col-span-4 space-y-2">
-              <label className="block text-xs font-black text-gray-700">{tr("게시판 카테고리 선택")}</label>
-              <select
-                value={category}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setCategory(val);
-                  if (val === '공지 사항') setIsPinned(true);
-                }}
-                className="w-full px-4 py-3 bg-stone-50 border-2 border-stone-300 rounded-2xl text-sm font-black text-black focus:outline-none focus:border-black shadow-xs cursor-pointer"
-              >
-                <option value="문의">{tr("문의하기")}</option>
-              </select>
+        {QUESTIONS.map((question, index) => (
+          <fieldset key={question.id} id={`survey-${question.id}`} tabIndex={-1} className="bg-white p-5 sm:p-8 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-600">
+            <legend className="sr-only">{tr(question.label)}</legend>
+            <h2 className="font-bold text-base"><span className="text-emerald-700 mr-2">{index + 1}.</span>{tr(question.label)}</h2>
+            <p className="text-xs text-gray-500 mt-2 mb-4">{tr(question.multiple ? '복수 선택' : '하나 선택')}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {question.options.map(option => {
+                const selected = question.multiple ? (answers[question.id] || []).includes(option) : answers[question.id] === option;
+                return <label key={option} className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${selected ? 'bg-emerald-50 border-emerald-600 text-emerald-900' : 'border-gray-200 hover:bg-gray-50'}`}>
+                  <input type={question.multiple ? 'checkbox' : 'radio'} name={question.id} value={option} checked={selected} onChange={() => selectAnswer(question, option)} className="w-4 h-4 accent-emerald-700 shrink-0" />
+                  <span className="text-sm font-medium">{tr(option)}</span>
+                </label>;
+              })}
             </div>
-
-            {/* Preset Cover Image Selector */}
-            <div className="sm:col-span-5 space-y-2">
-              <label className="block text-xs font-black text-gray-700 flex items-center gap-1">
-                <ImageIcon className="w-4 h-4 text-emerald-700" />
-                <span>{tr("대표 커버 이미지 선택")}</span>
-              </label>
-              <div className="flex flex-wrap items-center gap-2">
-                {presetCoverImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setCoverImage(coverImage === img.url ? '' : img.url)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer flex items-center gap-1.5 ${
-                      coverImage === img.url
-                        ? 'bg-black text-white border-black font-black shadow-md'
-                        : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
-                    }`}
-                  >
-                    <span>🖼️ {tr(img.label)}</span>
-                    {coverImage === img.url && <span className="text-emerald-400">✓</span>}
-                  </button>
-                ))}
-              </div>
-            </div>
-
+          </fieldset>
+        ))}
+        <div className="bg-white p-5 sm:p-8 rounded-2xl border border-gray-200">
+          {error && <p role="alert" className="text-sm text-red-700 mb-4">{tr(error)}</p>}
+          {saved && <p role="status" className="text-sm text-emerald-700 flex items-center gap-2 mb-4"><CheckCircle2 className="w-4 h-4" />{tr('답변을 임시저장했습니다.')}</p>}
+          <div className="flex flex-wrap justify-end gap-3">
+            <button type="button" onClick={saveDraft} disabled={submitting} className="px-5 py-3 rounded-xl bg-gray-100 font-bold text-sm flex items-center gap-2"><Save className="w-4 h-4" />{tr('임시저장')}</button>
+            <button type="submit" disabled={submitting} className="px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm flex items-center gap-2 disabled:opacity-50"><Send className="w-4 h-4" />{tr(submitting ? '신청 중…' : '상담 신청')}</button>
           </div>
-
-          {/* Selected Cover Image Banner Display */}
-          {coverImage && (
-            <div className="relative h-48 sm:h-64 rounded-2xl overflow-hidden shadow-md bg-black border-2 border-black group">
-              <img
-                src={coverImage}
-                alt={tr("대표 커버 사진")}
-                className="w-full h-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={() => setCoverImage('')}
-                className="absolute top-3 right-3 bg-black/80 hover:bg-rose-600 text-white font-black text-xs px-3 py-1.5 rounded-xl border border-white/20 cursor-pointer"
-              >{tr(" 커버 사진 제거 ✕ ")}</button>
-            </div>
-          )}
-
-          {/* 2. Large Post Title Input */}
-          <div className="pt-2">
-            <input
-              type="text"
-              placeholder={tr("제목을 입력하세요 (예: 1:1 수강생 커리큘럼 매칭 문의드립니다)")}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full text-2xl sm:text-4xl font-black text-black placeholder:text-gray-300 border-b-2 border-stone-300 pb-3 focus:outline-none focus:border-black transition-colors"
-            />
-          </div>
-
-          {/* 3. Tags Input Bar */}
-          <div className="flex flex-wrap items-center gap-2 pt-1 pb-4">
-            <div className="flex items-center gap-1.5 text-xs font-black text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
-              <Tag className="w-3.5 h-3.5" />
-              <span>{tr("태그")}</span>
-            </div>
-
-            {tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="bg-stone-100 hover:bg-stone-200 text-stone-900 font-bold text-xs px-3 py-1.5 rounded-xl border border-stone-300 flex items-center gap-1.5 cursor-pointer"
-                onClick={() => handleRemoveTag(tag)}
-                title={tr("태그 삭제")}
-              >
-                #{tr(tag)} <span className="text-gray-400 hover:text-rose-600">✕</span>
-              </span>
-            ))}
-
-            <input
-              type="text"
-              placeholder={tr("태그 입력 후 Enter (예: 외식창업)")}
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={handleAddTag}
-              className="px-3 py-1.5 border border-stone-300 rounded-xl text-xs font-bold focus:outline-none focus:border-black w-48"
-            />
-          </div>
-
-          {/* 4. Famous Rich Editor Toolbar */}
-          {!previewMode && (
-            <div className="flex flex-wrap items-center gap-1 bg-stone-100 p-2 rounded-2xl border border-stone-300 shadow-xs">
-              <button
-                type="button"
-                onClick={() => handleInsertFormat('###')}
-                className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs flex items-center gap-1 cursor-pointer"
-                title={tr("제목 1")}
-              >
-                <Heading1 className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleInsertFormat('####')}
-                className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs flex items-center gap-1 cursor-pointer"
-                title={tr("제목 2")}
-              >
-                <Heading2 className="w-4 h-4" />
-              </button>
-
-              <span className="w-px h-5 bg-stone-300 mx-1" />
-
-              <button
-                type="button"
-                onClick={() => handleInsertFormat('**굵게**')}
-                className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title={tr("굵게")}
-              >
-                <Bold className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleInsertFormat('*기울임*')}
-                className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title={tr("기울임")}
-              >
-                <Italic className="w-4 h-4" />
-              </button>
-
-              <span className="w-px h-5 bg-stone-300 mx-1" />
-
-              <button
-                type="button"
-                onClick={() => handleInsertFormat('> 인용구')}
-                className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title={tr("인용구")}
-              >
-                <Quote className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleInsertFormat('- ')}
-                className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title={tr("글머리 기호")}
-              >
-                <List className="w-4 h-4" />
-              </button>
-
-              <span className="w-px h-5 bg-stone-300 mx-1" />
-
-              <button
-                type="button"
-                onClick={() => handleInsertFormat('```\n코드\n```')}
-                className="p-2 hover:bg-white text-gray-700 hover:text-black rounded-xl font-bold text-xs cursor-pointer"
-                title={tr("코드 블록")}
-              >
-                <Code className="w-4 h-4" />
-              </button>
-
-              <span className="w-px h-5 bg-stone-300 mx-1 hidden sm:inline" />
-
-              <div className="hidden sm:flex items-center gap-1.5 pl-1">
-                <span className="text-[10px] font-black text-stone-500 uppercase tracking-wider">세미나 사진:</span>
-                <button
-                  type="button"
-                  onClick={() => handleInsertFormat('\n![국회 의원회관 정책세미나 전경](/images/news/nongahn_seminar_room_1.jpg)\n')}
-                  className="px-2 py-1 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-lg text-[11px] font-bold cursor-pointer hover:border-emerald-400 transition-colors"
-                  title={tr("회의장 전경 사진 본문 삽입")}
-                >
-                  📷 회의장 전경
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleInsertFormat('\n![안형상 이사장 토론 및 발제 발표](/images/news/nongahn_ahn_chairman_panel.jpg)\n')}
-                  className="px-2 py-1 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-lg text-[11px] font-bold cursor-pointer hover:border-emerald-400 transition-colors"
-                  title={tr("이사장님 발제 사진 본문 삽입")}
-                >
-                  📷 이사장님 발제
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleInsertFormat('\n![참석자 전원 농안법 개정 상생 화이팅 기념촬영](/images/news/nongahn_seminar_fighting.jpg)\n')}
-                  className="px-2 py-1 bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-lg text-[11px] font-bold cursor-pointer hover:border-emerald-400 transition-colors"
-                  title={tr("단체 화이팅 사진 본문 삽입")}
-                >
-                  📷 단체 화이팅
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* 5. Main Content Text Area or Live Preview Mode */}
-          {!previewMode ? (
-            <textarea
-              rows="14"
-              placeholder={tr("내용을 마음껏 작성해주세요. (질문, 후기, 메뉴 레시피, 창업 문의 등)")}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full p-6 bg-stone-50 border-2 border-stone-300 rounded-3xl text-sm sm:text-base font-medium text-black focus:outline-none focus:border-black resize-none leading-relaxed shadow-inner"
-            />
-          ) : (
-            <div className="p-6 bg-stone-50 border-2 border-black rounded-3xl space-y-4 min-h-[360px]">
-              <div className="border-b border-stone-300 pb-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-black text-rose-600 bg-rose-100 px-3 py-1 rounded-full">
-                    {tr(category)}
-                  </span>
-                  {isPinned && (
-                    <span className="text-xs font-black text-white bg-rose-600 px-2.5 py-0.5 rounded-md flex items-center gap-1">{tr(" 📌 상단고정 ")}</span>
-                  )}
-                </div>
-                <h2 className="text-2xl font-black text-black pt-2">{tr(title || '제목 없음')}</h2>
-              </div>
-              <div className="text-sm font-medium text-gray-800 whitespace-pre-wrap leading-relaxed">
-                {tr(content || '본문 내용이 없습니다.')}
-              </div>
-            </div>
-          )}
-
-          {/* 6. Footer Author Info Notice */}
-          <div className="pt-4 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-gray-500 font-bold gap-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>{tr("작성자: ")}<strong className="text-black font-black">{tr(currentUser?.name || '방문자')}</strong></span>
-            </div>
-            <span>{tr("사단법인 한국외식창업교육원 운영 정책 준수")}</span>
-          </div>
-
         </div>
-
-      </div>
+      </form>
     </div>
   );
 }

@@ -13,6 +13,10 @@ export default function NetflixCard({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={item.title}
+      onKeyDown={event => { if (event.target === event.currentTarget && ['Enter', ' '].includes(event.key)) { event.preventDefault(); onSelect?.(item); } }}
       onClick={() => onSelect?.(item)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

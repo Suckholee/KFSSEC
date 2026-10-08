@@ -145,7 +145,7 @@ export const actualCourses = [
     duration: '6주 (3D 설계 실무)',
 
     description: 'AI·로봇 조리 자동화, 디지털 운영 동선 설계, 스마트 주방 시스템 도입 기획 및 맞춤형 컨설팅을 총괄합니다.',
-    image: '/images/qualifications/advisor.jpg',
+    image: '/images/qualifications/foodtech.jpg',
     assessment: '푸드테크 개론, 스마트 주방 도면 설계, 디지털 운영 최적화 계획서',
     grades: ['1급: 디지털 운영·주방 동선 설계, 시스템 도입 기획 및 전문 컨설팅 총괄']
   },
@@ -165,7 +165,7 @@ export const actualCourses = [
     duration: '4주 이내',
 
     description: '스마트 주방 기기 운용, 테이블오더·POS 데이터 관리, 매장 무인화 자동화 시스템의 실무 관리를 수행합니다.',
-    image: '/images/qualifications/advisor.jpg',
+    image: '/images/qualifications/foodtech.jpg',
     assessment: '스마트 주방 기기 운용 및 매장 운영 데이터 관리 실무',
     grades: ['2급: 스마트 주방 운영, POS·주문 시스템 관리, 매장 데이터 관리 실무']
   },
@@ -187,7 +187,7 @@ export const actualCourses = [
     duration: '5주',
 
     description: '고객의 기호와 행사 목적에 맞는 와인·음료를 선정하고 식음료 페어링, 테이블 코디네이션, 파티 연출과 운영을 총괄 기획합니다.',
-    image: '/images/qualifications/practice.jpg',
+    image: '/images/qualifications/sommelier.jpg',
     assessment: '와인 테이스팅 실기, 푸드 페어링 기획, 테이블 공간 연출 평가',
     grades: ['단일 급수: 와인·음료 선정, 식음료 페어링, 테이블 코디네이션 및 파티 행사 운영 총괄']
   }

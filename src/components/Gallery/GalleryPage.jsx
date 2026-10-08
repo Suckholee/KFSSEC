@@ -78,14 +78,40 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
       }
     }
 
-    return mergedList.map((post) => {
+    // Refresh stock demo media already saved in shared content, preserving uploaded photos.
+    const legacyDemoImages = new Set(["/images/behavior_card_2.jpg", "/images/behavior_card_3.jpg", "/images/chef_tossing_food.jpg", "/images/course_cafe.jpg", "/images/course_delivery.jpg", "/images/course_menu_dev.jpg", "/images/course_net_4.jpg", "/images/course_restaurant.jpg", "/images/master_focus_1.jpg", "/images/master_focus_2.jpg", "/images/master_focus_3.jpg", "/images/startup_focus_2.jpg"]);
+    return mergedList.map((originalPost) => {
+      const replacement = defaultGallery.find(item => item.id === originalPost.id && item.isDemo);
+      const existingMedia = [originalPost.image, originalPost.coverImage, ...(originalPost.images || [])].filter(Boolean);
+      const post = replacement && originalPost.isDemo && existingMedia.every(src => legacyDemoImages.has(src))
+        ? { ...originalPost, image: replacement.image, coverImage: replacement.coverImage, images: replacement.images }
+        : originalPost;
+      const foodReplacement = {
+        '/images/master_focus_1.jpg': '/images/dir_12.jpg',
+        '/images/master_focus_2.jpg': '/images/course_menu_dev.jpg',
+        '/images/master_focus_3.jpg': '/images/dir_9.jpg',
+        '/images/dir_1.jpg': '/images/course_delivery.jpg',
+        '/images/dir_2.jpg': '/images/course_menu_dev.jpg',
+        '/images/dir_6.jpg': '/images/dir_9.jpg',
+        '/images/behavior_card_2.jpg': '/images/course_menu_dev.jpg',
+        '/images/behavior_card_3.jpg': '/images/dir_9.jpg',
+        '/images/startup_focus_1.jpg': '/images/dir_12.jpg',
+        '/images/startup_focus_2.jpg': '/images/course_menu_dev.jpg',
+        '/images/startup_focus_3.jpg': '/images/dir_9.jpg',
+        '/images/course_net_1.jpg': '/images/course_delivery.jpg',
+        '/images/course_net_2.jpg': '/images/dir_12.jpg',
+        '/images/course_net_3.jpg': '/images/dir_9.jpg',
+        '/images/course_net_4.jpg': '/images/course_menu_dev.jpg',
+        '/images/course_net_5.jpg': '/images/course_cafe.jpg',
+      };
+      const foodImage = src => foodReplacement[src] || src;
       const postImages =
         Array.isArray(post.images) && post.images.length > 0
           ? post.images
           : post.image
           ? [post.image]
-          : ['/images/hero_bg.jpg'];
-      const coverImage = post.coverImage || post.image || postImages[0] || '/images/hero_bg.jpg';
+          : ['/images/course_menu_dev.jpg'];
+      const coverImage = post.coverImage || post.image || postImages[0] || '/images/course_menu_dev.jpg';
       const categoryId = post.galleryCategory || 'training';
       const categoryMeta = galleryCategories.find((item) => item.id === categoryId);
 
@@ -96,8 +122,8 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
         title: post.title,
         date: post.date || '',
         location: post.location || '',
-        image: coverImage,
-        images: postImages,
+        image: foodImage(coverImage),
+        images: postImages.map(foodImage),
         desc: post.content || '',
         isPinned: Boolean(post.isPinned),
         rawPost: post,
@@ -170,7 +196,7 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
   return (
     <div className="bg-[#FAF9F5] min-h-screen text-stone-900 font-sans py-4 sm:py-6 selection:bg-[#15803D] selection:text-white">
       {/* 1. Authentic Netflix-style Subheader / Breadcrumb Bar (Bright Theme) */}
-      <div className="px-4 sm:px-8 lg:px-12 py-3 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-200/90 sticky top-20 sm:top-[88px] z-40 bg-white/95 backdrop-blur-md shadow-2xs">
+      <div className="px-4 sm:px-8 lg:px-12 py-3 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-200/90 sticky top-[calc(83px+var(--admin-toolbar-height,0px))] sm:top-[calc(91px+var(--admin-toolbar-height,0px))] z-40 bg-white/95 backdrop-blur-md shadow-2xs">
         {/* Left: Fixed Section Title (Constant width, zero horizontal shift) */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 pr-3 border-r border-stone-200">
@@ -342,7 +368,7 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
             <div className="py-2 sm:py-4 space-y-2">
               {galleryCategories
                 .filter((cat) => cat.id !== 'all')
-                .map((cat) => {
+                .map((cat, rowIndex) => {
                   const rowItems = galleryItems.filter(
                     (item) => item.category === cat.id
                   );
@@ -350,6 +376,8 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
                     <NetflixCategoryRow
                       key={cat.id}
                       category={cat}
+                      rowIndex={rowIndex}
+                      isMotionPaused={Boolean(selectedPhoto || isEditorModalOpen)}
                       items={rowItems}
                       isEditMode={isEditMode}
                       onSelectPhoto={(photo) => setSelectedPhoto(photo)}

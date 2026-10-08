@@ -88,6 +88,7 @@ import {
 import { DevInquiryBoard } from './DevInquiryBoard';
 import CertificateModal from './CertificateModal';
 import AdminDashboard from './AdminDashboard';
+import AdminMembers from './AdminMembers';
 import AdminMasters from './AdminMasters';
 import AdminChatbotSettings from './AdminChatbotSettings';
 import AdminAIBlogMarketing from './AdminAIBlogMarketing';
@@ -587,7 +588,7 @@ export default function AdminLayout({
       case 'reservations':
         return [
           { id: 'enrollees_list', label: '📚 강의별 수강생 관리' },
-          { id: 'student_accounts', label: '👤 학생 회원 계정 관리' },
+          { id: 'student_accounts', label: '👤 정회원·일반 회원 관리' },
         ];
       case 'inquiries':
         return [
@@ -622,26 +623,26 @@ export default function AdminLayout({
   });
 
   return (
-    <div className="h-screen w-screen bg-[#f4f6f8] text-gray-900 flex flex-col font-sans overflow-hidden select-none">
+    <div className="h-dvh w-full bg-[#f4f6f8] text-gray-900 flex flex-col font-sans overflow-hidden select-none">
       
       {/* FIXED TOP HEADER BAR */}
-      <header className="bg-[#1e2329] text-white h-16 px-6 flex items-center justify-between shadow-md shrink-0 z-50">
+      <header className="bg-[#1e2329] text-white min-h-16 px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 shadow-md shrink-0 z-50">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="bg-emerald-500 p-1.5 rounded-xl text-black">
               <ShieldCheck className="w-5 h-5 font-black" />
             </div>
-            <h1 className="text-lg font-black tracking-tight flex items-center gap-2">
+            <h1 className="text-base sm:text-lg font-black tracking-tight flex flex-wrap items-center gap-2">
               <span>스마트 파트너 센터</span>
               <span className="text-[11px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold">
-                REAL REST API DB CONNECTED
+                관리자
               </span>
             </h1>
           </div>
         </div>
 
         {/* Top Quick Links - SINGLE CLEAN DEVELOPER INQUIRY BUTTON AT TOP RIGHT */}
-        <div className="flex items-center gap-3 text-xs font-bold">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-bold">
           <button
             onClick={() => {
               switchPrimaryMenu('developer', 'dev_inquiry_list', null);
@@ -786,7 +787,7 @@ export default function AdminLayout({
           </button>
 
           <button
-            onClick={() => switchPrimaryMenu('reservations', 'enrollees_list', null)}
+            onClick={() => window.location.assign('/admin/users')}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
               primaryMenu === 'reservations'
                 ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-900/50 scale-105'
@@ -881,6 +882,7 @@ export default function AdminLayout({
               <button
                 key={menu.id}
                 onClick={() => {
+                  if (menu.id === 'student_accounts') { window.location.assign('/admin/members'); return; }
                   setSecondarySubTab(menu.id);
                   if (menu.id === 'course_add') {
                     const newBlank = {
@@ -967,157 +969,7 @@ export default function AdminLayout({
             </div>
           )}
 
-          {/* DYNAMIC SCREEN 1: STUDENT ACCOUNT MANAGEMENT WORKSTATION */}
-          {primaryMenu === 'reservations' && secondarySubTab === 'student_accounts' && (
-            <div className="space-y-6 animate-fadeIn max-w-6xl">
-              
-              {/* Header Title & Top Summary */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-black pb-3">
-                <div>
-                  <h3 className="text-xl font-black text-black tracking-tight flex items-center gap-2">
-                    <Users className="w-6 h-6 text-emerald-700" />
-                    <span>학생 회원 계정 관리자</span>
-                  </h3>
-                  <p className="text-xs text-gray-500 font-bold mt-0.5">
-                    회원 인증 서비스가 연결되면 실제 회원 계정이 여기에 표시됩니다.
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <button
-                    disabled title="회원 데이터 연동 전"
-                    className="px-4 py-2 bg-black hover:bg-gray-800 text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Download className="w-4 h-4 text-emerald-400" />
-                    <span>📥 회원 계정 DB 다운로드</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* KPI Summary Dashboard Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">👥 가입 완료 학생 회원</span>
-                  <span className="text-2xl font-black text-black font-mono">{enrolleesList.length}명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">회원 인증 연동 전</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">✅ 정상 활동 계정</span>
-                  <span className="text-2xl font-black text-emerald-950 font-mono">0명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">회원 인증 연동 전</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">🔑 오늘 로그인 접속자</span>
-                  <span className="text-2xl font-black text-black font-mono">0명</span>
-                  <span className="text-[10px] text-emerald-800 font-bold block pt-1">로그인 기록 연동 전</span>
-                </div>
-
-                <div className="bg-white p-5 rounded-3xl border-2 border-gray-300 shadow-sm space-y-1">
-                  <span className="text-[11px] font-black text-gray-500 block">⛔ 제재/휴면 계정</span>
-                  <span className="text-2xl font-black text-rose-700 font-mono">0명</span>
-                  <span className="text-[10px] text-rose-700 font-bold block pt-1">회원 인증 연동 전</span>
-                </div>
-              </div>
-
-              {/* Search Bar & Filter */}
-              <div className="bg-white p-4 rounded-2xl border-2 border-gray-300 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold">
-                <div className="flex items-center gap-2 flex-1 max-w-md">
-                  <Search className="w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="수강생 성명, 아이디, 연락처, 이메일 검색..."
-                    value={studentSearchKeyword}
-                    onChange={(e) => setStudentSearchKeyword(e.target.value)}
-                    className="w-full px-3 py-2 bg-stone-50 border border-gray-300 rounded-xl text-black font-bold focus:outline-none focus:border-black"
-                  />
-                </div>
-
-                <span className="text-gray-500 font-mono text-[11px]">
-                  검색 결과: 총 <strong className="text-black font-black">{filteredStudents.length}명</strong>의 계정이 검색됨
-                </span>
-              </div>
-
-              {/* STUDENT ACCOUNTS TABLE LIST */}
-              <div className="bg-white rounded-3xl border-2 border-gray-300 shadow-md overflow-hidden">
-                <div className="bg-gray-800 text-white px-6 py-3.5 flex items-center justify-between text-xs font-black">
-                  <span>📋 학생 회원 계정 전체 목록 (총 {filteredStudents.length}명)</span>
-                  <span className="text-emerald-400 font-mono">Student Account Management DB</span>
-                </div>
-
-                <div className="divide-y divide-gray-200 text-xs font-bold">
-                  {/* Table Header */}
-                  <div className="grid grid-cols-12 bg-gray-100 px-6 py-3 text-gray-600 font-black border-b border-gray-200">
-                    <div className="col-span-2">회원 아이디/가입일</div>
-                    <div className="col-span-3">수강생 정보(성명/연락처/이메일)</div>
-                    <div className="col-span-3">수강 신청 강좌</div>
-                    <div className="col-span-2 text-center">계정 상태 / 최근 접속</div>
-                    <div className="col-span-2 text-center">계정 보안 조작</div>
-                  </div>
-
-                  {/* Table Rows */}
-                  {filteredStudents.map((student) => (
-                    <div key={student.id} className="grid grid-cols-12 px-6 py-4 items-center hover:bg-stone-50 transition-colors">
-                      <div className="col-span-2 space-y-0.5">
-                        <span className="font-mono text-black font-black block">{student.userId}</span>
-                        <span className="font-mono text-gray-400 text-[11px] block">가입: {student.joinDate}</span>
-                      </div>
-
-                      <div className="col-span-3 space-y-0.5">
-                        <span className="text-sm font-black text-black block">{student.studentName}</span>
-                        <span className="font-mono text-gray-600 text-[11px] block">{student.phone}</span>
-                        <span className="font-mono text-gray-400 text-[10px] block">{student.email}</span>
-                      </div>
-
-                      <div className="col-span-3 space-y-1 pr-2">
-                        <span className="px-2 py-0.5 rounded bg-black text-white text-[10px] font-black inline-block">
-                          {student.categoryName}
-                        </span>
-                        <h4 className="text-xs font-black text-black line-clamp-1">{student.courseTitle}</h4>
-                      </div>
-
-                      <div className="col-span-2 text-center space-y-1">
-                        <span
-                          className={`px-3 py-1 rounded-full text-[10px] font-black inline-block border ${
-                            student.accountStatus === 'active'
-                              ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                              : 'bg-rose-100 text-rose-900 border-rose-300'
-                          }`}
-                        >
-                          {student.accountStatus === 'active' ? '✓ 정상 계정' : '⛔ 제재/휴면'}
-                        </span>
-                        <span className="font-mono text-gray-400 text-[10px] block">{student.lastLogin}</span>
-                      </div>
-
-                      <div className="col-span-2 text-center flex items-center justify-center gap-1.5">
-                        <button
-                          onClick={() => handleResetStudentPassword(student)}
-                          className="px-2.5 py-1 bg-amber-100 hover:bg-amber-600 hover:text-white text-amber-900 text-[11px] font-black rounded-lg transition-colors cursor-pointer flex items-center gap-1"
-                          title="비밀번호 임시 초기화 및 발송"
-                        >
-                          <Key className="w-3 h-3" />
-                          <span>비번초기화</span>
-                        </button>
-                        <button
-                          onClick={() => handleToggleAccountStatus(student.id)}
-                          className={`px-2 py-1 text-[11px] font-black rounded-lg transition-colors cursor-pointer ${
-                            student.accountStatus === 'active'
-                              ? 'bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white'
-                              : 'bg-emerald-100 text-emerald-900 hover:bg-emerald-600 hover:text-white'
-                          }`}
-                          title="계정 상태 변경"
-                        >
-                          {student.accountStatus === 'active' ? '제재' : '해제'}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          )}
+          {primaryMenu === 'reservations' && secondarySubTab === 'student_accounts' && <AdminMembers />}
 
           {/* DYNAMIC SCREEN 2: COURSE-FIRST ENROLLEE MANAGEMENT WORKSTATION */}
           {primaryMenu === 'reservations' && (secondarySubTab === 'enrollees_list' || secondarySubTab !== 'student_accounts') && (
@@ -2298,6 +2150,7 @@ export default function AdminLayout({
           {/* HOME MENU SCREENS */}
           {primaryMenu === 'home' && (
             <AdminContent
+              postsList={postsList}
               siteData={siteData}
               onUpdateSiteData={onUpdateSiteData}
               subTab={secondarySubTab}

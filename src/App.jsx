@@ -1,10 +1,11 @@
+import IntroductionVideo from './components/Home/IntroductionVideo';
+import MemberRegistration from './components/MemberRegistration';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
 import CategoryCourseSection from './components/CategoryCourseSection';
 import CategoryFocusSection from './components/CategoryFocusSection';
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import AwardCeremonyBannerSection from './components/Home/AwardCeremonyBannerSection';
 import PartnerMarqueeSection, { DEFAULT_PARTNER_LOGOS } from './components/Home/PartnerMarqueeSection';
 import YouTubeMediaSection from './components/YouTubeMediaSection';
 import NoticePostSection from './components/NoticePostSection';
@@ -23,6 +24,7 @@ import CommunityEditorPage from './components/Community/CommunityEditorPage';
 import AiAssistantPage from './components/AiAssistant/AiAssistantPage';
 import { setAiIndexedPosts } from './services/aiKnowledgeEngine';
 import AdminLayout from './components/Admin/AdminLayout';
+import AdminMembers from './components/Admin/AdminMembers';
 import AuthModal from './components/AuthModal';
 import YouTubeModal from './components/YouTubeModal';
 import PaymentGuideModal from './components/PaymentGuideModal';
@@ -50,16 +52,21 @@ function MainLayout({ children }) {
   );
 }
 
+// Temporarily hide the home discipline tracks; keep the section available for later.
+const SHOW_HOME_DISCIPLINE_TRACKS = false;
+// Keep the media section available to restore later.
+const SHOW_HOME_YOUTUBE_MEDIA = false;
+
 const HOME_SECTORS = [
+  { id: 'S-HOME-INTRO', name: '교육원 소개영상' },
   { id: 'S-HOME-01', name: '메인 비주얼 배너' },
-  { id: 'S-HOME-02', name: '수강생 모집 / 이벤트 배너' },
   { id: 'S-HOME-08', name: '공식 유튜브 미디어' },
-  { id: 'S-HOME-03', name: '추천 강좌 큐레이션 (넷플릭스형)' },
   { id: 'S-HOME-07', name: '교육원 주요 소식 & 공지' },
   { id: 'S-HOME-04', name: '글로벌 외식 트렌드 뉴스' },
+  { id: 'S-HOME-03', name: '추천 강좌 큐레이션 (넷플릭스형)' },
+  { id: 'S-HOME-06', name: '공식 제휴 & 파트너사 로고' },
   { id: 'S-HOME-05', name: '자격증·실무 과정 카테고리' },
   { id: 'S-HOME-05B', name: '분야별 교육 포커스' },
-  { id: 'S-HOME-06', name: '공식 제휴 & 파트너사 로고' },
 ];
 
 function AdminAccess({ onAuthenticated, configured }) {
@@ -139,7 +146,7 @@ function ScrollToTopButton() {
     <button
       onClick={scrollToTop}
       aria-label="페이지 맨 위로 이동"
-      className="fixed bottom-32 sm:bottom-6 right-3 sm:right-6 z-30 p-3 sm:p-3.5 bg-[#2B7752] hover:bg-[#236344] text-white rounded-full shadow-2xl transition-all cursor-pointer border border-[#85CFAB] flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none"
+      className="fixed bottom-[calc(80px+env(safe-area-inset-bottom))] sm:bottom-28 right-3 sm:right-6 z-30 p-3 sm:p-3.5 bg-[#2B7752] hover:bg-[#236344] text-white rounded-full shadow-2xl transition-all cursor-pointer border border-[#85CFAB] flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-[#2B7752] focus-visible:outline-none"
     >
       <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-[#A7F3D0] group-hover:-translate-y-0.5 transition-transform" />
     </button>
@@ -168,6 +175,7 @@ function AppInner({
   handleOpenAuth,
   currentUser,
   handleLogout,
+  onOpenProfile,
   siteData,
   postsList,
   handleUpdatePostsList,
@@ -182,7 +190,12 @@ function AppInner({
   isPaymentGuideOpen,
   setIsPaymentGuideOpen,
 }) {
-  const { siteDraft, postsDraft } = useAdminEdit();
+  const { siteDraft, postsDraft, isAdmin, setDrawerTab, setIsDrawerOpen } = useAdminEdit();
+  useEffect(() => {
+    if (isAdmin && activeTab === 'admin' && ['users', 'reservations'].includes(subTab)) {
+      setDrawerTab('members'); setIsDrawerOpen(true);
+    }
+  }, [isAdmin, activeTab, subTab, setDrawerTab, setIsDrawerOpen]);
   const currentSite = (siteDraft && Object.keys(siteDraft).length > 0) ? siteDraft : siteData;
   const currentPosts = (postsDraft && postsDraft.length > 0) ? postsDraft : postsList;
 
@@ -205,6 +218,7 @@ function AppInner({
           onOpenAuth={handleOpenAuth}
           currentUser={currentUser}
           onLogout={handleLogout}
+          onOpenProfile={onOpenProfile}
         />
 
         {/* Main Content Area Routing with smooth page entrance */}
@@ -212,6 +226,9 @@ function AppInner({
           <div key={activeTab} className="animate-page-enter">
             {(activeTab === 'home' || activeTab === 'admin') && (
             <div className="space-y-0">
+              <SectorBlock sectorId="S-HOME-INTRO" sectorName="교육원 소개영상" sectorList={HOME_SECTORS}>
+                <IntroductionVideo />
+              </SectorBlock>
               <SectorBlock
                 sectorId="S-HOME-01"
                 sectorName="메인 비주얼 배너"
@@ -223,29 +240,14 @@ function AppInner({
               >
                 <Hero
                   heroBanners={currentSite.heroBanners}
+                  onSelectPost={id => { handleTabChange('community', 'notice'); const url = new URL(window.location.href); url.searchParams.set('post', id); window.history.replaceState(null, '', url.pathname + url.search); window.dispatchEvent(new PopStateEvent('popstate')); }}
                   onExploreClick={() => handleTabChange('catalog')}
                   onAboutClick={() => handleTabChange('about', 'greetings')}
                   onInquiryClick={() => handleTabChange('community', 'inquiry')}
                 />
               </SectorBlock>
 
-              <SectorBlock
-                sectorId="S-HOME-02"
-                sectorName="수강생 모집 / 이벤트 배너"
-                sectorList={HOME_SECTORS}
-                editContentLabel="🎯 D-Day 배너 설정 수정"
-                onEditContent={() => {
-                  handleTabChange('admin', 'legacy');
-                }}
-              >
-                <AwardCeremonyBannerSection
-                  bannerData={currentSite.banner}
-                  onGoToGallery={() => handleTabChange('gallery', 'awards')}
-                  onGoToInquiry={() => handleTabChange('community', 'inquiry')}
-                />
-              </SectorBlock>
-
-              <SectorBlock
+              {SHOW_HOME_YOUTUBE_MEDIA && <SectorBlock
                 sectorId="S-HOME-08"
                 sectorName="공식 유튜브 미디어"
                 sectorList={HOME_SECTORS}
@@ -266,17 +268,7 @@ function AppInner({
                   youtubeData={currentSite.youtube}
                   onPlayVideo={handleOpenVideo}
                 />
-              </SectorBlock>
-
-              <SectorBlock
-                sectorId="S-HOME-03"
-                sectorName="추천 강좌 큐레이션 (넷플릭스형)"
-                sectorList={HOME_SECTORS}
-                editContentLabel="📚 교육 과정 카탈로그 바로가기"
-                onEditContent={() => handleTabChange('catalog', 'courses')}
-              >
-                <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
-              </SectorBlock>
+              </SectorBlock>}
 
               <SectorBlock
                 sectorId="S-HOME-07"
@@ -298,6 +290,21 @@ function AppInner({
               </SectorBlock>
 
               <SectorBlock
+                sectorId="S-HOME-03"
+                sectorName="추천 강좌 큐레이션 (넷플릭스형)"
+                sectorList={HOME_SECTORS}
+                editContentLabel="📚 교육 과정 카탈로그 바로가기"
+                onEditContent={() => handleTabChange('catalog', 'courses')}
+              >
+                <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
+              </SectorBlock>
+
+              <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS}>
+                <PartnerMarqueeSection partnerLogos={currentSite.partnerLogos} />
+              </SectorBlock>
+
+              {SHOW_HOME_DISCIPLINE_TRACKS && (
+              <SectorBlock
                 sectorId="S-HOME-05"
                 sectorName="자격증·실무 과정 카테고리"
                 sectorList={HOME_SECTORS}
@@ -306,6 +313,7 @@ function AppInner({
               >
                 <CategoryCourseSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
               </SectorBlock>
+              )}
 
               <SectorBlock
                 sectorId="S-HOME-05B"
@@ -317,9 +325,6 @@ function AppInner({
                 <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS}>
-                <PartnerMarqueeSection partnerLogos={currentSite.partnerLogos} />
-              </SectorBlock>
             </div>
           )}
 
@@ -444,7 +449,20 @@ export default function App() {
   // Auth state
   const [authModalState, setAuthModalState] = useState({ isOpen: false, initialMode: 'login' });
   const [currentUser, setCurrentUser] = useState(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [registrationRequired, setRegistrationRequired] = useState(false);
   const [adminAuth, setAdminAuth] = useState({ checked: false, authenticated: false, configured: true });
+
+  useEffect(() => {
+    fetch('/api/member-auth', { cache: 'no-store' }).then(response => response.json()).then(result => { setCurrentUser(result.user || null); setRegistrationRequired(Boolean(result.registrationRequired)); }).catch(() => setCurrentUser(null));
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('login_error')) {
+      setAuthModalState({ isOpen: true, initialMode: 'login' });
+      alert('카카오 로그인을 완료하지 못했습니다. 다시 시도해 주세요.');
+      params.delete('login_error');
+      window.history.replaceState(null, '', `${window.location.pathname}${params.size ? `?${params}` : ''}${window.location.hash}`);
+    }
+  }, []);
 
   useEffect(() => {
     fetch('/api/auth', { cache: 'no-store' }).then(response => response.json()).then(result => setAdminAuth({ checked: true, authenticated: result.authenticated, configured: result.configured })).catch(() => setAdminAuth({ checked: true, authenticated: false, configured: false }));
@@ -578,6 +596,7 @@ export default function App() {
       ...DEFAULT_INSTITUTION_INFO,
       ...(saved.institutionInfo || {}),
     };
+    if (/펫|반려|애견/.test(institutionInfo.field || '')) institutionInfo.field = '외식 창업 실무 교육 및 전문 자격증 발급';
     ['phone', 'tel', 'headquartersAddress', 'officeAddress', 'bizNumber'].forEach((key) => {
       if (!institutionInfo[key]) {
         institutionInfo[key] = DEFAULT_INSTITUTION_INFO[key];
@@ -695,7 +714,7 @@ export default function App() {
 
   // Auto-redirect from /admin to / when authenticated
   useEffect(() => {
-    if (activeTab === 'admin' && adminAuth.authenticated && subTab !== 'legacy') {
+    if (activeTab === 'admin' && adminAuth.authenticated && !subTab) {
       setActiveTab('home');
       window.history.replaceState({}, '', '/');
     }
@@ -750,8 +769,14 @@ export default function App() {
     setAuthModalState({ isOpen: false, initialMode: 'login' });
   };
 
-  const handleLogout = () => {
-    fetch('/api/auth', { method: 'DELETE' }).catch(console.error);
+  const handleLogout = async () => {
+    try {
+      const responses = await Promise.all([fetch('/api/auth', { method: 'DELETE' }), fetch('/api/member-auth', { method: 'DELETE' })]);
+      if (responses.some(response => !response.ok)) throw new Error('logout');
+    } catch {
+      alert('로그아웃하지 못했습니다. 다시 시도해 주세요.');
+      return;
+    }
     setAdminAuth({ checked: true, authenticated: false, configured: true });
     setCurrentUser(null);
     localStorage.removeItem('kfssec_user');
@@ -797,13 +822,21 @@ export default function App() {
           configured={adminAuth.configured}
           onAuthenticated={() => {
             setAdminAuth({ checked: true, authenticated: true, configured: true });
-            handleTabChange('home');
+            if (!subTab) handleTabChange('home');
           }}
         />
       );
     }
+    if (['members', 'users'].includes(subTab) || (subTab === 'reservations' && window.location.pathname.endsWith('/student_accounts'))) {
+      return <main className="min-h-screen bg-slate-50 px-4 py-8 sm:px-8">
+        <div className="max-w-7xl mx-auto">
+          <a href="/" className="inline-block mb-6 text-sm font-bold text-emerald-800">← 홈페이지 관리로 돌아가기</a>
+          <AdminMembers />
+        </div>
+      </main>;
+    }
     // If specifically requested legacy back-office
-    if (subTab === 'legacy') {
+    if (subTab && !['users', 'reservations'].includes(subTab)) {
       return (
         <AdminLayout
           siteData={siteData}
@@ -826,12 +859,24 @@ export default function App() {
       adminAuth={adminAuth}
       onLogout={handleLogout}
     >
+      {profileOpen && currentUser && <MemberRegistration editing onComplete={user => { setCurrentUser(user); setProfileOpen(false); }} onCancel={() => setProfileOpen(false)} />}
+      {registrationRequired && <MemberRegistration onComplete={user => {
+        setCurrentUser(user); setRegistrationRequired(false);
+        const url = new URL(window.location.href); url.searchParams.delete('signup'); window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+      }} onCancel={async () => {
+        setRegistrationRequired(false);
+        const url = new URL(window.location.href); url.searchParams.delete('signup');
+        window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+        try { const response = await fetch('/api/member-auth', { method: 'DELETE' }); if (!response.ok) throw new Error('Signup session cleanup failed'); }
+        catch (error) { console.error(error); }
+      }} />}
       <AppInner
         activeTab={activeTab}
         subTab={subTab}
         handleTabChange={handleTabChange}
         handleOpenAuth={handleOpenAuth}
         currentUser={currentUser}
+        onOpenProfile={() => setProfileOpen(true)}
         handleLogout={handleLogout}
         siteData={siteData}
         postsList={postsList}

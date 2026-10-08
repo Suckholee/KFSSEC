@@ -34,7 +34,6 @@ const PAGE_SECTOR_MAP = {
     sectors: [
       { id: 'S-HOME-00', name: '🪟 행사 공지 팝업 (오늘 다시보지 않기)', isPopup: true, editLabel: '팝업 관리' },
       { id: 'S-HOME-01', name: '메인 비주얼 배너', editLabel: '배너 편집' },
-      { id: 'S-HOME-02', name: '수강생 모집 / 이벤트 배너', editLabel: '배너 설정' },
       { id: 'S-HOME-08', name: '공식 유튜브 미디어', editLabel: '영상 링크', isYoutube: true },
       { id: 'S-HOME-03', name: '추천 강좌 큐레이션 (넷플릭스형)' },
       { id: 'S-HOME-04', name: '글로벌 외식 트렌드 뉴스' },
@@ -124,7 +123,6 @@ const PAGE_SECTOR_MAP = {
 const SECTOR_ICONS = {
   'S-HOME-00': <Bell className="w-3.5 h-3.5 text-amber-400 shrink-0" />,
   'S-HOME-01': <Image className="w-3.5 h-3.5 text-amber-400 shrink-0" />,
-  'S-HOME-02': <Award className="w-3.5 h-3.5 text-rose-400 shrink-0" />,
   'S-HOME-08': <Tv className="w-3.5 h-3.5 text-red-500 shrink-0" />,
   'S-HOME-03': <BookOpen className="w-3.5 h-3.5 text-emerald-400 shrink-0" />,
   'S-HOME-04': <Globe className="w-3.5 h-3.5 text-cyan-400 shrink-0" />,
@@ -288,7 +286,7 @@ export default function AdminBlockNavigator({
       {/* 2. MOBILE BACKDROP OVERLAY (when drawer is open on mobile) */}
       {isNavigatorOpen && (
         <div
-          className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm lg:hidden transition-opacity"
+          className="fixed inset-0 z-[54] bg-black/60 backdrop-blur-sm lg:hidden transition-opacity"
           onClick={() => setIsNavigatorOpen(false)}
         />
       )}

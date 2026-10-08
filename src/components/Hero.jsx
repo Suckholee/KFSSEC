@@ -54,9 +54,10 @@ export default function Hero({
   onExploreClick,
   onAboutClick,
   onInquiryClick,
+  onSelectPost,
   onScrollNext,
 }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { isEditMode, siteDraft, updateSiteField, updateSiteDraft } = useAdminEdit();
 
   const currentHeroBanners = (siteDraft?.heroBanners && siteDraft.heroBanners.length > 0)
@@ -69,6 +70,21 @@ export default function Hero({
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef(null);
+  const [graphicRatio, setGraphicRatio] = useState(2.5);
+  const activeBanner = banners[currentIndex];
+
+  useEffect(() => {
+    if (!activeBanner?.imageOnly || !activeBanner.imageUrl) return;
+    let cancelled = false;
+    const image = new Image();
+    image.onload = () => {
+      if (!cancelled && image.naturalHeight) {
+        setGraphicRatio(image.naturalWidth / image.naturalHeight);
+      }
+    };
+    image.src = activeBanner.imageUrl;
+    return () => { cancelled = true; };
+  }, [activeBanner?.imageUrl, activeBanner?.imageOnly]);
 
   // Safety check if index out of bounds
   useEffect(() => {
@@ -106,7 +122,9 @@ export default function Hero({
   const currentBanner = banners[currentIndex] || DEFAULT_HERO_BANNERS[0];
 
   const handleBannerButtonClick = (banner) => {
-    if (banner.buttonLink === 'catalog') {
+    if (banner.buttonLink?.startsWith('post:')) {
+      onSelectPost?.(banner.buttonLink.slice(5));
+    } else if (banner.buttonLink === 'catalog') {
       onExploreClick?.();
     } else if (banner.buttonLink === 'about') {
       onAboutClick?.();
@@ -129,7 +147,10 @@ export default function Hero({
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="w-full relative min-h-[260px] sm:min-h-[380px] md:min-h-[460px] lg:min-h-[540px] flex items-center justify-center">
+          <div
+            className={`w-full relative flex items-center justify-center ${activeBanner?.imageOnly ? '' : 'h-[280px] sm:h-[380px] md:h-[460px] lg:h-[540px]'}`}
+            style={activeBanner?.imageOnly ? { aspectRatio: graphicRatio } : undefined}
+          >
             
             {/* SLIDES */}
             {banners.map((banner, idx) => {
@@ -140,15 +161,17 @@ export default function Hero({
                   key={banner.id || idx}
                   className={`transition-all duration-700 ease-in-out ${
                     isActive
-                      ? 'opacity-100 z-10 scale-100 relative w-full'
+                      ? 'opacity-100 z-10 scale-100 relative w-full h-full'
                       : 'opacity-0 z-0 scale-95 pointer-events-none absolute inset-0'
                   }`}
                 >
                   {banner.imageOnly ? (
                     /* TYPE 1: GRAPHIC BANNER WITH BAKED-IN DESIGN (Image 2 style) */
+                    <div className="relative w-full h-full">
+                    {!isEditMode && banner.buttonLink?.startsWith('post:') && <button type="button" onClick={() => handleBannerButtonClick(banner)} aria-label={t(banner.buttonText || '행사 안내 보기')} className="absolute inset-0 z-20 focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-emerald-500"><span className="sr-only">{t(banner.buttonText || '행사 안내 보기')}</span></button>}
                     <EditableImage
                       src={banner.imageUrl}
-                      alt={banner.title || '사단법인 한국외식창업교육원 대한민국 명인·명장'}
+                      alt={t(banner.title || '사단법인 한국외식창업교육원 대한민국 명인·명장')}
                       slides={banners}
                       currentSlideIndex={currentIndex}
                       onSelectSlide={(newIdx) => setCurrentIndex(newIdx)}
@@ -168,12 +191,25 @@ export default function Hero({
                           };
                         });
                       }}
-                      className="w-full flex justify-center items-center bg-stone-950 min-h-[280px]"
-                      imageClassName="w-full h-auto max-h-[640px] object-cover sm:object-contain block mx-auto transition-transform duration-1000"
+                      className="w-full h-full flex justify-center items-center bg-stone-950"
+                      imageClassName="w-full h-full object-contain block mx-auto transition-transform duration-1000"
                     />
+                    {language !== 'ko' && !isEditMode && (
+                      <div
+                        className={`absolute z-10 flex flex-col justify-center bg-[#111916] text-white rounded-lg shadow-xl px-3 sm:px-6 py-2 sm:py-4 ${
+                          banner.id === 'banner_masters_classic' || banner.imageUrl?.includes('main_banner_masters')
+                            ? 'left-[5%] top-[15%] w-[35%] h-[55%] text-left border-l-4 border-green-500'
+                            : 'left-[22%] top-[38%] w-[56%] h-[24%] text-center'
+                        }`}
+                      >
+                        <h2 className="font-black text-[clamp(10px,2.4vw,36px)] leading-tight">{t(banner.title)}</h2>
+                        <p className="mt-1 sm:mt-3 text-[clamp(7px,1.2vw,18px)] leading-snug text-emerald-100">{t(banner.subtitle)}</p>
+                      </div>
+                    )}
+                    </div>
                   ) : (
                     /* TYPE 2: CINEMATIC PHOTO + OVERLAY TYPOGRAPHY */
-                    <div className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] lg:h-[580px] flex items-center justify-center overflow-hidden bg-stone-950">
+                    <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-stone-950">
                       {/* Background Image */}
                       <EditableImage
                         src={banner.imageUrl}

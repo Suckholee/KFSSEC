@@ -98,7 +98,7 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
     setFormData({ ...formData, category: val, categoryName: catName });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title.trim()) {
       alert('교육과정 제목을 입력해 주세요.');
@@ -118,8 +118,12 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
     delete finalCourse.discount;
     delete finalCourse.discountRate;
 
-    onSaveCourse(finalCourse);
-    onClose();
+    try {
+      await onSaveCourse(finalCourse);
+      onClose();
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (

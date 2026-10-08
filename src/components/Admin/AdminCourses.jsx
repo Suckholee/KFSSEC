@@ -30,7 +30,7 @@ export default function AdminCourses() {
   const filteredCourses = courses.filter((c) => {
     const title = c.title || '';
     const instructor = c.instructor || '';
-    const matchesSearch = title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch = title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           instructor.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCat = categoryFilter === 'all' || c.category === categoryFilter;
     return matchesSearch && matchesCat;
@@ -46,7 +46,7 @@ export default function AdminCourses() {
     setEditModalOpen(true);
   };
 
-  const handleSaveCourse = (savedCourse) => {
+  const handleSaveCourse = async (savedCourse) => {
     const exists = courses.some((c) => c.id === savedCourse.id);
     let nextCourses;
     if (exists) {
@@ -54,15 +54,24 @@ export default function AdminCourses() {
     } else {
       nextCourses = [savedCourse, ...courses];
     }
-    setCourses(nextCourses);
-    saveCoursesToDB(nextCourses);
+    if (!await persistCourses(nextCourses)) throw new Error('교육과정을 저장하지 못했습니다. 입력 내용은 유지됩니다.');
   };
 
-  const handleDelete = (id) => {
+  const persistCourses = async nextCourses => {
+    try {
+      setCourses(await saveCoursesToDB(nextCourses));
+      return true;
+    } catch (error) {
+      setReorderNotice(`저장 실패: ${error.message}`);
+      return false;
+    }
+  };
+
+  const handleDelete = async (id) => {
     if (window.confirm('정말로 이 교육과정을 목록에서 삭제하시겠습니까?')) {
       const nextCourses = courses.filter((c) => c.id !== id);
-      setCourses(nextCourses);
-      saveCoursesToDB(nextCourses);
+      if (!await persistCourses(nextCourses)) return;
+
     }
   };
 
@@ -89,7 +98,7 @@ export default function AdminCourses() {
     }
   };
 
-  const handleDrop = (e, targetCourseId) => {
+  const handleDrop = async (e, targetCourseId) => {
     e.preventDefault();
     const sourceId = draggedCourseId || e.dataTransfer.getData('text/plain');
     if (!sourceId || String(sourceId) === String(targetCourseId)) {
@@ -105,8 +114,9 @@ export default function AdminCourses() {
       const nextCourses = [...courses];
       const [moved] = nextCourses.splice(fromIndex, 1);
       nextCourses.splice(toIndex, 0, moved);
-      setCourses(nextCourses);
-      saveCoursesToDB(nextCourses);
+      setDraggedCourseId(null);
+      setDragOverCourseId(null);
+      if (!await persistCourses(nextCourses)) return;
 
       setReorderNotice(`'${moved.title}' 과정의 위치가 변경되었습니다.`);
       setTimeout(() => setReorderNotice(''), 3000);
@@ -122,7 +132,7 @@ export default function AdminCourses() {
   };
 
   // Quick arrow buttons as convenient alternative
-  const handleMoveCourse = (courseId, direction) => {
+  const handleMoveCourse = async (courseId, direction) => {
     const currentIndex = courses.findIndex((c) => String(c.id) === String(courseId));
     if (currentIndex === -1) return;
     const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
@@ -131,8 +141,7 @@ export default function AdminCourses() {
     const nextCourses = [...courses];
     const [moved] = nextCourses.splice(currentIndex, 1);
     nextCourses.splice(targetIndex, 0, moved);
-    setCourses(nextCourses);
-    saveCoursesToDB(nextCourses);
+    if (!await persistCourses(nextCourses)) return;
 
     setReorderNotice(`'${moved.title}' 순서가 변경되었습니다.`);
     setTimeout(() => setReorderNotice(''), 3000);
@@ -140,7 +149,7 @@ export default function AdminCourses() {
 
   return (
     <div className="space-y-6 animate-fadeIn">
-      
+
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-br from-[#EBF6EF] via-[#F3FAF5] to-[#E5F3EB] p-6 rounded-3xl border border-[#CCE7D7] shadow-xs">
         <div>
@@ -168,7 +177,7 @@ export default function AdminCourses() {
 
       {/* Filter & Search Bar + View Mode Toggle */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-[#D5EADF] shadow-xs">
-        
+
         {/* Search */}
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 text-[#3C825D] absolute left-3.5 top-1/2 -translate-y-1/2" />

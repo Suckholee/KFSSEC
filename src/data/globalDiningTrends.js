@@ -3,6 +3,56 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5362",
+    "title": "K-뷰티 넘어 K-푸드로…외국인 관광객 지갑 여는 ‘한국적인 것’의 진화",
+    "summary": "한글과 태극기, 호랑이 등 한국을 상징하는 문화적 요소가 외국인 관광객을 사로잡는 새로운 소비 콘텐츠로 떠오르고 있다. 과거 외국인 관광객의 한국 여행...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.06",
+    "imageUrl": "/images/trends/trend_5362.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/4776bde4c2ed4f039dfdaa6efb680978f0a973ee.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5362&mcode=m247tk9"
+  },
+  {
+    "id": "5359",
+    "title": "한 끼 식사마저 사치가 된 시대, 외식물가를 돌아봐야 한다",
+    "summary": "직장인 A 씨는 요즘 점심시간마다 깊은 고민에 빠진다. 회사 주변 식당의 냉면 한 그릇은 이미 1만 5000원을 호가하고, 웬만...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.10.05",
+    "imageUrl": "/images/trends/trend_5359.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/932195a07e0437a7e9895eb2bc33d2d20a213a3c.jpeg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5359&mcode=m247tk9"
+  },
+  {
+    "id": "5356",
+    "title": "가격을 올리기 전에, 손님에게 물어야 할 한 가지",
+    "summary": "어느 음식점 사장이 가격을 올렸다.식재료비가 올랐다. 임대료도 올랐다. 전기료와 소모품비도 야금야금 따라왔다. 요즘 ...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.05",
+    "imageUrl": "/images/trends/trend_5356.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/31b135453809906c2c903a779a1ea63c1c8ae101.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5356&mcode=m247tk9"
+  },
+  {
+    "id": "5283",
+    "title": "공간이 음식보다 유명해지면 성공한 것일까",
+    "summary": "새로 문을 연 식당 앞에 긴 줄이 생겼다.SNS에는 매장 사진이 빠르게 퍼졌다. 거대한 조명, 독특한 천장, 낯선 재료, 극적인 색채가 사...",
+    "author": "글로벌 외식정보=진익준",
+    "date": "2026.10.05",
+    "imageUrl": "/images/trends/trend_5283.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/b47675dfba0dd4e99139394df311c9d23b99ae21.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5283&mcode=m247tk9"
+  },
+  {
+    "id": "5342",
+    "title": "배달은 공짜가 아니다, 누가 그 비용을 부담할 것인가",
+    "summary": "'배달비 0원'. 소비자에게는 반가운 문구지만, 세상에 공짜는 없다. 음식점에서 주문한 음식이 소비자의 식탁까지 ...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.10.03",
+    "imageUrl": "/images/trends/trend_5342.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/352f1f7715a1f59ce0ea82436c04e67256fbd15f.jpeg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5342&mcode=m247tk9"
+  },
+  {
     "id": "5324",
     "title": "리뷰 9천 개가 부러운 사장님에게",
     "summary": "장사하는 사람에게 숫자는 잔인하다.매출이 떨어지면 기분도 떨어진다. 주문이 늘면 잠깐 마음이 놓인다. 옆집에 줄이 서...",
@@ -98,7 +148,7 @@ export const GLOBAL_DINING_TRENDS = [
     "summary": "K-푸드에 대한 세계적인 관심이 높아지는 가운데 농식품 기업의 글로벌 시장 진출에 필요한 투자와 수출, 유통을 한자리에서 연결하는 대규모 금융투자 행사가 열렸다.농림축산식품부는 9일 서울에서 농...",
     "author": "글로벌외식정보",
     "date": "2026.09.10",
-    "imageUrl": "/images/trends/trend_5034.jpg",
+    "imageUrl": "/images/course_restaurant.jpg",
     "remoteImageUrl": null,
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5034&mcode=m247tk9"
   },
@@ -131,56 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_4969.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/edea6033eab75452e8df9e51661ce75bf3206e41.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4969&mcode=m247tk9"
-  },
-  {
-    "id": "4961",
-    "title": "조양관, 창업 90주년 맞아…3대째 이어온 90년 손맛, 강남 한정식의 전통 잇는다",
-    "summary": "2026년 9월 4일1935년 전북 고창에서 시작된 한정식의 역사가 90년을 맞았다. 판소리 명창이 차려낸 한 끼의 밥상에서 출발한 조양...",
-    "author": "글로벌 외식정보=안형상 기자",
-    "date": "2026.09.04",
-    "imageUrl": "/images/trends/trend_4961.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/578e560e5a273803e464552e7fa30be619ee74a4.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4961&mcode=m247tk9"
-  },
-  {
-    "id": "4946",
-    "title": "망하지 않는 외식업의 조건: 결핍에서 손익까지, 4단계 창업 프레임워크",
-    "summary": "프롤로그: 감성 창업의 낭만과 차가운 성적표어느 한적한 교외, 초록빛 열대 식물이 가득 들어차 주말마다 인파가 몰려드...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.09.04",
-    "imageUrl": "/images/trends/trend_4946.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/news/../data/file/article/thumb/350x270_100/3695849969_4LIaXrk1_EBACB8ECA09CEAB080_EC8381EAB68.png",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4946&mcode=m247tk9"
-  },
-  {
-    "id": "4838",
-    "title": "초보 창업자의 무덤인가, 준비된 기획자의 블루오션인가",
-    "summary": "인스타그램 피드를 넘기다 보면 누구나 한 번쯤 매혹적인 장면에 시선을 빼앗긴다. 10평 남짓한 아담한 공간, 은은한 간접 ...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.08.28",
-    "imageUrl": "/images/trends/trend_4838.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2608/thumb/350x270_100/f07aa17c12ea3557b2d9c66c6fba61f85fce48a4.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4838&mcode=m247tk9"
-  },
-  {
-    "id": "4813",
-    "title": "말 한마디로 단골을 잃는 식당, 공간 설계로 감동을 파는 식당",
-    "summary": "1. 지친 사장의 한숨, \"야박하다고 합니다\"자영업자의 길은 거칠다. 매일 아침 불 앞에 서서 손님의 하루를 든든하게 채워줄...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.08.27",
-    "imageUrl": "/images/trends/trend_4813.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2608/thumb/350x270_100/8a44b87746f7a97ef82392d66e91e20d52ec1bd5.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4813&mcode=m247tk9"
-  },
-  {
-    "id": "4812",
-    "title": "통제하지 말고 흐르게 하라",
-    "summary": "1. 무한리필 매장의 승패는 '고기'가 아닌 '동선'에서 갈린다외식업계에서 '무한리필'이라는 간판을 내건...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.08.26",
-    "imageUrl": "/images/trends/trend_4812.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2608/thumb/350x270_100/c91c7ae73da6a3420b5da9ac7ea749250ac262b6.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4812&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.03'
+  lastUpdated: '2026.10.07'
 };

@@ -298,25 +298,6 @@ export default function GlobalDiningTrendsSection() {
           </div>
         </div>
 
-        {/* Gallery Guidance Footer */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#F0FDF4] border border-[#DCFCE7] flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-700 text-xs sm:text-sm">
-          <div className="flex items-center gap-2.5">
-            <span className="text-base sm:text-lg">💡</span>
-            <span>
-              <strong>외식업 성공 창업 노하우:</strong> 각 기사 화보를 클릭하면 <strong>글로벌외식정보(HSGDN)</strong> 공식 칼럼 상세 페이지로 연결되어 전체 인터뷰와 분석 자료를 열람하실 수 있습니다. (마우스 커서를 올리면 흐름이 멈춥니다)
-            </span>
-          </div>
-
-          <a
-            href={TREND_CATEGORY_INFO.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-black text-[#15803D] hover:text-[#EA580C] hover:underline flex items-center gap-1 shrink-0"
-          >
-            <span>포토뉴스 페이지 바로가기</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-        </div>
 
       </div>
     </section>

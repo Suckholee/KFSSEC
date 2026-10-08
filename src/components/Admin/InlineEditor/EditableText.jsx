@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import { Edit3 } from 'lucide-react';
+import { useLanguage } from '../../../i18n/LanguageContext';
 
 export default function EditableText({
   value,
@@ -13,6 +14,7 @@ export default function EditableText({
   children,
 }) {
   const { isEditMode, showEditGuides, updateSiteField } = useAdminEdit();
+  const { tr } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(value ?? (typeof children === 'string' ? children : ''));
   const elementRef = useRef(null);
@@ -23,7 +25,7 @@ export default function EditableText({
   }, [value, children]);
 
   if (!isEditMode) {
-    return <Component className={className}>{value || children}</Component>;
+    return <Component className={className}>{tr(value || children)}</Component>;
   }
 
   const handleCommit = (newVal) => {

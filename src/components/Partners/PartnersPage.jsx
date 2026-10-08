@@ -624,10 +624,10 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
             </p>
           </div>
           <button
-            onClick={() => window.location.href = 'tel:010-8914-1188'}
+            onClick={() => window.location.assign('/community/inquiry')}
             className="px-6 py-3 bg-white hover:bg-[#F2FAF5] text-[#1E5D3B] font-black text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 shrink-0 cursor-pointer hover:scale-102"
           >
-            <span>MOU 제휴 문의 (010-8914-1188)</span>
+            <span>MOU 제휴 온라인 문의</span>
             <ChevronRight className="w-4 h-4 text-[#2B7752]" />
           </button>
         </div>

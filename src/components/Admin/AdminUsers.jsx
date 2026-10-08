@@ -35,7 +35,7 @@ export default function AdminUsers() {
       role: '수강생',
       joinDate: '2026-08-18',
       enrolledCoursesCount: 3,
-      coursesList: ['반려동물 영양·식재료 기초', '반려견 행동 이해', '창업기획·사업계획'],
+      coursesList: ['외식 영양·식재료 기초', '외식 고객 서비스', '창업기획·사업계획'],
     },
     {
       id: 'USR-1004',

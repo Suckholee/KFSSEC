@@ -185,7 +185,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
       screenshots: [],
       status: 'completed',
       date: '2026.09.25 18:20',
-      devReply: '✓ 구현 완료: Header.jsx 네비게이션 전면 개편. 교육원 소개, 교육과정(한식/풀패키지/창업/펫푸드), 조리명장(갤러리/레시피/세미나), 커뮤니티(공지/보도/대회/갤러리) 등 전 메뉴에 2단계 드롭다운 및 모바일 아코디언 메뉴 연동 완료.',
+      devReply: '✓ 구현 완료: Header.jsx 네비게이션 전면 개편. 교육원 소개, 교육과정(한식/풀패키지/창업/푸드테크), 조리명장(갤러리/레시피/세미나), 커뮤니티(공지/보도/대회/갤러리) 등 전 메뉴에 2단계 드롭다운 및 모바일 아코디언 메뉴 연동 완료.',
       comments: [],
     },
     {

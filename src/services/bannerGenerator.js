@@ -142,11 +142,11 @@ export const PRESET_THEMES = [
   },
   {
     id: 'new_course_launch',
-    name: '신규 융합 과정 론칭 (펫/푸드테크)',
+    name: '신규 융합 과정 론칭 (외식/푸드테크)',
     tag: '2026 신설과정',
     badgeText: '외식 트렌드를 선도하는 미래형 외식 창업 신규 자격 라인업',
-    title: '소믈리에 파티컨설턴트 & 펫푸드 창업 마스터 1·2급 정식 개강',
-    subtitle: '반려동물 1,500만 시대 블루오션! 휴먼그레이드 수제간식 매장 창업 A to Z',
+    title: '소믈리에 파티컨설턴트 & 푸드테크 창업 마스터 1·2급 정식 개강',
+    subtitle: '외식업의 미래를 준비하는 푸드테크와 전문 매장 창업 A to Z',
     dDay: '얼리버드 1기 모집',
     buttonText: '커리큘럼 상세 보기 >',
     palette: {
@@ -159,8 +159,8 @@ export const PRESET_THEMES = [
       borderStyle: 'border-2 border-[#C084FC]',
     },
     designGuide: {
-      mood: '트렌디하고 감각적인 최신 F&B 및 펫푸드 라이프스타일',
-      visualElements: '모던 와인잔 & 반려동물 친화적 일러스트 라인, 네온 하이라이트',
+      mood: '트렌디하고 감각적인 최신 F&B 및 푸드테크 라이프스타일',
+      visualElements: '모던 와인잔 & 외식 공간 일러스트 라인, 네온 하이라이트',
       typography: '감각적인 트렌드 서체와 널찍한 여백의 세련된 레이아웃',
     },
   },
@@ -210,7 +210,7 @@ export function generateCustomBanner(userPrompt) {
     matchedPreset = PRESET_THEMES[2];
   } else if (prompt.includes('대회') || prompt.includes('경연') || prompt.includes('상') || prompt.includes('축제')) {
     matchedPreset = PRESET_THEMES[3];
-  } else if (prompt.includes('펫') || prompt.includes('카페') || prompt.includes('와인') || prompt.includes('소믈리에') || prompt.includes('신설')) {
+  } else if (prompt.includes('카페') || prompt.includes('와인') || prompt.includes('소믈리에') || prompt.includes('신설')) {
     matchedPreset = PRESET_THEMES[4];
   } else if (prompt.includes('상권') || prompt.includes('컨설팅') || prompt.includes('진단') || prompt.includes('진익준') || prompt.includes('인테리어')) {
     matchedPreset = PRESET_THEMES[5];

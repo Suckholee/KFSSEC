@@ -1,6 +1,6 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Printer, MapPin } from 'lucide-react';
 import { useAdminEdit } from '../context/AdminEditContext';
 import EditableText from './Admin/InlineEditor/EditableText';
 
@@ -9,13 +9,11 @@ export default function Footer({ onTabChange, siteData = {} }) {
   const { siteDraft } = useAdminEdit();
   const currentSite = (siteDraft && Object.keys(siteDraft).length > 0) ? siteDraft : siteData;
   const info = currentSite?.institutionInfo || {};
-  const phone = info.phone || '010-7244-6796';
-  const email = info.email || 'contact@kfssec.or.kr';
+  const phone = info.officePhone || '02-512-2366';
+  const fax = info.officeFax || '02-512-4122';
   const corpName = info.corpName || '사단법인 한국외식창업교육원';
   const ceoName = info.ceoName || '안형상 이사장';
-  const establishedDate = info.establishedDate || '2022년 7월 29일';
-  const hours = info.operatingHours || '평일 09:00 - 18:00 (주말/공휴일 휴무)';
-  const address = info.headquartersAddress || '서울특별시 강남구 테헤란로 123 KFSSEC 빌딩 3-5층 (실습 및 검정 전용 교육장)';
+  const address = info.businessCardAddress || '서울시 강남구 영동대로 602, 6층 F11 (삼성동 미켈란 107)';
 
   return (
     <footer className="bg-[#0D1512] text-gray-300 text-sm border-t border-emerald-950 pt-12 pb-24 sm:pb-8 font-sans">
@@ -33,8 +31,8 @@ export default function Footer({ onTabChange, siteData = {} }) {
             </div>
             <p className="text-xs leading-relaxed text-gray-300 font-medium">
               {t("법인명: ")}<EditableText path="institutionInfo.corpName" value={corpName} /><br />
-              {t("대표자: ")}<EditableText path="institutionInfo.ceoName" value={ceoName} /> | {t("설립일: ")}<EditableText path="institutionInfo.establishedDate" value={establishedDate} /><br />
-              {t("분야: ")}<EditableText path="institutionInfo.field" value={info.field || "외식·펫 창업 실무 교육 및 전문 자격증 발급"} />
+              {t("대표자: ")}<EditableText path="institutionInfo.ceoName" value={ceoName} /><br />
+              <EditableText path="institutionInfo.chairmanCredentials" value={info.chairmanCredentials || "외식 경영학 박사 · 대한민국 외식명장 · 대한민국 조리기능장"} />
             </p>
             <button
               onClick={() => onTabChange?.('about', 'greetings')}
@@ -67,20 +65,16 @@ export default function Footer({ onTabChange, siteData = {} }) {
 
           {/* Col 3: Customer Service */}
           <div>
-            <h4 className="text-sm font-black text-white mb-3 tracking-tight">{t("고객센터 및 입학상담")}</h4>
+            <h4 className="text-sm font-black text-white mb-3 tracking-tight">{t("온라인 상담 및 교육원 연락처")}</h4>
             <div className="space-y-2.5 text-xs">
+              <button onClick={() => onTabChange?.('community', 'editor')} className="bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg px-4 py-2 font-bold">{t('1:1 온라인 상담 신청')}</button>
               <div className="flex items-center gap-2 text-white font-black text-base">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <EditableText path="institutionInfo.phone" value={phone} />
+                <EditableText path="institutionInfo.officePhone" value={phone} />
               </div>
-              <p className="text-gray-300 font-medium">
-                <EditableText path="institutionInfo.operatingHours" value={hours} />
-              </p>
               <div className="flex items-center gap-2 text-gray-300 font-medium pt-1">
-                <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="font-mono text-emerald-300">
-                  <EditableText path="institutionInfo.email" value={email} />
-                </span>
+                <Printer className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{t("팩스: ")}<EditableText path="institutionInfo.officeFax" value={fax} /></span>
               </div>
             </div>
           </div>
@@ -90,7 +84,7 @@ export default function Footer({ onTabChange, siteData = {} }) {
             <h4 className="text-sm font-black text-white mb-3 tracking-tight">{t("교육원 위치")}</h4>
             <div className="flex items-start gap-2 text-xs leading-relaxed text-gray-300 font-medium">
               <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <EditableText path="institutionInfo.headquartersAddress" multiline value={address} />
+              <EditableText path="institutionInfo.businessCardAddress" multiline value={address} />
             </div>
           </div>
 

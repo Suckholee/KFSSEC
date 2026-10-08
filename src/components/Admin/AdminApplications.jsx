@@ -15,8 +15,8 @@ export default function AdminApplications() {
     { id: 'CRS-002', title: '메뉴개발·원가관리 풀 패키지', categoryName: '풀 패키지', price: '980,000원' },
     { id: 'CRS-003', title: '매장운영·서비스 풀 패키지', categoryName: '풀 패키지', price: '950,000원' },
     { id: 'CRS-004', title: '외식마케팅·프랜차이즈 풀 패키지', categoryName: '풀 패키지', price: '1,100,000원' },
-    { id: 'CRS-005', title: '반려견 행동 이해·상담 입문', categoryName: '행동교정', price: '120,000원' },
-    { id: 'CRS-006', title: '반려동물 영양·식재료 기초', categoryName: '펫푸드', price: '120,000원' },
+    { id: 'CRS-005', title: '외식 서비스·고객 상담 입문', categoryName: '행동교정', price: '120,000원' },
+    { id: 'CRS-006', title: '외식 영양·식재료 기초', categoryName: '푸드테크', price: '120,000원' },
     { id: 'CRS-007', title: '창업기획·사업계획 수립 마스터', categoryName: '창업전략', price: '120,000원' },
     { id: 'CRS-008', title: '성공적인 카페 & 음료 매장 창업 마스터클래스', categoryName: '인기 클래스', price: '150,000원' },
   ];
@@ -39,8 +39,8 @@ export default function AdminApplications() {
       phone: '010-9281-3019',
       email: 'sujin.lee@naver.com',
       enrolledCourses: [
-        { courseId: 'CRS-006', courseTitle: '반려동물 영양·식재료 기초', categoryName: '펫푸드', price: '120,000원', enrolledDate: '2026-08-30', status: '상담대기' },
-        { courseId: 'CRS-005', courseTitle: '반려견 행동 이해·상담 입문', categoryName: '행동교정', price: '120,000원', enrolledDate: '2026-08-29', status: '결제완료' },
+        { courseId: 'CRS-006', courseTitle: '외식 영양·식재료 기초', categoryName: '푸드테크', price: '120,000원', enrolledDate: '2026-08-30', status: '상담대기' },
+        { courseId: 'CRS-005', courseTitle: '외식 서비스·고객 상담 입문', categoryName: '행동교정', price: '120,000원', enrolledDate: '2026-08-29', status: '결제완료' },
         { courseId: 'CRS-007', courseTitle: '창업기획·사업계획 수립 마스터', categoryName: '창업전략', price: '120,000원', enrolledDate: '2026-08-25', status: '수강중' },
       ],
     },
