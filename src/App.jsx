@@ -828,9 +828,8 @@ export default function App() {
       );
     }
     if (['members', 'users'].includes(subTab) || (subTab === 'reservations' && window.location.pathname.endsWith('/student_accounts'))) {
-      return <main className="min-h-screen bg-slate-50 px-4 py-8 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <a href="/" className="inline-block mb-6 text-sm font-bold text-emerald-800">← 홈페이지 관리로 돌아가기</a>
+      return <main className="min-h-screen bg-[#f1f5f9] p-4 sm:p-5">
+        <div className="w-full mx-auto">
           <AdminMembers />
         </div>
       </main>;
