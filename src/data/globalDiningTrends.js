@@ -3,6 +3,26 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5404",
+    "title": "한식의 날 첫걸음…K푸드, 이제 ‘음식’을 넘어 대한민국 대표 국가 브랜드로",
+    "summary": "우리 음식 한식이 단순한 전통음식을 넘어 대한민국을 대표하는 문화·산업·관광 자산으로 도약하기 위한 새로운 출발점을 맞는다. 올해 처음으로 ...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.08",
+    "imageUrl": "/images/trends/trend_5404.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/fe541bd22607e78c6fc98ac00c78e4838a3ef613.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5404&mcode=m247tk9"
+  },
+  {
+    "id": "5381",
+    "title": "야장에서 필코노미까지…가을 외식문화가 달라졌다",
+    "summary": "최근 외식업계에서 '야장'이 다시 주목받고 있다. 과거 포장마차와 노포를 중심으로 형성됐던 야장 문화가 젊은 세대를 중심으로 새로운 외식 트렌드...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.07",
+    "imageUrl": "/images/trends/trend_5381.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/67886c148c4416a4835bb8aae3f9220fa0343adc.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5381&mcode=m247tk9"
+  },
+  {
     "id": "5362",
     "title": "K-뷰티 넘어 K-푸드로…외국인 관광객 지갑 여는 ‘한국적인 것’의 진화",
     "summary": "한글과 태극기, 호랑이 등 한국을 상징하는 문화적 요소가 외국인 관광객을 사로잡는 새로운 소비 콘텐츠로 떠오르고 있다. 과거 외국인 관광객의 한국 여행...",
@@ -148,7 +168,7 @@ export const GLOBAL_DINING_TRENDS = [
     "summary": "K-푸드에 대한 세계적인 관심이 높아지는 가운데 농식품 기업의 글로벌 시장 진출에 필요한 투자와 수출, 유통을 한자리에서 연결하는 대규모 금융투자 행사가 열렸다.농림축산식품부는 9일 서울에서 농...",
     "author": "글로벌외식정보",
     "date": "2026.09.10",
-    "imageUrl": "/images/course_restaurant.jpg",
+    "imageUrl": "/images/trends/trend_5034.jpg",
     "remoteImageUrl": null,
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5034&mcode=m247tk9"
   },
@@ -161,26 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5032.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/7d5e030cef9115de6af5a4b2371f547dc0175b5d.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5032&mcode=m247tk9"
-  },
-  {
-    "id": "4975",
-    "title": "사람은 많았는데, 왜 가게를 접었을까",
-    "summary": "※ 이 글은 가상의 사례를 바탕으로 재구성한 글이다. 주말이면 주차장이 꽉 찼다.아이 손을 잡은 가족들이 입구로 들어왔...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.09.07",
-    "imageUrl": "/images/trends/trend_4975.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/febb56885e1065ecb56ac92d185d7bd5da19782f.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4975&mcode=m247tk9"
-  },
-  {
-    "id": "4969",
-    "title": "손님은 가게를 사랑했는데, 가게는 살아남지 못했다",
-    "summary": "얼마 전 SNS에서 한 음식점의 폐업 공지를 보았다.사장은 그동안 찾아준 손님들에게 감사의 인사를 남겼다. 오랫동안 버티...",
-    "author": "글로벌 외식정보=진익준 논설위워",
-    "date": "2026.09.05",
-    "imageUrl": "/images/trends/trend_4969.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/edea6033eab75452e8df9e51661ce75bf3206e41.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=4969&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.07'
+  lastUpdated: '2026.10.08'
 };
