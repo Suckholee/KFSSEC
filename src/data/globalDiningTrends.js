@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5421",
+    "title": "짙어가는 가을, 와인 향에 물드는 특별한 만남 BM’S BIZ SOCIETY 1기 4회차, 와인·발효·문화로 잇는 품격 있는 교류의 장",
+    "summary": "짙어가는 가을의 향기처럼 좋은 사람들의 인연도 한층 깊어지고 있다. 선릉의 맑은 가을밤, 와인 한 잔에 담긴 이야기와 배움이 사람과 사람을 잇고, 서로 다른 ...",
+    "author": "글로벌 외식정보= 발행인 안형상 대표기자",
+    "date": "2026.10.09",
+    "imageUrl": "/images/trends/trend_5421.jpg",
+    "remoteImageUrl": null,
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5421&mcode=m247tk9"
+  },
+  {
     "id": "5404",
     "title": "한식의 날 첫걸음…K푸드, 이제 ‘음식’을 넘어 대한민국 대표 국가 브랜드로",
     "summary": "우리 음식 한식이 단순한 전통음식을 넘어 대한민국을 대표하는 문화·산업·관광 자산으로 도약하기 위한 새로운 출발점을 맞는다. 올해 처음으로 ...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5034.jpg",
     "remoteImageUrl": null,
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5034&mcode=m247tk9"
-  },
-  {
-    "id": "5032",
-    "title": "손님을 늘리는 것보다 어려운 것은 없다",
-    "summary": "장사가 잘 안된다는 푸념을 들을 때마다 마주하는 광경이 있다. 대개는 머리를 감싸 쥔 사장님이 한숨을 푹 쉬며 묻는다. &l...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.09.09",
-    "imageUrl": "/images/trends/trend_5032.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/7d5e030cef9115de6af5a4b2371f547dc0175b5d.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5032&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.08'
+  lastUpdated: '2026.10.09'
 };
