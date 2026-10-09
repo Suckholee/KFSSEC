@@ -3,6 +3,26 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5430",
+    "title": "옆집이 잘돼서 내가 망한 걸까?",
+    "summary": "장사를 하다 보면 반갑지 않은 이웃이 생길 때가 있다.어느 날 가게 앞에 공사가 시작된다. 처음에는 무엇이 들어오는지 궁...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.09",
+    "imageUrl": "/images/trends/trend_5430.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/ad28065c0d247d6d03a0b45f1a70f73f432edb7f.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5430&mcode=m247tk9"
+  },
+  {
+    "id": "5428",
+    "title": "열심히 하는데 왜 장사가 안 될까?",
+    "summary": "1. 하루가 끝났는데 한 일이 보이지 않는다오전 8시 40분.박 사장은 가게 뒷문으로 들어왔다.아직 영업을 시작하려면 시간이 남아 있었다.그는 냉장고를 열어 ...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.09",
+    "imageUrl": "/images/trends/trend_5428.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/f1b28dccc1ac2b88480d95d33f06d297daf58f50.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5428&mcode=m247tk9"
+  },
+  {
     "id": "5421",
     "title": "짙어가는 가을, 와인 향에 물드는 특별한 만남 BM’S BIZ SOCIETY 1기 4회차, 와인·발효·문화로 잇는 품격 있는 교류의 장",
     "summary": "짙어가는 가을의 향기처럼 좋은 사람들의 인연도 한층 깊어지고 있다. 선릉의 맑은 가을밤, 와인 한 잔에 담긴 이야기와 배움이 사람과 사람을 잇고, 서로 다른 ...",
@@ -161,26 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5127.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/d478a21a284389c1ea0a44bd4b7d5db03e7efd24.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5127&mcode=m247tk9"
-  },
-  {
-    "id": "5079",
-    "title": "비엠스인터내셔날, 강남 ‘벨라몬테(Bella Monte)’에서 프리미엄 비즈니스 생태계 열다",
-    "summary": "㈜비엠스인터내셔날이 와인을 매개로 사람과 문화, 비즈니스를 연결하는 새로운 프리미엄 비즈니스 커뮤니티 생태계를 구축했다...",
-    "author": "글로벌 외식정보=안형상 기자",
-    "date": "2026.09.11",
-    "imageUrl": "/images/trends/trend_5079.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/a257d282b645663f57a5cf4c02f61f8018b7e566.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5079&mcode=m247tk9"
-  },
-  {
-    "id": "5034",
-    "title": "K-푸드 세계시장 진출에 투자금 수혈…농식품 금융투자 로드쇼에 300여명 집결",
-    "summary": "K-푸드에 대한 세계적인 관심이 높아지는 가운데 농식품 기업의 글로벌 시장 진출에 필요한 투자와 수출, 유통을 한자리에서 연결하는 대규모 금융투자 행사가 열렸다.농림축산식품부는 9일 서울에서 농...",
-    "author": "글로벌외식정보",
-    "date": "2026.09.10",
-    "imageUrl": "/images/trends/trend_5034.jpg",
-    "remoteImageUrl": null,
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5034&mcode=m247tk9"
   }
 ];
 
