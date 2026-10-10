@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5431",
+    "title": "손님이 많은 동네에서 왜 식당은 망할까?",
+    "summary": "아파트는 많은데 손님은 어디로 갔을까?어느 신도시의 중심상업지역.역에서 나오면 음식점 간판이 줄지어 보인다. 큰길 건...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.10",
+    "imageUrl": "/images/trends/trend_5431.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/396e5e4eb7da189d426cb5c620531dd580dbe73b.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5431&mcode=m247tk9"
+  },
+  {
     "id": "5430",
     "title": "옆집이 잘돼서 내가 망한 걸까?",
     "summary": "장사를 하다 보면 반갑지 않은 이웃이 생길 때가 있다.어느 날 가게 앞에 공사가 시작된다. 처음에는 무엇이 들어오는지 궁...",
@@ -25,11 +35,11 @@ export const GLOBAL_DINING_TRENDS = [
   {
     "id": "5421",
     "title": "짙어가는 가을, 와인 향에 물드는 특별한 만남 BM’S BIZ SOCIETY 1기 4회차, 와인·발효·문화로 잇는 품격 있는 교류의 장",
-    "summary": "짙어가는 가을의 향기처럼 좋은 사람들의 인연도 한층 깊어지고 있다. 선릉의 맑은 가을밤, 와인 한 잔에 담긴 이야기와 배움이 사람과 사람을 잇고, 서로 다른 ...",
+    "summary": "짙어가는 가을의 향기처럼 좋은 사람들의 인연도 한층 깊어졌다. 선릉의 맑은 가을밤, 와인 한 잔에 담긴 이야기와...",
     "author": "글로벌 외식정보= 발행인 안형상 대표기자",
     "date": "2026.10.09",
     "imageUrl": "/images/trends/trend_5421.jpg",
-    "remoteImageUrl": null,
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/02563a9f657961f285ee0189430253e0936a0795.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5421&mcode=m247tk9"
   },
   {
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5171.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/e399479acb675666f736b8d5d890831ba2096738.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5171&mcode=m247tk9"
-  },
-  {
-    "id": "5127",
-    "title": "폐업 신고",
-    "summary": "지하실의 냄새는 퀴퀴했다. 오래된 튀김 기름이 벽지 깊숙이 절여진 냄새, 그리고 가스 배관에서 미세하게 새어 나오는 도시가...",
-    "author": "글로벌 외식정보=진익준 작가",
-    "date": "2026.09.17",
-    "imageUrl": "/images/trends/trend_5127.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/d478a21a284389c1ea0a44bd4b7d5db03e7efd24.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5127&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.09'
+  lastUpdated: '2026.10.10'
 };
