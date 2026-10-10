@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5435",
+    "title": "가성비의 종말, 외식산업이 마주한 ‘신뢰비(信賴費)’의 시대",
+    "summary": "수저를 들기 전 지갑을 먼저 열어보게 되는 요즘이다. 환율은 1,500원 선을 위협하고, 식재료비와 에너지 비용은 고공행진을...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.10.10",
+    "imageUrl": "/images/trends/trend_5435.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/d068bfed2564ebcbc6ad63b59c5187793f9ee0c2.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5435&mcode=m247tk9"
+  },
+  {
     "id": "5431",
     "title": "손님이 많은 동네에서 왜 식당은 망할까?",
     "summary": "아파트는 많은데 손님은 어디로 갔을까?어느 신도시의 중심상업지역.역에서 나오면 음식점 간판이 줄지어 보인다. 큰길 건...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5172.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/a97240bdc8fd026736923ba03c0fdb0faf14c87e.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5172&mcode=m247tk9"
-  },
-  {
-    "id": "5171",
-    "title": "“와인 한 잔에 문화와 예술, 스포츠가 흐른다”… 비엠스 비즈 소사이어티, 사람과 사람을 잇는 특별한 비즈니스 플랫폼",
-    "summary": "와인을 중심으로 비즈니스와 문화, 예술, 스포츠 그리고 사람과 사람을 연결하는 새로운 비즈니스 커뮤니티가 주목받...",
-    "author": "글로벌외식정보｜발행인 안형상 기자",
-    "date": "2026.09.20",
-    "imageUrl": "/images/trends/trend_5171.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/e399479acb675666f736b8d5d890831ba2096738.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5171&mcode=m247tk9"
   }
 ];
 
