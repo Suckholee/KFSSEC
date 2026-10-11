@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5432",
+    "title": "매출은 20% 줄었는데 이익은 90% 사라졌다",
+    "summary": "손님이 조금 줄었을 뿐인데어느 음식점 사장님이 한숨을 쉬었다.\"매출이 좀 줄긴 했어요. 그래도 이 정도면 버틸 줄 알았죠...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.11",
+    "imageUrl": "/images/trends/trend_5432.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/f0f47e50dc8f469b837ce707163777827240b7f9.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5432&mcode=m247tk9"
+  },
+  {
     "id": "5435",
     "title": "가성비의 종말, 외식산업이 마주한 ‘신뢰비(信賴費)’의 시대",
     "summary": "수저를 들기 전 지갑을 먼저 열어보게 되는 요즘이다. 환율은 1,500원 선을 위협하고, 식재료비와 에너지 비용은 고공행진을...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5167.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/a97240bdc8fd026736923ba03c0fdb0faf14c87e.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5167&mcode=m247tk9"
-  },
-  {
-    "id": "5172",
-    "title": "매출이 떨어졌다면 매출부터 보지 마라",
-    "summary": "월요일 오전 10시. 아직 점심 영업을 시작하기 전인데 사장님의 표정은 이미 하루 장사를 끝낸 사람처럼 무거웠다. 테이블 위에는 지난달 POS 매출표가 놓여 있...",
-    "author": "글로벌외식정보",
-    "date": "2026.09.21",
-    "imageUrl": "/images/trends/trend_5172.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/a97240bdc8fd026736923ba03c0fdb0faf14c87e.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5172&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.10'
+  lastUpdated: '2026.10.11'
 };
