@@ -3,6 +3,26 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5440",
+    "title": "오르는 먹거리 가격, 소비자도 자영업자도 부담…외식물가 해법",
+    "summary": "먹거리 가격 부담이 소비자와 외식업계 모두의 과제로 떠오르고 있다. 식탁에 오르는 식재료부터 외식 메뉴까지 가격에 대한 관심이 커지면서 소비자는 한 끼 식사 비용을 따져 소비하고, 음식점은 원재...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.12",
+    "imageUrl": "/images/trends/trend_5440.jpg",
+    "remoteImageUrl": null,
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5440&mcode=m247tk9"
+  },
+  {
+    "id": "5438",
+    "title": "숙성의 미학, 세계의 미각을 사로잡다… 이병철사케, 하노이 넘어 수원으로",
+    "summary": "한 잔의 술에는 원료의 정성과 제조의 철학, 그리고 시간을 견뎌낸 깊이가 담긴다. 일본 사케의 전통적 가치를 바탕으로 독창적...",
+    "author": "글로벌 외식정보=안형상 기자",
+    "date": "2026.10.11",
+    "imageUrl": "/images/trends/trend_5438.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/ccc2fa127daf3d81e41ca3b59413f1368ec2261b.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5438&mcode=m247tk9"
+  },
+  {
     "id": "5432",
     "title": "매출은 20% 줄었는데 이익은 90% 사라졌다",
     "summary": "손님이 조금 줄었을 뿐인데어느 음식점 사장님이 한숨을 쉬었다.\"매출이 좀 줄긴 했어요. 그래도 이 정도면 버틸 줄 알았죠...",
@@ -161,26 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5281.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/6dfdebf26c0a5f60d184c874c1f874fad807eac1.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5281&mcode=m247tk9"
-  },
-  {
-    "id": "5170",
-    "title": "“농안법, 생산자·소비자 넘어 중소상인까지”…국회서 농수산물 유통혁신 해법 모색",
-    "summary": "생산자·소비자·소상공인·법제·유통 전문가가 한자리에 모여 현행 농안법의 한계를 진단하고, 실질적인 농수산물 유통 혁신 방안을 논의하는 국회 정책세미나가 성황리에 열렸다...",
-    "author": "글로벌 외식정보=발행인 안형상 대표기자",
-    "date": "2026.09.29",
-    "imageUrl": "/images/trends/trend_5170.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/9f349118a12635f6cea9c7cb5584d756de000e6f.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5170&mcode=m247tk9"
-  },
-  {
-    "id": "5167",
-    "title": "“농민에게는 판매선택권, 외식업 소상공인에게는 구매선택권을”…안형상 이사장, 국회서 농안법 개정 방향 제시",
-    "summary": "안형상 사단법인 한국외식창업교육원 이사장이 국회의원회관에서 열린 정책세미나에서 외식업 소상공인의 구매선택권 보장과 농안법 개정 7대 방향을 강력히 제안했다...",
-    "author": "글로벌 외식정보=조범진 기자",
-    "date": "2026.09.29",
-    "imageUrl": "/images/trends/trend_5167.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/a97240bdc8fd026736923ba03c0fdb0faf14c87e.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5167&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.11'
+  lastUpdated: '2026.10.12'
 };
