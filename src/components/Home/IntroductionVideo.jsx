@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const INTRO_VIDEO_URL = '/videos/chairman-promotional-smooth.mp4';
+const INTRO_VIDEO_URL = '/videos/kfssec-main-intro.mp4';
 
 export default function IntroductionVideo() {
   const videoRef = useRef(null);
@@ -56,7 +56,7 @@ export default function IntroductionVideo() {
       <img src="/images/logo-transparent.svg" alt="사단법인 한국외식창업교육원" className="w-48 sm:w-60 h-auto" />
       <div className="sm:text-right">
         <h2 className="text-lg sm:text-xl font-bold text-slate-900">외식 창업의 시작부터 성장까지</h2>
-        <p className="mt-1 text-sm text-slate-600">안형상 이사장과 함께하는 교육원 소개 · AI 영상 및 실제 현장 자료</p>
+        <p className="mt-1 text-sm text-slate-600">한국외식창업교육원의 교육과 창업 지원을 만나보세요.</p>
       </div>
     </div>
     <div className="relative max-w-[1456px] mx-auto overflow-hidden rounded-2xl sm:rounded-3xl bg-black shadow-xl">
@@ -64,7 +64,7 @@ export default function IntroductionVideo() {
         ref={videoRef}
         className="block w-full aspect-video object-contain"
         src={INTRO_VIDEO_URL}
-        aria-label="한국외식창업교육원 안형상 이사장 AI 인사 영상"
+        aria-label="한국외식창업교육원 소개 영상"
         loop playsInline controls preload="metadata"
         onPlay={() => { if (!visibleRef.current || document.hidden) videoRef.current?.pause(); else setBlocked(false); }}
         onError={() => setFailed(true)}
