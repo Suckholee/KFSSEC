@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.14'
+  lastUpdated: '2026.10.15'
 };
