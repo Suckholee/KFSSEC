@@ -1,4 +1,7 @@
+import { AWARD_CEREMONY_2026_POSTS } from './awardCeremony2026';
+
 export const DEFAULT_POSTS = [
+  ...AWARD_CEREMONY_2026_POSTS,
   {
     "id": "post-nongahn-20260918",
     "category": "공지 사항",

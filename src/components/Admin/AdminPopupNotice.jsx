@@ -17,19 +17,9 @@ import {
   Smartphone,
 } from 'lucide-react';
 import NoticePopupModal from '../common/NoticePopupModal';
+import { AWARD_CEREMONY_2026_POPUP } from '../../data/awardCeremony2026';
 
-const DEFAULT_POPUP_NOTICE = {
-  enabled: true,
-  title: '2026 대한민국 자랑스런 명인·명장 선정식',
-  imageUrl: '/images/popup_award_ceremony_2026.jpg',
-  linkUrl: '/gallery/ceremony',
-  linkText: '선정식 및 행사 상세 안내 바로가기',
-  linkTarget: '_self',
-  startDate: '2026-09-01',
-  endDate: '2026-10-31',
-  showOnMobile: true,
-  width: 440,
-};
+const DEFAULT_POPUP_NOTICE = AWARD_CEREMONY_2026_POPUP;
 
 export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
   const currentPopup = siteData?.popupNotice || DEFAULT_POPUP_NOTICE;
@@ -313,7 +303,7 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
                 </label>
                 <button
                   type="button"
-                  onClick={() => setImageUrl('/images/popup_award_ceremony_2026.jpg')}
+                  onClick={() => setImageUrl(DEFAULT_POPUP_NOTICE.imageUrl)}
                   className="text-[11px] text-emerald-700 font-bold hover:underline cursor-pointer flex items-center gap-1"
                 >
                   <span>🏆 선정식 공식 포스터로 초기화</span>
@@ -325,7 +315,7 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
                   type="text"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="/images/popup_award_ceremony_2026.jpg 또는 외부 이미지 URL"
+                  placeholder={`${DEFAULT_POPUP_NOTICE.imageUrl} 또는 외부 이미지 URL`}
                   className="flex-1 px-3.5 py-2 bg-gray-50 border border-gray-300 rounded-xl text-xs font-medium text-gray-800 focus:bg-white focus:ring-2 focus:ring-emerald-400"
                 />
                 <input

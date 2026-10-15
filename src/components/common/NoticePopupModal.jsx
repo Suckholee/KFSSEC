@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, ExternalLink, Calendar, CheckSquare, Square } from 'lucide-react';
+import { AWARD_CEREMONY_2026_POSTER } from '../../data/awardCeremony2026';
 
 export default function NoticePopupModal({ popupData, onNavigate }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -100,11 +101,14 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
       window.open(popupData.linkUrl, popupData.linkTarget || '_blank');
     } else {
       e.preventDefault();
-      // Internal route parsing (e.g. /gallery/ceremony -> tab: gallery, subTab: ceremony)
-      const cleanPath = popupData.linkUrl.replace(/^\//, '');
+      // Keep the post query separate from the route's sub-tab.
+      const destination = new URL(popupData.linkUrl, window.location.origin);
+      const cleanPath = destination.pathname.replace(/^\//, '');
       const [tab, subTab] = cleanPath.split('/');
       if (onNavigate && tab) {
         onNavigate(tab, subTab || null);
+        window.history.replaceState(null, '', destination.pathname + destination.search + destination.hash);
+        window.dispatchEvent(new PopStateEvent('popstate'));
         setIsOpen(false);
       } else {
         window.location.href = popupData.linkUrl;
@@ -156,7 +160,7 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
               title="클릭하여 상세 안내 바로가기"
             >
               <img
-                src={popupData.imageUrl || '/images/popup_award_ceremony_2026.jpg'}
+                src={popupData.imageUrl || AWARD_CEREMONY_2026_POSTER}
                 alt={popupData.title || '공지 팝업'}
                 className="w-full h-auto object-contain block transition-transform duration-300 group-hover:opacity-95"
               />
@@ -169,7 +173,7 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
             </a>
           ) : (
             <img
-              src={popupData.imageUrl || '/images/popup_award_ceremony_2026.jpg'}
+              src={popupData.imageUrl || AWARD_CEREMONY_2026_POSTER}
               alt={popupData.title || '공지 팝업'}
               className="w-full h-auto object-contain block"
             />

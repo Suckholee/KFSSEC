@@ -545,11 +545,11 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
 
             {/* Post Image */}
             {(selectedPost.image || selectedPost.coverImage) && (
-              <div className="rounded-2xl overflow-hidden max-h-64 shadow-md bg-black">
+              <div className={`rounded-2xl overflow-hidden shadow-md bg-black ${selectedPost.imageLayout === 'poster' ? '' : 'max-h-64'}`}>
                 <img
                   src={selectedPost.image || selectedPost.coverImage}
                   alt={tr(selectedPost.title)}
-                  className="w-full h-full object-cover"
+                  className={selectedPost.imageLayout === 'poster' ? 'w-full h-auto object-contain' : 'w-full h-full object-cover'}
                 />
               </div>
             )}

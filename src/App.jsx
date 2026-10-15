@@ -33,6 +33,7 @@ import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
 import { DEFAULT_POSTS } from './data/defaultPosts';
+import { AWARD_CEREMONY_2026_POPUP } from './data/awardCeremony2026';
 import { AdminEditProvider, useAdminEdit } from './context/AdminEditContext';
 import AdminLiveToolbar from './components/Admin/InlineEditor/AdminLiveToolbar';
 import SectorBlock from './components/Admin/InlineEditor/SectorBlock';
@@ -488,18 +489,7 @@ export default function App() {
   const DEFAULT_SITE_DATA = {
     partnerLogos: DEFAULT_PARTNER_LOGOS,
     institutionInfo: DEFAULT_INSTITUTION_INFO,
-    popupNotice: {
-      enabled: true,
-      title: '2026 대한민국 자랑스런 명인·명장 선정식',
-      imageUrl: '/images/popup_award_ceremony_2026.jpg',
-      linkUrl: '/gallery/ceremony',
-      linkText: '선정식 및 행사 상세 안내 바로가기',
-      linkTarget: '_self',
-      startDate: '2026-09-01',
-      endDate: '2026-10-31',
-      showOnMobile: true,
-      width: 440,
-    },
+    popupNotice: { ...AWARD_CEREMONY_2026_POPUP },
     youtube: {
       title: '한국외식창업교육원 미디어',
       subtitle: '사단법인 한국외식창업교육원의 주요 정기총회 현장 및 아시아창의방송 언론 보도 영상입니다.',
