@@ -1,3 +1,4 @@
+import { resolveFaculty } from './data/faculty';
 import IntroductionVideo from './components/Home/IntroductionVideo';
 import MemberRegistration from './components/MemberRegistration';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
@@ -563,6 +564,7 @@ export default function App() {
         buttonLink: 'community',
       },
     ],
+    faculty: resolveFaculty(),
     jinIkjun: {
       category: '외식경영 · 공간전략 전문가',
       headline: '외식 공간을 설계하고,\n경영의 방향을 제안합니다.',
@@ -629,6 +631,7 @@ export default function App() {
     return {
       ...DEFAULT_SITE_DATA,
       ...saved,
+      faculty: resolveFaculty(saved.faculty),
       institutionInfo,
       partnerLogos,
       youtube,

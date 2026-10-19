@@ -1,3 +1,4 @@
+import { resolveFaculty, PENDING_PORTRAIT } from '../../data/faculty';
 import React, { useState, useEffect } from 'react';
 import {
   Building2,
@@ -136,75 +137,7 @@ const DEFAULT_MILESTONES = [
   },
 ];
 
-const DEFAULT_FACULTY = [
-  {
-    id: 'prof-jin',
-    name: '진익준',
-    role: '외식 공간디자인 & 상권분석 전담교수',
-    title: '브랜드경험디자인연구소 대표 / 청운대학교 외식조리경영학과 겸임교수',
-    image: '/images/dir_1.jpg',
-    badge: '외식 상권 & 인테리어 석학',
-    badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
-    intro:
-      '단순한 미적 인테리어를 넘어, 데이터 기반 상권·입지 분석과 타겟 고객의 방문 맥락을 통합 설계하는 대한민국 대표 외식 공간 브랜딩 전문가입니다.',
-    highlights: [
-      '홍익대학교 건축도시대학원 실내설계 석사',
-      '세종대학교 일반대학원 조리·외식경영학 박사과정',
-      '청운대학교 외식조리경영학과 겸임교수',
-      '브랜드경험디자인연구소 대표',
-      '한국외식창업교육원 상권분석 및 공간기획 자문위원',
-    ],
-  },
-  {
-    id: 'prof-lee',
-    name: '이상정',
-    role: '서양조리 & 마스터클래스 석좌교수',
-    title: '대한민국 조리명장 제1호 / 호텔 조리부 총괄',
-    image: '/images/dir_2.jpg',
-    badge: '대한민국 조리명장 1호',
-    badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-    intro:
-      '대한민국 조리 분야 최초의 노동부 지정 조리명장으로서, 특급호텔 조리 현장 노하우와 서양조리의 정석을 후학들에게 도제식으로 전수합니다.',
-    highlights: [
-      '대한민국 조리명장 제1호 (노동부 지정)',
-      '특급호텔 조리부 총괄 역임',
-      '한국외식창업교육원 고문 및 명장 마스터클래스 주임교수',
-      '국가기술자격 조리기능장 출제 및 실기심사위원',
-    ],
-  },
-  {
-    id: 'prof-shin',
-    name: '신충섭',
-    role: '외식 정책 & 프랜차이즈 경영 자문위원',
-    title: '외식산업 산학협력 총괄 / 경영 정책 자문위원',
-    image: '/images/dir_3.jpg',
-    badge: '경영·정책 자문',
-    badgeColor: 'bg-blue-100 text-blue-900 border-blue-300',
-    intro:
-      '외식 프랜차이즈 시스템 구축과 정부지원 정책 연계, 소상공인 창업 리스크 관리를 지원하는 정책 자문 전문가입니다.',
-    highlights: [
-      '한국외식창업교육원 자문위원회 위원',
-      '외식산업 산학협력 네트워크 총괄',
-      '소상공인시장진흥공단 정책 자문위원',
-    ],
-  },
-  {
-    id: 'prof-cho',
-    name: '조춘봉',
-    role: '외식경영학 & 서비스 R&D 고문',
-    title: '관광호텔·외식경영학 석학 / 교육원 고문',
-    image: '/images/dir_4.jpg',
-    badge: '외식경영학 석학',
-    badgeColor: 'bg-purple-100 text-purple-900 border-purple-300',
-    intro:
-      '외식경영학 학문적 깊이와 고객 만족 서비스 전략을 결합하여, 지속 가능한 외식 비즈니스 모델을 제시합니다.',
-    highlights: [
-      '외식경영학 명예교수 / 관광외식학회 회장 역임',
-      '한국외식창업교육원 고문단',
-      '국내 주요 호텔 & 리조트 경영 자문',
-    ],
-  },
-];
+
 
 export default function AdminAbout({
   siteData = {},
@@ -243,7 +176,7 @@ export default function AdminAbout({
 
   // Faculty State
   const [faculty, setFaculty] = useState(() => {
-    return siteData?.faculty || DEFAULT_FACULTY;
+    return resolveFaculty(siteData?.faculty);
   });
 
   // Speech State
@@ -421,7 +354,7 @@ export default function AdminAbout({
     setFacultyRole('');
     setFacultyTitle('');
     setFacultyBadge('전문 교수진');
-    setFacultyImage('/images/dir_1.jpg');
+    setFacultyImage(PENDING_PORTRAIT);
     setFacultyIntro('');
     setFacultyHighlightsStr('');
     setIsFacultyModalOpen(true);
@@ -433,7 +366,7 @@ export default function AdminAbout({
     setFacultyRole(member.role);
     setFacultyTitle(member.title);
     setFacultyBadge(member.badge || '');
-    setFacultyImage(member.image || '/images/dir_1.jpg');
+    setFacultyImage(member.image || PENDING_PORTRAIT);
     setFacultyIntro(member.intro || '');
     setFacultyHighlightsStr((member.highlights || []).join('\n'));
     setIsFacultyModalOpen(true);
@@ -475,7 +408,7 @@ export default function AdminAbout({
         title: facultyTitle.trim(),
         badge: facultyBadge.trim() || '전문 교수진',
         badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-        image: facultyImage.trim() || '/images/dir_1.jpg',
+        image: facultyImage.trim() || PENDING_PORTRAIT,
         intro: facultyIntro.trim(),
         highlights: highlightsArr,
       };
@@ -686,11 +619,12 @@ export default function AdminAbout({
               >
                 <div className="flex items-start gap-4">
                   <img
-                    src={member.image || '/images/dir_1.jpg'}
+                    src={member.image || PENDING_PORTRAIT}
                     alt={member.name}
                     className="w-20 h-24 rounded-2xl object-cover border border-gray-200 shadow-xs shrink-0 bg-stone-100"
                     onError={(e) => {
-                      e.target.src = '/images/dir_1.jpg';
+                      e.target.onerror = null;
+                      e.target.src = PENDING_PORTRAIT;
                     }}
                   />
                   <div className="space-y-1">
