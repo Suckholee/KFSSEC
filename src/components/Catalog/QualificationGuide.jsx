@@ -5,6 +5,7 @@ import { qualificationCatalog, specialistQualifications } from '../../data/quali
 import { useAdminEdit } from '../../context/AdminEditContext';
 import EditableImage from '../Admin/InlineEditor/EditableImage';
 import EditableText from '../Admin/InlineEditor/EditableText';
+import QualificationFaqSection from './QualificationFaqSection';
 
 export function QualificationHighlights({ onExplore }) {
   const { tr, language } = useLanguage();
@@ -60,6 +61,6 @@ export default function QualificationGuide({ initialSelected = 'advisor', onGoTo
     </section>
     <section><h2 className="text-2xl font-black mb-5 text-gray-900">{tr("분야별 전문 자격")}</h2><div className="space-y-3">{specialistQualifications.map(item=><details key={item.name} className="bg-white border border-stone-200 rounded-2xl p-5 shadow-xs"><summary className="font-bold text-lg cursor-pointer text-gray-900">{tr(item.name)}</summary><p className="mt-4 text-gray-600 leading-relaxed">{tr(item.description)}</p><ul className="mt-4 space-y-2 text-sm leading-relaxed">{item.details.map(t=><li key={t} className="flex gap-2"><CheckCircle2 size={17} className="shrink-0 mt-1 text-[#15803D]"/>{tr(t)}</li>)}</ul></details>)}</div></section>
     <section className="bg-[#FAF8F5] border border-stone-200 rounded-2xl p-6 sm:p-8"><Award className="text-[#F97316] mb-3" size={32}/><h2 className="text-2xl font-black text-gray-900">{tr("자격증 발급 안내")}</h2><p className="mt-4 leading-relaxed text-gray-600">{tr("과정 이수 및 검정을 거쳐 상장형과 카드형 자격증을 발급합니다. 발급번호가 부여되며, 발급 절차와 비용은 교육원 상담을 통해 안내받으실 수 있습니다.")}</p><div className="grid sm:grid-cols-2 gap-4 mt-5">{['상장형 · 보관용 자격증','카드형 · 휴대용 자격증'].map(t=><div key={t} className="bg-white border border-stone-200 rounded-xl p-5 font-bold text-gray-800 shadow-xs">{tr(t)}</div>)}</div></section>
-    <section><h2 className="text-2xl font-black mb-5 text-gray-900">{tr("자주 묻는 질문")}</h2>{[['누가 지원할 수 있나요?','온라인 2급 과정은 만 17세 이상 지원 가능합니다. 전문 자격은 과정별 응시 요건을 확인해 주세요.'],['수강 기간은 얼마나 되나요?','온라인 2급 과정의 수강 기간은 4주 이내입니다. 학습 일정은 개인별로 달라질 수 있습니다.'],['어떻게 자격을 취득하나요?','교육원에서 과정과 응시 요건을 확인한 후 수강 및 검정 절차를 진행합니다. 출석 기준과 발급 비용은 신청 전 상담해 주세요.']].map(([title,answer])=><details key={title} className="border-b border-stone-200 py-5"><summary className="font-bold cursor-pointer text-gray-900">{tr(title)}</summary><p className="mt-4 text-gray-600 leading-relaxed">{tr(answer)}</p></details>)}</section>
+    <QualificationFaqSection />
   </div>;
 }
