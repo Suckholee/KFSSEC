@@ -3,10 +3,13 @@ import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import { MessageSquare, Bell, Image, Trophy, HelpCircle, PenSquare, Search, Eye, Calendar, User, ChevronRight, X, Lock, Pin, ShieldCheck, CheckCircle2, Clock, Send, FileText, Bot, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import ScrollReveal from '../common/ScrollReveal';
+import { useAdminEdit } from '../../context/AdminEditContext';
+import PostResourceTools from '../../content/PostResourceTools';
 import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 
 export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLoggedIn, onGoToEditor, postsList = [], setPostsList }) {
   const { tr, language } = useLanguage();
+  const { isEditMode } = useAdminEdit();
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPost, setSelectedPost] = useState(null);
@@ -14,13 +17,13 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
   useEffect(() => {
     const openLinkedPost = () => {
       const id = new URL(window.location.href).searchParams.get('post');
-      const post = postsList.find(item => String(item.id) === id && item.categoryType !== 'inquiry' && item.category !== '문의');
+      const post = postsList.find(item => String(item.id) === id && item.categoryType !== 'inquiry' && item.category !== '문의' && (isEditMode || item.visible !== false));
       if (post) setSelectedPost(post);
     };
     openLinkedPost();
     window.addEventListener('popstate', openLinkedPost);
     return () => window.removeEventListener('popstate', openLinkedPost);
-  }, [postsList]);
+  }, [postsList, isEditMode]);
 
   // Close post modal on Escape key press
   useEffect(() => {
@@ -148,6 +151,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
   // Filter & Sort Posts (Pinned posts first, then newest first)
   const filteredPosts = postsList
     .filter((post) => {
+      if (!isEditMode && post.visible === false) return false;
       const matchesTab =
         activeTab === 'all' ? true : post.categoryType === activeTab;
       const matchesSearch =
@@ -156,6 +160,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
       return matchesTab && matchesSearch;
     })
     .sort((a, b) => {
+      if (a.contentOrder != null || b.contentOrder != null) return (a.contentOrder ?? Number.MAX_SAFE_INTEGER) - (b.contentOrder ?? Number.MAX_SAFE_INTEGER);
       const aPinned = a.isPinned || a.category === '공지 사항';
       const bPinned = b.isPinned || b.category === '공지 사항';
       if (aPinned && !bPinned) return -1;
@@ -200,9 +205,10 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
             key={activeTab}
             className="flex-1 w-full space-y-6 min-w-0 animate-content-slide-up"
           >
+            {activeTab !== 'faq' && <PostResourceTools type={activeTab} label={activeTab === 'notice' ? '공지사항 목록' : activeTab === 'inquiry' ? '문의 목록' : '게시글 목록'} sectorId={activeTab === 'notice' ? 'S-COM-02' : activeTab === 'inquiry' ? 'S-COM-04' : 'S-COM-01'} />}
             <SectorBlock
               sectorId={activeTab === 'notice' ? 'S-COM-02' : activeTab === 'faq' ? 'S-COM-03' : activeTab === 'inquiry' ? 'S-COM-04' : 'S-COM-01'}
-              sectorName={activeTab === 'notice' ? '공식 공지사항' : activeTab === 'faq' ? '주요 문의 (FAQ 10문 10답)' : activeTab === 'inquiry' ? '1:1 온라인 문의 및 수강 상담' : '전체 게시글 & 공지사항'}
+              sectorName={activeTab === 'notice' ? '공식 공지사항' : activeTab === 'faq' ? '자주 묻는 질문·답변' : activeTab === 'inquiry' ? '1:1 온라인 문의 및 수강 상담' : '전체 게시글 & 공지사항'}
               pageKey="community"
             >
             <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-black shadow-lg space-y-6 w-full">
@@ -280,7 +286,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                     <div className="flex items-center gap-2">
                       <HelpCircle className="w-5 h-5 text-[#15803D]" />
                       <span className="text-sm font-black text-[#15803D]">
-                        자주 묻는 질문 10대 핵심 질의응답 & 진익준 교수 컨설팅 FAQ
+                        자주 묻는 질문 & 컨설팅 FAQ
                       </span>
                     </div>
                   </div>

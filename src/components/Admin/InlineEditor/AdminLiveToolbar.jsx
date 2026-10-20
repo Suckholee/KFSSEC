@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import DirectContentEditor from './DirectContentEditor';
+import ScopeInspector from './ScopeInspector';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import {
   Edit3,
@@ -76,6 +77,7 @@ export default function AdminLiveToolbar() {
   return (
     <>
     <DirectContentEditor />
+    <ScopeInspector />
     <aside
       ref={toolbarRef}
       aria-label="관리자 라이브 편집 툴바"
@@ -170,7 +172,7 @@ export default function AdminLiveToolbar() {
             </div>
           ) : (
             <span className="text-slate-300 text-xs hidden md:inline font-medium">
-              영역의 ‘내용 편집’을 누르거나 문구를 두 번 클릭해 수정하세요.
+              ‘이 영역 관리’로 범위를 선택하세요. 문구·사진을 클릭하면 연결된 편집기가 열립니다.
             </span>
           )}
         </div>

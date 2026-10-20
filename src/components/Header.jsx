@@ -229,6 +229,10 @@ export default function Header({
     <>
       <header
         ref={headerRef}
+        id="sector-S-GLOBAL-01"
+        data-editor-sector={isEdit ? 'S-GLOBAL-01' : undefined}
+        data-editor-name="상단 메뉴·로고"
+        data-editor-page="global"
         data-compact={compactHeader}
         style={{
           top: 'var(--admin-toolbar-height, 0px)',

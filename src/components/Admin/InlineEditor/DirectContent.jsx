@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useRef } from 'react';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import { useLanguage } from '../../../i18n/LanguageContext';
+import { useResourceItem } from '../../../content/useContentResource';
 import { contentRegistry, textRole, valueKey } from './directContentModel';
 
 // The native element and all event handlers remain intact. Visitors receive no
@@ -9,12 +10,13 @@ const DirectContent = forwardRef(function DirectContent({ as: Tag, contentId, ch
   const { siteDraft, isEditMode, showEditGuides } = useAdminEdit();
   const { language } = useLanguage();
   const elementRef = useRef(null);
+  const resourceItem = useResourceItem();
   const fields = [];
   const overrides = siteDraft?.contentOverrides || {};
   const bind = (slot, original, label, type = 'text') => {
     if (typeof original !== 'string' || !original.trim()) return original;
     const key = valueKey(contentId, slot, original, type === 'text' ? language : 'ko');
-    const value = Object.hasOwn(overrides, key) ? overrides[key] : original;
+    const value = !resourceItem && Object.hasOwn(overrides, key) ? overrides[key] : original;
     fields.push({ key, label, type, value, original });
     return value;
   };
@@ -55,14 +57,20 @@ const DirectContent = forwardRef(function DirectContent({ as: Tag, contentId, ch
   if (isEditMode && hasFields) {
     nextProps['data-direct-content'] = contentId;
     nextProps['data-content-role'] = fields[0].label;
-    if (showEditGuides && !props.title) nextProps.title = `${fields[0].label} 영역 · 두 번 클릭하거나 ‘내용 편집’에서 수정`;
+    if (showEditGuides && !props.title) nextProps.title = `${fields[0].label} 영역 · 클릭하여 관리 · 버튼·링크는 두 번 클릭`;
     nextProps['data-content-guides'] = showEditGuides ? 'true' : undefined;
-    nextProps.onDoubleClick = event => {
+    const openEditor = event => {
       props.onDoubleClick?.(event);
       if (event.defaultPrevented || event.target.closest('[data-direct-content]') !== event.currentTarget) return;
       event.preventDefault();
       event.stopPropagation();
-      window.dispatchEvent(new CustomEvent('kfssec:edit-content', { detail: { element: event.currentTarget } }));
+      if (resourceItem?.path) window.dispatchEvent(new CustomEvent('kfssec:manage-scope', { detail: resourceItem }));
+      else window.dispatchEvent(new CustomEvent('kfssec:edit-content', { detail: { element: event.currentTarget } }));
+    };
+    nextProps.onDoubleClick = openEditor;
+    nextProps.onClick = event => {
+      if (!event.target.closest('button,a,input,select,textarea,summary,[role=button],[data-content-editor-ui]')) openEditor(event);
+      else props.onClick?.(event);
     };
   }
   nextProps.ref = element => {

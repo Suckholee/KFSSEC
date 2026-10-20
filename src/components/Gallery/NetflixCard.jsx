@@ -94,7 +94,7 @@ export default function NetflixCard({
       </div>
 
       {/* Admin Action Pill (Hover Mode) */}
-      {isEditMode && isHovered && (
+      {isEditMode && (
         <div
           onClick={(e) => e.stopPropagation()}
           className="absolute top-2 right-2 z-40 flex items-center gap-1 bg-black/90 p-1 rounded border border-amber-500/70 shadow-xl"

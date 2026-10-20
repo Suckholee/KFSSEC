@@ -1,10 +1,11 @@
 import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { Award, ArrowRight } from 'lucide-react';
-import { specialistQualifications } from '../data/qualifications';
+import { specialistQualifications as DEFAULT_SPECIALIST_QUALIFICATIONS } from '../data/qualifications';
 
 export default function CategoryFocusSection({ onViewMoreClick }) {
   const { t } = useLanguage();
+  const specialistQualifications = DEFAULT_SPECIALIST_QUALIFICATIONS;
 
   return (
     <section className="py-12 lg:py-16 bg-[#FAF8F5] text-gray-900 border-b border-[#E7E2D8] font-sans">

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useAdminEdit } from '../../../context/AdminEditContext';
+import { selectScope, clearScope } from '../../../content/sectorModel';
 import { collectContentFields, contentRegistry, isAllowedContentUrl } from './directContentModel';
 
 export default function DirectContentEditor() {
@@ -23,6 +24,7 @@ export default function DirectContentEditor() {
         const keys = new Set((contentRegistry.get(element)?.fields || []).map(f => f.key));
         fields = fields.filter(f => keys.has(f.key));
       }
+      selectScope(element || (sectorId ? root : null));
       opener.current = document.activeElement;
       setSession({ fields, title: element ? element.dataset.contentRole : root?.dataset?.editorName || '현재 페이지 전체' });
       setDraft(Object.fromEntries(fields.map(field => [field.key, field.value])));
@@ -51,6 +53,7 @@ export default function DirectContentEditor() {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener('keydown', keys);
       opener.current?.focus?.();
+      clearScope();
     };
   }, [session]);
 

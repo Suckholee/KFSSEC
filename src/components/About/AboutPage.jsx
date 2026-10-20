@@ -328,13 +328,13 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
 
   return (
     <div className="bg-gray-50 min-h-screen py-6 font-sans text-gray-900">
-      
+
       {/* Full Width Widescreen Layout matching Header padding */}
       <div className="w-full px-6 sm:px-10 lg:px-14 space-y-6">
-        
+
         {/* Main Content Layout: Left SubSidebar + Right Main Content */}
         <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
-          
+
           {/* Left Vertical SubSidebar Menu */}
           <SubSidebar
             title={t("교육원 소개")}
@@ -349,14 +349,14 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
             key={activeTab}
             className="flex-1 w-full space-y-6 min-w-0 animate-content-slide-up"
           >
-            
+
             {/* SUB-TAB 1: 교육원 소개 & 12대 방향 */}
             {activeTab === 'greetings' && (
               <SectorBlock
                 sectorId="S-ABOUT-00"
                 sectorName="교육원 소개 & 12대 핵심 사업방향"
                 pageKey="about"
-                sectorList={ABOUT_SECTORS}
+
                 editContentLabel="🏛️ 교육원 공식 정보 & 12대 방향 관리"
                 onEditContent={() => setIsInstitutionModalOpen(true)}
                 customActions={[
@@ -367,7 +367,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
                 ]}
               >
                 <div className="space-y-8 animate-fadeIn w-full">
-                  
+
                   {/* Admin Quick Editor Header when Edit Mode is active */}
                   {isEditMode && (
                     <div className="bg-gradient-to-r from-[#1B5238] via-[#266847] to-[#34885E] text-white p-4 sm:p-5 rounded-2xl border border-[#85CFAB]/40 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -404,7 +404,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
                   <div className="relative bg-gradient-to-br from-[#14532D] via-[#15803D] to-[#16A34A] text-white rounded-3xl p-6 sm:p-8 border border-[#4ADE80]/30 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full overflow-hidden">
                     {/* Ambient Background Light Glow */}
                     <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-[#F97316]/15 rounded-full blur-3xl pointer-events-none" />
-                    
+
                     {/* Left Logo Card */}
                     <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-[#D0E7DA] flex items-center justify-center shadow-md">
                       <EditableImage
@@ -533,7 +533,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
 
             {/* SUB-TAB 2: 주요 연혁 */}
             {activeTab === 'history' && (
-              <SectorBlock sectorId="S-ABOUT-02" sectorName="교육원 설립 연혁" pageKey="about" sectorList={ABOUT_SECTORS}>
+              <SectorBlock sectorId="S-ABOUT-02" sectorName="교육원 설립 연혁" pageKey="about">
                 <HistorySection milestones={currentSite?.history || siteData?.history} />
               </SectorBlock>
             )}
@@ -544,7 +544,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
                 sectorId="S-ABOUT-01"
                 sectorName="이사장 인사말 및 연설문"
                 pageKey="about"
-                sectorList={ABOUT_SECTORS}
+
                 editContentLabel="✍️ 이사장 인사말 & 사진 전체 관리"
                 onEditContent={() => {
                   window.dispatchEvent(new CustomEvent('kfssec:open-speech-modal'));
@@ -564,21 +564,21 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
 
             {/* SUB-TAB 3: 이사장 프로필 & 약력 */}
             {activeTab === 'profile' && (
-              <SectorBlock sectorId="S-ABOUT-04" sectorName="이사장 프로필 & 주요 약력" pageKey="about" sectorList={ABOUT_SECTORS}>
+              <SectorBlock sectorId="S-ABOUT-04" sectorName="이사장 프로필 & 주요 약력" pageKey="about">
                 <GreetingsSection viewMode="profile" onNavigate={(tab, sub) => onTabChange?.(tab, sub)} />
               </SectorBlock>
             )}
 
             {/* SUB-TAB 4: 교수진 소개 */}
             {activeTab === 'faculty' && (
-              <SectorBlock sectorId="S-ABOUT-05" sectorName="교수진 및 자문위원" pageKey="about" sectorList={ABOUT_SECTORS}>
+              <SectorBlock sectorId="S-ABOUT-05" sectorName="교수진 및 자문위원" pageKey="about">
                 <FacultySection facultyList={currentSite?.faculty || siteData?.faculty} />
               </SectorBlock>
             )}
 
             {/* SUB-TAB 5: 조직도 */}
             {activeTab === 'organization' && (
-              <SectorBlock sectorId="S-ABOUT-06" sectorName="조직도 및 법인정보" pageKey="about" sectorList={ABOUT_SECTORS}>
+              <SectorBlock sectorId="S-ABOUT-06" sectorName="조직도 및 법인정보" pageKey="about">
                 <OrganizationSection />
               </SectorBlock>
             )}
@@ -659,7 +659,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
 
             {/* Modal Form Body */}
             <form onSubmit={handleSaveInstitutionModal} className="flex-1 overflow-y-auto p-6 space-y-6">
-              
+
               {/* TAB 1: INSTITUTION INFO */}
               {modalTab === 'info' && (
                 <div className="space-y-6">

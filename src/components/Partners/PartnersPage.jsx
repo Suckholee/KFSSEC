@@ -1,6 +1,7 @@
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
+import PostResourceTools from '../../content/PostResourceTools';
 import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 import { DEFAULT_PARTNER_LOGOS } from '../Home/PartnerMarqueeSection';
 import AdminPartnerLogos from '../Admin/AdminPartnerLogos';
@@ -122,9 +123,9 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
   }));
 
   // MOU Event Photos from draft or prop
-  const currentPosts = (postsDraft && postsDraft.length > 0) ? postsDraft : postsList;
+  const currentPosts = Array.isArray(postsDraft) ? postsDraft : postsList;
   const mouPhotos = currentPosts
-    .filter(post => post.category === '갤러리' && post.galleryCategory === 'partners' && (post.image || post.coverImage))
+    .filter(post => post.categoryType === 'gallery' && post.galleryCategory === 'partners' && (isEditMode || post.visible !== false) && (post.image || post.coverImage))
     .map(post => ({
       id: post.id,
       title: post.title,
@@ -411,6 +412,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
         </SectorBlock>
 
         {/* SECTION 2: MOU SIGNING PHOTOS */}
+        <PostResourceTools type="gallery" galleryCategory="partners" label="MOU 사진·기록 목록" sectorId="S-PART-02" />
         <SectorBlock
           sectorId="S-PART-02"
           sectorName="글로벌 외식 산업 협력 MOU"

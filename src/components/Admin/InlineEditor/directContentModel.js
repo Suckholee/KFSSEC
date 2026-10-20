@@ -47,7 +47,7 @@ export function collectContentFields(root = document) {
     if (!entry) return;
     const sector = element.closest('[data-editor-sector]');
     for (const field of entry.fields) {
-      if (seen.has(field.key)) continue;
+      if (seen.has(field.key) || (!field.onApply && element.closest('[data-resource-path]'))) continue;
       seen.add(field.key);
       const semantic = element.closest('h1,h2,h3,h4,h5,h6,button,a,li,dt,dd,p,label');
       const label = field.label === '문구·강조 표시' && semantic ? textRole(semantic.tagName.toLowerCase()) : field.label;

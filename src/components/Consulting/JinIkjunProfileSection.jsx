@@ -39,6 +39,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
     setActiveSubTab(tab);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
+  const consultingFaqs = [{"id": "consulting-faq-1", "question": "진익준 교수의 외식 컨설팅은 기존 컨설팅과 어떻게 다른가요?", "answer": "단순히 인테리어 디자인에만 치중하지 않습니다. 국내외 수많은 외식공간 설계·감리 경험과 학술적 연구를 바탕으로 [상권 분석 + 브랜드 입지 전략 + 효율적인 주방/매장 동선 시스템 + 공간 브랜딩] 을 종합적으로 기획하여 실질적인 매출 상승과 오퍼레이션 효율화를 이끌어내는 맞춤형 공간/경영 컨설팅을 제공합니다.", "visible": true}, {"id": "consulting-faq-2", "question": "신규 창업이 아닌, 기존에 운영 중인 매장의 리뉴얼이나 경영 개선도 컨설팅이 가능한가요?", "answer": "네, 가능합니다. 노후화되거나 효율이 떨어진 기존 매장의 동선 재배치, 주방 시스템 개선(푸드테크 적용 등), 브랜드 리뉴얼 컨설팅 을 전문적으로 진행합니다. 상권 환경과 고객 타겟 분석을 거쳐 최소 비용으로 최대 효과를 낼 수 있는 리모델링 및 경영 개선 방안을 제시해 드립니다.", "visible": true}, {"id": "consulting-faq-3", "question": "컨설팅 진행 절차와 신청 시 준비해야 할 자료는 무엇인가요?", "answer": "온라인/전화 문의 접수 후 사전 상담을 진행하며, 아래 항목을 미리 작성해 주시면 더욱 신속하고 정확한 진단이 가능합니다: 매장 입지(주소) 및 평수 현재(또는 예정) 메뉴 콘셉트 예산 범위 주요 고민사항 및 개선 희망 포인트 이후 사전 현장 조사 및 면담을 통해 단계별 컨설팅 범위와 일정을 확정하게 됩니다.", "visible": true}];
   const [refCategory, setRefCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showMoreEdu, setShowMoreEdu] = useState(false);
@@ -71,7 +72,8 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
     return matchCategory && matchQuery;
   });
 
-  const consultingFaculty = resolveFaculty(siteDraft?.faculty).map(member => ({
+  const facultyMembers = resolveFaculty();
+  const consultingFaculty = facultyMembers.map(member => ({
     ...member,
     hasReferences: member.id === 'prof-jin',
     referencesCount: references.length,
@@ -540,94 +542,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
             </p>
           </div>
 
-          {/* 3 FAQ Accordion / Cards */}
-          <div className="space-y-4">
-            {/* FAQ 1 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-stone-200 shadow-sm space-y-4 hover:border-[#1E5D3B] transition-colors">
-              <div className="flex items-start gap-4">
-                <span className="w-10 h-10 rounded-2xl bg-[#1E5D3B] text-white font-black text-base flex items-center justify-center shrink-0 shadow-md">
-                  Q1
-                </span>
-                <div className="space-y-1">
-                  <span className="text-xs font-black text-[#1E5D3B] bg-[#EAF6EE] px-2.5 py-0.5 rounded-md inline-block border border-[#A7F3D0]">
-                    차별화 경쟁력
-                  </span>
-                  <h4 className="text-base sm:text-lg font-black text-gray-950">
-                    진익준 교수의 외식 컨설팅은 기존 컨설팅과 어떻게 다른가요?
-                  </h4>
-                </div>
-              </div>
-              <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 flex items-start gap-3.5 ml-0 sm:ml-14">
-                <span className="w-7 h-7 rounded-xl bg-[#C5A059] text-gray-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
-                  A
-                </span>
-                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
-                  단순히 인테리어 디자인에만 치중하지 않습니다. 국내외 수많은 외식공간 설계·감리 경험과 학술적 연구를 바탕으로 <strong className="text-[#1E5D3B] font-black">[상권 분석 + 브랜드 입지 전략 + 효율적인 주방/매장 동선 시스템 + 공간 브랜딩]</strong>을 종합적으로 기획하여 실질적인 매출 상승과 오퍼레이션 효율화를 이끌어내는 맞춤형 공간/경영 컨설팅을 제공합니다.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ 2 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-stone-200 shadow-sm space-y-4 hover:border-[#1E5D3B] transition-colors">
-              <div className="flex items-start gap-4">
-                <span className="w-10 h-10 rounded-2xl bg-[#1E5D3B] text-white font-black text-base flex items-center justify-center shrink-0 shadow-md">
-                  Q2
-                </span>
-                <div className="space-y-1">
-                  <span className="text-xs font-black text-[#1E5D3B] bg-[#EAF6EE] px-2.5 py-0.5 rounded-md inline-block border border-[#A7F3D0]">
-                    기존 매장 리뉴얼
-                  </span>
-                  <h4 className="text-base sm:text-lg font-black text-gray-950">
-                    신규 창업이 아닌, 기존에 운영 중인 매장의 리뉴얼이나 경영 개선도 컨설팅이 가능한가요?
-                  </h4>
-                </div>
-              </div>
-              <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 flex items-start gap-3.5 ml-0 sm:ml-14">
-                <span className="w-7 h-7 rounded-xl bg-[#C5A059] text-gray-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
-                  A
-                </span>
-                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
-                  네, 가능합니다. 노후화되거나 효율이 떨어진 기존 매장의 <strong className="text-[#1E5D3B] font-black">동선 재배치, 주방 시스템 개선(푸드테크 적용 등), 브랜드 리뉴얼 컨설팅</strong>을 전문적으로 진행합니다. 상권 환경과 고객 타겟 분석을 거쳐 최소 비용으로 최대 효과를 낼 수 있는 리모델링 및 경영 개선 방안을 제시해 드립니다.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ 3 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-stone-200 shadow-sm space-y-4 hover:border-[#1E5D3B] transition-colors">
-              <div className="flex items-start gap-4">
-                <span className="w-10 h-10 rounded-2xl bg-[#1E5D3B] text-white font-black text-base flex items-center justify-center shrink-0 shadow-md">
-                  Q3
-                </span>
-                <div className="space-y-1">
-                  <span className="text-xs font-black text-[#1E5D3B] bg-[#EAF6EE] px-2.5 py-0.5 rounded-md inline-block border border-[#A7F3D0]">
-                    진행 절차 & 준비 자료
-                  </span>
-                  <h4 className="text-base sm:text-lg font-black text-gray-950">
-                    컨설팅 진행 절차와 신청 시 준비해야 할 자료는 무엇인가요?
-                  </h4>
-                </div>
-              </div>
-              <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 flex items-start gap-3.5 ml-0 sm:ml-14">
-                <span className="w-7 h-7 rounded-xl bg-[#C5A059] text-gray-950 font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
-                  A
-                </span>
-                <div className="space-y-2 text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
-                  <p>
-                    온라인/전화 문의 접수 후 사전 상담을 진행하며, 아래 항목을 미리 작성해 주시면 더욱 신속하고 정확한 진단이 가능합니다:
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 bg-white p-3.5 rounded-xl border border-stone-200 text-gray-900 font-bold">
-                    <li>매장 입지(주소) 및 평수</li>
-                    <li>현재(또는 예정) 메뉴 콘셉트</li>
-                    <li>예산 범위</li>
-                    <li>주요 고민사항 및 개선 희망 포인트</li>
-                  </ul>
-                  <p className="pt-1">
-                    이후 사전 현장 조사 및 면담을 통해 단계별 컨설팅 범위와 일정을 확정하게 됩니다.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div className="space-y-4">{consultingFaqs.map((item,index) => <details key={item.id} className="bg-white border rounded-2xl p-5"><summary className="font-bold cursor-pointer">{index+1}. {item.question}</summary><p className="mt-4 whitespace-pre-wrap leading-relaxed">{item.answer}</p></details>)}</div>
 
           {/* Bottom Lead Banner */}
           <div className="bg-stone-900 rounded-3xl p-8 sm:p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 border-2 border-[#C5A059]">

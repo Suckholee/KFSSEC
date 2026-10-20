@@ -1,28 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { saveSharedContent, readSharedContent } from '../services/contentApi.js';
+import { updateWithDefaults, sortedSectorIds } from '../content/resourceModel.js';
 
 const AdminEditContext = createContext(null);
-
-// Helper to set nested property by dot path (e.g., 'banner.title' or 'heroBanners.0.title')
-function setDeepValue(obj, path, value) {
-  if (!obj || typeof obj !== 'object') return obj;
-  const parts = path.split('.');
-  const next = Array.isArray(obj) ? [...obj] : { ...obj };
-  let current = next;
-
-  for (let i = 0; i < parts.length - 1; i++) {
-    const key = parts[i];
-    const rawChild = current[key];
-    const isArrayNext = !isNaN(Number(parts[i + 1]));
-    current[key] = rawChild && typeof rawChild === 'object'
-      ? (Array.isArray(rawChild) ? [...rawChild] : { ...rawChild })
-      : (isArrayNext ? [] : {});
-    current = current[key];
-  }
-
-  current[parts[parts.length - 1]] = value;
-  return next;
-}
 
 export function AdminEditProvider({
   children,
@@ -106,7 +86,7 @@ export function AdminEditProvider({
   }, [resolvedSiteData]);
 
   useEffect(() => {
-    if (resolvedPostsList && resolvedPostsList.length > 0) {
+    if (Array.isArray(resolvedPostsList)) {
       setSavedSnapshot(prev => ({ ...prev, posts: resolvedPostsList }));
       setPendingChanges(currentPending => {
         if (!currentPending.posts) {
@@ -130,7 +110,7 @@ export function AdminEditProvider({
   // Update a field in siteData
   const updateSiteField = useCallback((path, value) => {
     setSiteDraft(prev => {
-      const next = setDeepValue(prev, path, value);
+      const next = updateWithDefaults(prev, path, value);
       return next;
     });
     setPendingChanges(prev => ({
@@ -167,10 +147,10 @@ export function AdminEditProvider({
   }, []);
 
   // Sector Visibility & Order controls
-  const toggleSectorVisibility = useCallback((pageKey, sectorId) => {
+  const toggleSectorVisibility = useCallback((pageKey, sectorId, defaultVisible = true) => {
     setSectorSettings(prev => {
       const pageSectors = prev[pageKey] || {};
-      const currentVal = pageSectors[sectorId]?.visible !== false;
+      const currentVal = pageSectors[sectorId]?.visible ?? defaultVisible;
       const next = {
         ...prev,
         [pageKey]: {
@@ -189,14 +169,15 @@ export function AdminEditProvider({
   }, []);
 
   const moveSector = useCallback((pageKey, sectorList, sectorId, direction) => {
-    const currentIndex = sectorList.findIndex(s => s.id === sectorId);
+    const sorted = sortedSectorIds(sectorList.map(s => s.id), sectorSettings[pageKey] || {});
+    const currentIndex = sorted.indexOf(sectorId);
     if (currentIndex < 0) return;
     const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
     if (targetIndex < 0 || targetIndex >= sectorList.length) return;
 
     setSectorSettings(prev => {
       const pageSectors = prev[pageKey] || {};
-      const newOrderList = [...sectorList];
+      const newOrderList = sorted.map(id => sectorList.find(sector => sector.id === id));
       const [moved] = newOrderList.splice(currentIndex, 1);
       newOrderList.splice(targetIndex, 0, moved);
 
@@ -216,7 +197,7 @@ export function AdminEditProvider({
       return next;
     });
     setPendingChanges(prev => ({ ...prev, site: true, count: prev.count + 1 }));
-  }, []);
+  }, [sectorSettings]);
 
   // Save All Changes to Supabase
   const saveAllChanges = useCallback(async () => {
@@ -226,12 +207,12 @@ export function AdminEditProvider({
       if (pendingChanges.site || JSON.stringify(siteDraft) !== JSON.stringify(savedSnapshot.site)) {
         const payload = { ...siteDraft, sectorSettings };
         const saved = await saveSharedContent('site', payload);
-        if (onUpdateSiteData) onUpdateSiteData(saved);
+        if (onUpdateSiteData) await onUpdateSiteData(saved);
         setSavedSnapshot(prev => ({ ...prev, site: saved }));
       }
       if (pendingChanges.posts || JSON.stringify(postsDraft) !== JSON.stringify(savedSnapshot.posts)) {
         const saved = await saveSharedContent('posts', postsDraft);
-        if (onUpdatePostsList) onUpdatePostsList(saved);
+        if (onUpdatePostsList) await onUpdatePostsList(saved);
         setSavedSnapshot(prev => ({ ...prev, posts: saved }));
       }
       setPendingChanges({ site: false, posts: false, count: 0 });
@@ -256,7 +237,7 @@ export function AdminEditProvider({
 
   const value = useMemo(() => ({
     isAdmin,
-    isEditMode: isAdmin && isEditMode && !isPreviewMode,
+    isEditMode: isAdmin && isEditMode && !isPreviewMode && !isSaving,
     rawEditMode: isEditMode,
     setIsEditMode,
     isPreviewMode,

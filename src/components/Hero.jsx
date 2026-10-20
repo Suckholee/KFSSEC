@@ -60,11 +60,10 @@ export default function Hero({
   const { t, language } = useLanguage();
   const { isEditMode, siteDraft, updateSiteField, updateSiteDraft } = useAdminEdit();
 
-  const currentHeroBanners = (siteDraft?.heroBanners && siteDraft.heroBanners.length > 0)
-    ? siteDraft.heroBanners
-    : (heroBanners && heroBanners.length > 0 ? heroBanners : DEFAULT_HERO_BANNERS);
+  const currentHeroBanners = DEFAULT_HERO_BANNERS;
 
-  const banners = currentHeroBanners.filter((b) => b.active !== false);
+  const resourceBanners = currentHeroBanners;
+  const banners = resourceBanners.filter((b) => b.active !== false);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -134,6 +133,8 @@ export default function Hero({
       onExploreClick?.();
     }
   };
+
+  if (!banners.length) return isEditMode ? <p className="p-8 text-center">등록된 배너가 없습니다. ‘이 영역 관리’에서 배너를 추가하세요.</p> : null;
 
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#F0FDF4] via-[#F8FAF9] to-white text-stone-900 border-b border-[#DCFCE7] shadow-xs">

@@ -19,7 +19,7 @@ import { DEFAULT_PARTNER_LOGOS } from '../Home/PartnerMarqueeSection';
 
 export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLogos }) {
   const hydrateLogos = (raw) => {
-    const base = raw && raw.length > 0 ? raw : DEFAULT_PARTNER_LOGOS;
+    const base = Array.isArray(raw) ? raw : DEFAULT_PARTNER_LOGOS;
     return base.map((item) => {
       if (!item.image) {
         const def = DEFAULT_PARTNER_LOGOS.find((d) => d.id === item.id || d.name === item.name);
@@ -36,7 +36,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
 
   // Sync state if partnerLogos prop updates
   React.useEffect(() => {
-    if (partnerLogos && partnerLogos.length > 0) {
+    if (Array.isArray(partnerLogos)) {
       setList(hydrateLogos(partnerLogos));
     }
   }, [partnerLogos]);

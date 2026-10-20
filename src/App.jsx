@@ -1,3 +1,4 @@
+import PostResourceTools from './content/PostResourceTools';
 import { resolveFaculty } from './data/faculty';
 import IntroductionVideo from './components/Home/IntroductionVideo';
 import MemberRegistration from './components/MemberRegistration';
@@ -35,6 +36,7 @@ import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
 import { DEFAULT_POSTS } from './data/defaultPosts';
 import { AWARD_CEREMONY_2026_POPUP } from './data/awardCeremony2026';
+import SectorOrder from './components/Admin/InlineEditor/SectorOrder';
 import { AdminEditProvider, useAdminEdit } from './context/AdminEditContext';
 import AdminLiveToolbar from './components/Admin/InlineEditor/AdminLiveToolbar';
 import SectorBlock from './components/Admin/InlineEditor/SectorBlock';
@@ -55,9 +57,9 @@ function MainLayout({ children }) {
 }
 
 // Temporarily hide the home discipline tracks; keep the section available for later.
-const SHOW_HOME_DISCIPLINE_TRACKS = false;
+const SHOW_HOME_DISCIPLINE_TRACKS = true;
 // Keep the media section available to restore later.
-const SHOW_HOME_YOUTUBE_MEDIA = false;
+const SHOW_HOME_YOUTUBE_MEDIA = true;
 
 const HOME_SECTORS = [
   { id: 'S-HOME-INTRO', name: '교육원 소개영상' },
@@ -192,14 +194,14 @@ function AppInner({
   isPaymentGuideOpen,
   setIsPaymentGuideOpen,
 }) {
-  const { siteDraft, postsDraft, isAdmin, setDrawerTab, setIsDrawerOpen } = useAdminEdit();
+  const { siteDraft, postsDraft, isAdmin, setDrawerTab, setIsDrawerOpen, updatePostsDraft } = useAdminEdit();
   useEffect(() => {
     if (isAdmin && activeTab === 'admin' && ['users', 'reservations'].includes(subTab)) {
       setDrawerTab('members'); setIsDrawerOpen(true);
     }
   }, [isAdmin, activeTab, subTab, setDrawerTab, setIsDrawerOpen]);
   const currentSite = (siteDraft && Object.keys(siteDraft).length > 0) ? siteDraft : siteData;
-  const currentPosts = (postsDraft && postsDraft.length > 0) ? postsDraft : postsList;
+  const currentPosts = Array.isArray(postsDraft) ? postsDraft : postsList;
 
   return (
     <>
@@ -227,7 +229,7 @@ function AppInner({
         <main className="flex-1">
           <div key={activeTab} className="animate-page-enter">
             {(activeTab === 'home' || activeTab === 'admin') && (
-            <div className="space-y-0">
+            <SectorOrder pageKey="home" className="space-y-0">
               <SectorBlock sectorId="S-HOME-INTRO" sectorName="교육원 소개영상" sectorList={HOME_SECTORS}>
                 <IntroductionVideo />
               </SectorBlock>
@@ -250,6 +252,7 @@ function AppInner({
               </SectorBlock>
 
               {SHOW_HOME_YOUTUBE_MEDIA && <SectorBlock
+                defaultVisible={false}
                 sectorId="S-HOME-08"
                 sectorName="공식 유튜브 미디어"
                 sectorList={HOME_SECTORS}
@@ -276,9 +279,10 @@ function AppInner({
                 sectorId="S-HOME-07"
                 sectorName="교육원 주요 소식 & 공지"
                 sectorList={HOME_SECTORS}
-                editContentLabel="📝 1:1 문의 및 신청 내역 확인"
-                onEditContent={() => handleTabChange('community', 'inquiry')}
+                editContentLabel="공지사항 원본 관리"
+                onEditContent={() => handleTabChange('community', 'notice')}
               >
+                <PostResourceTools type="all" label="교육원 소식 원본 목록" sectorId="S-HOME-07" />
                 <NoticePostSection
                   postsList={currentPosts}
                   onViewAll={() => handleTabChange('community', 'notice')}
@@ -301,12 +305,13 @@ function AppInner({
                 <NetflixCoursesSection onSelectCourse={() => handleTabChange('catalog', 'courses')} />
               </SectorBlock>
 
-              <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS}>
+              <SectorBlock sectorId="S-HOME-06" sectorName="공식 제휴 & 파트너사 로고" sectorList={HOME_SECTORS} editContentLabel="협력사 로고 원본 관리" onEditContent={() => handleTabChange('partners', 'all')}>
                 <PartnerMarqueeSection partnerLogos={currentSite.partnerLogos} />
               </SectorBlock>
 
               {SHOW_HOME_DISCIPLINE_TRACKS && (
               <SectorBlock
+                defaultVisible={false}
                 sectorId="S-HOME-05"
                 sectorName="자격증·실무 과정 카테고리"
                 sectorList={HOME_SECTORS}
@@ -327,7 +332,7 @@ function AppInner({
                 <CategoryFocusSection onViewMoreClick={() => handleTabChange('catalog', 'guide')} />
               </SectorBlock>
 
-            </div>
+            </SectorOrder>
           )}
 
           {activeTab === 'about' && (
@@ -377,7 +382,7 @@ function AppInner({
               onGoToEditor={() => handleTabChange('community', 'editor')}
               onNavigate={handleTabChange}
               postsList={currentPosts}
-              setPostsList={undefined}
+              setPostsList={updatePostsDraft}
             />
           )}
 
@@ -405,6 +410,7 @@ function AppInner({
 
         {/* Footer Component wrapped in SectorBlock for unified context editing */}
         <SectorBlock
+          pageKey="global"
           sectorId="S-GLOBAL-02"
           sectorName="하단 푸터 & 법인 정보"
           editContentLabel="🏢 법인 연락처/사업자정보 수정"
@@ -846,8 +852,8 @@ export default function App() {
     <AdminEditProvider
       initialSiteData={siteData}
       initialPostsList={postsList}
-      onUpdateSiteData={handleUpdateSiteData}
-      onUpdatePostsList={handleUpdatePostsList}
+      onUpdateSiteData={saved => setSiteData(mergeSiteData(saved))}
+      onUpdatePostsList={setPostsList}
       adminAuth={adminAuth}
       onLogout={handleLogout}
     >

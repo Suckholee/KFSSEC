@@ -133,11 +133,9 @@ function pendingList(value) {
 
 // Apply the requested order to saved content too, preserving custom profiles and photos.
 export function resolveFaculty(saved) {
-  const members = Array.isArray(saved) && saved.length ? saved.filter(Boolean) : DEFAULT_FACULTY;
+  const members = Array.isArray(saved) ? saved.filter(Boolean) : DEFAULT_FACULTY;
   const roster = [...members];
-  if (!roster.some(member => member.id === jooJeongja.id || member.name === jooJeongja.name)) {
-    roster.push(jooJeongja);
-  }
+
 
   return roster.map(member => {
     const profile = DEFAULT_FACULTY.find(item => item.id === member.id || item.name === member.name);
@@ -155,5 +153,5 @@ export function resolveFaculty(saved) {
       specialties: pendingList(member.specialties),
       publications: pendingList(member.publications),
     };
-  }).sort((a, b) => rank(a.name) - rank(b.name));
+  });
 }

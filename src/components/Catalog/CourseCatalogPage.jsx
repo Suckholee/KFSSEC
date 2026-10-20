@@ -119,7 +119,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses', onGoToCon
         </SectorBlock>
       )}
       {(subTab === 'schedule' || subTab === 'exam_schedule') && (
-        <SectorBlock sectorId={subTab === 'schedule' ? 'S-CAT-03' : 'S-CAT-05'} sectorName={subTab === 'schedule' ? '교육 및 개강 접수 일정' : '자격 검정 시험 일정'} pageKey="catalog">
+        <SectorBlock sectorId={subTab === 'schedule' ? 'S-CAT-03' : 'S-CAT-05'} sectorName={subTab === 'schedule' ? '교육 및 개강 접수 일정' : '자격 검정 시험 일정'} pageKey="catalog" onEditContent={() => setIsCoursesAdminOpen(true)} editContentLabel="일정 원본 과정 관리 (시작일·시험일)">
           <section>
             <h1 className="text-3xl font-black mb-6">{tr(subTab === 'schedule' ? '교육 일정' : '시험 일정')}</h1>
             {dates.length ? (

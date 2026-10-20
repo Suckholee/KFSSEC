@@ -1,3 +1,4 @@
+import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   MessageSquare,
@@ -242,7 +243,7 @@ export default function AiAssistantPage({ onNavigate, postsList = [], siteData }
   ];
 
   return (
-    <div className="w-full bg-[#F8FAFC] flex flex-col font-sans text-gray-900 border-b border-stone-200">
+    <SectorBlock sectorId="S-AI-01" sectorName="AI 상담 안내·설정" pageKey="ai-assistant" onEditContent={() => window.location.assign('/admin/inquiries/chatbot_settings')} editContentLabel="AI 상담 원본 설정 관리"><div className="w-full bg-[#F8FAFC] flex flex-col font-sans text-gray-900 border-b border-stone-200">
       
       {/* Mobile Top Navigation Tabs */}
       <div className="lg:hidden flex items-center justify-around bg-slate-900 text-white border-b border-slate-800 text-xs font-bold py-2.5 px-2">
@@ -738,6 +739,6 @@ export default function AiAssistantPage({ onNavigate, postsList = [], siteData }
           </div>
         </aside>
       </div>
-    </div>
+    </div></SectorBlock>
   );
 }

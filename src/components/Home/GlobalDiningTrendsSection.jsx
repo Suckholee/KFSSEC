@@ -29,7 +29,8 @@ export default function GlobalDiningTrendsSection() {
     { id: 'story', label: '현장 스토리 & 인터뷰' },
   ];
 
-  const filteredArticles = GLOBAL_DINING_TRENDS.filter((item) => {
+  const articles = GLOBAL_DINING_TRENDS;
+  const filteredArticles = articles.filter((item) => {
     if (activeCategory === 'column') {
       return item.title.includes('칼럼') || item.author.includes('논설') || item.author.includes('작가');
     }

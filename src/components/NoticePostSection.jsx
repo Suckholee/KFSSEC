@@ -1,3 +1,4 @@
+import { useAdminEdit } from '../context/AdminEditContext';
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
@@ -25,6 +26,7 @@ export default function NoticePostSection({
   onSelectPost,
 }) {
   const { t } = useLanguage();
+  const { isEditMode } = useAdminEdit();
   const [activeCategory, setActiveCategory] = useState('all');
   const [direction, setDirection] = useState('left'); // 'left' is default (flows right-to-left: 오른쪽에서 왼쪽으로 흐름)
   const [isPlaying, setIsPlaying] = useState(true);
@@ -49,7 +51,7 @@ export default function NoticePostSection({
   ];
 
   // Base list of announcements and posts: include all official notices, press news, and MOU partnerships!
-  const rawPosts = postsList.filter((post) => Boolean(post.title));
+  const rawPosts = postsList.filter((post) => Boolean(post.title) && post.categoryType !== 'inquiry' && (isEditMode || post.visible !== false));
 
   const filteredPosts = rawPosts.filter((item) => {
     if (activeCategory === 'notice') {

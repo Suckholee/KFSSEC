@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useAdminEdit } from '../../context/AdminEditContext';
+import PostResourceTools from '../../content/PostResourceTools';
 import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 import { Search, Plus, Grid, List, ChevronRight, X } from 'lucide-react';
 import NetflixCard from './NetflixCard';
@@ -61,50 +62,14 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
     [t]
   );
 
-  // Resolve current posts list and safely merge with default gallery posts so no category is ever empty
-  const currentPosts = postsDraft && postsDraft.length > 0 ? postsDraft : postsList;
+  // Explicit saved lists, including empty lists, are authoritative.
+  const currentPosts = Array.isArray(postsDraft) ? postsDraft : postsList;
 
   const galleryItems = useMemo(() => {
-    const rawList = currentPosts && currentPosts.length > 0 ? currentPosts : DEFAULT_POSTS;
-    const activeGallery = rawList.filter((post) => post.categoryType === 'gallery');
+    const rawList = Array.isArray(currentPosts) ? currentPosts : DEFAULT_POSTS;
+    const activeGallery = rawList.filter((post) => post.categoryType === 'gallery' && (isEditMode || post.visible !== false));
 
-    // Guarantee rich posts from DEFAULT_POSTS are present for all categories
-    const defaultGallery = DEFAULT_POSTS.filter((post) => post.categoryType === 'gallery');
-    const existingIds = new Set(activeGallery.map((p) => p.id));
-    const mergedList = [...activeGallery];
-    for (const defPost of defaultGallery) {
-      if (!existingIds.has(defPost.id)) {
-        mergedList.push(defPost);
-      }
-    }
-
-    // Refresh stock demo media already saved in shared content, preserving uploaded photos.
-    const legacyDemoImages = new Set(["/images/behavior_card_2.jpg", "/images/behavior_card_3.jpg", "/images/chef_tossing_food.jpg", "/images/course_cafe.jpg", "/images/course_delivery.jpg", "/images/course_menu_dev.jpg", "/images/course_net_4.jpg", "/images/course_restaurant.jpg", "/images/master_focus_1.jpg", "/images/master_focus_2.jpg", "/images/master_focus_3.jpg", "/images/startup_focus_2.jpg"]);
-    return mergedList.map((originalPost) => {
-      const replacement = defaultGallery.find(item => item.id === originalPost.id && item.isDemo);
-      const existingMedia = [originalPost.image, originalPost.coverImage, ...(originalPost.images || [])].filter(Boolean);
-      const post = replacement && originalPost.isDemo && existingMedia.every(src => legacyDemoImages.has(src))
-        ? { ...originalPost, image: replacement.image, coverImage: replacement.coverImage, images: replacement.images }
-        : originalPost;
-      const foodReplacement = {
-        '/images/master_focus_1.jpg': '/images/dir_12.jpg',
-        '/images/master_focus_2.jpg': '/images/course_menu_dev.jpg',
-        '/images/master_focus_3.jpg': '/images/dir_9.jpg',
-        '/images/dir_1.jpg': '/images/course_delivery.jpg',
-        '/images/dir_2.jpg': '/images/course_menu_dev.jpg',
-        '/images/dir_6.jpg': '/images/dir_9.jpg',
-        '/images/behavior_card_2.jpg': '/images/course_menu_dev.jpg',
-        '/images/behavior_card_3.jpg': '/images/dir_9.jpg',
-        '/images/startup_focus_1.jpg': '/images/dir_12.jpg',
-        '/images/startup_focus_2.jpg': '/images/course_menu_dev.jpg',
-        '/images/startup_focus_3.jpg': '/images/dir_9.jpg',
-        '/images/course_net_1.jpg': '/images/course_delivery.jpg',
-        '/images/course_net_2.jpg': '/images/dir_12.jpg',
-        '/images/course_net_3.jpg': '/images/dir_9.jpg',
-        '/images/course_net_4.jpg': '/images/course_menu_dev.jpg',
-        '/images/course_net_5.jpg': '/images/course_cafe.jpg',
-      };
-      const foodImage = src => foodReplacement[src] || src;
+    return activeGallery.map((post) => {
       const postImages =
         Array.isArray(post.images) && post.images.length > 0
           ? post.images
@@ -122,14 +87,14 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
         title: post.title,
         date: post.date || '',
         location: post.location || '',
-        image: foodImage(coverImage),
-        images: postImages.map(foodImage),
+        image: coverImage,
+        images: postImages,
         desc: post.content || '',
         isPinned: Boolean(post.isPinned),
         rawPost: post,
       };
     });
-  }, [currentPosts, galleryCategories]);
+  }, [currentPosts, galleryCategories, isEditMode]);
 
   // Filtering by category and search keyword
   const filteredItems = useMemo(() => {
@@ -305,6 +270,7 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
         ))}
       </div>
 
+      <PostResourceTools type="gallery" label="갤러리 자료 목록" sectorId="S-GAL-01" />
       {/* 2. Main Content Area */}
       <SectorBlock
         sectorId="S-GAL-01"
