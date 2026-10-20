@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useAdminEdit } from '../../context/AdminEditContext';
 
 export default function ScrollReveal({ children, className = '', delay = 0, direction = 'up' }) {
   const [isVisible, setIsVisible] = useState(false);
+  const { isEditMode } = useAdminEdit();
   const ref = useRef(null);
 
   useEffect(() => {
@@ -30,6 +32,7 @@ export default function ScrollReveal({ children, className = '', delay = 0, dire
   }, []);
 
   const getDirectionClasses = () => {
+    if (isEditMode) return 'opacity-100 !transform-none';
     switch (direction) {
       case 'left':
         return isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 sm:-translate-x-8 opacity-0';
@@ -48,7 +51,7 @@ export default function ScrollReveal({ children, className = '', delay = 0, dire
   return (
     <div
       ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{ transitionDelay: isEditMode ? '0ms' : `${delay}ms` }}
       className={`transition-all duration-500 ease-out transform ${getDirectionClasses()} ${className}`}
     >
       {children}

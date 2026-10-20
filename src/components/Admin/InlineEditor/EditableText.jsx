@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useId } from 'react';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import { Edit3 } from 'lucide-react';
 import { useLanguage } from '../../../i18n/LanguageContext';
+import { contentRegistry, textRole } from './directContentModel';
 
 export default function EditableText({
   value,
@@ -18,6 +19,21 @@ export default function EditableText({
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(value ?? (typeof children === 'string' ? children : ''));
   const elementRef = useRef(null);
+  const fieldId = useId();
+  const cancelledRef = useRef(false);
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!isEditMode || !element) return;
+    contentRegistry.set(element, { fields: [{
+      key: `bound-text-${path || fieldId}`, label: textRole(Component), type: 'text',
+      value: value ?? (typeof children === 'string' ? children : ''),
+      original: value ?? (typeof children === 'string' ? children : ''),
+      resetLabel: '수정 전으로',
+      onApply: next => onChange ? onChange(next) : path && updateSiteField(path, next),
+    }] });
+    return () => contentRegistry.delete(element);
+  });
+
 
   // Sync draft when value prop changes
   useEffect(() => {
@@ -25,7 +41,7 @@ export default function EditableText({
   }, [value, children]);
 
   if (!isEditMode) {
-    return <Component className={className}>{tr(value || children)}</Component>;
+    return <Component className={className}>{tr(value ?? children)}</Component>;
   }
 
   const handleCommit = (newVal) => {
@@ -43,11 +59,13 @@ export default function EditableText({
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
+      cancelledRef.current = true;
       setDraft(value ?? '');
       if (elementRef.current) {
         elementRef.current.innerText = value ?? '';
       }
       setIsEditing(false);
+      elementRef.current?.blur();
     } else if (e.key === 'Enter' && !multiline) {
       e.preventDefault();
       elementRef.current?.blur();
@@ -67,6 +85,7 @@ export default function EditableText({
   };
 
   const handleBlur = (e) => {
+    if (cancelledRef.current) { cancelledRef.current = false; return; }
     const text = e.currentTarget.innerText;
     setDraft(text);
     handleCommit(text);
@@ -75,9 +94,11 @@ export default function EditableText({
   return (
     <Component
       ref={elementRef}
+      data-direct-content={fieldId}
+      data-content-role={textRole(Component)}
       contentEditable={isEditMode}
       suppressContentEditableWarning={true}
-      onFocus={() => setIsEditing(true)}
+      onFocus={() => { cancelledRef.current = false; setIsEditing(true); }}
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
       title={isEditMode ? '클릭하여 글자 바로 수정 (Tab: 다음 글자로 이동, Esc: 취소)' : undefined}

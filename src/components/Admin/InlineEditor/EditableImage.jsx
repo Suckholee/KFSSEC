@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
+import { contentRegistry, sharedBindingId } from './directContentModel';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import { Camera, Upload, Link as LinkIcon, X, Loader2, Check, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 
@@ -23,6 +24,28 @@ export default function EditableImage({
   const [urlInput, setUrlInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const fileInputRef = useRef(null);
+  const containerRef = useRef(null);
+  const fieldId = useId();
+  const bindingId = slides ? sharedBindingId(slides) : path || fieldId;
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!isEditMode || !element || (!onChange && !path && !onReorderSlides)) return;
+    const items = slides?.length ? slides : [{ imageUrl: src }];
+    contentRegistry.set(element, { fields: items.map((slide, index) => ({
+      key: `bound-image-${bindingId}-${index}`, label: slides?.length ? `${index + 1}번 배너 이미지` : '이미지 주소',
+      type: 'image', value: slide.imageUrl || '', original: slide.imageUrl || '', resetLabel: '수정 전으로',
+      onApply: next => {
+        if (slides && onReorderSlides) {
+          // The editor applies all slide changes in a single grouped callback.
+          onReorderSlides(slides.map((item, i) => i === index ? { ...item, imageUrl: next } : item));
+        } else if (onChange) onChange(next);
+        else if (path) updateSiteField(path, next);
+      },
+      ...(slides && onReorderSlides ? { groupKey: `slides-${bindingId}`, groupApply: changes => onReorderSlides(slides.map((item, i) => ({ ...item, imageUrl: changes[`bound-image-${bindingId}-${i}`] ?? item.imageUrl }))) } : {}),
+    })) });
+    return () => contentRegistry.delete(element);
+  });
+
 
   // Manage active selected slide in the modal
   const [selectedSlideIdx, setSelectedSlideIdx] = useState(currentSlideIndex || 0);
@@ -135,6 +158,9 @@ export default function EditableImage({
 
   return (
     <div
+      ref={containerRef}
+      data-direct-content={fieldId}
+      data-content-role="이미지"
       onClick={(e) => {
         if (isEditMode) {
           e.stopPropagation();

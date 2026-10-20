@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import DirectContentEditor from './DirectContentEditor';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import {
   Edit3,
@@ -73,6 +74,8 @@ export default function AdminLiveToolbar() {
   if (!isAdmin) return null;
 
   return (
+    <>
+    <DirectContentEditor />
     <aside
       ref={toolbarRef}
       aria-label="관리자 라이브 편집 툴바"
@@ -158,7 +161,7 @@ export default function AdminLiveToolbar() {
           {saveSuccessNotice ? (
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium border border-emerald-500/40 animate-pulse">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>Supabase에 저장 완료!</span>
+              <span>홈페이지에 저장 완료!</span>
             </div>
           ) : pendingChanges.count > 0 ? (
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-medium border border-amber-500/40 animate-pulse">
@@ -167,13 +170,14 @@ export default function AdminLiveToolbar() {
             </div>
           ) : (
             <span className="text-slate-300 text-xs hidden md:inline font-medium">
-              💡 블록 위에서 <strong className="text-amber-300 font-bold">마우스 우클릭</strong>(PC) 또는 <strong className="text-amber-300 font-bold">꾹 누르면</strong>(모바일) 수정 툴 패널이 열립니다.
+              영역의 ‘내용 편집’을 누르거나 문구를 두 번 클릭해 수정하세요.
             </span>
           )}
         </div>
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2 flex-wrap">
+          {rawEditMode && !isPreviewMode && <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('kfssec:edit-content'))} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-amber-500 text-slate-950 font-bold">현재 페이지 내용 편집</button>}
           {pendingChanges.count > 0 && (
             <button
               type="button"
@@ -198,7 +202,7 @@ export default function AdminLiveToolbar() {
             }`}
           >
             <Save className={`w-3.5 h-3.5 ${isSaving ? 'animate-spin' : ''}`} />
-            <span>{isSaving ? '저장 중…' : '지금 화면 저장'}</span>
+            <span>{isSaving ? '저장 중…' : '전체 저장'}</span>
           </button>
 
           <button type="button" onClick={() => { window.location.assign('/admin/members'); }} className="px-3 py-1.5 rounded-md bg-emerald-700 hover:bg-emerald-600 text-white font-bold">회원관리</button>
@@ -242,5 +246,6 @@ export default function AdminLiveToolbar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }

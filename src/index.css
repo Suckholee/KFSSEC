@@ -201,3 +201,12 @@
     display: block;
   }
 }
+
+/* Administrator-only hints never cover the actual heading or image. */
+[data-content-guides="true"]:hover {
+  outline: 1px dashed #d97706;
+  outline-offset: 3px;
+}
+[data-direct-content]:focus-visible {
+  outline: 2px solid #d97706;
+}

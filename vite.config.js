@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import directContentPlugin from './scripts/direct-content-plugin.js';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({ babel: { plugins: [directContentPlugin] } })],
   server: {
     port: 3000,
     proxy: {

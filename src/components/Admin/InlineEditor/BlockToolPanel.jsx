@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Edit3,
   ArrowUp,
@@ -49,7 +50,7 @@ export default function BlockToolPanel({
 
   // DESKTOP: Floating Context Menu
   if (!isMobile) {
-    return (
+    return createPortal(
       <div
         className="fixed inset-0 z-[9998] select-none"
         onClick={onClose}
@@ -208,12 +209,12 @@ export default function BlockToolPanel({
             </button>
           </div>
         </div>
-      </div>
+      </div>, document.body
     );
   }
 
   // MOBILE: Bottom Action Sheet
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[9998] bg-black/70 backdrop-blur-sm flex flex-col justify-end animate-fadeIn select-none"
       onClick={onClose}
@@ -356,6 +357,6 @@ export default function BlockToolPanel({
           </button>
         </div>
       </div>
-    </div>
+    </div>, document.body
   );
 }
