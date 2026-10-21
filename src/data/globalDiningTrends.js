@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5585",
+    "title": "농산물 가격은 떨어지는데 농가는 울상… 식탁 물가는 왜 쉽게 내려가지 않을까",
+    "summary": "2026년 10월 19일 농림축산식품부가 발표한 자료에 따르면, 10월 상순 기준 파프리카와 샤인머스캣, 애호박 등의 도매가격은 평년보다 크게 낮아졌다. 농산물 작...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.21",
+    "imageUrl": "/images/trends/trend_5585.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/b39781cdb6f04eff25eb6ba7cede1b0444d3ed1c.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5585&mcode=m247tk9"
+  },
+  {
     "id": "5536",
     "title": "5,000원짜리 밥에 들어 있지 않은 것",
     "summary": "지방에 한 끼 5,000원짜리 밥을 파는 식당이 있다. 2008년부터 그 가격을 지켜왔다는 이야기다. 반찬은 열 가지가 넘고, 손님...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5324.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/2ca5ca8d6a4a8701698cfa6feb6f3db12d6784bb.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5324&mcode=m247tk9"
-  },
-  {
-    "id": "5282",
-    "title": "식당은 인테리어가 아니라 장면을 설계해야 한다",
-    "summary": "한 장의 식당 사진을 보았다. 검은 천장 아래로 거대한 발광 구조물이 물결처럼 내려와 있었다. 반투명한 표면에는 세로로 ...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.09.30",
-    "imageUrl": "/images/trends/trend_5282.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/2fbdf2d7149825e37843f0892e8b84ef83e82e0f.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5282&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.20'
+  lastUpdated: '2026.10.21'
 };
