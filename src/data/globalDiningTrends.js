@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5593",
+    "title": "모든 것을 다 잘해야 하는 식당은 왜 위험할까",
+    "summary": "요즘 식당을 운영하는 사장님들의 하루를 들여다보면 숨이 턱 끝까지 찬다. 사람 구하기는 하늘의 별 따기이고, 인건비와 ...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.21",
+    "imageUrl": "/images/trends/trend_5593.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/a98c6430c9fca49b145bcf7f1739ad7bcb9fc9b1.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5593&mcode=m247tk9"
+  },
+  {
     "id": "5585",
     "title": "농산물 가격은 떨어지는데 농가는 울상… 식탁 물가는 왜 쉽게 내려가지 않을까",
     "summary": "2026년 10월 19일 농림축산식품부가 발표한 자료에 따르면, 10월 상순 기준 파프리카와 샤인머스캣, 애호박 등의 도매가격은 평년보다 크게 낮아졌다. 농산물 작...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5342.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/352f1f7715a1f59ce0ea82436c04e67256fbd15f.jpeg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5342&mcode=m247tk9"
-  },
-  {
-    "id": "5324",
-    "title": "리뷰 9천 개가 부러운 사장님에게",
-    "summary": "장사하는 사람에게 숫자는 잔인하다.매출이 떨어지면 기분도 떨어진다. 주문이 늘면 잠깐 마음이 놓인다. 옆집에 줄이 서...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.10.02",
-    "imageUrl": "/images/trends/trend_5324.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/2ca5ca8d6a4a8701698cfa6feb6f3db12d6784bb.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5324&mcode=m247tk9"
   }
 ];
 
