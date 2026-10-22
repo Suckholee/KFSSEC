@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5611",
+    "title": "AP Hospitality Advisors Korea, 호텔 인터불고 대구 글로벌 호텔 브랜드 전환 프로젝트 주도적 지원…2027년 3월 말 개관 목표",
+    "summary": "사진: 호텔 인터불고 대구대구 호텔 관광산업에 새로운 도약의 가능성이 열리고 있다. AP Hospitality Advisors Korea가 호...",
+    "author": "글로벌 외식정보=발행인 안형상 대표기자",
+    "date": "2026.10.22",
+    "imageUrl": "/images/trends/trend_5611.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/7f5bfc96adcc8a6d02ad19239f2031a8afe6b507.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5611&mcode=m247tk9"
+  },
+  {
     "id": "5593",
     "title": "모든 것을 다 잘해야 하는 식당은 왜 위험할까",
     "summary": "요즘 식당을 운영하는 사장님들의 하루를 들여다보면 숨이 턱 끝까지 찬다. 사람 구하기는 하늘의 별 따기이고, 인건비와 ...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5283.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/b47675dfba0dd4e99139394df311c9d23b99ae21.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5283&mcode=m247tk9"
-  },
-  {
-    "id": "5342",
-    "title": "배달은 공짜가 아니다, 누가 그 비용을 부담할 것인가",
-    "summary": "'배달비 0원'. 소비자에게는 반가운 문구지만, 세상에 공짜는 없다. 음식점에서 주문한 음식이 소비자의 식탁까지 ...",
-    "author": "글로벌 외식정보=신충섭 논설위원",
-    "date": "2026.10.03",
-    "imageUrl": "/images/trends/trend_5342.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/352f1f7715a1f59ce0ea82436c04e67256fbd15f.jpeg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5342&mcode=m247tk9"
   }
 ];
 
