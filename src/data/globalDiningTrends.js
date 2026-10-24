@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5646",
+    "title": "사람을 지우기 전에, 사람의 일을 덜어내는 일에 대하여",
+    "summary": "식당이라는 장소가 궁지에 몰렸을 때, 사람들은 대개 가장 먼저 연필을 집어 든다. 그리고 낡은 출근부 위에서 누군가의 이...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.24",
+    "imageUrl": "/images/trends/trend_5646.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/779a934ba24112fda505309f7dde47cd044cdcde.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5646&mcode=m247tk9"
+  },
+  {
     "id": "5611",
     "title": "AP Hospitality Advisors Korea, 호텔 인터불고 대구 글로벌 호텔 브랜드 전환 프로젝트 주도적 지원…2027년 3월 말 개관 목표",
     "summary": "사진: 호텔 인터불고 대구대구 호텔 관광산업에 새로운 도약의 가능성이 열리고 있다. AP Hospitality Advisors Korea가 호...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5356.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/31b135453809906c2c903a779a1ea63c1c8ae101.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5356&mcode=m247tk9"
-  },
-  {
-    "id": "5283",
-    "title": "공간이 음식보다 유명해지면 성공한 것일까",
-    "summary": "새로 문을 연 식당 앞에 긴 줄이 생겼다.SNS에는 매장 사진이 빠르게 퍼졌다. 거대한 조명, 독특한 천장, 낯선 재료, 극적인 색채가 사...",
-    "author": "글로벌 외식정보=진익준",
-    "date": "2026.10.05",
-    "imageUrl": "/images/trends/trend_5283.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2609/thumb/350x270_100/b47675dfba0dd4e99139394df311c9d23b99ae21.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5283&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.23'
+  lastUpdated: '2026.10.24'
 };
