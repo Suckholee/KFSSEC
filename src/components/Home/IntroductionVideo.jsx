@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const INTRO_VIDEO_URL = '/videos/kfssec-main-intro.mp4';
+const INTRO_VIDEO_URL = '/videos/kfssec-main-intro-photo.mp4';
 
 export default function IntroductionVideo() {
   const videoRef = useRef(null);

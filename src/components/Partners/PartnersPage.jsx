@@ -1,3 +1,4 @@
+import AdditionalRecords from './AdditionalRecords';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
@@ -504,6 +505,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
             ))}
             {mouPhotos.length === 0 && <p className="col-span-full rounded-xl border border-stone-200 bg-white p-6 text-center text-sm text-stone-600">등록된 협약식 사진이 없습니다.</p>}
           </div>
+            <AdditionalRecords />
         </div>
         </SectorBlock>
 

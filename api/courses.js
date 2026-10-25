@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const courses = await readContent('courses') ?? actualCourses;
     if (req.method === 'GET') return res.status(200).json({ success: true, count: courses.length, data: courses });
     if (!['POST', 'PUT', 'DELETE'].includes(req.method)) return res.status(405).json({ success: false });
-    if (!requireAdmin(req, res)) return;
+    if (!await requireAdmin(req, res)) return;
     const id = String(req.query?.id || '');
     if (req.method === 'PUT' && id === 'reorder' && Array.isArray(req.body?.courses)) {
       await writeContent('courses', req.body.courses);

@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') return res.status(200).json({ success: true, data: await readContent(type) });
     if (req.method !== 'PUT') return res.status(405).json({ success: false });
-    if (!requireAdmin(req, res)) return;
+    if (!await requireAdmin(req, res)) return;
     if (!req.body || typeof req.body !== 'object') return res.status(400).json({ success: false, message: 'Invalid content' });
     const data = await normalizeImages(req.body);
     await writeContent(type, data);

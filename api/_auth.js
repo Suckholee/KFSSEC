@@ -1,48 +1,46 @@
 import crypto from 'node:crypto';
-
+import { getMember } from './_members.js';
+import { memberSessionId } from './_memberSession.js';
 const COOKIE = 'kfssec_admin_session';
-const DAY = 24 * 60 * 60;
-const FALLBACK_SECRET = '7e89d19111c4edda31b058177db3eba883ebbcb1da7a59001cc59d8924a34f3f';
-const DEFAULT_PASSWORD = 'kfssec2026!';
-
+const DAY = 86400;
 function sign(value) {
-  const secret = process.env.ADMIN_SESSION_SECRET || FALLBACK_SECRET;
+  const secret = process.env.ADMIN_SESSION_SECRET;
+  if (!secret || secret.length < 32) throw new Error('ADMIN_SESSION_SECRET required');
   return crypto.createHmac('sha256', secret).update(value).digest('hex');
 }
-
-export function isAdmin(req) {
-  const raw = (req.headers.cookie || '').split(';').map(s => s.trim()).find(s => s.startsWith(`${COOKIE}=`));
-  if (!raw) return false;
-  const [expires, signature] = decodeURIComponent(raw.slice(COOKIE.length + 1)).split('.');
-  if (!expires || !signature || Number(expires) < Date.now()) return false;
-  const expected = sign(expires);
-  return signature.length === expected.length && crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+export function isPasswordAdmin(req) {
+  try {
+    const raw = (req.headers.cookie || '').split(';').map(s => s.trim()).find(s => s.startsWith(`${COOKIE}=`));
+    if (!raw) return false;
+    const [expires, signature] = decodeURIComponent(raw.slice(COOKIE.length + 1)).split('.');
+    if (!/^\d+$/.test(expires) || !signature || Number(expires) <= Date.now()) return false;
+    const expected = sign(expires);
+    return signature.length === expected.length && crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+  } catch { return false; }
 }
-
+export async function isAdmin(req) {
+  if (isPasswordAdmin(req)) return true;
+  const id = memberSessionId(req);
+  if (!id) return false;
+  try {
+    const member = await getMember(id);
+    return member?.registrationComplete === true && member.adminRole === 'admin';
+  } catch { return false; }
+}
 export function setAdminCookie(res) {
   const expires = String(Date.now() + DAY * 1000);
-  const secure = process.env.VERCEL ? '; Secure' : '';
-  res.setHeader('Set-Cookie', `${COOKIE}=${expires}.${sign(expires)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${DAY}${secure}`);
+  res.setHeader('Set-Cookie', `${COOKIE}=${expires}.${sign(expires)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${DAY}${process.env.VERCEL ? '; Secure' : ''}`);
 }
-
 export function clearAdminCookie(res) {
-  res.setHeader('Set-Cookie', `${COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0`);
+  res.setHeader('Set-Cookie', `${COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${process.env.VERCEL ? '; Secure' : ''}`);
 }
-
 export function validPassword(candidate) {
-  if (!candidate) return false;
-  const cand = String(candidate).trim();
-  const envPass = process.env.ADMIN_PASSWORD ? String(process.env.ADMIN_PASSWORD).trim() : null;
-  return (
-    cand === 'kfssec2026!' ||
-    cand === DEFAULT_PASSWORD ||
-    cand === 'admin1234' ||
-    Boolean(envPass && cand === envPass)
-  );
+  if (typeof candidate !== 'string' || !process.env.ADMIN_PASSWORD || !process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_SESSION_SECRET.length < 32) return false;
+  const a = Buffer.from(candidate), b = Buffer.from(process.env.ADMIN_PASSWORD);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
-
-export function requireAdmin(req, res) {
-  if (isAdmin(req)) return true;
-  res.status(401).json({ success: false, message: '관리자 로그인이 필요합니다.' });
+export async function requireAdmin(req, res) {
+  if (await isAdmin(req)) return true;
+  res.status(401).json({ success: false, message: '관리자 권한이 있는 계정으로 로그인해 주세요.' });
   return false;
 }

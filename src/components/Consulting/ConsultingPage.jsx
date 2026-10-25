@@ -340,7 +340,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
 
             {/* SUB-TAB: 교수 프로필 (진익준 교수 소개 및 프랜차이즈 사례) */}
             {activeTab === 'professor' && (
-              <SectorBlock sectorId="S-CON-03" sectorName="진익준 교수 프로필 & 전문분야" pageKey="consulting">
+              <SectorBlock sectorId="S-CON-03" sectorName="창업컨설팅 교수 프로필 & 전문분야" pageKey="consulting">
                 <JinIkjunProfileSection onConsultClick={handleApplyClick} />
               </SectorBlock>
             )}

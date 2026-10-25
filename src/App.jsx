@@ -1,3 +1,6 @@
+import { migrateProfileDirectories } from './data/profileDirectory';
+import UsageGuide from './components/common/UsageGuide';
+import AdminAccess from './components/Admin/AdminAccess';
 import PostResourceTools from './content/PostResourceTools';
 import { resolveFaculty } from './data/faculty';
 import IntroductionVideo from './components/Home/IntroductionVideo';
@@ -73,57 +76,6 @@ const HOME_SECTORS = [
   { id: 'S-HOME-05B', name: '분야별 교육 포커스' },
 ];
 
-function AdminAccess({ onAuthenticated, configured }) {
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [pending, setPending] = useState(false);
-  const login = async event => {
-    event.preventDefault();
-    setPending(true); setError('');
-    try {
-      const response = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: 'admin', password }) });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || '로그인에 실패했습니다.');
-      onAuthenticated();
-    } catch (cause) { setError(cause.message); }
-    finally { setPending(false); }
-  };
-  return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-900 p-6">
-      <form onSubmit={login} className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl space-y-5">
-        <div className="text-center space-y-1">
-          <h1 className="text-xl font-black text-slate-900">KFSSEC 관리자 로그인</h1>
-          <p className="text-xs text-slate-500">홈페이지 라이브 편집 및 관리 권한 접속</p>
-        </div>
-        <label className="block text-xs font-bold text-slate-700">
-          관리자 비밀번호
-          <input
-            autoFocus
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-            placeholder="비밀번호 입력 (기본: kfssec2026!)"
-            className="mt-2 block w-full rounded-xl border border-slate-300 p-3 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
-            required
-          />
-        </label>
-        {error && <p role="alert" className="text-xs text-red-600 font-medium bg-red-50 p-2.5 rounded-lg border border-red-200">{error}</p>}
-        <button
-          type="submit"
-          disabled={pending}
-          className="w-full rounded-xl bg-slate-900 hover:bg-slate-800 px-4 py-3 text-white font-bold text-sm shadow-md transition disabled:opacity-50 cursor-pointer"
-        >
-          {pending ? '확인 중…' : '관리자 접속하기'}
-        </button>
-        <p className="text-[11px] text-slate-400 text-center">
-          기본 비밀번호: <code className="text-amber-600 font-bold">kfssec2026!</code>
-        </p>
-        <a href="/" className="block text-center text-xs text-slate-500 hover:underline">홈으로 돌아가기</a>
-      </form>
-    </main>
-  );
-}
 
 function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
@@ -228,6 +180,7 @@ function AppInner({
         {/* Main Content Area Routing with smooth page entrance */}
         <main className="flex-1">
           <div key={activeTab} className="animate-page-enter">
+            {activeTab === 'help' && <UsageGuide />}
             {(activeTab === 'home' || activeTab === 'admin') && (
             <SectorOrder pageKey="home" className="space-y-0">
               <SectorBlock sectorId="S-HOME-INTRO" sectorName="교육원 소개영상" sectorList={HOME_SECTORS}>
@@ -366,7 +319,8 @@ function AppInner({
             <PartnersPage initialSubTab={subTab || 'all'} partnerLogos={currentSite.partnerLogos} postsList={currentPosts} />
           )}
 
-          {activeTab === 'community' && subTab === 'editor' && (
+          {activeTab === 'community' && subTab === 'editor' && !currentUser && <div className="mx-auto max-w-xl p-8 text-center"><h1 className="text-xl font-bold">회원 로그인 후 상담을 신청해 주세요.</h1><button onClick={() => navigateToInquiry()} className="mt-4 rounded-xl bg-emerald-800 px-6 py-3 text-white">로그인·회원가입</button></div>}
+          {activeTab === 'community' && subTab === 'editor' && currentUser && (
             <CommunityEditorPage
               currentUser={currentUser}
               onCancel={() => handleTabChange('community', 'all')}
@@ -464,6 +418,12 @@ export default function App() {
   useEffect(() => {
     fetch('/api/member-auth', { cache: 'no-store' }).then(response => response.json()).then(result => { setCurrentUser(result.user || null); setRegistrationRequired(Boolean(result.registrationRequired)); }).catch(() => setCurrentUser(null));
     const params = new URLSearchParams(window.location.search);
+    if (params.has('login')) {
+      setAuthModalState({ isOpen: true, initialMode: 'login' });
+      if (params.get('returnTo') === '/admin') sessionStorage.setItem('kfssec_admin_return', '1');
+      params.delete('login'); params.delete('returnTo');
+      window.history.replaceState(null, '', window.location.pathname + (params.size ? '?' + params : ''));
+    }
     if (params.has('login_error')) {
       setAuthModalState({ isOpen: true, initialMode: 'login' });
       alert('카카오 로그인을 완료하지 못했습니다. 다시 시도해 주세요.');
@@ -481,6 +441,20 @@ export default function App() {
     window.addEventListener('focus', refreshPosts);
     return () => { window.clearInterval(timer); window.removeEventListener('focus', refreshPosts); };
   }, []);
+
+  useEffect(() => {
+    if (currentUser && sessionStorage.getItem('kfssec_admin_return') === '1') {
+      sessionStorage.removeItem('kfssec_admin_return');
+      window.location.assign('/admin');
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser && sessionStorage.getItem('kfssec_inquiry_return') === '1') {
+      sessionStorage.removeItem('kfssec_inquiry_return');
+      window.location.assign('/community/editor');
+    }
+  }, [currentUser]);
 
   // YouTube modal state
   const [activeVideoUrl, setActiveVideoUrl] = useState(null);
@@ -587,6 +561,7 @@ export default function App() {
   };
 
   const mergeSiteData = (saved) => {
+    saved = migrateProfileDirectories(saved);
     if (!saved || typeof saved !== 'object') return DEFAULT_SITE_DATA;
 
     // 1. Institution Info: merge with defaults and ensure key contacts are never blank
@@ -637,7 +612,7 @@ export default function App() {
     return {
       ...DEFAULT_SITE_DATA,
       ...saved,
-      faculty: resolveFaculty(saved.faculty),
+      faculty: Array.isArray(saved.faculty) ? saved.faculty : resolveFaculty(),
       institutionInfo,
       partnerLogos,
       youtube,
@@ -680,9 +655,9 @@ export default function App() {
       }
 
       const mainRoute = parts[0];
-      const subRoute = parts[1] || null;
+      const subRoute = parts[1] || (mainRoute === 'consulting' ? new URLSearchParams(window.location.search).get('tab') : null);
 
-      if (['about', 'master', 'catalog', 'consulting', 'gallery', 'partners', 'community', 'admin', 'ai-assistant', 'ai'].includes(mainRoute)) {
+      if (['about', 'master', 'catalog', 'consulting', 'gallery', 'partners', 'community', 'admin', 'ai-assistant', 'ai', 'help'].includes(mainRoute)) {
         setActiveTab(mainRoute === 'ai' ? 'ai-assistant' : mainRoute);
         setSubTab(subRoute);
       } else {
@@ -760,6 +735,13 @@ export default function App() {
   };
 
   const navigateToInquiry = (topic) => {
+    if (topic) sessionStorage.setItem('kfssec_consulting_topic', topic);
+    if (!currentUser) {
+      sessionStorage.setItem('kfssec_inquiry_return', '1');
+      if (topic) sessionStorage.setItem('kfssec_consulting_topic', topic);
+      setAuthModalState({ isOpen: true, initialMode: 'login' });
+      return;
+    }
     if (topic) localStorage.setItem('kfssec_inquiry_draft', JSON.stringify({ title: `${topic} 문의` }));
     handleTabChange('community', 'editor');
   };

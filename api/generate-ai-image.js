@@ -260,7 +260,7 @@ export async function handleGenerateAiImage(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
-  if (!requireAdmin(req, res)) return;
+  if (!await requireAdmin(req, res)) return;
 
   try {
     const body = req.body || {};
@@ -316,6 +316,6 @@ export async function handleGenerateAiImage(req, res) {
   }
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   return handleGenerateAiImage(req, res);
 }

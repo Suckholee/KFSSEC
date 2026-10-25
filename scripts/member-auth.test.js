@@ -8,7 +8,7 @@ import { setAdminCookie } from '../api/_auth.js';
 test('Kakao OAuth validates state, protects member cookies and rejects cross-origin logout', async () => {
   const previousEnv = { ...process.env };
   const previousFetch = globalThis.fetch;
-  Object.assign(process.env, { SITE_URL: 'http://localhost:3000', MEMBER_SESSION_SECRET: 'test-only-secret-at-least-32-characters', KAKAO_REST_API_KEY: 'test-key', KAKAO_CLIENT_SECRET: 'test-secret' });
+  Object.assign(process.env, { SITE_URL: 'http://localhost:3000', MEMBER_SESSION_SECRET: 'test-only-secret-at-least-32-characters', ADMIN_SESSION_SECRET: 'test-admin-secret-at-least-32-characters', KAKAO_REST_API_KEY: 'test-key', KAKAO_CLIENT_SECRET: 'test-secret' });
   delete process.env.VERCEL;
   process.env.SUPABASE_URL = 'https://db.example';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-database-key';

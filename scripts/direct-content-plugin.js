@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 
 // Instrument public JSX at build time so new sections receive the same editor.
 // Admin tools, account forms and live chat are intentionally outside this pipeline.
-export const excludedComponents = /\/(?:Admin\/|AuthModal|LoginMethods|MemberRegistration|CommunityEditorPage|GalleryEditorModal|VisitorChatbotWidget|AiAssistant\/)/;
+export const excludedComponents = /\/(?:Admin\/|About\/ProfileDirectory|AuthModal|LoginMethods|MemberRegistration|CommunityEditorPage|GalleryEditorModal|VisitorChatbotWidget|AiAssistant\/)/;
 export function isPublicContentFile(filename = '') {
   return /\/src\/components\/.*\.jsx$/.test(filename) && !excludedComponents.test(filename);
 }

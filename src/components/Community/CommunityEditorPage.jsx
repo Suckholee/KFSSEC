@@ -18,6 +18,7 @@ const QUESTIONS = [
 
 export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCancel, currentUser }) {
   const { tr } = useLanguage();
+  const [selectedTopic] = useState(() => sessionStorage.getItem('kfssec_consulting_topic') || '');
   const [answers, setAnswers] = useState(() => {
     try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}'); } catch { return {}; }
   });
@@ -54,15 +55,16 @@ export default function CommunityEditorPage({ onPublishPost, onSubmitPost, onCan
       document.getElementById(`survey-${missing.id}`)?.focus();
       return;
     }
-    const content = [`${answers.consultingType} 사전 정보`, ...QUESTIONS.map((question, index) =>
+    const content = [selectedTopic ? `희망 상담: ${selectedTopic}` : '', `${answers.consultingType} 사전 정보`, ...QUESTIONS.map((question, index) =>
       `${index + 1}. ${question.label}\n답변: ${Array.isArray(answers[question.id]) ? answers[question.id].join(', ') : answers[question.id]}`)].join('\n\n');
     setSubmitting(true);
     setError('');
     try {
       const submit = onSubmitPost || onPublishPost;
       if (!submit) throw new Error('상담 신청을 처리할 수 없습니다. 잠시 후 다시 시도해 주세요.');
-      await submit({ category: '문의', categoryType: 'inquiry', title: `${answers.consultingType} 사전 상담 신청`, content,
+      await submit({ category: '문의', categoryType: 'inquiry', title: selectedTopic ? `${selectedTopic} 신청` : `${answers.consultingType} 사전 상담 신청`, content,
         coverImage: null, tags: [answers.consultingType, '창업컨설팅'], isPinned: false, author: currentUser?.name || '방문자' });
+      sessionStorage.removeItem('kfssec_consulting_topic');
       localStorage.removeItem(DRAFT_KEY);
       localStorage.removeItem('kfssec_inquiry_draft');
     } catch (submitError) { setError(submitError.message || '상담 신청에 실패했습니다.'); }

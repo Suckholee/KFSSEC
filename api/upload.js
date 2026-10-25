@@ -3,7 +3,7 @@ import { storeImage } from './_store.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ success: false });
-  if (!requireAdmin(req, res)) return;
+  if (!await requireAdmin(req, res)) return;
   try {
     const imageBase64 = req.body?.imageBase64;
     if (typeof imageBase64 !== 'string' || !imageBase64.startsWith('data:image/')) {

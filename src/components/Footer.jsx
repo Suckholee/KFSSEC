@@ -68,6 +68,7 @@ export default function Footer({ onTabChange, siteData = {} }) {
             <h4 className="text-sm font-black text-white mb-3 tracking-tight">{t("온라인 상담 및 교육원 연락처")}</h4>
             <div className="space-y-2.5 text-xs">
               <button onClick={() => onTabChange?.('community', 'editor')} className="bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg px-4 py-2 font-bold">{t('1:1 온라인 상담 신청')}</button>
+              <a href="/help" className="block py-2 text-sm text-emerald-300 underline">홈페이지 이용 안내</a>
               <div className="flex items-center gap-2 text-white font-black text-base">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
                 <EditableText path="institutionInfo.officePhone" value={phone} />
