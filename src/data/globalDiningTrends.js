@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5650",
+    "title": "매출은 1.7배 늘었는데, 왜 사장에게 남는 돈은 줄었을까",
+    "summary": "밤 열한 시가 조금 넘었다.마지막 손님이 돌아간 식당에는 몇 개의 불빛만 남아 있었다. 주방에서는 냉장고의 압축기가 낮은 소리로 돌아가고 있었다. 바닥에...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.25",
+    "imageUrl": "/images/trends/trend_5650.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/5540b7a43727afc4768d20f63baaafbd085f93be.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5650&mcode=m247tk9"
+  },
+  {
     "id": "5648",
     "title": "빈 상자의 비극과 별점의 몰락",
     "summary": "공기를 배송받는 사람들택배 기사가 문앞에 묵직하게 내려놓고 가야 마땅할 대형 물걸레 청소기를 주문했는데, 정작 손에 쥐인 것은 손바닥만 한 골판지 상자...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5381.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/67886c148c4416a4835bb8aae3f9220fa0343adc.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5381&mcode=m247tk9"
-  },
-  {
-    "id": "5362",
-    "title": "K-뷰티 넘어 K-푸드로…외국인 관광객 지갑 여는 ‘한국적인 것’의 진화",
-    "summary": "한글과 태극기, 호랑이 등 한국을 상징하는 문화적 요소가 외국인 관광객을 사로잡는 새로운 소비 콘텐츠로 떠오르고 있다. 과거 외국인 관광객의 한국 여행...",
-    "author": "글로벌외식정보",
-    "date": "2026.10.06",
-    "imageUrl": "/images/trends/trend_5362.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/4776bde4c2ed4f039dfdaa6efb680978f0a973ee.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5362&mcode=m247tk9"
   }
 ];
 
