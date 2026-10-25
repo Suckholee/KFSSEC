@@ -3,6 +3,26 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5648",
+    "title": "빈 상자의 비극과 별점의 몰락",
+    "summary": "공기를 배송받는 사람들택배 기사가 문앞에 묵직하게 내려놓고 가야 마땅할 대형 물걸레 청소기를 주문했는데, 정작 손에 쥐인 것은 손바닥만 한 골판지 상자...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.25",
+    "imageUrl": "/images/trends/trend_5648.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/ff5b9bbffb306f7f3fb3ef216a6ce95d58e094b0.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5648&mcode=m247tk9"
+  },
+  {
+    "id": "5647",
+    "title": "불안을 파는 시장과 벼랑 끝의 사람들",
+    "summary": "점심 장사 준비로 분주한 오전 열한 시 무렵, 낡은 식당의 수화기 너머로 한 청년의 나긋나긋한 목소리가 흘러든다. \"대표...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.10.24",
+    "imageUrl": "/images/trends/trend_5647.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/36590028748b17b1d4b23e3c4c9878fdef859a8f.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5647&mcode=m247tk9"
+  },
+  {
     "id": "5646",
     "title": "사람을 지우기 전에, 사람의 일을 덜어내는 일에 대하여",
     "summary": "식당이라는 장소가 궁지에 몰렸을 때, 사람들은 대개 가장 먼저 연필을 집어 든다. 그리고 낡은 출근부 위에서 누군가의 이...",
@@ -161,26 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5362.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/4776bde4c2ed4f039dfdaa6efb680978f0a973ee.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5362&mcode=m247tk9"
-  },
-  {
-    "id": "5359",
-    "title": "한 끼 식사마저 사치가 된 시대, 외식물가를 돌아봐야 한다",
-    "summary": "직장인 A 씨는 요즘 점심시간마다 깊은 고민에 빠진다. 회사 주변 식당의 냉면 한 그릇은 이미 1만 5000원을 호가하고, 웬만...",
-    "author": "글로벌 외식정보=신충섭 논설위원",
-    "date": "2026.10.05",
-    "imageUrl": "/images/trends/trend_5359.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/932195a07e0437a7e9895eb2bc33d2d20a213a3c.jpeg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5359&mcode=m247tk9"
-  },
-  {
-    "id": "5356",
-    "title": "가격을 올리기 전에, 손님에게 물어야 할 한 가지",
-    "summary": "어느 음식점 사장이 가격을 올렸다.식재료비가 올랐다. 임대료도 올랐다. 전기료와 소모품비도 야금야금 따라왔다. 요즘 ...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.10.05",
-    "imageUrl": "/images/trends/trend_5356.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/31b135453809906c2c903a779a1ea63c1c8ae101.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5356&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.24'
+  lastUpdated: '2026.10.25'
 };
