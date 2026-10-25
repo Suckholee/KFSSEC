@@ -32,7 +32,9 @@ test('admin access requires server-designated membership and revocation takes ef
   const admin=response();setAdminCookie(admin);const adminCookie=admin.headers['Set-Cookie'].split(';')[0];
   assert.equal(await isAdmin({headers:{cookie:adminCookie}}),true);
   const cross=response();await auth({method:'POST',headers:{origin:'https://other.example'},body:{username:'admin',password:process.env.ADMIN_PASSWORD}},cross);assert.equal(cross.statusCode,403);
-  member.adminRole='admin'; const escalation=response();await members({method:'PATCH',headers:{cookie,origin:process.env.SITE_URL},body:{id:'kakao:other',adminRole:'admin'}},escalation);assert.equal(escalation.statusCode,403);
+  member.adminRole='none'; const escalation=response();await members({method:'PATCH',headers:{cookie,origin:process.env.SITE_URL},body:{id:'kakao:other',adminRole:'admin'}},escalation);assert.equal(escalation.statusCode,401);
+  member.adminRole='admin'; const selfRevoke=response(); await members({method:'PATCH',headers:{cookie,origin:process.env.SITE_URL},body:{id:member.id,adminRole:'none'}},selfRevoke); assert.equal(selfRevoke.statusCode,400);
+  process.env.ADMIN_PASSWORD='kfssec2026!'; assert.equal(validPassword('kfssec2026!'),false);
   const anonymous=response();await inquiries({method:'POST',headers:{origin:process.env.SITE_URL},body:{title:'t',content:'c'}},anonymous);assert.equal(anonymous.statusCode,401);
  } finally { globalThis.fetch=originalFetch;for(const key of Object.keys(process.env))if(!(key in old))delete process.env[key];Object.assign(process.env,old); }
 });

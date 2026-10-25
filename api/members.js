@@ -1,4 +1,5 @@
-import { requireAdmin, isPasswordAdmin } from './_auth.js';
+import { requireAdmin } from './_auth.js';
+import { memberSessionId } from './_memberSession.js';
 import { getMember, saveMember, listMembers } from './_members.js';
 
 export default async function handler(req, res) {
@@ -10,7 +11,7 @@ export default async function handler(req, res) {
     if (req.headers.origin !== origin) return res.status(403).json({ message: '잘못된 요청입니다.' });
     const { id, membershipType, adminRole } = req.body || {};
     const roleChange = adminRole !== undefined;
-    if (roleChange && !isPasswordAdmin(req)) return res.status(403).json({ message: '관리자 권한 변경은 시스템 운영자 로그인 후 가능합니다.' });
+    if (roleChange && id === memberSessionId(req) && adminRole === 'none') return res.status(400).json({ message: '본인 계정의 관리자 권한은 다른 관리자가 해제해야 합니다.' });
     if (typeof id !== 'string' || !id || (roleChange ? !['admin', 'none'].includes(adminRole) : !['general', 'regular'].includes(membershipType))) {
       return res.status(400).json({ message: '회원과 회원 구분을 확인해 주세요.' });
     }

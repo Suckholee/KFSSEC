@@ -92,6 +92,6 @@ export default function AdminMembers() {
         {(loading || !visible.length) && <tr><td colSpan={13}><div className="member-empty">{loading ? <RefreshCw size={26} className="animate-spin"/> : <Users size={32}/>}<strong>{loading ? '회원 목록을 불러오는 중입니다.' : members.length ? '조건에 맞는 회원이 없습니다.' : '등록된 회원이 없습니다.'}</strong><p>{!loading && (members.length ? '필터를 초기화하거나 검색 조건을 변경해 주세요.' : '사이트 가입을 완료한 회원이 이곳에 표시됩니다.')}</p></div></td></tr>}</tbody>
       </table></div>
       <footer className="member-pagination"><label>페이지당 표시 <select aria-label="페이지당 표시 수" value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}>{[20,50,100].map(size => <option key={size} value={size}>{size}명</option>)}</select></label><span>{filtered.length ? `${(currentPage-1)*pageSize+1}–${Math.min(currentPage*pageSize,filtered.length)} / ${filtered.length}명` : '0명'}</span><div><button aria-label="이전 페이지" disabled={currentPage <= 1} onClick={() => setPage(currentPage-1)}><ChevronLeft size={18}/></button><strong>{currentPage}</strong> / {totalPages}<button aria-label="다음 페이지" disabled={currentPage >= totalPages} onClick={() => setPage(currentPage+1)}><ChevronRight size={18}/></button></div></footer>
-    </section><p className="member-footnote">정회원은 교육원에서 확인한 회원, 일반 회원은 사이트 가입 회원입니다. 시스템 운영자는 회원의 이름과 계정을 확인한 뒤 관리자 지정·해제를 할 수 있습니다. 회원 구분 변경과 관리자 권한은 별개입니다.</p>
+    </section><p className="member-footnote">정회원은 교육원에서 확인한 회원, 일반 회원은 사이트 가입 회원입니다. 관리자는 회원의 이름과 계정을 확인한 뒤 관리자 지정·해제를 할 수 있습니다. 회원 구분 변경과 관리자 권한은 별개입니다.</p>
   </div>;
 }

@@ -1,7 +1,7 @@
 import { clearAdminCookie, isAdmin, setAdminCookie, validPassword } from './_auth.js';
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
-  if (req.method === 'GET') return res.status(200).json({ authenticated: await isAdmin(req), configured: Boolean(process.env.ADMIN_PASSWORD && process.env.ADMIN_SESSION_SECRET?.length >= 32) });
+  if (req.method === 'GET') return res.status(200).json({ authenticated: await isAdmin(req), configured: validPassword(process.env.ADMIN_PASSWORD) });
   if (req.method === 'DELETE') { clearAdminCookie(res); return res.status(200).json({ success: true }); }
   if (req.method !== 'POST') return res.status(405).json({ success: false });
   const origin = new URL(process.env.SITE_URL || 'http://localhost:3000').origin;

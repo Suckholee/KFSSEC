@@ -6,7 +6,7 @@ const DAY = 86400;
 function sign(value) {
   const secret = process.env.ADMIN_SESSION_SECRET;
   if (!secret || secret.length < 32) throw new Error('ADMIN_SESSION_SECRET required');
-  return crypto.createHmac('sha256', secret).update(value).digest('hex');
+  return crypto.createHmac('sha256', secret).update(`admin-v2:${value}`).digest('hex');
 }
 export function isPasswordAdmin(req) {
   try {
@@ -36,6 +36,7 @@ export function clearAdminCookie(res) {
 }
 export function validPassword(candidate) {
   if (typeof candidate !== 'string' || !process.env.ADMIN_PASSWORD || !process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_SESSION_SECRET.length < 32) return false;
+  if (['kfssec2026!', 'admin1234', '1234'].includes(candidate)) return false;
   const a = Buffer.from(candidate), b = Buffer.from(process.env.ADMIN_PASSWORD);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
