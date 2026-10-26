@@ -1,8 +1,14 @@
+import { popupStatus, nextKoreaMidnight } from '../../utils/popupSchedule';
 import React, { useState, useEffect } from 'react';
 import { X, ExternalLink, Calendar, CheckSquare, Square } from 'lucide-react';
 import { AWARD_CEREMONY_2026_POSTER } from '../../data/awardCeremony2026';
 
-export default function NoticePopupModal({ popupData, onNavigate }) {
+export default function NoticePopupModal({ popupData, onNavigate, preview = false }) {
+  const [clock, setClock] = useState(Date.now);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setClock(Date.now()), Math.max(1, nextKoreaMidnight(clock) - Date.now()));
+    return () => window.clearTimeout(timer);
+  }, [clock]);
   const [isOpen, setIsOpen] = useState(false);
   const [dontShowToday, setDontShowToday] = useState(false);
 
@@ -12,28 +18,16 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
       return;
     }
 
-    // 1. Check Date Range
-    const now = new Date();
-    if (popupData.startDate) {
-      const start = new Date(popupData.startDate + 'T00:00:00');
-      if (now < start) {
-        setIsOpen(false);
-        return;
-      }
-    }
-
-    if (popupData.endDate) {
-      const end = new Date(popupData.endDate + 'T23:59:59');
-      if (now > end) {
-        setIsOpen(false);
-        return;
-      }
+    const now = new Date(clock);
+    if (!preview && popupStatus(popupData, clock) !== 'active') {
+      setIsOpen(false);
+      return;
     }
 
     // 2. Check "Do not show today" local storage
     try {
       const dismissedUntil = localStorage.getItem('kfssec_popup_dismissed_until');
-      if (dismissedUntil && Number(dismissedUntil) > now.getTime()) {
+      if (!preview && dismissedUntil && Number(dismissedUntil) > now.getTime()) {
         setIsOpen(false);
         return;
       }
@@ -42,20 +36,19 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
     }
 
     // 3. Mobile screen check
-    if (popupData.showOnMobile === false && window.innerWidth < 640) {
+    if (!preview && popupData.showOnMobile === false && window.innerWidth < 640) {
       setIsOpen(false);
       return;
     }
 
     // If all checks pass, show popup
     setIsOpen(true);
-  }, [popupData]);
+  }, [popupData, clock, preview]);
 
   const handleClose = () => {
     if (dontShowToday) {
       // Calculate end of today (23:59:59.999)
-      const endOfToday = new Date();
-      endOfToday.setHours(23, 59, 59, 999);
+      const endOfToday = new Date(nextKoreaMidnight() - 1);
       try {
         localStorage.setItem('kfssec_popup_dismissed_until', endOfToday.getTime().toString());
       } catch (e) {
@@ -79,13 +72,12 @@ export default function NoticePopupModal({ popupData, onNavigate }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, dontShowToday]);
 
-  if (!isOpen || !popupData || popupData.enabled === false) {
+  if (!isOpen || !popupData || popupData.enabled === false || (!preview && popupStatus(popupData, clock) !== 'active')) {
     return null;
   }
 
   const handleDismissTodayImmediately = () => {
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
+    const endOfToday = new Date(nextKoreaMidnight() - 1);
     try {
       localStorage.setItem('kfssec_popup_dismissed_until', endOfToday.getTime().toString());
     } catch (e) {

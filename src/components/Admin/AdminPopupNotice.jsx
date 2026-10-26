@@ -1,3 +1,4 @@
+import { koreaDate, normalizePopupSchedule, popupStatus } from '../../utils/popupSchedule';
 import React, { useState, useRef } from 'react';
 import {
   Sparkles,
@@ -22,7 +23,7 @@ import { AWARD_CEREMONY_2026_POPUP } from '../../data/awardCeremony2026';
 const DEFAULT_POPUP_NOTICE = AWARD_CEREMONY_2026_POPUP;
 
 export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
-  const currentPopup = siteData?.popupNotice || DEFAULT_POPUP_NOTICE;
+  const currentPopup = normalizePopupSchedule(siteData?.popupNotice || DEFAULT_POPUP_NOTICE);
 
   const [enabled, setEnabled] = useState(currentPopup.enabled ?? true);
   const [title, setTitle] = useState(currentPopup.title || DEFAULT_POPUP_NOTICE.title);
@@ -43,7 +44,10 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
   const getPeriodStatus = () => {
     if (!enabled) return { label: '팝업 꺼짐 (비활성)', color: 'bg-gray-100 text-gray-700 border-gray-300' };
     const now = new Date();
-    const todayStr = now.toISOString().split('T')[0];
+    const todayStr = koreaDate(now);
+    const schedule = popupStatus({ enabled, startDate, endDate, linkUrl });
+    if (schedule === 'invalid') return { label: '노출 기간을 확인해 주세요', color: 'bg-rose-100 text-rose-800 border-rose-300' };
+    if (schedule === 'expired') return { label: '행사 또는 노출 기간 종료 · 자동 중단', color: 'bg-rose-100 text-rose-800 border-rose-300' };
 
     if (startDate && todayStr < startDate) {
       return { label: `노출 대기중 (${startDate} 시작)`, color: 'bg-amber-100 text-amber-800 border-amber-300' };
@@ -61,22 +65,21 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
     const start = new Date();
     const end = new Date();
     end.setDate(start.getDate() + 7);
-    setStartDate(start.toISOString().split('T')[0]);
-    setEndDate(end.toISOString().split('T')[0]);
+    setStartDate(koreaDate(start));
+    setEndDate(koreaDate(end));
   };
 
   const handleApplyPreset1Month = () => {
     const start = new Date();
     const end = new Date();
     end.setMonth(start.getMonth() + 1);
-    setStartDate(start.toISOString().split('T')[0]);
-    setEndDate(end.toISOString().split('T')[0]);
+    setStartDate(koreaDate(start));
+    setEndDate(koreaDate(end));
   };
 
   const handleApplyPresetCeremonyDay = () => {
-    const start = new Date();
-    setStartDate(start.toISOString().split('T')[0]);
-    setEndDate('2026-10-31');
+    setStartDate(DEFAULT_POPUP_NOTICE.startDate);
+    setEndDate(DEFAULT_POPUP_NOTICE.eventDate);
   };
 
   // Image Upload
@@ -103,7 +106,11 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
 
   // Save Settings to Site Data
   const handleSave = async () => {
-    const updatedPopup = {
+    if (enabled && (!endDate || popupStatus({ enabled, startDate, endDate, linkUrl }) === 'invalid')) {
+      alert('팝업을 켜려면 올바른 종료일을 입력해 주세요.');
+      return;
+    }
+    const updatedPopup = normalizePopupSchedule({
       enabled,
       title,
       imageUrl,
@@ -114,7 +121,8 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
       endDate,
       showOnMobile,
       width: Number(width) || 440,
-    };
+    });
+    setEndDate(updatedPopup.endDate);
 
     const newSiteData = {
       ...siteData,
@@ -268,7 +276,7 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
                   onClick={handleApplyPresetCeremonyDay}
                   className="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-lg text-[11px] font-black transition cursor-pointer"
                 >
-                  🏆 2026 선정식(10월말)까지
+                  🏆 2026 선정식 당일(10/19)까지
                 </button>
               </div>
             </div>
@@ -520,6 +528,7 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
       {/* Real Interactive Preview Modal (When clicking '실제 팝업창 띄워보기') */}
       {isPreviewModalOpen && (
         <NoticePopupModal
+          preview
           popupData={previewData}
           onNavigate={(tab, subTab) => {
             alert(`선택된 링크로 이동 테스트: ${tab} / ${subTab}`);

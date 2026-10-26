@@ -1,3 +1,4 @@
+import { normalizePopupSchedule } from './utils/popupSchedule';
 import { migrateProfileDirectories } from './data/profileDirectory';
 import UsageGuide from './components/common/UsageGuide';
 import AdminAccess from './components/Admin/AdminAccess';
@@ -598,10 +599,7 @@ export default function App() {
         : DEFAULT_SITE_DATA.heroBanners;
 
     // 6. Popup Notice: fallback to defaults or merge saved popup config
-    const popupNotice = {
-      ...DEFAULT_SITE_DATA.popupNotice,
-      ...(saved.popupNotice || {}),
-    };
+    const popupNotice = normalizePopupSchedule(saved.popupNotice || DEFAULT_SITE_DATA.popupNotice);
 
     // 7. Jin Ikjun Expert Profile
     const jinIkjun = {

@@ -8,7 +8,8 @@ export const AWARD_CEREMONY_2026_POPUP = {
   linkText: '명인명장 선정시상식 상세 공지 바로 보기',
   linkTarget: '_self',
   startDate: '2026-09-01',
-  endDate: '2026-10-31',
+  eventDate: '2026-10-19',
+  endDate: '2026-10-19',
   showOnMobile: true,
   width: 380,
 };
