@@ -119,7 +119,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
           <span className="text-xs font-black text-[#15803D] bg-[#F0FDF4] border border-[#DCFCE7] px-2.5 py-0.5 rounded-md inline-block mb-2 whitespace-nowrap">
             {tr(course.industry)}
           </span>
-          <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#15803D] transition-colors line-clamp-1 tracking-tight">
+          <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-[#15803D] transition-colors whitespace-normal break-words tracking-tight">
             {tr(course.title)}
           </h3>
           <p className="text-xs text-gray-500 font-medium mt-1.5 line-clamp-2 leading-relaxed tracking-tight">

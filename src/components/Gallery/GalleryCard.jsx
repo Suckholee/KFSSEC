@@ -87,7 +87,7 @@ export default function GalleryCard({
                 <span className="truncate max-w-[50%]">{item.location}</span>
               )}
             </div>
-            <h3 className="font-black text-sm sm:text-base text-gray-900 group-hover:text-[#2B7752] transition-colors line-clamp-1 leading-snug">
+            <h3 className="font-black text-sm sm:text-base text-gray-900 group-hover:text-[#2B7752] transition-colors whitespace-normal break-words leading-relaxed">
               {item.title}
             </h3>
           </div>

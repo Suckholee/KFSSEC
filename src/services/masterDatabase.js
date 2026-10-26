@@ -1,3 +1,4 @@
+import { profileVideoSource } from '../utils/profileVideo.js';
 import { normalizeProfileImage } from '../utils/profileImage.js';
 import defaults from '../data/masterDirectory.json';
 import { readSharedContent, saveSharedContent } from './contentApi.js';
@@ -27,12 +28,15 @@ export function validateProfile(profile) {
   if (String(profile.order).trim() === '' || !Number.isSafeInteger(Number(profile.order)) || Number(profile.order) < 0) throw new Error('표시 순서는 0 이상의 정수로 입력해 주세요.');
   const image = normalizeProfileImage(profile.image);
   if (profile.published && !image) throw new Error('공개 프로필에는 사진이 필요합니다.');
+  const introVideoUrl = (profile.introVideoUrl || '').trim();
+  if (introVideoUrl && !profileVideoSource(introVideoUrl)) throw new Error('소개 영상은 HTTPS 유튜브 영상 또는 MP4 주소를 입력해 주세요.');
   const headline = (profile.headline || '').trim();
   if (headline.length > 60 || headline.split('\n').length > 2) throw new Error('카드 소개 문구는 60자 이내, 두 줄 이하로 입력해 주세요.');
   return {
     ...profile,
     image,
     headline,
+    introVideoUrl,
     name: profile.name.trim(),
     title: (profile.title || '').trim(),
     intro: (profile.intro || '').trim(),

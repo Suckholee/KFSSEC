@@ -20,10 +20,12 @@ import {
   Link2,
 } from 'lucide-react';
 import { useAdminEdit } from '../../context/AdminEditContext';
+import { profileVideoSource } from '../../utils/profileVideo';
 import { saveMasterProfile } from '../../services/masterDatabase';
 
 export default function MasterDetailModal({ isOpen, master, onClose, originRect, onEditMaster }) {
   const { tr, language } = useLanguage();
+  const introVideo = profileVideoSource(master?.introVideoUrl);
   const { isEditMode } = useAdminEdit();
   const dialogRef = useRef(null);
   const overlayRef = useRef(null);
@@ -370,6 +372,10 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect,
             </div>
           )}
 
+          {introVideo && <section className="min-w-0 space-y-3" aria-label="개인 소개 영상">
+            <h3 className="text-base font-black text-gray-900">소개 영상</h3>
+            {introVideo.type === 'youtube' ? <iframe title={`${master.name} 소개 영상`} src={introVideo.src} className="aspect-video w-full rounded-xl border-0" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" /> : <video controls preload="metadata" className="aspect-video w-full rounded-xl bg-black" src={introVideo.src} />}
+          </section>}
           {/* Awards & Career Timeline List */}
           <div className="space-y-3">
             <h3 className="text-base font-black text-gray-900 flex items-center gap-2 border-b-2 border-[#16A34A]/40 pb-2">

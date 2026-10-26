@@ -20,13 +20,13 @@ export default function NetflixCard({
       onClick={() => onSelect?.(item)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative aspect-video w-full rounded-xl overflow-hidden bg-stone-900 cursor-pointer transition-all duration-300 ease-out transform hover:scale-105 sm:hover:scale-108 hover:z-30 shadow-sm hover:shadow-2xl hover:shadow-stone-950/30 border border-stone-200 hover:border-[#15803D]"
+      className="group relative w-full rounded-xl overflow-hidden bg-stone-900 cursor-pointer transition-all duration-300 ease-out transform hover:scale-105 sm:hover:scale-108 hover:z-30 shadow-sm hover:shadow-2xl hover:shadow-stone-950/30 border border-stone-200 hover:border-[#15803D]"
     >
       {/* 16:9 Full Bleed Cover Image */}
       <img
         src={item.image}
         alt={item.title}
-        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+        className="aspect-video w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
         loading="lazy"
       />
 
@@ -46,12 +46,12 @@ export default function NetflixCard({
       )}
 
       {/* Bottom Gradient Overlay for Typography Legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 aspect-video bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
 
       {/* Card Content Overlaid at Bottom */}
-      <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 flex flex-col justify-end z-10">
+      <div className="relative min-w-0 bg-stone-900 p-3 sm:p-4 flex flex-col justify-end z-10">
         {/* Title styled with text shadow for crisp legibility */}
-        <h3 className="font-black text-xs sm:text-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] line-clamp-1 leading-snug tracking-tight group-hover:text-[#86EFAC] transition-colors">
+        <h3 className="font-black text-xs sm:text-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] whitespace-normal break-words leading-relaxed group-hover:text-[#86EFAC] transition-colors">
           {item.title}
         </h3>
 
@@ -73,7 +73,7 @@ export default function NetflixCard({
           )}
 
           {item.location && (
-            <span className="hidden sm:inline-block text-[10px] text-stone-300 font-medium truncate max-w-[110px] drop-shadow-xs">
+            <span className="text-[10px] text-stone-300 font-medium break-words drop-shadow-xs">
               · {item.location}
             </span>
           )}

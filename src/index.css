@@ -10,14 +10,16 @@
 
   body {
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.015em;
     word-break: keep-all;
+    overflow-wrap: anywhere;
     overflow-x: clip;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
     word-break: keep-all;
+    overflow-wrap: anywhere;
   }
 }
 
@@ -213,3 +215,6 @@
 
 [data-scope-selected="true"] { outline: 4px solid #f59e0b !important; outline-offset: 4px; box-shadow: 0 0 0 8px rgb(245 158 11 / .16) !important; }
 [data-editor-sector] { scroll-margin-top: calc(var(--admin-toolbar-height, 0px) + 120px); }
+
+/* Anchor scrolling must leave headings visible beneath the fixed navigation. */
+:where(section, article, h1, h2, h3, h4, h5, h6, [id$="-anchor"]) { scroll-margin-top: 8rem; }

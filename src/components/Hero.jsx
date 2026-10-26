@@ -266,7 +266,7 @@ export default function Hero({
                           </div>
                         )}
 
-                        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-snug sm:leading-snug md:leading-snug lg:leading-snug drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
                           <EditableText
                             value={banner.title}
                             onChange={(val) => {

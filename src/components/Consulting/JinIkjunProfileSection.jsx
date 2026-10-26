@@ -32,7 +32,7 @@ import ScrollReveal from '../common/ScrollReveal';
 import { defaultConsultingCases } from '../../data/defaultConsultingCases';
 
 export default function JinIkjunProfileSection({ onConsultClick }) {
-  const { siteDraft } = useAdminEdit();
+  const { siteDraft, isEditMode, updateSiteField } = useAdminEdit();
   // Sub-tabs: 'profile' (진익준교수 소개 프로필) | 'references' (진익준교수 사례예시 프렌차이즈 사례)
   const [activeSubTab, setActiveSubTab] = useState('profile');
 
@@ -40,7 +40,8 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
     setActiveSubTab(tab);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
-  const consultingFaqs = [{"id": "consulting-faq-1", "question": "진익준 교수의 외식 컨설팅은 기존 컨설팅과 어떻게 다른가요?", "answer": "단순히 인테리어 디자인에만 치중하지 않습니다. 국내외 수많은 외식공간 설계·감리 경험과 학술적 연구를 바탕으로 [상권 분석 + 브랜드 입지 전략 + 효율적인 주방/매장 동선 시스템 + 공간 브랜딩] 을 종합적으로 기획하여 실질적인 매출 상승과 오퍼레이션 효율화를 이끌어내는 맞춤형 공간/경영 컨설팅을 제공합니다.", "visible": true}, {"id": "consulting-faq-2", "question": "신규 창업이 아닌, 기존에 운영 중인 매장의 리뉴얼이나 경영 개선도 컨설팅이 가능한가요?", "answer": "네, 가능합니다. 노후화되거나 효율이 떨어진 기존 매장의 동선 재배치, 주방 시스템 개선(푸드테크 적용 등), 브랜드 리뉴얼 컨설팅 을 전문적으로 진행합니다. 상권 환경과 고객 타겟 분석을 거쳐 최소 비용으로 최대 효과를 낼 수 있는 리모델링 및 경영 개선 방안을 제시해 드립니다.", "visible": true}, {"id": "consulting-faq-3", "question": "컨설팅 진행 절차와 신청 시 준비해야 할 자료는 무엇인가요?", "answer": "온라인/전화 문의 접수 후 사전 상담을 진행하며, 아래 항목을 미리 작성해 주시면 더욱 신속하고 정확한 진단이 가능합니다: 매장 입지(주소) 및 평수 현재(또는 예정) 메뉴 콘셉트 예산 범위 주요 고민사항 및 개선 희망 포인트 이후 사전 현장 조사 및 면담을 통해 단계별 컨설팅 범위와 일정을 확정하게 됩니다.", "visible": true}];
+  const defaultConsultingFaqs = [{"id": "consulting-faq-1", "question": "진익준 교수의 외식 컨설팅은 기존 컨설팅과 어떻게 다른가요?", "answer": "단순히 인테리어 디자인에만 치중하지 않습니다. 국내외 수많은 외식공간 설계·감리 경험과 학술적 연구를 바탕으로 [상권 분석 + 브랜드 입지 전략 + 효율적인 주방/매장 동선 시스템 + 공간 브랜딩] 을 종합적으로 기획하여 실질적인 매출 상승과 오퍼레이션 효율화를 이끌어내는 맞춤형 공간/경영 컨설팅을 제공합니다.", "visible": true}, {"id": "consulting-faq-2", "question": "신규 창업이 아닌, 기존에 운영 중인 매장의 리뉴얼이나 경영 개선도 컨설팅이 가능한가요?", "answer": "네, 가능합니다. 노후화되거나 효율이 떨어진 기존 매장의 동선 재배치, 주방 시스템 개선(푸드테크 적용 등), 브랜드 리뉴얼 컨설팅 을 전문적으로 진행합니다. 상권 환경과 고객 타겟 분석을 거쳐 최소 비용으로 최대 효과를 낼 수 있는 리모델링 및 경영 개선 방안을 제시해 드립니다.", "visible": true}, {"id": "consulting-faq-3", "question": "컨설팅 진행 절차와 신청 시 준비해야 할 자료는 무엇인가요?", "answer": "온라인/전화 문의 접수 후 사전 상담을 진행하며, 아래 항목을 미리 작성해 주시면 더욱 신속하고 정확한 진단이 가능합니다: 매장 입지(주소) 및 평수 현재(또는 예정) 메뉴 콘셉트 예산 범위 주요 고민사항 및 개선 희망 포인트 이후 사전 현장 조사 및 면담을 통해 단계별 컨설팅 범위와 일정을 확정하게 됩니다.", "visible": true}];
+  const consultingFaqs = (Array.isArray(siteDraft?.consultingFaqs) ? siteDraft.consultingFaqs : defaultConsultingFaqs).filter(item => item.visible !== false).map((item, i) => ({ ...item, id: item.id || `faq-${i}`, question: item.question || item.q, answer: item.answer || item.a }));
   const [refCategory, setRefCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showMoreEdu, setShowMoreEdu] = useState(false);
@@ -50,7 +51,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
   const jinData = siteDraft?.jinIkjun || {};
 
   // 100+ Reference Projects Database (Admin Managed or Default)
-  const references = siteDraft?.consultingCases && siteDraft.consultingCases.length > 0
+  const references = Array.isArray(siteDraft?.consultingCases)
     ? siteDraft.consultingCases
     : defaultConsultingCases;
 
@@ -130,7 +131,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
               <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold ${
                 activeSubTab === 'references' ? 'bg-[#EAF6EE] text-[#1E5D3B]' : 'bg-gray-200 text-gray-700'
               }`}>
-                100+
+                {references.length}
               </span>
             </div>
           </button>
@@ -294,6 +295,7 @@ export default function JinIkjunProfileSection({ onConsultClick }) {
                       </span>
                     )}
                   </div>
+                  {(item.image || isEditMode) && <EditableImage src={item.image || ''} alt={`${item.brand} 현장 사진`} onChange={image => updateSiteField('consultingCases', references.map(row => row.id === item.id ? { ...row, image } : row))} className="block aspect-video w-full overflow-hidden rounded-xl bg-stone-100" imageClassName="h-full w-full object-cover" />}
                   <h5 className="text-base font-black text-gray-950 leading-snug">{item.brand}</h5>
                   <p className="text-xs text-gray-600 font-medium">{item.type}</p>
                 </div>

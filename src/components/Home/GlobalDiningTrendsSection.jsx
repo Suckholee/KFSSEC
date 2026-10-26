@@ -276,7 +276,7 @@ export default function GlobalDiningTrendsSection() {
                         </span>
                       </div>
 
-                      <h3 className="text-base sm:text-lg font-bold text-gray-900 group-hover/card:text-[#15803D] transition-colors line-clamp-2 tracking-tight leading-snug">
+                      <h3 className="text-base sm:text-lg font-bold text-gray-900 group-hover/card:text-[#15803D] transition-colors whitespace-normal break-words tracking-tight leading-snug">
                         {article.title}
                       </h3>
 

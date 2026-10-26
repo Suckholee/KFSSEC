@@ -492,7 +492,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
                         <Calendar className="w-3 h-3 text-[#2B7752]" />
                         <span>{photo.date}</span>
                       </span>
-                      <h3 className="font-black text-sm text-gray-900 group-hover:text-[#2B7752] transition-colors line-clamp-2">
+                      <h3 className="font-black text-sm text-gray-900 group-hover:text-[#2B7752] transition-colors whitespace-normal break-words">
                         {photo.title}
                       </h3>
                     </div>

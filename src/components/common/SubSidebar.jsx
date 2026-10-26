@@ -79,8 +79,8 @@ export default function SubSidebar({
                     : 'text-stone-700 hover:text-[#1E5D3B] hover:bg-white/80'
                 }`}
               >
-                <span>{tr(item.label)}</span>
-                {isActive && <ChevronRight className="w-4 h-4 text-[#2B7752]" />}
+                <span className="min-w-0 whitespace-normal break-words leading-relaxed">{tr(item.label)}</span>
+                {isActive && <ChevronRight className="w-4 h-4 shrink-0 text-[#2B7752]" />}
               </button>
             );
           })}

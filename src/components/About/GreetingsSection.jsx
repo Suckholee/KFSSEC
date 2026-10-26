@@ -315,7 +315,7 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
                 value={currentSpeech.visionBadge}
               />
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-black tracking-tight leading-tight text-white drop-shadow-lg">
+            <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-black tracking-tight leading-snug sm:leading-snug lg:leading-snug text-white drop-shadow-lg">
               <EditableText
                 multiline
                 path="speech.visionTitle"

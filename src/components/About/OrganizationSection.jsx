@@ -284,7 +284,7 @@ export default function OrganizationSection() {
                         <span className={`text-[10px] font-black px-2 py-0.5 rounded-md border inline-block mb-1 ${field.badgeColor}`}>
                           {t(field.badge)}
                         </span>
-                        <h4 className="font-black text-xs sm:text-sm text-stone-900 truncate">
+                        <h4 className="font-black text-xs sm:text-sm text-stone-900 whitespace-normal break-words">
                           <EditableText
                             path={`organization.fields.${fIdx}.title`}
                             value={siteDraft?.organization?.fields?.[fIdx]?.title || field.title}

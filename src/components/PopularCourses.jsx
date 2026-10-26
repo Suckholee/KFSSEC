@@ -105,7 +105,7 @@ export default function PopularCourses({ onSelectCourse, onViewAllClick, onScrol
               {/* Card Body */}
               <div className="p-5 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-1">
+                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-emerald-700 transition-colors whitespace-normal break-words">
                     {course.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-500 mt-2 font-medium leading-relaxed line-clamp-2">

@@ -344,6 +344,10 @@ export default function AdminMasters({ initialProfileId = null }) {
                 </div>
               </div>
 
+              <label className="block text-sm font-bold">개인 소개 영상 (선택)
+                <input className={inputClass} value={draft.introVideoUrl || ''} onChange={e => change('introVideoUrl', e.target.value)} placeholder="https://youtu.be/... 또는 HTTPS MP4 주소" />
+                <span className="mt-1 block text-xs font-normal leading-relaxed text-stone-500">희망자에 한해 1~3분 소개 영상을 등록합니다. 유튜브 채널 링크와 별도로 저장됩니다.</span>
+              </label>
               <ProfileImageEditor
                 key={draft.id}
                 value={draft.image}

@@ -76,9 +76,9 @@ export default function NetflixCategoryRow({
       <div className="flex items-center justify-between mb-2.5 sm:mb-3.5">
         <button
           onClick={() => onViewAllCategory?.(category.id)}
-          className="group/title flex items-center gap-2 cursor-pointer text-left focus:outline-none"
+          className="group/title min-w-0 flex items-center gap-2 cursor-pointer text-left focus:outline-none"
         >
-          <h2 className="text-base sm:text-lg lg:text-xl font-black text-stone-900 tracking-tight group-hover/title:text-[#15803D] transition-colors flex items-center gap-2">
+          <h2 className="text-base sm:text-lg lg:text-xl font-black text-stone-900 tracking-tight group-hover/title:text-[#15803D] transition-colors flex flex-wrap items-center gap-2">
             <span>{category.label}</span>
             <span className="text-[11px] font-bold text-[#15803D] opacity-0 group-hover/title:opacity-100 transition-opacity">
               모두 보기 ›
@@ -87,7 +87,7 @@ export default function NetflixCategoryRow({
         </button>
 
         {/* Netflix-style Pagination Dash Indicator */}
-        <div className="flex items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity duration-300">
+        <div className="hidden sm:flex shrink-0 items-center gap-1 opacity-0 group-hover/row:opacity-100 transition-opacity duration-300">
           <span className="w-3.5 h-1 bg-[#15803D] rounded-full" />
           <span className="w-3.5 h-1 bg-stone-300 rounded-full" />
           <span className="w-3.5 h-1 bg-stone-300 rounded-full" />

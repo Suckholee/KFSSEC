@@ -333,7 +333,7 @@ export default function NoticePostSection({
                         </span>
                       </div>
 
-                      <h3 className="font-black text-stone-900 text-base sm:text-lg group-hover/card:text-[#16A34A] transition-colors leading-snug line-clamp-2">
+                      <h3 className="font-black text-stone-900 text-base sm:text-lg group-hover/card:text-[#16A34A] transition-colors leading-snug whitespace-normal break-words">
                         {post.title}
                       </h3>
 

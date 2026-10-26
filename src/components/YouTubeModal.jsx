@@ -39,7 +39,7 @@ export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle, vid
             <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shrink-0">
               <Youtube className="w-5 h-5 fill-current" />
             </div>
-            <h3 className="text-base sm:text-lg font-extrabold text-white line-clamp-1">
+            <h3 className="text-base sm:text-lg font-extrabold text-white whitespace-normal break-words">
               {tr(displayTitle)}
             </h3>
           </div>

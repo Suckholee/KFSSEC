@@ -462,7 +462,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext, onPlayV
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-black text-white group-hover:text-emerald-300 transition-colors leading-snug line-clamp-2">
+                  <h3 className="text-base sm:text-lg font-black text-white group-hover:text-emerald-300 transition-colors leading-snug whitespace-normal break-words">
                     {isEditMode ? (
                       <EditableText
                         value={video.title}

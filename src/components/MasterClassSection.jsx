@@ -85,7 +85,7 @@ export default function MasterClassSection({ onViewMoreClick, onSelectCourse, on
                     <span className="text-xs font-bold text-gray-400">
                       {course.instructor}
                     </span>
-                    <h4 className="text-base font-black text-white group-hover:text-amber-300 transition-colors line-clamp-1 mt-0.5">
+                    <h4 className="text-base font-black text-white group-hover:text-amber-300 transition-colors whitespace-normal break-words mt-0.5">
                       {course.title}
                     </h4>
                   </div>

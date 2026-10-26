@@ -10,6 +10,7 @@ import GalleryDetailModal from './GalleryDetailModal';
 import GalleryEditorModal from './GalleryEditorModal';
 import { cleanMarkdownSnippet } from '../common/RichContentRenderer';
 import { DEFAULT_POSTS } from '../../data/defaultPosts';
+import { CEREMONY_2026_ALBUM } from '../../data/releasePosts';
 
 export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
   const { t } = useLanguage();
@@ -128,7 +129,7 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
   const handleDeleteGallery = (e, item) => {
     e.stopPropagation();
     if (window.confirm(`"${item.title}" 갤러리 게시물을 삭제하시겠습니까?`)) {
-      updatePostsDraft((prev) => prev.filter((p) => p.id !== item.id));
+      updatePostsDraft((prev) => prev.flatMap(p => p.id !== item.id ? [p] : item.id === CEREMONY_2026_ALBUM.id ? [{ ...p, visible: false }] : []));
     }
   };
 

@@ -39,6 +39,7 @@ import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
 import { DEFAULT_POSTS } from './data/defaultPosts';
+import { adoptReleasePosts } from './data/releasePosts';
 import { AWARD_CEREMONY_2026_POPUP } from './data/awardCeremony2026';
 import SectorOrder from './components/Admin/InlineEditor/SectorOrder';
 import { AdminEditProvider, useAdminEdit } from './context/AdminEditContext';
@@ -436,7 +437,7 @@ export default function App() {
   useEffect(() => {
     fetch('/api/auth', { cache: 'no-store' }).then(response => response.json()).then(result => setAdminAuth({ checked: true, authenticated: result.authenticated, configured: result.configured })).catch(() => setAdminAuth({ checked: true, authenticated: false, configured: false }));
     readSharedContent('site').then(data => { if (data) setSiteData(mergeSiteData(data)); }).catch(error => console.error('Failed to load site data:', error));
-    const refreshPosts = () => readSharedContent('posts').then(data => { if (Array.isArray(data)) setPostsList(data); }).catch(error => console.error('Failed to load posts:', error));
+    const refreshPosts = () => readSharedContent('posts').then(data => { if (Array.isArray(data)) setPostsList(adoptReleasePosts(data)); }).catch(error => console.error('Failed to load posts:', error));
     refreshPosts();
     const timer = window.setInterval(() => { if (!document.hidden) refreshPosts(); }, 30000);
     window.addEventListener('focus', refreshPosts);
@@ -621,7 +622,7 @@ export default function App() {
     };
   };
 
-  const [postsList, setPostsList] = useState(DEFAULT_POSTS);
+  const [postsList, setPostsList] = useState(() => adoptReleasePosts(DEFAULT_POSTS));
 
   const handleUpdatePostsList = async (newList) => {
     const resolved = typeof newList === 'function' ? newList(postsList) : newList;
