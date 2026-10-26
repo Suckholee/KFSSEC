@@ -80,8 +80,8 @@ export default function ProfileDirectory({ collection = 'faculty', fallback, onC
             </div>
             <p className="text-xs font-bold text-emerald-700"><EditableText value={member.badge} onChange={value => change(member.id, 'badge', value)} /></p>
             <h3 className="text-2xl font-black"><EditableText value={member.name} onChange={value => change(member.id, 'name', value)} /></h3>
-            <p className="text-sm font-bold text-emerald-900"><EditableText value={member.role} onChange={value => change(member.id, 'role', value)} /></p>
-            <p className="whitespace-pre-line text-sm text-stone-600"><EditableText multiline value={member.title} onChange={value => change(member.id, 'title', value)} /></p>
+            <p className="min-h-[1.5rem] text-sm font-bold text-emerald-900"><EditableText className="min-h-[1.5rem] min-w-[6rem]" placeholder="직함 입력" value={member.role} onChange={value => change(member.id, 'role', value)} /></p>
+            <p className="min-h-[1.5rem] whitespace-pre-line text-sm text-stone-600"><EditableText multiline className="min-h-[1.5rem] min-w-[6rem]" placeholder="소속·소개 입력" value={member.title} onChange={value => change(member.id, 'title', value)} /></p>
           </div>
           <div className="min-w-0 space-y-6">
             {member.intro && <p className="whitespace-pre-line rounded-xl bg-stone-50 p-4 text-sm leading-7"><EditableText multiline value={member.intro} onChange={value => change(member.id, 'intro', value)} /></p>}
