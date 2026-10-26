@@ -22,8 +22,8 @@ for id,text in lines:
 def run(args): subprocess.run(['ffmpeg','-y','-v','error',*map(str,args)],check=True)
 start=time.monotonic()
 for i,(photo,n) in enumerate(zip(photos,frames)):
- # Moderate, continuous photo motion; crop position keeps faces above subtitles.
- vf="scale=2400:1350:force_original_aspect_ratio=increase,crop=2400:1350,zoompan=z='1.02+0.00018*on':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1920x1080:fps=30,setsar=1,format=yuv420p"
+ # Fixed framing: no per-frame zoom or pan, preventing pixel-rounding jitter.
+ vf="scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30,format=yuv420p"
  run(['-loop','1','-i',photo,'-vf',vf,'-frames:v',n,'-an','-c:v','libx264','-preset','fast','-crf','19','-video_track_timescale','15360',out/f'photo{i}.mp4'])
 (out/'photos.txt').write_text(''.join(f"file '{out/f'photo{i}.mp4'}'\n" for i in range(3)))
 run(['-f','concat','-safe','0','-i',out/'photos.txt','-c','copy',out/'photos.mp4'])
@@ -31,5 +31,5 @@ run(['-f','concat','-safe','0','-i',out/'photos.txt','-c','copy',out/'photos.mp4
 run(['-i',out/'photos.mp4','-i',logo,'-i',out/'caption-o1.png','-i',out/'caption-b1.png','-i',out/'caption-e1.png','-filter_complex',"[1:v]scale=230:-1[logo];[0:v]drawbox=x=35:y=30:w=260:h=170:color=white@0.92:t=fill[panel];[panel][logo]overlay=50:40[base];[base][2:v]overlay=enable='between(t,0.4,3.839854)'[c1];[c1][3:v]overlay=enable='between(t,4.290438,6.880626)'[c2];[c2][4:v]overlay=enable='gte(t,7.530626)',format=yuv420p[v]",'-map','[v]','-frames:v','346','-an','-c:v','libx264','-preset','fast','-crf','19','-video_track_timescale','15360',out/'head.mp4'])
 run(['-ss','11.533333','-i',source,'-map','0:v:0','-c','copy','-an',out/'tail.mp4'])
 (out/'join.txt').write_text(f"file '{out/'head.mp4'}'\nfile '{out/'tail.mp4'}'\n")
-run(['-f','concat','-safe','0','-i',out/'join.txt','-i',source,'-map','0:v:0','-map','1:a:0','-c','copy','-movflags','+faststart',root/'public/videos/kfssec-main-intro-photo.mp4'])
+run(['-f','concat','-safe','0','-i',out/'join.txt','-i',source,'-map','0:v:0','-map','1:a:0','-c','copy','-movflags','+faststart',root/'public/videos/kfssec-main-intro-steady.mp4'])
 print(f'Changed intro span rendered in {time.monotonic()-start:.1f} seconds; narration synthesis 0; existing audio copied.')

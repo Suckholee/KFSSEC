@@ -26,10 +26,19 @@ test('consultants are independent, include chairman, and preserve explicit empty
 test('adviser migration is independent and runs once so deletions survive reload',()=>{
  const original={faculty:[{id:'joo',name:'주정자',highlights:['첫 항목\n둘째 항목']}]};
  const migrated=migrateProfileDirectories(original);
- assert.deepEqual(migrated.faculty.map(m=>m.name),['주정자','이득식','정보헌']);
+ assert.deepEqual(migrated.faculty.map(m=>m.name),['주정자','이득식','정보헌','박상혜','정기엽']);
  assert.deepEqual(migrated.consultingFaculty.map(m=>m.name),['안형상','진익준']);
  assert.equal(original.faculty.length,1);
  const deleted={...migrated,faculty:[]};
  assert.equal(migrateProfileDirectories(deleted),deleted);
  assert.deepEqual(migrateProfileDirectories(deleted).faculty,[]);
+});
+
+test('profile card migration fills missing content and preserves administrator content',()=>{
+ const migrated=migrateProfileDirectories({profileDirectoryVersion:1,faculty:[{id:'lee',name:'이득식',highlights:[]},{id:'jung',name:'정보헌',image:'/custom.jpg',highlights:['관리자 약력']}]});
+ assert.equal(migrated.profileDirectoryVersion,2);
+ assert.equal(migrated.faculty[0].imageLayout,'card');
+ assert.equal(migrated.faculty[0].highlights.length,10);
+ assert.equal(migrated.faculty[1].image,'/custom.jpg');
+ assert.deepEqual(migrated.faculty[1].highlights,['관리자 약력']);
 });

@@ -32,7 +32,7 @@ export default function ProfileDirectory({ collection = 'faculty', fallback, onC
     const close = event => {
       if (event.key === 'Escape') setEditor(null);
       if (event.key === 'Tab') {
-        const controls = [...(dialogRef.current?.querySelectorAll('input,textarea,button') || [])].filter(el => !el.disabled);
+        const controls = [...(dialogRef.current?.querySelectorAll('input,textarea,select,button') || [])].filter(el => !el.disabled);
         if (event.shiftKey && document.activeElement === controls[0]) { event.preventDefault(); controls.at(-1)?.focus(); }
         else if (!event.shiftKey && document.activeElement === controls.at(-1)) { event.preventDefault(); controls[0]?.focus(); }
       }
@@ -72,9 +72,9 @@ export default function ProfileDirectory({ collection = 'faculty', fallback, onC
           <button className={buttonClass} onClick={() => change(member.id, 'visible', member.visible === false)}>{member.visible === false ? '공개하기' : '비공개로 전환'}</button>
           <button className={buttonClass} onClick={() => { if (window.confirm(`${member.name} 프로필을 이 목록에서 삭제할까요?`)) save(members.filter(m => m.id !== member.id)); }}>삭제</button>
         </div>}
-        <div className="grid gap-6 md:grid-cols-[190px_minmax(0,1fr)]">
+        <div className={`grid gap-6 ${member.imageLayout === 'card' ? 'lg:grid-cols-2' : 'md:grid-cols-[190px_minmax(0,1fr)]'}`}>
           <div className="space-y-3">
-            <EditableImage src={member.image} alt={member.name} onChange={value => change(member.id, 'image', value)} className="mx-auto aspect-[3/4] w-44 overflow-hidden rounded-xl bg-stone-100" imageClassName="h-full w-full object-cover object-top" />
+            <EditableImage src={member.image} alt={member.name} onChange={value => change(member.id, 'image', value)} className={member.imageLayout === 'card' ? "w-full overflow-hidden rounded-xl bg-stone-100" : "mx-auto aspect-[3/4] w-44 overflow-hidden rounded-xl bg-stone-100"} imageClassName={member.imageLayout === 'card' ? "h-auto w-full object-contain" : "h-full w-full object-cover object-top"} />
             <p className="text-xs font-bold text-emerald-700"><EditableText value={member.badge} onChange={value => change(member.id, 'badge', value)} /></p>
             <h3 className="text-2xl font-black"><EditableText value={member.name} onChange={value => change(member.id, 'name', value)} /></h3>
             <p className="text-sm font-bold text-emerald-900"><EditableText value={member.role} onChange={value => change(member.id, 'role', value)} /></p>
@@ -100,6 +100,7 @@ export default function ProfileDirectory({ collection = 'faculty', fallback, onC
         <div className="flex justify-between"><h3 className="text-xl font-black">프로필 편집</h3><button type="button" onClick={() => setEditor(null)} aria-label="프로필 편집 닫기">✕</button></div>
         <p className="text-sm text-stone-500">학력·경력, 전문 분야, 저서는 한 줄에 한 항목씩 입력하세요. 사진은 등록 후 사진을 클릭해 업로드할 수 있습니다.</p>
         {Object.entries(labels).map(([key, label]) => <label key={key} className="block text-sm font-bold">{label}{['intro', ...listFields].includes(key) ? <textarea rows={key === 'intro' ? 3 : 4} className="mt-1 w-full rounded-lg border p-3 font-normal" value={editor[key] || ''} onChange={e => setEditor({ ...editor, [key]: e.target.value })} /> : <input autoFocus={key === 'name'} required={key === 'name'} className="mt-1 w-full rounded-lg border p-3 font-normal" value={editor[key] || ''} onChange={e => setEditor({ ...editor, [key]: e.target.value })} />}</label>)}
+        <label className="block text-sm font-bold">프로필 이미지 형식<select className="mt-1 w-full rounded-lg border p-3" value={editor.imageLayout || 'portrait'} onChange={e => setEditor({ ...editor, imageLayout: e.target.value })}><option value="portrait">인물 사진</option><option value="card">가로형 프로필 카드 (전체 표시)</option></select></label>
         <label className="flex gap-2 text-sm"><input type="checkbox" checked={editor.visible !== false} onChange={e => setEditor({ ...editor, visible: e.target.checked })} />홈페이지에 공개</label>
         {error && <p role="alert" className="text-red-600">{error}</p>}
         <div className="flex justify-end gap-3"><button type="button" className={buttonClass} onClick={() => setEditor(null)}>취소</button><button className={buttonClass} type="submit">목록에 반영</button></div>
