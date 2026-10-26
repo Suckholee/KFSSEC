@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useAdminEdit } from '../../context/AdminEditContext';
+import FacultyDetailList from './FacultyDetailList';
 import EditableText from '../Admin/InlineEditor/EditableText';
 import EditableImage from '../Admin/InlineEditor/EditableImage';
 import { resolveDirectory, profileLines } from '../../data/profileDirectory';
@@ -84,9 +85,9 @@ export default function ProfileDirectory({ collection = 'faculty', fallback, onC
           </div>
           <div className="min-w-0 space-y-6">
             {member.intro && <p className="whitespace-pre-line rounded-xl bg-stone-50 p-4 text-sm leading-7"><EditableText multiline value={member.intro} onChange={value => change(member.id, 'intro', value)} /></p>}
-            {listFields.map(key => member[key]?.length > 0 && <div key={key}>
+            {listFields.map(key => (isEditMode || member[key]?.length > 0) && <div key={key}>
               <h4 className="mb-3 border-b pb-2 text-sm font-black text-emerald-900">{labels[key]}</h4>
-              <ul className="list-disc space-y-2 pl-5 text-sm leading-7 text-stone-700">{member[key].map((text, i) => <li key={i}><EditableText multiline value={text} onChange={value => change(member.id, key, member[key].map((v, j) => i === j ? value : v))} /></li>)}</ul>
+              <FacultyDetailList member={member} field={key} label={labels[key]} onUpdate={updater => save(members.map(current => current.id === member.id ? updater(current) : current))} />
             </div>)}
             {consulting && <div className="flex flex-wrap gap-3">
               <button className={buttonClass} onClick={() => onConsultClick?.(`${member.name} 1:1 창업 컨설팅`)}>{member.name} 1:1 상담 신청</button>

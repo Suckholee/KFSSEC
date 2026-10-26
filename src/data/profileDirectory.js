@@ -4,7 +4,7 @@ export function profileLines(value) {
   return (Array.isArray(value) ? value : [value]).flatMap(item => typeof item === 'string' ? item.split(/\r?\n/) : []).map(item => item.trim()).filter(Boolean);
 }
 export function normalizeProfile(member) {
-  return { ...member, image: member.image || PENDING_PORTRAIT, highlights: profileLines(member.highlights), specialties: profileLines(member.specialties), publications: profileLines(member.publications) };
+  return { ...member, image: member.image || PENDING_PORTRAIT, highlights: Array.isArray(member.highlights) ? member.highlights : profileLines(member.highlights), specialties: Array.isArray(member.specialties) ? member.specialties : profileLines(member.specialties), publications: Array.isArray(member.publications) ? member.publications : profileLines(member.publications) };
 }
 export function resolveDirectory(site = {}, collection = 'faculty', fallback) {
   if (Array.isArray(site[collection])) return site[collection].filter(Boolean).map(normalizeProfile);

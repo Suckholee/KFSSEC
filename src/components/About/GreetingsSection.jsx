@@ -26,6 +26,7 @@ import {
   Target,
   FileText,
   ArrowRight,
+  Plus,
 } from 'lucide-react';
 import EditableText from '../Admin/InlineEditor/EditableText';
 import EditableImage from '../Admin/InlineEditor/EditableImage';
@@ -73,7 +74,28 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
   const [modalTab, setModalTab] = useState('basic'); // basic, speech, goals, closing
   const [formData, setFormData] = useState(currentSpeech);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [newProfileItems, setNewProfileItems] = useState({});
   const fileInputRef = useRef(null);
+
+  const handleAddProfileItem = (event, cardId) => {
+    event.preventDefault();
+    const text = (newProfileItems[cardId] || '').trim();
+    if (!isEditMode || !text) return;
+    const item = { id: crypto.randomUUID(), text };
+    updateSiteDraft(prev => ({
+      ...prev,
+      speech: {
+        ...prev.speech,
+        profileAdditionalItems: {
+          ...prev.speech?.profileAdditionalItems,
+          [cardId]: [...(prev.speech?.profileAdditionalItems?.[cardId] || []), item],
+        },
+      },
+    }));
+    setNewProfileItems(prev => ({ ...prev, [cardId]: '' }));
+  };
+
+
 
   useEffect(() => {
     setFormData({
@@ -568,7 +590,31 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
                         <span>{item}</span>
                       </li>
                     ))}
+                    {(currentSpeech.profileAdditionalItems?.[card.id] || []).map(item => (
+                      <li key={item.id} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-semibold leading-relaxed">
+                        <BookmarkCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
+                        <span data-content-key={`chairman-profile.${card.id}.additional.${item.id}`}>{item.text}</span>
+                      </li>
+                    ))}
                   </ul>
+                  {isEditMode && (
+                    <form onSubmit={event => handleAddProfileItem(event, card.id)} className="space-y-2 border-t border-emerald-100 pt-4">
+                      <label htmlFor={`profile-item-${card.id}`} className="block text-xs font-bold text-emerald-900">세부항목 추가</label>
+                      <textarea
+                        id={`profile-item-${card.id}`}
+                        rows={2}
+                        value={newProfileItems[card.id] || ''}
+                        onChange={event => setNewProfileItems(prev => ({ ...prev, [card.id]: event.target.value }))}
+                        placeholder="추가할 경력·자격 내용을 입력하세요"
+                        className="w-full rounded-xl border border-emerald-200 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      />
+                      <button type="submit" disabled={!newProfileItems[card.id]?.trim()} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-700 px-3 py-2 text-xs font-bold text-white hover:bg-emerald-800 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <Plus className="w-4 h-4" />
+                        항목 추가
+                      </button>
+                      <p className="text-xs text-gray-500">추가 후 상단의 ‘전체 저장’을 눌러 반영하세요.</p>
+                    </form>
+                  )}
                 </div>
               </div>
             </ScrollReveal>
