@@ -73,8 +73,10 @@ export default function ProfileDirectory({ collection = 'faculty', fallback, onC
           <button className={buttonClass} onClick={() => { if (window.confirm(`${member.name} 프로필을 이 목록에서 삭제할까요?`)) save(members.filter(m => m.id !== member.id)); }}>삭제</button>
         </div>}
         <div className={`grid gap-6 ${member.imageLayout === 'card' ? 'lg:grid-cols-2' : 'md:grid-cols-[190px_minmax(0,1fr)]'}`}>
-          <div className="space-y-3">
-            <EditableImage src={member.image} alt={member.name} onChange={value => change(member.id, 'image', value)} className={member.imageLayout === 'card' ? "w-full overflow-hidden rounded-xl bg-stone-100" : "mx-auto aspect-[3/4] w-44 overflow-hidden rounded-xl bg-stone-100"} imageClassName={member.imageLayout === 'card' ? "h-auto w-full object-contain" : "h-full w-full object-cover object-top"} />
+          <div className="min-w-0 space-y-3">
+            <div className={member.imageLayout === 'card' ? "w-full overflow-hidden rounded-xl bg-stone-100" : "mx-auto h-[235px] w-44 overflow-hidden rounded-xl bg-stone-100"}>
+              <EditableImage src={member.image} alt={member.name} onChange={value => change(member.id, 'image', value)} className={member.imageLayout === 'card' ? "block w-full" : "block h-full w-full"} imageClassName={member.imageLayout === 'card' ? "h-auto w-full object-contain" : "h-full w-full object-contain object-top"} />
+            </div>
             <p className="text-xs font-bold text-emerald-700"><EditableText value={member.badge} onChange={value => change(member.id, 'badge', value)} /></p>
             <h3 className="text-2xl font-black"><EditableText value={member.name} onChange={value => change(member.id, 'name', value)} /></h3>
             <p className="text-sm font-bold text-emerald-900"><EditableText value={member.role} onChange={value => change(member.id, 'role', value)} /></p>
