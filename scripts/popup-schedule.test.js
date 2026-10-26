@@ -27,7 +27,7 @@ test('disabled and invalid popup periods never open',()=>{
 
 test('retired event promotions leave home news without hiding event reports',()=>{
  assert.equal(expiredEventPromotion({id:'notice-ceremony-2026-1019'},'2026-10-26'),true);
- assert.equal(expiredEventPromotion({id:'gallery-ceremony-2026-1019'},'2026-10-26'),true);
+ assert.equal(expiredEventPromotion({id:'gal-ceremony-2026-1019'},'2026-10-26'),true);
  assert.equal(expiredEventPromotion({id:'notice-ceremony-2026-1019'},'2026-10-19T14:59:59Z'),false);
  assert.equal(expiredEventPromotion({id:'ceremony-report',eventDate:'2026-10-19'},'2026-10-26'),false);
 });

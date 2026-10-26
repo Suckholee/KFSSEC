@@ -28,7 +28,7 @@ export function popupStatus(popup, now = Date.now()) {
 }
 
 export function expiredEventPromotion(post, now = Date.now()) {
-  const knownCeremony = ['notice-ceremony-2026-1019', 'gallery-ceremony-2026-1019'].includes(post?.id);
+  const knownCeremony = ['notice-ceremony-2026-1019', 'gal-ceremony-2026-1019'].includes(post?.id);
   const endDate = post?.promotionEndDate || (knownCeremony ? '2026-10-19' : '');
   return Boolean(endDate && validDate(endDate) && koreaDate(now) > endDate);
 }
