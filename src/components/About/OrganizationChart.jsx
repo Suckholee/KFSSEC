@@ -53,7 +53,7 @@ export default function OrganizationChart({ partners }) {
     const siblings = nodes.filter(n => n.parentId === node.parentId && n.placement === node.placement);
     const index = siblings.findIndex(n => n.id === node.id);
     const card = (
-      <div className={`w-full min-w-[150px] max-w-[300px] overflow-hidden rounded-2xl border border-[#85CFAB] bg-stone-50 shadow-sm ${!node.parentId ? 'min-w-[300px]' : ''}`}>
+      <div className="w-full min-w-0 max-w-[300px] overflow-hidden rounded-2xl border border-[#85CFAB] bg-stone-50 shadow-sm [overflow-wrap:anywhere]">
         <h3 className={`bg-[#2B7752] px-4 py-3 text-center font-black text-white ${!node.parentId ? 'text-2xl' : 'text-sm'}`}>
           <EditableText value={node.title} onChange={title => change(node.id, { title })} />
         </h3>
@@ -81,18 +81,18 @@ export default function OrganizationChart({ partners }) {
         </div>}
       </div>
     );
-    return <div key={node.id} className="flex min-w-0 flex-col items-center">
+    return <div key={node.id} className="flex w-full min-w-0 flex-col items-center">
       {card}
       {side.length > 0 && <div className="flex w-full items-stretch justify-center">
-        <div className="w-1/2 shrink-0" />
-        <div className="flex w-1/2 flex-col gap-4 border-l-2 border-[#85CFAB] py-6">
+        <div className="hidden w-1/2 shrink-0 sm:block" />
+        <div className="flex w-full min-w-0 flex-col gap-4 border-l-2 border-[#85CFAB] py-6 sm:w-1/2">
           {side.map(child => <div key={child.id} className="flex items-center"><div className="h-0.5 w-10 shrink-0 bg-[#85CFAB]" />{renderNode(child, [...ancestors, node.id])}</div>)}
         </div>
       </div>}
       {below.length > 0 && <>
         <div className="h-8 w-0.5 bg-[#85CFAB]" />
-        <div className="flex w-full items-start justify-center gap-3">
-          {below.map(child => <div key={child.id} className="relative flex min-w-[160px] flex-1 flex-col items-center pt-6 before:absolute before:top-0 before:left-0 before:h-0.5 before:w-full before:bg-[#85CFAB]">
+        <div className="grid w-full min-w-0 items-start gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))' }}>
+          {below.map(child => <div key={child.id} className="relative flex min-w-0 flex-col items-center pt-6 before:absolute before:top-0 before:left-0 before:h-0.5 before:w-full before:bg-[#85CFAB]">
             <div className="absolute top-0 h-6 w-0.5 bg-[#85CFAB]" />{renderNode(child, [...ancestors, node.id])}
           </div>)}
         </div>
@@ -101,6 +101,6 @@ export default function OrganizationChart({ partners }) {
   };
   return <section aria-label="조직 체계도">
     {isEditMode && <p className="mb-6 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900">부서명·직책·이름을 클릭해 수정하세요. 하위 조직과 구성원을 추가하고, 상위 조직·배치·순서를 변경할 수 있습니다. 완료 후 상단 ‘전체 저장’을 눌러 반영하세요.</p>}
-    <div className="overflow-x-auto pb-4"><div className="min-w-[1080px] py-2">{nodes.filter(n => !n.parentId).map(n => renderNode(n))}</div></div>
+    <div className="w-full min-w-0 pb-4"><div className="w-full min-w-0 py-2">{nodes.filter(n => !n.parentId).map(n => renderNode(n))}</div></div>
   </section>;
 }

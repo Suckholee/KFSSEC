@@ -247,10 +247,10 @@ export default function OrganizationSection() {
       {activeView === 'hierarchy' && (
         <div className="space-y-8 animate-fadeIn">
           
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#D0E7DA] shadow-xl overflow-x-auto no-scrollbar">
+          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#D0E7DA] shadow-xl min-w-0">
             
             {/* Desktop / Large Screen Diagram Container */}
-            <div className="min-w-[980px] max-w-6xl mx-auto space-y-6 pt-2 pb-6">
+            <div className="w-full min-w-0 max-w-6xl mx-auto space-y-6 pt-2 pb-6">
               
               <OrganizationChart partners={displayPartners} />
 
@@ -273,7 +273,7 @@ export default function OrganizationSection() {
                 </div>
 
                 {/* 4 Pillars Grid */}
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                   {businessFields.map((field, fIdx) => (
                     <div
                       key={fIdx}
