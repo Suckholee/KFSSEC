@@ -26,3 +26,9 @@ export function popupStatus(popup, now = Date.now()) {
   if (data.startDate && today < data.startDate) return 'scheduled';
   return 'active';
 }
+
+export function expiredEventPromotion(post, now = Date.now()) {
+  const knownCeremony = ['notice-ceremony-2026-1019', 'gallery-ceremony-2026-1019'].includes(post?.id);
+  const endDate = post?.promotionEndDate || (knownCeremony ? '2026-10-19' : '');
+  return Boolean(endDate && validDate(endDate) && koreaDate(now) > endDate);
+}

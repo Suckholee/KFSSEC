@@ -1,3 +1,4 @@
+import { expiredEventPromotion } from '../utils/popupSchedule';
 import { useAdminEdit } from '../context/AdminEditContext';
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -51,7 +52,7 @@ export default function NoticePostSection({
   ];
 
   // Base list of announcements and posts: include all official notices, press news, and MOU partnerships!
-  const rawPosts = postsList.filter((post) => Boolean(post.title) && post.categoryType !== 'inquiry' && (isEditMode || post.visible !== false));
+  const rawPosts = postsList.filter((post) => Boolean(post.title) && post.categoryType !== 'inquiry' && (isEditMode || (post.visible !== false && !expiredEventPromotion(post))));
 
   const filteredPosts = rawPosts.filter((item) => {
     if (activeCategory === 'notice') {

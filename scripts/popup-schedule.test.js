@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {normalizePopupSchedule,popupStatus,koreaDate,nextKoreaMidnight} from '../src/utils/popupSchedule.js';
+import {normalizePopupSchedule,popupStatus,koreaDate,nextKoreaMidnight,expiredEventPromotion} from '../src/utils/popupSchedule.js';
 const legacy={enabled:true,linkUrl:'/community/notice?post=notice-ceremony-2026-1019',startDate:'2026-09-01',endDate:'2026-10-31'};
 test('past ceremony expires on its actual day even with saved October 31 configuration',()=>{
  assert.equal(normalizePopupSchedule(legacy).endDate,'2026-10-19');
@@ -23,4 +23,11 @@ test('disabled and invalid popup periods never open',()=>{
  assert.equal(popupStatus({enabled:true,startDate:'2026-12-01',endDate:'2026-11-01'}),'invalid');
  assert.equal(popupStatus({enabled:true,endDate:'2026-02-31'}),'invalid');
  assert.equal(popupStatus(null),'disabled');
+});
+
+test('retired event promotions leave home news without hiding event reports',()=>{
+ assert.equal(expiredEventPromotion({id:'notice-ceremony-2026-1019'},'2026-10-26'),true);
+ assert.equal(expiredEventPromotion({id:'gallery-ceremony-2026-1019'},'2026-10-26'),true);
+ assert.equal(expiredEventPromotion({id:'notice-ceremony-2026-1019'},'2026-10-19T14:59:59Z'),false);
+ assert.equal(expiredEventPromotion({id:'ceremony-report',eventDate:'2026-10-19'},'2026-10-26'),false);
 });
