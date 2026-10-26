@@ -226,6 +226,16 @@ export function AdminEditProvider({
     }
   }, [isAdmin, pendingChanges, siteDraft, postsDraft, sectorSettings, savedSnapshot, onUpdateSiteData, onUpdatePostsList]);
 
+  const publishBoardPost = useCallback(async post => {
+    if (!isAdmin) throw new Error('공지사항 작성은 관리자만 가능합니다.');
+    const next = [{ ...post, id: crypto.randomUUID(), category: '공지 사항', categoryType: 'notice', author: '관리자', date: new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }), views: 0, visible: true, isPinned: false }, ...postsDraft];
+    const saved = await saveSharedContent('posts', next);
+    if (onUpdatePostsList) await onUpdatePostsList(saved);
+    setPostsDraft(saved);
+    setSavedSnapshot(prev => ({ ...prev, posts: saved }));
+    setPendingChanges(prev => ({ ...prev, posts: false, count: prev.site ? prev.count : 0 }));
+  }, [isAdmin, postsDraft, onUpdatePostsList]);
+
   // Revert all changes
   const revertAllChanges = useCallback(() => {
     if (!window.confirm('저장하지 않은 모든 수정 내역을 되돌리고 원래대로 복원하시겠습니까?')) return;
@@ -254,6 +264,7 @@ export function AdminEditProvider({
     toggleSectorVisibility,
     moveSector,
     saveAllChanges,
+    publishBoardPost,
     revertAllChanges,
     isDrawerOpen,
     setIsDrawerOpen,
@@ -281,6 +292,7 @@ export function AdminEditProvider({
     toggleSectorVisibility,
     moveSector,
     saveAllChanges,
+    publishBoardPost,
     revertAllChanges,
     isDrawerOpen,
     drawerTab,

@@ -9,7 +9,7 @@ import SectorBlock from '../Admin/InlineEditor/SectorBlock';
 
 export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLoggedIn, onGoToEditor, postsList = [], setPostsList }) {
   const { tr, language } = useLanguage();
-  const { isEditMode } = useAdminEdit();
+  const { isEditMode, isAdmin } = useAdminEdit();
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPost, setSelectedPost] = useState(null);
@@ -169,7 +169,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
     });
 
   const handleWriteButtonClick = () => {
-    if (onGoToEditor) onGoToEditor();
+    if (onGoToEditor) onGoToEditor(activeTab === 'inquiry' ? 'editor' : 'write');
   };
 
   const handleTogglePin = (postId) => {
@@ -237,9 +237,9 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
                   <button
                     onClick={handleWriteButtonClick}
                     className="px-4 py-2 bg-black hover:bg-gray-800 text-white text-xs font-black rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
-                    title={tr(isUserLoggedIn ? '새 게시글 작성하기' : '로그인 필요')}
+                    title={tr(isAdmin || isUserLoggedIn ? '새 게시글 작성하기' : '로그인 필요')}
                   >
-                    {!isUserLoggedIn ? (
+                    {!isAdmin && !isUserLoggedIn ? (
                       <Lock className="w-3.5 h-3.5 text-amber-400" />
                     ) : (
                       <PenSquare className="w-4 h-4 text-emerald-400" />

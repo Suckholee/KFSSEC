@@ -26,6 +26,7 @@ import ConsultingPage from './components/Consulting/ConsultingPage';
 import GalleryPage from './components/Gallery/GalleryPage';
 import PartnersPage from './components/Partners/PartnersPage';
 import CommunityPage from './components/Community/CommunityPage';
+import BoardPostEditor from './components/Community/BoardPostEditor';
 import CommunityEditorPage from './components/Community/CommunityEditorPage';
 import AiAssistantPage from './components/AiAssistant/AiAssistantPage';
 import { setAiIndexedPosts } from './services/aiKnowledgeEngine';
@@ -148,7 +149,7 @@ function AppInner({
   isPaymentGuideOpen,
   setIsPaymentGuideOpen,
 }) {
-  const { siteDraft, postsDraft, isAdmin, setDrawerTab, setIsDrawerOpen, updatePostsDraft } = useAdminEdit();
+  const { siteDraft, postsDraft, isAdmin, setDrawerTab, setIsDrawerOpen, updatePostsDraft, publishBoardPost } = useAdminEdit();
   useEffect(() => {
     if (isAdmin && activeTab === 'admin' && ['users', 'reservations'].includes(subTab)) {
       setDrawerTab('members'); setIsDrawerOpen(true);
@@ -321,6 +322,9 @@ function AppInner({
             <PartnersPage initialSubTab={subTab || 'all'} partnerLogos={currentSite.partnerLogos} postsList={currentPosts} />
           )}
 
+          {activeTab === 'community' && subTab === 'write' && (isAdmin ? (
+            <BoardPostEditor onCancel={() => handleTabChange('community', 'notice')} onSubmit={async post => { await publishBoardPost(post); handleTabChange('community', 'notice'); }} />
+          ) : <div className="mx-auto max-w-xl p-8 text-center"><h1 className="text-xl font-bold">공지사항 작성은 관리자 로그인 후 이용해 주세요.</h1><button onClick={() => handleTabChange('admin')} className="mt-4 rounded-xl bg-emerald-800 px-6 py-3 text-white">관리자 로그인</button></div>)}
           {activeTab === 'community' && subTab === 'editor' && !currentUser && <div className="mx-auto max-w-xl p-8 text-center"><h1 className="text-xl font-bold">회원 로그인 후 상담을 신청해 주세요.</h1><button onClick={() => navigateToInquiry()} className="mt-4 rounded-xl bg-emerald-800 px-6 py-3 text-white">로그인·회원가입</button></div>}
           {activeTab === 'community' && subTab === 'editor' && currentUser && (
             <CommunityEditorPage
@@ -330,12 +334,12 @@ function AppInner({
             />
           )}
 
-          {activeTab === 'community' && subTab !== 'editor' && (
+          {activeTab === 'community' && !['editor', 'write'].includes(subTab) && (
             <CommunityPage
               initialTab={subTab || 'all'}
               onOpenAuth={handleOpenAuth}
               isUserLoggedIn={!!currentUser}
-              onGoToEditor={() => handleTabChange('community', 'editor')}
+              onGoToEditor={destination => destination === 'editor' ? navigateToInquiry() : handleTabChange('community', 'write')}
               onNavigate={handleTabChange}
               postsList={currentPosts}
               setPostsList={updatePostsDraft}
