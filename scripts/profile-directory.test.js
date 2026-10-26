@@ -36,9 +36,18 @@ test('adviser migration is independent and runs once so deletions survive reload
 
 test('profile card migration fills missing content and preserves administrator content',()=>{
  const migrated=migrateProfileDirectories({profileDirectoryVersion:1,faculty:[{id:'lee',name:'이득식',highlights:[]},{id:'jung',name:'정보헌',image:'/custom.jpg',highlights:['관리자 약력']}]});
- assert.equal(migrated.profileDirectoryVersion,2);
- assert.equal(migrated.faculty[0].imageLayout,'card');
+ assert.equal(migrated.profileDirectoryVersion,3);
+ assert.equal(migrated.faculty[0].imageLayout,'portrait');
  assert.equal(migrated.faculty[0].highlights.length,10);
  assert.equal(migrated.faculty[1].image,'/custom.jpg');
  assert.deepEqual(migrated.faculty[1].highlights,['관리자 약력']);
+});
+
+test('original cards become portraits without replacing administrator uploads or biographies',()=>{
+ const result=migrateProfileDirectories({profileDirectoryVersion:2,faculty:[{id:'lee',name:'이득식',image:'/images/faculty/lee-deuksik-card.png',imageLayout:'card',highlights:['보존할 약력']},{id:'park',name:'박상혜',image:'/uploads/custom.png',highlights:['직접 입력']}]});
+ assert.equal(result.faculty[0].image,'/images/faculty/lee-deuksik-portrait.png');
+ assert.equal(result.faculty[0].imageLayout,'portrait');
+ assert.deepEqual(result.faculty[0].highlights,['보존할 약력']);
+ assert.equal(result.faculty[1].image,'/uploads/custom.png');
+ assert.deepEqual(result.faculty[1].highlights,['직접 입력']);
 });

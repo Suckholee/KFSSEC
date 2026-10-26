@@ -21,8 +21,8 @@ const suppliedProfiles = [
     "role": "고문",
     "title": "이득식 박사",
     "badge": "교육원 고문",
-    "image": "/images/faculty/lee-deuksik-card.png",
-    "imageLayout": "card",
+    "image": "/images/faculty/lee-deuksik-portrait.png",
+    "imageLayout": "portrait",
     "highlights": [
       "(주)웰빙엘에스 CEO/연구소장",
       "한국산업단지공단(동해) 기능성바이오미니클러스터 회장",
@@ -44,8 +44,8 @@ const suppliedProfiles = [
     "role": "고문",
     "title": "정보헌 회장",
     "badge": "교육원 고문",
-    "image": "/images/faculty/jung-boheon-card.png",
-    "imageLayout": "card",
+    "image": "/images/faculty/jung-boheon-portrait.png",
+    "imageLayout": "portrait",
     "highlights": [
       "화남인터내셔날 대표이사",
       "정푸드코리아 대표이사, 해피라이프 대표이사",
@@ -67,8 +67,8 @@ const suppliedProfiles = [
     "role": "고문",
     "title": "박상혜 원장",
     "badge": "교육원 고문",
-    "image": "/images/faculty/park-sanghye-card.png",
-    "imageLayout": "card",
+    "image": "/images/faculty/park-sanghye-portrait.png",
+    "imageLayout": "portrait",
     "highlights": [
       "요리연구가 (천연조미료 명인)",
       "現 박상혜 음식연구소 대표",
@@ -91,8 +91,8 @@ const suppliedProfiles = [
     "role": "고문",
     "title": "정기엽 대표",
     "badge": "교육원 고문",
-    "image": "/images/faculty/jung-kiyeop-card.png",
-    "imageLayout": "card",
+    "image": "/images/faculty/jung-kiyeop-portrait.png",
+    "imageLayout": "portrait",
     "highlights": [
       "(주)디에이치디 대표",
       "세종 대학원 / 호텔경영",
@@ -109,18 +109,18 @@ const suppliedProfiles = [
   }
 ];
 export function migrateProfileDirectories(site = {}) {
-  if (site.profileDirectoryVersion >= 2) return site;
+  if (site.profileDirectoryVersion >= 3) return site;
   const faculty = (Array.isArray(site.faculty) ? site.faculty : resolveFaculty()).map(normalizeProfile);
   for (const supplied of suppliedProfiles) {
     const index = faculty.findIndex(member => member.name === supplied.name);
     if (index < 0) faculty.push(normalizeProfile(supplied));
     else {
       const member = faculty[index];
-      const missingImage = !member.image || member.image === PENDING_PORTRAIT;
+      const missingImage = !member.image || member.image === PENDING_PORTRAIT || member.image === supplied.image.replace('-portrait.png', '-card.png');
       faculty[index] = normalizeProfile({ ...supplied, ...member,
-        ...(missingImage ? { image: supplied.image, imageLayout: 'card' } : {}),
+        ...(missingImage ? { image: supplied.image, imageLayout: 'portrait' } : {}),
         highlights: member.highlights.length ? member.highlights : supplied.highlights });
     }
   }
-  return { ...site, faculty, consultingFaculty: resolveDirectory(site, 'consultingFaculty'), profileDirectoryVersion: 2 };
+  return { ...site, faculty, consultingFaculty: resolveDirectory(site, 'consultingFaculty'), profileDirectoryVersion: 3 };
 }
