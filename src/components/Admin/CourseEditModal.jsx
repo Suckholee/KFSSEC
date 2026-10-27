@@ -4,6 +4,8 @@ import CoursePosterGeneratorModal from './CoursePosterGeneratorModal';
 
 export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse }) {
   const fileInputRef = useRef(null);
+  const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false);
   const [posterModalOpen, setPosterModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -38,7 +40,7 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
         price: course.price != null ? (typeof course.price === 'number' ? `${course.price.toLocaleString()}원` : course.price) : '',
         duration: course.duration || '6주',
         format: course.format || '온·오프라인 병행',
-        studentsCount: course.studentsCount || 45,
+        studentsCount: course.studentsCount ?? 0,
         thumbnail: course.thumbnail || course.image || '/images/qualifications/advisor.jpg',
         desc: course.desc || course.description || '',
         fitMode: course.fitMode || 'contain',
@@ -100,6 +102,7 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (savingRef.current) return;
     if (!formData.title.trim()) {
       alert('교육과정 제목을 입력해 주세요.');
       return;
@@ -118,12 +121,14 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
     delete finalCourse.discount;
     delete finalCourse.discountRate;
 
+    savingRef.current = true;
+    setSaving(true);
     try {
       await onSaveCourse(finalCourse);
       onClose();
     } catch (error) {
       alert(error.message);
-    }
+    } finally { savingRef.current = false; setSaving(false); }
   };
 
   return (
@@ -346,10 +351,11 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
             </button>
             <button
               type="submit"
+              disabled={saving}
               className="px-6 py-2.5 bg-[#2B7752] hover:bg-[#205E40] text-white font-black text-xs sm:text-sm rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer flex items-center gap-2"
             >
               <Save className="w-4 h-4" />
-              <span>저장하기</span>
+              <span>{saving ? '저장 중…' : '저장하기'}</span>
             </button>
           </div>
 

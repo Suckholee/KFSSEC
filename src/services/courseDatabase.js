@@ -1,11 +1,12 @@
 import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';
 
+let memoryCourses = DEFAULT_COURSES;
 const DB_VERSION = 'v6_official_clean_tuition_20260927';
 
 // Upgrade reused default covers while preserving administrator uploads.
 function withCourseCovers(courses) {
   return courses.map(course => {
-    const id = course.qualificationId || (course.id?.includes('foodtech') ? 'foodtech' : course.id?.includes('sommelier') ? 'sommelier' : null);
+    const id = course.qualificationId || (String(course.id || '').includes('foodtech') ? 'foodtech' : String(course.id || '').includes('sommelier') ? 'sommelier' : null);
     if (!['foodtech', 'sommelier'].includes(id) || !['/images/qualifications/advisor.jpg', '/images/qualifications/practice.jpg'].includes(course.image)) return course;
     return { ...course, image: `/images/qualifications/${id}.jpg` };
   });
@@ -35,57 +36,31 @@ export async function fetchCoursesFromAPI() {
 }
 
 export function getCoursesFromDB() {
-  const version = localStorage.getItem('kfssec_courses_version');
-  const saved = localStorage.getItem('kfssec_courses_db');
-
-  if (version === DB_VERSION && saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      const hasLegacyMock = parsed.some(
-        (c) =>
-          (c.id && String(c.id).startsWith('CRS-')) ||
-          (c.category === 'behavior' || c.category === 'petfood') ||
-          c.title?.includes('전통 한식 조리 마스터') ||
-          c.title?.includes('일식 횟집') ||
-          c.title?.includes('파스타 & 파인다이닝') ||
-          c.title?.includes('대박 분식집') ||
-          c.title?.includes('반려견') ||
-          c.title?.includes('펫푸드')
-      );
-      if (Array.isArray(parsed) && !hasLegacyMock) {
-        return withCourseCovers(parsed);
+  try {
+    if (localStorage.getItem('kfssec_courses_version') === DB_VERSION) {
+      const parsed = JSON.parse(localStorage.getItem('kfssec_courses_db') || 'null');
+      if (Array.isArray(parsed) && parsed.every(c => c && typeof c === 'object' && !Array.isArray(c) && typeof c.title === 'string' && c.id != null)) {
+        const hasLegacyMock = parsed.some(c => String(c.id).startsWith('CRS-') || ['behavior','petfood'].includes(c.category) || /전통 한식 조리 마스터|일식 횟집|파스타 & 파인다이닝|대박 분식집|반려견|펫푸드/.test(c.title));
+        if (!hasLegacyMock) { memoryCourses = withCourseCovers(parsed); return memoryCourses; }
       }
-    } catch (e) {
-      console.error('Failed to parse courses DB from localStorage:', e);
     }
-  }
-
-  // Force auto-purge any old dummy cache & enforce institute course dataset
-  localStorage.setItem('kfssec_courses_version', DB_VERSION);
-  localStorage.setItem('kfssec_courses_db', JSON.stringify(DEFAULT_COURSES));
-  return DEFAULT_COURSES;
+  } catch { /* Storage may be blocked or damaged; keep the last loaded courses. */ }
+  return memoryCourses;
 }
 
 export function resetCoursesToDefault() {
-  localStorage.setItem('kfssec_courses_version', DB_VERSION);
-  localStorage.setItem('kfssec_courses_db', JSON.stringify(DEFAULT_COURSES));
-  try {
-    window.dispatchEvent(new Event('kfssec_courses_updated'));
-  } catch (e) {
-    // Ignore
-  }
+  cacheCourses(DEFAULT_COURSES);
   return DEFAULT_COURSES;
 }
 
 function cacheCourses(courses) {
   if (!Array.isArray(courses)) return;
-  localStorage.setItem('kfssec_courses_version', DB_VERSION);
-  localStorage.setItem('kfssec_courses_db', JSON.stringify(courses));
+  memoryCourses = courses;
   try {
-    window.dispatchEvent(new Event('kfssec_courses_updated'));
-  } catch (e) {
-    // Ignore in non-browser context
-  }
+    localStorage.setItem('kfssec_courses_version', DB_VERSION);
+    localStorage.setItem('kfssec_courses_db', JSON.stringify(courses));
+  } catch { /* A successful server save must not fail because the browser cache is full. */ }
+  try { window.dispatchEvent(new Event('kfssec_courses_updated')); } catch { /* Non-browser context. */ }
 }
 
 export async function saveCoursesToDB(courses) {

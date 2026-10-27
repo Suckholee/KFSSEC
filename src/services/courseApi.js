@@ -25,9 +25,10 @@ export async function fetchCourses(params = {}) {
   const dbCourses = getCoursesFromDB();
 
   // Normalize dbCourses for public catalog rendering
-  const normalizedCourses = dbCourses.map(c => ({
+  const normalizedCourses = dbCourses.filter(c => c && typeof c === 'object').map(c => ({
     ...c,
-    priceFormatted: c.price == null ? '수강료 문의' : `${Number(c.price).toLocaleString()}원`,
+    title: String(c.title || ''), description: String(c.description || c.desc || ''), industry: String(c.industry || ''), instructor: String(c.instructor || ''),
+    priceFormatted: c.priceFormatted || (c.price == null ? '수강료 문의' : typeof c.price === 'number' ? `${c.price.toLocaleString()}원` : String(c.price)),
     createdAt: c.startDate || '',
   }));
 
