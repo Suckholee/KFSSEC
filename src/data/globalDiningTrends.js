@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5693",
+    "title": "식당의 벽에 산을 그리면 마음도 고요해질까?",
+    "summary": "식당의 벽에 산이 있었다.진짜 산은 아니었다.넓은 벽을 따라 여러 겹의 산 능선이 이어져 있었다. 가까운 산은 짙었고, 먼 산은 흐릿했다. 산과 산 사이에는 ...",
+    "author": "글로벌외식정보",
+    "date": "2026.10.28",
+    "imageUrl": "/images/trends/trend_5693.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/d6e6e25ca6ffc03334a6446a74cce6d7d00a8ecb.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5693&mcode=m247tk9"
+  },
+  {
     "id": "5650",
     "title": "매출은 1.7배 늘었는데, 왜 사장에게 남는 돈은 줄었을까",
     "summary": "밤 열한 시가 조금 넘었다.마지막 손님이 돌아간 식당에는 몇 개의 불빛만 남아 있었다. 주방에서는 냉장고의 압축기가 낮은 소리로 돌아가고 있었다. 바닥에...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5404.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/fe541bd22607e78c6fc98ac00c78e4838a3ef613.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5404&mcode=m247tk9"
-  },
-  {
-    "id": "5381",
-    "title": "야장에서 필코노미까지…가을 외식문화가 달라졌다",
-    "summary": "최근 외식업계에서 '야장'이 다시 주목받고 있다. 과거 포장마차와 노포를 중심으로 형성됐던 야장 문화가 젊은 세대를 중심으로 새로운 외식 트렌드...",
-    "author": "글로벌외식정보",
-    "date": "2026.10.07",
-    "imageUrl": "/images/trends/trend_5381.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/67886c148c4416a4835bb8aae3f9220fa0343adc.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5381&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.27'
+  lastUpdated: '2026.10.28'
 };
