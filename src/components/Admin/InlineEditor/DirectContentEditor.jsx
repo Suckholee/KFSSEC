@@ -127,7 +127,7 @@ export default function DirectContentEditor() {
         </div>
         <div className="border-t p-4 space-y-2">
           {error && <p role="alert" className="text-red-700 text-sm">{error}</p>}
-          <div className="flex flex-wrap justify-between gap-3 items-center"><p className="text-xs text-slate-600">{dirty.length}개 변경 · 닫기를 누르면 이 창의 변경은 취소됩니다.</p><button disabled={uploading || !dirty.length} className="bg-amber-500 text-slate-950 font-bold px-5 py-2 rounded-lg disabled:opacity-40">수정 내용 적용</button></div>
+          <div className="flex flex-wrap justify-between gap-3 items-center"><p className="text-xs text-slate-600">{dirty.length}개 변경 · 닫기를 누르면 이 창의 변경은 취소됩니다.</p><button disabled={uploading || !dirty.length} className="bg-emerald-700 text-white font-bold px-5 py-2 rounded-lg disabled:opacity-40">수정 내용 적용</button></div>
         </div>
       </form>
     </div>, document.body,

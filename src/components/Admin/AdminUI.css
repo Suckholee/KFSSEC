@@ -27,3 +27,6 @@
  .admin-panel :is(.flex.items-center.justify-between,.flex.justify-between){flex-wrap:wrap;gap:8px}
  .admin-panel :is(.flex.items-center.gap-2,.flex.items-center.gap-3){flex-wrap:wrap}
 }
+
+.admin-panel fieldset{min-inline-size:0}.admin-panel legend{max-width:100%;white-space:normal;overflow-wrap:anywhere}.admin-panel .grid>*{min-width:0}
+@media(max-width:359px){.admin-workspace .admin-main .grid-cols-2{grid-template-columns:minmax(0,1fr)}}
