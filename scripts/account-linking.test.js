@@ -52,7 +52,7 @@ test('both identities must be verified; merged accounts share profile, enrollmen
   const accepted=await call('callback',{state:new URL(kaStart2.headers.Location).searchParams.get('state'),code:'fresh-code'},oldEmailCookie+'; '+cookies(kaStart2),'GET');
   assert.equal(accepted.headers.Location,'https://site.test/');assert.equal((await identityMember('kakao:2')).id,kakao.id);
   const googleStart=await call('google-start',{},'','GET');
-  const googleUrl=new URL(googleStart.headers.Location);assert.equal(googleUrl.origin,'https://accounts.google.com');assert.equal(googleUrl.searchParams.get('code_challenge_method'),'S256');
+  const googleUrl=new URL(googleStart.headers.Location);assert.equal(googleUrl.origin,'https://accounts.google.com');assert.equal(googleUrl.searchParams.get('redirect_uri'),'https://site.test/api/member-auth?action=callback');assert.equal(googleUrl.searchParams.get('code_challenge_method'),'S256');
   const googleState=googleUrl.searchParams.get('state');
   const tampered=await call('google-callback',{state:'bad',code:'code'},cookies(googleStart),'GET');assert.match(tampered.headers.Location,/login_error=state/);
   googleVerified=false;const unverified=await call('google-callback',{state:googleState,code:'code'},cookies(googleStart),'GET');assert.match(unverified.headers.Location,/login_error=failed/);googleVerified=true;
@@ -66,7 +66,7 @@ test('both identities must be verified; merged accounts share profile, enrollmen
   assert.equal((await identityMember('google:google-user-1')).id,kakao.id);assert.equal((await listMembers()).length,1);
   assert.deepEqual((await getMember(kakao.id)).enrolledCourses.map(c=>c.courseId).sort(),['a','b','c']);
   const googleCookie=cookies(googleRegistration);assert.equal((await call('session',{},googleCookie,'GET')).body.user.id,kakao.id);assert.equal(await isAdmin({headers:{cookie:googleCookie}}),true);
-  const googleAgain=await call('google-start',{},'','GET');const googleLogin=await call('google-callback',{state:new URL(googleAgain.headers.Location).searchParams.get('state'),code:'code'},cookies(googleAgain),'GET');assert.equal(googleLogin.headers.Location,'https://site.test/');
+  const googleAgain=await call('google-start',{},'','GET');const googleLogin=await call('callback',{state:new URL(googleAgain.headers.Location).searchParams.get('state'),code:'code'},cookies(googleAgain),'GET');assert.equal(googleLogin.headers.Location,'https://site.test/');
   assert.equal((await call('profile',{},cookies(googleLogin),'GET')).body.enrolledCourses.length,3);
   await saveMember({id:kakao.id,adminRole:'none'},{touchLogin:false});assert.equal(await isAdmin({headers:{cookie:oldEmailCookie}}),false);assert.equal(await isAdmin({headers:{cookie:googleCookie}}),false);
   assert.equal(memberSessionId({headers:{cookie:'kfssec_member_session=forged'}}),null);

@@ -131,9 +131,10 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, user, registrationRequired: !user, linked: Boolean(challenge.memberId) });
     } catch (error) { return res.status(400).json({ message: error.message || '이메일 인증에 실패했습니다.' }); }
   }
-  if (req.method === 'GET' && ['google-start', 'google-callback'].includes(action)) {
+  const googlePending = req.method === 'GET' && action === 'callback' ? read(req, GOOGLE_STATE, key) : null;
+  if (req.method === 'GET' && (['google-start', 'google-callback'].includes(action) || (action === 'callback' && googlePending && googlePending.state === req.query?.state))) {
     if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) return res.status(503).json({ message: 'Google 로그인 연결 설정이 필요합니다.' });
-    const callback = `${origin}/api/member-auth?action=google-callback`;
+    const callback = config.redirect;
     if (action === 'google-start') {
       const session = read(req, SESSION, key);
       const linking = req.query?.link === '1';
