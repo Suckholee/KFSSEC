@@ -121,7 +121,7 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData, 
     <div className="space-y-6 max-w-6xl mx-auto p-4 sm:p-6 font-sans text-gray-900 select-text">
       
       {/* Top Banner Header */}
-      <div className="bg-[#171b20] text-white rounded-3xl p-6 sm:p-8 border border-gray-700 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#171b20] text-white rounded-3xl p-6 sm:p-8 border border-gray-700 shadow-xl flex flex-col justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-black mb-2">
             <Bot className="w-3.5 h-3.5" />
@@ -136,10 +136,10 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData, 
         </div>
 
         {/* Subtabs Switcher */}
-        <div className="flex items-center gap-2 bg-[#20252b] p-1.5 rounded-2xl border border-gray-700 self-start md:self-auto shrink-0">
+        <div className="flex w-full min-w-0 flex-wrap items-center gap-2 bg-[#20252b] p-1.5 rounded-2xl border border-gray-700 self-start md:self-auto shrink-0">
           <button
             onClick={() => handleTabChange('generator')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            className={`min-w-0 flex-1 basis-40 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === 'generator'
                 ? 'bg-emerald-500 text-black shadow-md'
                 : 'text-gray-400 hover:text-white'
@@ -149,7 +149,7 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData, 
           </button>
           <button
             onClick={() => handleTabChange('calendar')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
+            className={`min-w-0 flex-1 basis-40 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
               activeTab === 'calendar'
                 ? 'bg-emerald-500 text-black shadow-md'
                 : 'text-gray-400 hover:text-white'
@@ -159,7 +159,7 @@ export default function AdminAIBlogMarketing({ siteData = {}, onUpdateSiteData, 
           </button>
           <button
             onClick={() => handleTabChange('banner_guide')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`min-w-0 flex-1 basis-40 px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'banner_guide'
                 ? 'bg-emerald-500 text-black shadow-md'
                 : 'text-gray-400 hover:text-white'
