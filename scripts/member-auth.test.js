@@ -13,6 +13,7 @@ test('Kakao OAuth validates state, protects member cookies and rejects cross-ori
   process.env.SUPABASE_URL = 'https://db.example';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-database-key';
   let storedMember;
+  const objects = new Map();
   const request = async (query = {}, headers = {}, method = 'GET', body = {}) => {
     const res = { headers: {}, statusCode: 200, setHeader(k, v) { this.headers[k] = v; }, status(v) { this.statusCode = v; return this; }, json(v) { this.body = v; return this; }, end() { return this; } };
     await handler({ method, query, headers, body }, res);
@@ -23,9 +24,11 @@ test('Kakao OAuth validates state, protects member cookies and rejects cross-ori
     globalThis.fetch = async (url, options) => {
       calls++;
       if (url.startsWith('https://db.example')) {
-        if (url.endsWith('/object/list/members')) return { ok: true, json: async () => [{ name: 'a'.repeat(64) + '.json' }] };
-        if (options.method === 'POST') { storedMember = JSON.parse(options.body); return { ok: true }; }
-        return storedMember ? { ok: true, json: async () => storedMember } : { ok: false, status: 404, json: async () => ({ statusCode: '404' }) };
+        if (url.endsWith('/object/list/members')) return { ok: true, json: async () => [...objects.keys()].filter(name=>/^[a-f0-9]{64}\.json$/.test(name)).map(name=>({name})) };
+        if (options.method === 'DELETE') { for(const name of JSON.parse(options.body).prefixes) objects.delete(name);return {ok:true}; }
+        const name=url.split('/').at(-1);
+        if (options.method === 'POST') { const value=JSON.parse(options.body);objects.set(name,value);if(/^[a-f0-9]{64}\.json$/.test(name))storedMember=value;return {ok:true}; }
+        return objects.has(name)?{ok:true,json:async()=>objects.get(name)}:{ok:false,status:404,json:async()=>({statusCode:'404'})};
       }
       if (url.includes('/oauth/token')) {
         assert.equal(options.body.get('redirect_uri'), 'http://localhost:3000/api/member-auth?action=callback');

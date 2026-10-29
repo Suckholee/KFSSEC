@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     const posts = await readContent('posts') || [];
     const post = {
       id: crypto.randomUUID(), category: '문의', categoryType: 'inquiry',
-      title, content, author, authorId: memberId, isPinned: false, status: 'pending', views: 0,
+      title, content, author, authorId: member.id, isPinned: false, status: 'pending', views: 0,
       date: new Date().toISOString().slice(0, 10).replace(/-/g, '.'),
     };
     await writeContent('posts', [post, ...posts]);

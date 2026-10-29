@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import EmailLogin from './EmailLogin';
 import { X } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 
@@ -38,6 +39,7 @@ export default function AuthModal({ isOpen = false, onClose }) {
         <button type="button" disabled={checking || !configured} onClick={() => window.location.assign('/api/member-auth?action=start')} aria-label={copy[4]} className="mt-6 w-full overflow-hidden rounded-xl bg-[#FEE500] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800">
           <img src={`/images/auth/kakao_login_${language === 'ko' ? 'kr' : 'en'}.svg`} alt={copy[4]} className="w-full h-14 object-contain" />
         </button>
+        <EmailLogin />
         {(checking || !configured) && <p role="status" className="mt-3 text-sm text-gray-500">{checking ? copy[3] : copy[2]}</p>}
       </section>
     </div>

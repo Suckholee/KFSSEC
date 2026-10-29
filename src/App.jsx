@@ -32,6 +32,7 @@ import AiAssistantPage from './components/AiAssistant/AiAssistantPage';
 import { setAiIndexedPosts } from './services/aiKnowledgeEngine';
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminMembers from './components/Admin/AdminMembers';
+import EmailAuthReturn from './components/EmailAuthReturn';
 import AuthModal from './components/AuthModal';
 import YouTubeModal from './components/YouTubeModal';
 import PaymentGuideModal from './components/PaymentGuideModal';
@@ -382,6 +383,7 @@ function AppInner({
         </SectorBlock>
 
         {/* Modals */}
+        <EmailAuthReturn />
         <AuthModal
           isOpen={authModalState.isOpen}
           initialMode={authModalState.initialMode}
