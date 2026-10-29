@@ -1,3 +1,4 @@
+import './components/Admin/AdminUI.css';
 import { normalizePopupSchedule } from './utils/popupSchedule';
 import { migrateProfileDirectories } from './data/profileDirectory';
 import UsageGuide from './components/common/UsageGuide';

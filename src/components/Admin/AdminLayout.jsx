@@ -623,7 +623,7 @@ export default function AdminLayout({
   });
 
   return (
-    <div className="h-dvh w-full bg-[#f4f6f8] text-gray-900 flex flex-col font-sans overflow-hidden select-none">
+    <div className="admin-workspace h-dvh w-full bg-[#f4f6f8] text-gray-900 flex flex-col font-sans overflow-hidden select-none">
       
       {/* FIXED TOP HEADER BAR */}
       <header className="bg-[#1e2329] text-white min-h-16 px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 shadow-md shrink-0 z-50">
@@ -678,10 +678,10 @@ export default function AdminLayout({
       </header>
 
       {/* FIXED CONTAINER BELOW HEADER */}
-      <div className="flex-1 flex overflow-hidden h-[calc(100vh-64px)]">
+      <div className="admin-workstation flex-1 min-h-0 flex overflow-hidden">
         
         {/* TIER 1: Far Left Narrow Icon Bar */}
-        <nav className="w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-3 shrink-0 z-20 h-full overflow-y-auto">
+        <nav aria-label="관리 기능" className="admin-primary-nav w-16 bg-[#171b20] border-r border-gray-800 flex flex-col items-center py-4 space-y-3 shrink-0 z-20 h-full overflow-y-auto">
           <button
             onClick={() => switchPrimaryMenu('dashboard', 'overview', null)}
             className={`w-11 h-11 rounded-2xl flex flex-col items-center justify-center transition-all cursor-pointer ${
@@ -856,7 +856,7 @@ export default function AdminLayout({
         </nav>
 
         {/* TIER 2: Secondary Expanding Sub-Panel */}
-        <aside className="hidden md:block w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10 h-full overflow-y-auto">
+        <aside aria-label="선택한 기능의 세부 메뉴" className="admin-secondary-nav w-full md:w-52 bg-white border-r border-gray-300 p-4 space-y-4 shrink-0 shadow-xs z-10 h-full overflow-y-auto">
           <div className="px-2 border-b border-gray-200 pb-3">
             <h2 className="text-sm font-black text-black tracking-tight">
               {primaryMenu === 'dashboard' && '통합 운영 대시보드'}
@@ -922,7 +922,7 @@ export default function AdminLayout({
         </aside>
 
         {/* MAIN WORKSTATION CANVAS AREA */}
-        <main className="flex-1 min-w-0 h-full p-3 sm:p-6 overflow-y-auto bg-[#f4f6f8] space-y-6 scroll-smooth select-text">
+        <main className="admin-main flex-1 min-h-0 min-w-0 h-full p-3 sm:p-6 overflow-y-auto bg-[#f4f6f8] space-y-6 scroll-smooth select-text">
           
           {/* DYNAMIC SCREEN 0: EXECUTIVE INTEGRATED DASHBOARD */}
           {primaryMenu === 'dashboard' && (

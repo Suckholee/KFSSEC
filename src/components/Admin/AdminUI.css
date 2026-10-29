@@ -1,0 +1,29 @@
+/* Shared admin surfaces: readable content, contained scrolling and stable actions. */
+.admin-panel,.admin-workspace{min-width:0;overflow-wrap:anywhere}
+.admin-panel :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea),.admin-workspace :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){max-width:100%;min-width:0;box-sizing:border-box}
+.admin-panel :is(button,a),.admin-workspace button{overflow-wrap:anywhere}
+.admin-panel button{line-height:1.5}
+.admin-panel :is(h2,h3,h4,p,label,span){min-width:0}
+.admin-panel svg{flex-shrink:0}
+.admin-panel>form,.admin-panel>section{min-width:0}
+.admin-panel>div:first-child,.admin-panel>div:last-child{flex-shrink:0}
+.admin-panel button:focus-visible,.admin-workspace button:focus-visible{outline:2px solid #059669;outline-offset:2px}
+@media(max-width:767px){
+ .admin-workstation{flex-direction:column}
+ .admin-primary-nav{width:100%;height:auto;flex-direction:row;justify-content:flex-start;gap:8px;padding:8px;overflow-x:auto;overflow-y:hidden;border-right:0;border-bottom:1px solid #334155}
+ .admin-primary-nav>button{flex-shrink:0;width:72px;height:58px;margin:0!important;border-radius:10px}
+ .admin-primary-nav>button>span{font-size:11px;line-height:1.4}
+ .admin-secondary-nav{height:auto;max-height:155px;padding:8px;border-right:0;border-bottom:1px solid #e2e8f0}
+ .admin-secondary-nav>div:first-child{display:none}
+ .admin-secondary-nav>div:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+ .admin-secondary-nav>div:last-child>button{margin:0;min-height:44px;padding:8px;font-weight:600;font-size:12px}
+ .admin-main{height:auto!important;min-height:0;max-width:100%}
+ .admin-workspace>header{gap:8px;padding:12px}
+ .admin-workspace>header>div{min-width:0;flex-wrap:wrap}
+ .admin-workspace>header button,.admin-panel button{min-height:40px}
+ .admin-panel :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea),.admin-workspace :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){font-size:16px}
+ .admin-panel .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+ [data-content-editor-ui] :is(h2,h3,strong){overflow-wrap:anywhere}
+ .admin-panel :is(.flex.items-center.justify-between,.flex.justify-between){flex-wrap:wrap;gap:8px}
+ .admin-panel :is(.flex.items-center.gap-2,.flex.items-center.gap-3){flex-wrap:wrap}
+}

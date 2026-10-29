@@ -68,81 +68,31 @@ export default function AdminDrawer() {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`w-full ${drawerTab === 'popup' ? 'max-w-2xl' : 'max-w-lg'} h-full bg-white shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200`}
+        role="dialog" aria-modal="true" aria-label="운영 관리 설정" className={`admin-panel w-full min-w-0 ${drawerTab === 'popup' ? 'max-w-2xl' : 'max-w-lg'} h-[100dvh] bg-white shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200`}
       >
         {/* Drawer Header */}
         <div className="p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></div>
-            <h2 className="font-bold text-base text-slate-100">KFSSEC 관리 서랍</h2>
+            <h2 className="font-bold text-base text-slate-100">운영 관리</h2>
           </div>
           <button
             type="button"
             onClick={() => setIsDrawerOpen(false)}
+            aria-label="운영 관리 닫기"
             className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex border-b border-slate-200 bg-slate-50 text-xs sm:text-sm font-medium overflow-x-auto">
-          <button type="button" onClick={() => window.location.assign('/admin/members')} className={`flex-1 min-w-[95px] py-3 px-2 border-b-2 ${drawerTab === 'members' ? 'border-emerald-600 text-emerald-800 bg-white font-bold' : 'border-transparent text-slate-600'}`}>회원관리</button>
-          <button
-            type="button"
-            onClick={() => setDrawerTab('popup')}
-            className={`flex-1 min-w-[95px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
-              drawerTab === 'popup'
-                ? 'border-amber-500 text-amber-700 bg-white font-bold'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <Bell className="w-4 h-4 text-amber-600" />
-            <span>🪟 공지 팝업</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setDrawerTab('inquiry')}
-            className={`flex-1 min-w-[110px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
-              drawerTab === 'inquiry'
-                ? 'border-amber-500 text-amber-700 bg-white font-bold'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <MessageSquare className="w-4 h-4" />
-            <span>1:1 문의 ({inquiries.length})</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setDrawerTab('info')}
-            className={`flex-1 min-w-[95px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
-              drawerTab === 'info'
-                ? 'border-amber-500 text-amber-700 bg-white font-bold'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <Building className="w-4 h-4" />
-            <span>기관 기본정보</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setDrawerTab('database')}
-            className={`flex-1 min-w-[95px] py-3 px-2 flex items-center justify-center gap-1.5 border-b-2 transition ${
-              drawerTab === 'database'
-                ? 'border-amber-500 text-amber-700 bg-white font-bold'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <Database className="w-4 h-4" />
-            <span>동기화</span>
-          </button>
-        </div>
+        <nav aria-label="운영 관리 메뉴" className="grid shrink-0 grid-cols-2 gap-1 border-b border-slate-200 bg-slate-50 p-2 text-sm sm:grid-cols-3">
+          <button type="button" onClick={() => window.location.assign('/admin/members')} className="min-h-11 rounded-lg px-3 py-2 text-left text-slate-700 hover:bg-white">회원·수강 관리 ↗</button>
+          {[['popup', '공지 팝업'], ['inquiry', `상담 문의 (${inquiries.length})`], ['info', '기관 정보'], ['database', '데이터 동기화']].map(([id, label]) => <button type="button" key={id} aria-pressed={drawerTab === id} onClick={() => setDrawerTab(id)} className={`min-h-11 rounded-lg px-3 py-2 text-left transition ${drawerTab === id ? 'bg-white font-bold text-emerald-800 ring-1 ring-emerald-200' : 'text-slate-700 hover:bg-white'}`}>{label}</button>)}
+        </nav>
 
         {/* Tab Content Area */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5 text-slate-800 text-sm">
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4 sm:p-5 space-y-5 text-slate-800 text-sm">
 
           {/* 1. Inquiries Tab */}
           {drawerTab === 'inquiry' && (
@@ -360,8 +310,8 @@ export default function AdminDrawer() {
         </div>
 
         {/* Drawer Footer */}
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-          <span className="text-xs text-slate-500">KFSSEC Visual CMS v2.0</span>
+        <div className="shrink-0 p-4 border-t border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs text-slate-500">운영 관리</span>
           <button
             type="button"
             onClick={() => setIsDrawerOpen(false)}

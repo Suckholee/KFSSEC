@@ -49,7 +49,7 @@ export function AdminEditProvider({
   const [saveSuccessNotice, setSaveSuccessNotice] = useState(false);
 
   // Left Block TOC Navigator state (expanded by default on desktop)
-  const [isNavigatorOpen, setIsNavigatorOpen] = useState(true);
+  const [isNavigatorOpen, setIsNavigatorOpen] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 1024);
 
   // Persistent Edit Guides / Highlight State (Enabled by default in edit mode)
   const [showEditGuides, setShowEditGuides] = useState(() => {
