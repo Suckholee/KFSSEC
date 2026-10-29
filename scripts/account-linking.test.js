@@ -9,10 +9,12 @@ function session(user){const key=crypto.createHash('sha256').update(process.env.
 function cookies(res){return (Array.isArray(res.headers['Set-Cookie'])?res.headers['Set-Cookie']:[res.headers['Set-Cookie']]).filter(Boolean).map(s=>s.split(';')[0]).join('; ');}
 async function call(action,body={},cookie='',method='POST'){const res={headers:{},statusCode:200,setHeader(k,v){this.headers[k]=v;},status(n){this.statusCode=n;return this;},json(v){this.body=v;return this;},end(){return this;}};await handler({method,query:{action,...(method==='GET'?body:{})},headers:{origin:'https://site.test',cookie},body},res);return res;}
 test('both identities must be verified; merged accounts share profile, enrollments and server permissions',async()=>{
- const env={...process.env},fetcher=globalThis.fetch,objects=new Map();let mailCalls=0,wrongEmail=false;
- Object.assign(process.env,{SITE_URL:'https://site.test',MEMBER_SESSION_SECRET:'testing-only-account-link-secret-long-enough',SUPABASE_URL:'https://storage.test',SUPABASE_SERVICE_ROLE_KEY:'test-key',KAKAO_REST_API_KEY:'test',KAKAO_CLIENT_SECRET:'test'});delete process.env.VERCEL;
+ const env={...process.env},fetcher=globalThis.fetch,objects=new Map();let mailCalls=0,wrongEmail=false,googleVerified=true;
+ Object.assign(process.env,{SITE_URL:'https://site.test',MEMBER_SESSION_SECRET:'testing-only-account-link-secret-long-enough',SUPABASE_URL:'https://storage.test',SUPABASE_SERVICE_ROLE_KEY:'test-key',KAKAO_REST_API_KEY:'test',KAKAO_CLIENT_SECRET:'test',GOOGLE_CLIENT_ID:'google-test',GOOGLE_CLIENT_SECRET:'google-secret'});delete process.env.VERCEL;
  globalThis.fetch=async(url,options={})=>{
   const response=(status,body={})=>({ok:status<300,status,json:async()=>body});
+  if(url==='https://oauth2.googleapis.com/token'){assert.ok(new URLSearchParams(options.body).get('code_verifier'));return response(200,{access_token:'google-verified-token'});}
+  if(url==='https://openidconnect.googleapis.com/v1/userinfo')return response(200,{sub:'google-user-1',email:'same@example.com',email_verified:googleVerified,name:'Google회원'});
   if(url.includes('/oauth/token'))return response(200,{access_token:'verified-kakao-token'});
   if(url.includes('/v2/user/me'))return response(200,{id:2,kakao_account:{profile:{nickname:'카카오이름'}}});
   if(url.includes('/auth/v1/otp')){mailCalls++;return response(200);}
@@ -49,7 +51,24 @@ test('both identities must be verified; merged accounts share profile, enrollmen
   const kaStart2=await call('start',{link:'1'},oldEmailCookie,'GET');
   const accepted=await call('callback',{state:new URL(kaStart2.headers.Location).searchParams.get('state'),code:'fresh-code'},oldEmailCookie+'; '+cookies(kaStart2),'GET');
   assert.equal(accepted.headers.Location,'https://site.test/');assert.equal((await identityMember('kakao:2')).id,kakao.id);
-  await saveMember({id:kakao.id,adminRole:'none'},{touchLogin:false});assert.equal(await isAdmin({headers:{cookie:oldEmailCookie}}),false);
+  const googleStart=await call('google-start',{},'','GET');
+  const googleUrl=new URL(googleStart.headers.Location);assert.equal(googleUrl.origin,'https://accounts.google.com');assert.equal(googleUrl.searchParams.get('code_challenge_method'),'S256');
+  const googleState=googleUrl.searchParams.get('state');
+  const tampered=await call('google-callback',{state:'bad',code:'code'},cookies(googleStart),'GET');assert.match(tampered.headers.Location,/login_error=state/);
+  googleVerified=false;const unverified=await call('google-callback',{state:googleState,code:'code'},cookies(googleStart),'GET');assert.match(unverified.headers.Location,/login_error=failed/);googleVerified=true;
+  const googleFirst=await call('google-callback',{state:googleState,code:'code'},cookies(googleStart),'GET');assert.match(googleFirst.headers.Location,/signup=1/);
+  const googleRegistration=await call('register',{name:'구글회원',phone:'01098765432',email:'same@example.com',adminRole:'admin'},cookies(googleFirst));
+  const googleMember=await identityMember('google:google-user-1');assert.notEqual(googleMember.id,kakao.id);assert.equal(googleMember.adminRole,undefined);
+  await saveMember({id:googleMember.id,enrolledCourses:[{courseId:'c',courseTitle:'Google 수강',status:'수강중'}]});
+  const googleLink=await call('google-start',{link:'1'},kaCookie,'GET');const linkState=new URL(googleLink.headers.Location).searchParams.get('state');
+  assert.match((await call('google-callback',{state:linkState,code:'code'},cookies(googleLink),'GET')).headers.Location,/login_error/);
+  const googleLinked=await call('google-callback',{state:linkState,code:'code'},kaCookie+'; '+cookies(googleLink),'GET');assert.equal(googleLinked.headers.Location,'https://site.test/');
+  assert.equal((await identityMember('google:google-user-1')).id,kakao.id);assert.equal((await listMembers()).length,1);
+  assert.deepEqual((await getMember(kakao.id)).enrolledCourses.map(c=>c.courseId).sort(),['a','b','c']);
+  const googleCookie=cookies(googleRegistration);assert.equal((await call('session',{},googleCookie,'GET')).body.user.id,kakao.id);assert.equal(await isAdmin({headers:{cookie:googleCookie}}),true);
+  const googleAgain=await call('google-start',{},'','GET');const googleLogin=await call('google-callback',{state:new URL(googleAgain.headers.Location).searchParams.get('state'),code:'code'},cookies(googleAgain),'GET');assert.equal(googleLogin.headers.Location,'https://site.test/');
+  assert.equal((await call('profile',{},cookies(googleLogin),'GET')).body.enrolledCourses.length,3);
+  await saveMember({id:kakao.id,adminRole:'none'},{touchLogin:false});assert.equal(await isAdmin({headers:{cookie:oldEmailCookie}}),false);assert.equal(await isAdmin({headers:{cookie:googleCookie}}),false);
   assert.equal(memberSessionId({headers:{cookie:'kfssec_member_session=forged'}}),null);
   await assert.rejects(()=>claimIdentity('email:same@example.com','another-member'));
  }finally{globalThis.fetch=fetcher;for(const key of Object.keys(process.env))if(!(key in env))delete process.env[key];Object.assign(process.env,env);}

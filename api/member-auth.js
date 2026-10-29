@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import { getMember, saveMember, identityMember, claimIdentity, linkVerifiedIdentity } from './_members.js';
 
 import { emailIdentity, emailAuth } from './_emailAuth.js';
+const GOOGLE_STATE = 'kfssec_google_state';
 const EMAIL_CHALLENGE = 'kfssec_email_challenge';
 const SESSION = 'kfssec_member_session';
 const STATE = 'kfssec_kakao_state';
@@ -62,7 +63,7 @@ export default async function handler(req, res) {
   if (req.method === 'DELETE') {
     const origin = new URL(process.env.SITE_URL || 'http://localhost:3000').origin;
     if (req.headers.origin !== origin) return res.status(403).json({ message: '잘못된 요청입니다.' });
-    res.setHeader('Set-Cookie', [cookie(SESSION, '', 0, origin), cookie(STATE, '', 0, origin), cookie(EMAIL_CHALLENGE, '', 0, origin)]);
+    res.setHeader('Set-Cookie', [cookie(SESSION, '', 0, origin), cookie(STATE, '', 0, origin), cookie(GOOGLE_STATE, '', 0, origin), cookie(EMAIL_CHALLENGE, '', 0, origin)]);
     return res.status(200).json({ success: true });
   }
   let config;
@@ -77,7 +78,7 @@ export default async function handler(req, res) {
     if (session?.user?.registrationComplete) {
       try { const member = await getMember(session.user.id); session.user = member?.registrationComplete ? sessionUser(member) : null; } catch { return res.status(503).json({ message: '회원 정보를 확인하지 못했습니다.' }); }
     }
-    return res.status(200).json({ configured, emailConfigured: Boolean(process.env.SUPABASE_URL && (process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)), user: session?.user?.registrationComplete ? session.user : null, registrationRequired: Boolean(session?.pendingUser || (session?.user && !session.user.registrationComplete)) });
+    return res.status(200).json({ configured, googleConfigured: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET), emailConfigured: Boolean(process.env.SUPABASE_URL && (process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY)), user: session?.user?.registrationComplete ? session.user : null, registrationRequired: Boolean(session?.pendingUser || (session?.user && !session.user.registrationComplete)) });
   }
   if (['email-start', 'email-verify', 'email-token'].includes(action) && req.method === 'POST') {
     if (req.headers.origin !== origin) return res.status(403).json({ message: '잘못된 요청입니다.' });
@@ -129,6 +130,57 @@ export default async function handler(req, res) {
       res.setHeader('Set-Cookie', [cookie(EMAIL_CHALLENGE, '', 0, origin), cookie(SESSION, seal(nextSession, key), user ? DAY : 1200, origin)]);
       return res.status(200).json({ success: true, user, registrationRequired: !user, linked: Boolean(challenge.memberId) });
     } catch (error) { return res.status(400).json({ message: error.message || '이메일 인증에 실패했습니다.' }); }
+  }
+  if (req.method === 'GET' && ['google-start', 'google-callback'].includes(action)) {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) return res.status(503).json({ message: 'Google 로그인 연결 설정이 필요합니다.' });
+    const callback = `${origin}/api/member-auth?action=google-callback`;
+    if (action === 'google-start') {
+      const session = read(req, SESSION, key);
+      const linking = req.query?.link === '1';
+      if (linking && !session?.user?.registrationComplete) return redirect(res, `${origin}/?login_error=link_session`);
+      const state = crypto.randomBytes(32).toString('base64url');
+      const verifier = crypto.randomBytes(32).toString('base64url');
+      res.setHeader('Set-Cookie', cookie(GOOGLE_STATE, seal({ state, verifier, ...(linking ? { memberId: session.user.id } : {}), expires: Date.now() + 600000 }, key), 600, origin));
+      const query = new URLSearchParams({ client_id: process.env.GOOGLE_CLIENT_ID, redirect_uri: callback, response_type: 'code', scope: 'openid email profile', state, code_challenge: crypto.createHash('sha256').update(verifier).digest('base64url'), code_challenge_method: 'S256', prompt: 'select_account' });
+      return redirect(res, `https://accounts.google.com/o/oauth2/v2/auth?${query}`);
+    }
+    const pending = read(req, GOOGLE_STATE, key);
+    res.setHeader('Set-Cookie', cookie(GOOGLE_STATE, '', 0, origin));
+    if (!pending || typeof req.query.state !== 'string' || pending.state !== req.query.state) return redirect(res, `${origin}/?login_error=state`);
+    if (req.query.error || typeof req.query.code !== 'string') return redirect(res, `${origin}/?login_error=cancelled`);
+    try {
+      const tokenResponse = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ client_id: process.env.GOOGLE_CLIENT_ID, client_secret: process.env.GOOGLE_CLIENT_SECRET, redirect_uri: callback, grant_type: 'authorization_code', code: req.query.code, code_verifier: pending.verifier }), signal: AbortSignal.timeout(10000) });
+      if (!tokenResponse.ok) throw new Error('token');
+      const token = await tokenResponse.json();
+      if (typeof token.access_token !== 'string' || !token.access_token) throw new Error('token');
+      const response = await fetch('https://openidconnect.googleapis.com/v1/userinfo', { headers: { Authorization: `Bearer ${token.access_token}` }, signal: AbortSignal.timeout(10000) });
+      if (!response.ok) throw new Error('profile');
+      const profile = await response.json();
+      if (typeof profile.sub !== 'string' || !/^[a-zA-Z0-9_-]{1,255}$/.test(profile.sub) || profile.email_verified !== true) throw new Error('profile');
+      const email = emailIdentity(profile.email), identity = `google:${profile.sub}`;
+      let member;
+      if (pending.memberId) {
+        const session = read(req, SESSION, key);
+        const current = session?.user?.registrationComplete ? await getMember(session.user.id) : null;
+        const original = await getMember(pending.memberId);
+        if (!current || current.id !== original?.id) throw new Error('link session');
+        member = await linkVerifiedIdentity(current.id, identity);
+      } else {
+        member = await identityMember(identity);
+        if (!member) {
+          const id = `member:${crypto.randomUUID()}`;
+          await saveMember({ id, provider: 'google', email, registrationComplete: false, loginIdentities: [identity] });
+          await claimIdentity(identity, id);
+          member = await identityMember(identity);
+        }
+      }
+      if (!member) throw new Error('member');
+      const user = member.registrationComplete ? sessionUser(member) : null;
+      const next = user ? { user, expires: Date.now() + DAY * 1000 } : { pendingUser: { id: member.id, provider: 'google', email, name: typeof profile.name === 'string' ? profile.name.slice(0, 100) : '' }, expires: Date.now() + 1200000 };
+      if (user) await saveMember({ id: member.id });
+      res.setHeader('Set-Cookie', [cookie(GOOGLE_STATE, '', 0, origin), cookie(SESSION, seal(next, key), user ? DAY : 1200, origin)]);
+      return redirect(res, `${origin}/${user ? '' : '?signup=1'}`);
+    } catch { return redirect(res, `${origin}/?login_error=failed`); }
   }
   if (action === 'profile' && ['GET', 'PUT'].includes(req.method)) {
     const session = read(req, SESSION, key);

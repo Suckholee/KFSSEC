@@ -5,6 +5,7 @@ import { useLanguage } from '../i18n/LanguageContext';
 
 export default function AuthModal({ isOpen = false, initialMode = 'login', onClose }) {
   const { language } = useLanguage();
+  const [googleConfigured, setGoogleConfigured] = useState(false);
   const [configured, setConfigured] = useState(false);
   const [checking, setChecking] = useState(true);
   const [method, setMethod] = useState(null);
@@ -35,8 +36,8 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
     setMode(initialMode === 'signup' ? 'signup' : 'login');
     setChecking(true);
     fetch('/api/member-auth', { cache: 'no-store' }).then(response => response.json()).then(result => {
-      if (!cancelled) setConfigured(Boolean(result.configured));
-    }).catch(() => { if (!cancelled) setConfigured(false); }).finally(() => { if (!cancelled) setChecking(false); });
+      if (!cancelled) { setConfigured(Boolean(result.configured)); setGoogleConfigured(Boolean(result.googleConfigured)); }
+    }).catch(() => { if (!cancelled) { setConfigured(false); setGoogleConfigured(false); } }).finally(() => { if (!cancelled) setChecking(false); });
     return () => { cancelled = true; };
   }, [isOpen, initialMode]);
   useEffect(() => {
@@ -60,6 +61,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
         <button type="button" disabled={checking || !configured} onClick={() => window.location.assign('/api/member-auth?action=start')} aria-label={wording[signingUp ? 3 : 2]} className="mt-6 w-full overflow-hidden rounded-xl bg-[#FEE500] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800">
           <span className="flex min-h-14 items-center justify-center gap-2 px-4 py-3 font-bold text-[#191919]"><MessageCircle className="h-5 w-5 shrink-0 fill-current" />{wording[signingUp ? 3 : 2]}</span>
         </button>
+        <button type="button" disabled={checking || !googleConfigured} onClick={() => window.location.assign('/api/member-auth?action=google-start')} className="mt-3 flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-3 font-semibold text-gray-800 hover:bg-gray-50 disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800"><span aria-hidden="true" className="text-lg font-bold text-blue-600">G</span>{language === 'ko' ? (signingUp ? 'Google로 가입하기' : 'Google로 로그인') : (signingUp ? 'Sign up with Google' : 'Sign in with Google')}</button>
         <button type="button" onClick={() => setMethod('email')} className="mt-3 flex min-h-14 w-full items-center justify-center gap-2 rounded-xl border border-gray-300 px-4 py-3 font-semibold text-gray-800 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800"><Mail className="h-5 w-5 shrink-0" />{wording[signingUp ? 5 : 4]}</button>
 
         {(checking || !configured) && <p role="status" className="mt-3 text-sm text-gray-500">{checking ? copy[3] : copy[2]}</p>}
