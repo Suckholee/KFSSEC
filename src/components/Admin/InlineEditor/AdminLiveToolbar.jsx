@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import DirectContentEditor from './DirectContentEditor';
 import ScopeInspector from './ScopeInspector';
 import { useAdminEdit } from '../../../context/AdminEditContext';
@@ -7,13 +7,14 @@ import {
   Eye,
   RotateCcw,
   Save,
-  CheckCircle2,
   Sliders,
   LogOut,
   Shield,
   Layers,
   Sparkles,
   Bell,
+  ChevronDown,
+  Users,
 } from 'lucide-react';
 
 export default function AdminLiveToolbar() {
@@ -38,6 +39,15 @@ export default function AdminLiveToolbar() {
   } = useAdminEdit();
 
   const toolbarRef = useRef(null);
+  const menuRef = useRef(null);
+  const [managementOpen, setManagementOpen] = useState(false);
+  useEffect(() => {
+    const dismiss = event => { if (!menuRef.current?.contains(event.target)) setManagementOpen(false); };
+    const escape = event => { if (event.key === 'Escape') setManagementOpen(false); };
+    document.addEventListener('pointerdown', dismiss);
+    document.addEventListener('keydown', escape);
+    return () => { document.removeEventListener('pointerdown', dismiss); document.removeEventListener('keydown', escape); };
+  }, []);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -83,169 +93,35 @@ export default function AdminLiveToolbar() {
       aria-label="관리자 라이브 편집 툴바"
       className="fixed top-0 left-0 right-0 z-[60] w-full bg-slate-900/95 backdrop-blur-md text-white border-b border-amber-500/30 shadow-2xl px-3 sm:px-6 py-2.5 transition-all select-none"
     >
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
-        {/* Left: Badge & Mode Controls */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-500/20 text-amber-400 font-semibold border border-amber-500/40">
-            <Shield className="w-3.5 h-3.5" />
-            <span>KFSSEC 라이브 편집기</span>
+      <div className="mx-auto max-w-7xl space-y-2 text-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 font-semibold text-slate-100"><Shield className="h-4 w-4 text-emerald-400" /><span>홈페이지 관리</span></div>
+          <div role="group" aria-label="화면 모드" className="flex rounded-lg bg-slate-800 p-1">
+            <button type="button" aria-pressed={rawEditMode && !isPreviewMode} onClick={() => { setIsEditMode(true); setIsPreviewMode(false); }} className={`inline-flex min-h-9 items-center gap-2 rounded-md px-3 font-medium transition ${rawEditMode && !isPreviewMode ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-300 hover:bg-slate-700'}`}><Edit3 className="h-4 w-4" />화면 편집</button>
+            <button type="button" aria-pressed={isPreviewMode || !rawEditMode} onClick={() => setIsPreviewMode(true)} className={`inline-flex min-h-9 items-center gap-2 rounded-md px-3 font-medium transition ${isPreviewMode || !rawEditMode ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-300 hover:bg-slate-700'}`}><Eye className="h-4 w-4" />미리보기</button>
           </div>
-
-          {/* Block TOC Navigator Toggle Button */}
-          {rawEditMode && !isPreviewMode && (
-            <button
-              type="button"
-              onClick={() => setIsNavigatorOpen(!isNavigatorOpen)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md font-bold transition-all cursor-pointer ${
-                isNavigatorOpen
-                  ? 'bg-amber-500 text-black shadow-md ring-2 ring-amber-400/60'
-                  : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40'
-              }`}
-              title="수정 가능한 블록 목차 사이드바 열기/닫기"
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>블록 목차</span>
-            </button>
-          )}
-
-          {/* Edit Mode Toggle Switch */}
-          <button
-            type="button"
-            onClick={() => {
-              setIsEditMode(!rawEditMode);
-              if (isPreviewMode) setIsPreviewMode(false);
-            }}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md font-medium transition-all cursor-pointer ${
-              rawEditMode && !isPreviewMode
-                ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm ring-2 ring-emerald-400/40'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
-            }`}
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>{rawEditMode && !isPreviewMode ? '편집 모드 켜짐' : '편집 모드 꺼짐'}</span>
-          </button>
-
-          {/* Highlight Editable Areas Toggle Switch */}
-          {rawEditMode && !isPreviewMode && (
-            <button
-              type="button"
-              onClick={toggleEditGuides}
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md font-bold transition-all cursor-pointer ${
-                showEditGuides
-                  ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-md ring-2 ring-amber-300'
-                  : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40'
-              }`}
-              title="화면 내 수정 가능한 모든 글자와 사진을 은은한 점선과 아이콘으로 한눈에 표시"
-            >
-              <Sparkles className={`w-3.5 h-3.5 ${showEditGuides ? 'fill-slate-950 text-slate-950' : 'text-amber-400'}`} />
-              <span>{showEditGuides ? '👁️ 수정 영역 강조 켜짐' : '👁️ 수정 영역 강조'}</span>
-            </button>
-          )}
-
-          {/* Visitor Preview Mode Toggle */}
-          <button
-            type="button"
-            onClick={() => setIsPreviewMode(!isPreviewMode)}
-            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
-              isPreviewMode
-                ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-400/40'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
-            }`}
-            title="편집 안내선과 테두리를 숨기고 실제 방문자 화면으로 확인"
-          >
-            <Eye className="w-3.5 h-3.5" />
-            <span>{isPreviewMode ? '방문자 미리보기 중' : '방문자 시점'}</span>
-          </button>
-        </div>
-
-        {/* Center: Live Status & Feedback */}
-        <div className="flex items-center gap-2">
-          {saveSuccessNotice ? (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium border border-emerald-500/40 animate-pulse">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>홈페이지에 저장 완료!</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span role="status" className={`mr-1 text-xs ${saveSuccessNotice ? 'text-emerald-300' : pendingChanges.count ? 'text-amber-300' : 'text-slate-400'}`}>{saveSuccessNotice ? '저장 완료' : pendingChanges.count ? `${pendingChanges.count}건 저장 대기` : '저장할 변경 없음'}</span>
+            {pendingChanges.count > 0 && <button type="button" onClick={revertAllChanges} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-xs text-slate-300 hover:bg-slate-800"><RotateCcw className="h-3.5 w-3.5" />변경 취소</button>}
+            <button type="button" onClick={saveAllChanges} disabled={isSaving || pendingChanges.count === 0} className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-emerald-600 px-4 font-bold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-slate-800 disabled:text-slate-500"><Save className={`h-4 w-4 ${isSaving ? 'animate-spin' : ''}`} />{isSaving ? '저장 중…' : '전체 저장'}</button>
+            <div ref={menuRef} className="relative">
+              <button type="button" aria-expanded={managementOpen} aria-controls="admin-operations-menu" onClick={() => setManagementOpen(!managementOpen)} className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-600 bg-slate-800 px-3 font-medium text-white hover:bg-slate-700"><Sliders className="h-4 w-4" />운영 관리<ChevronDown className="h-4 w-4" /></button>
+              {managementOpen && <nav id="admin-operations-menu" aria-label="운영 관리" className="absolute right-0 top-full z-10 mt-2 w-56 max-w-[calc(100vw-2rem)] rounded-xl border border-slate-200 bg-white p-2 text-slate-700 shadow-xl">
+                <button type="button" onClick={() => window.location.assign('/admin/members')} className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left hover:bg-slate-100"><Users className="h-4 w-4" />회원·수강 관리</button>
+                <button type="button" onClick={() => { setDrawerTab('popup'); setIsDrawerOpen(true); setManagementOpen(false); }} className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left hover:bg-slate-100"><Bell className="h-4 w-4" />공지 팝업 관리</button>
+                <button type="button" onClick={() => { setDrawerTab('inquiry'); setIsDrawerOpen(true); setManagementOpen(false); }} className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left hover:bg-slate-100"><Sliders className="h-4 w-4" />상담·기관 설정</button>
+                {onLogout && <div className="mt-2 border-t border-slate-100 pt-2"><button type="button" onClick={onLogout} className="flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left text-rose-700 hover:bg-rose-50"><LogOut className="h-4 w-4" />로그아웃</button></div>}
+              </nav>}
             </div>
-          ) : pendingChanges.count > 0 ? (
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 font-medium border border-amber-500/40 animate-pulse">
-              <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-              <span>{pendingChanges.count}건 수정됨 (저장 대기)</span>
-            </div>
-          ) : (
-            <span className="text-slate-300 text-xs hidden md:inline font-medium">
-              ‘이 영역 관리’로 범위를 선택하세요. 문구·사진을 클릭하면 연결된 편집기가 열립니다.
-            </span>
-          )}
+          </div>
         </div>
-
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2 flex-wrap">
-          {rawEditMode && !isPreviewMode && <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('kfssec:edit-content'))} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-amber-500 text-slate-950 font-bold">현재 페이지 내용 편집</button>}
-          {pendingChanges.count > 0 && (
-            <button
-              type="button"
-              onClick={revertAllChanges}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
-              title="저장하지 않은 모든 수정을 원래대로 취소"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>되돌리기</span>
-            </button>
-          )}
-
-          {/* Primary Save Button */}
-          <button
-            type="button"
-            onClick={saveAllChanges}
-            disabled={isSaving || pendingChanges.count === 0}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md font-semibold text-white transition-all shadow-md ${
-              pendingChanges.count > 0
-                ? 'bg-emerald-600 hover:bg-emerald-500 active:scale-95 cursor-pointer ring-2 ring-emerald-400/50'
-                : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-70'
-            }`}
-          >
-            <Save className={`w-3.5 h-3.5 ${isSaving ? 'animate-spin' : ''}`} />
-            <span>{isSaving ? '저장 중…' : '전체 저장'}</span>
-          </button>
-
-          <button type="button" onClick={() => { window.location.assign('/admin/members'); }} className="px-3 py-1.5 rounded-md bg-emerald-700 hover:bg-emerald-600 text-white font-bold">회원관리</button>
-          {/* Management Drawer Opener */}
-          <button
-            type="button"
-            onClick={() => setIsDrawerOpen(true)}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition"
-            title="수강생 신청 내역 및 기관 설정"
-          >
-            <Sliders className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">관리 서랍</span>
-          </button>
-
-          {/* Popup Notice Direct Button */}
-          <button
-            type="button"
-            onClick={() => {
-              setDrawerTab('popup');
-              setIsDrawerOpen(true);
-            }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition-all shadow-md active:scale-95 cursor-pointer"
-            title="홈페이지 첫 화면 행사/공지 팝업창 설정 (기간, 이미지, 오늘 다시보지 않기)"
-          >
-            <Bell className="w-3.5 h-3.5" />
-            <span>🪟 공지 팝업 관리</span>
-          </button>
-
-          {/* Logout / Exit Editor */}
-          {onLogout && (
-            <button
-              type="button"
-              onClick={onLogout}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/40 transition-all font-bold text-xs cursor-pointer shadow-xs active:scale-95"
-              title="관리자 모드를 종료하고 일반 방문자 화면으로 돌아갑니다."
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span>편집기 닫기 (로그아웃)</span>
-            </button>
-          )}
-        </div>
+        {rawEditMode && !isPreviewMode && <div role="group" aria-label="페이지 편집 도구" className="flex flex-wrap items-center gap-2 border-t border-slate-700/70 pt-2">
+          <span className="mr-1 text-xs text-slate-400">편집 도구</span>
+          <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('kfssec:edit-content'))} className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-slate-800 px-3 text-xs font-medium text-slate-100 hover:bg-slate-700"><Edit3 className="h-3.5 w-3.5" />이 페이지 내용 수정</button>
+          <button type="button" aria-pressed={isNavigatorOpen} onClick={() => setIsNavigatorOpen(!isNavigatorOpen)} className={`inline-flex min-h-9 items-center gap-2 rounded-lg border px-3 text-xs font-medium ${isNavigatorOpen ? 'border-slate-500 bg-slate-700 text-white' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}`}><Layers className="h-3.5 w-3.5" />영역 목차</button>
+          <button type="button" aria-pressed={showEditGuides} onClick={toggleEditGuides} className={`inline-flex min-h-9 items-center gap-2 rounded-lg border px-3 text-xs font-medium ${showEditGuides ? 'border-slate-500 bg-slate-700 text-white' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}`}><Sparkles className="h-3.5 w-3.5" />수정 위치 표시</button>
+          <span className="ml-auto hidden text-xs text-slate-400 xl:inline">화면의 글자·사진을 선택해 수정하세요.</span>
+        </div>}
       </div>
     </aside>
     </>
