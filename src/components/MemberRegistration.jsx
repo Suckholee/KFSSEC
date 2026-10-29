@@ -11,6 +11,9 @@ export default function MemberRegistration({ onComplete, onCancel, editing = fal
   const [error, setError] = useState('');
   const [loadFailed, setLoadFailed] = useState(false);
   const [additional, setAdditional] = useState(false);
+  const [manageConnections, setManageConnections] = useState(false);
+  const [connectEmail, setConnectEmail] = useState(false);
+  const connected = provider => connections.some(id => id.startsWith(`${provider}:`));
   const [connections,setConnections]=useState([]);
   const [enrollments,setEnrollments]=useState([]);
   const [retry, setRetry] = useState(0);
@@ -52,7 +55,7 @@ export default function MemberRegistration({ onComplete, onCancel, editing = fal
       <div className="shrink-0 border-b px-6 py-5 flex items-start gap-4"><div className="flex-1"><h2 id="signup-title" className="text-2xl font-black text-gray-900">{editing ? '내 정보 설정' : '회원가입 정보 입력'}</h2><p className="text-sm text-gray-600 mt-2">{editing ? '기본 정보와 추가 정보를 확인하고 수정할 수 있습니다.' : '로그인 인증이 완료됐습니다. 기본 정보를 입력하고 추가 정보는 선택해 주세요.'}</p></div><button type="button" aria-label="창 닫기" disabled={saving} onClick={onCancel} className="shrink-0 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-2xl text-gray-700 disabled:opacity-50">×</button></div>
       <div className="min-h-0 overflow-y-auto overscroll-contain p-6 space-y-5">
       {loading ? <p role="status">내 정보를 불러오는 중입니다.</p> : !loadFailed && <>
-        {editing&&<section className="space-y-3 rounded-xl bg-emerald-50 p-4"><h3 className="font-bold">연결된 로그인 수단</h3><ul className="space-y-1 text-sm">{connections.map(id=><li key={id}>{id.startsWith('email:')?`이메일: ${id.slice(6)}`:id.startsWith('kakao:')?'카카오 계정':id.startsWith('google:')?'Google 계정':'회원 계정'}</li>)}</ul><p className="text-xs">연락처 이메일 수정과 로그인 이메일 인증은 별개입니다. 로그인 수단 연결에는 양쪽 계정 인증이 필요합니다.</p><EmailLogin linking /><a href="/api/member-auth?action=start&link=1" className="block rounded-lg bg-yellow-300 p-3 text-center font-bold">카카오 인증하고 계정 연결</a><a href="/api/member-auth?action=google-start&link=1" className="block rounded-lg border border-gray-300 bg-white p-3 text-center font-bold">Google 인증하고 계정 연결</a><h3 className="pt-3 font-bold">내 수강내역</h3>{enrollments.length?<ul className="space-y-2 text-sm">{enrollments.map(item=><li key={item.courseId}>{item.courseTitle || item.courseId} · {item.status}</li>)}</ul>:<p className="text-sm">등록된 수강내역이 없습니다.</p>}</section>}
+
         <fieldset className="space-y-4"><legend className="font-black mb-3">기본 정보</legend>
           {input({ key: 'name', label: '성명', required: true, autocomplete: 'name', placeholder: '홍길동', max: 50 })}
           {input({ key: 'phone', label: '전화번호', required: true, type: 'tel', autocomplete: 'tel', placeholder: '010-1234-5678', max: 20 })}
@@ -68,6 +71,23 @@ export default function MemberRegistration({ onComplete, onCancel, editing = fal
           </div>}
         </section>
         <p className="text-xs text-gray-500">성명과 전화번호는 직접 입력한 정보입니다.</p>
+        {editing && <>
+          <section className="space-y-3 rounded-xl border border-emerald-100 bg-emerald-50 p-4">
+            <h3 className="font-bold text-emerald-950">로그인 계정</h3>
+            <p className="text-sm leading-6 text-gray-600">연결 완료된 방법으로 바로 로그인할 수 있습니다. 추가 연결은 선택 사항입니다.</p>
+            <ul className="space-y-2 text-sm">{[['kakao', '카카오'], ['google', 'Google'], ['email', '이메일']].filter(([provider]) => connected(provider)).map(([provider, label]) => <li key={provider} className="flex flex-wrap items-center justify-between gap-2"><span>{label}</span><span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-emerald-800">연결 완료</span></li>)}</ul>
+            {(!connected('kakao') || !connected('google') || !connected('email')) && <button type="button" aria-expanded={manageConnections} aria-controls="member-login-connections" onClick={() => { setManageConnections(!manageConnections); setConnectEmail(false); }} className="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-sm font-bold text-emerald-800">{manageConnections ? '추가 연결 닫기' : '다른 로그인 방법 추가 (선택)'}</button>}
+            {manageConnections && <div id="member-login-connections" className="space-y-3 border-t border-emerald-100 pt-3">
+              <p className="text-xs leading-5 text-gray-600">다른 계정도 같은 회원으로 사용하려면 여기서 인증해 연결하세요. 회원정보·수강내역·권한을 함께 관리합니다.</p>
+              {!connected('kakao') && <a href="/api/member-auth?action=start&link=1" className="block rounded-lg bg-yellow-300 p-3 text-center text-sm font-bold">카카오 계정 연결</a>}
+              {!connected('google') && <a href="/api/member-auth?action=google-start&link=1" className="block rounded-lg border border-gray-300 bg-white p-3 text-center text-sm font-bold">Google 계정 연결</a>}
+              {!connected('email') && <button type="button" aria-expanded={connectEmail} onClick={() => setConnectEmail(!connectEmail)} className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm font-bold">이메일 로그인 추가</button>}
+              {connectEmail && !connected('email') && <EmailLogin linking />}
+            </div>}
+          </section>
+          <section className="space-y-3 border-t pt-4"><h3 className="font-bold">내 수강내역</h3>{enrollments.length ? <ul className="space-y-2 text-sm">{enrollments.map(item => <li key={item.courseId}>{item.courseTitle || item.courseId} · {item.status}</li>)}</ul> : <p className="text-sm text-gray-600">등록된 수강내역이 없습니다.</p>}</section>
+        </>}
+
       </>}
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
       {loadFailed && <button type="button" onClick={() => setRetry(retry + 1)} className="text-emerald-700 font-bold">다시 불러오기</button>}
