@@ -10,14 +10,14 @@
 .admin-panel button:focus-visible,.admin-workspace button:focus-visible{outline:2px solid #059669;outline-offset:2px}
 @media(max-width:767px){
  .admin-workstation{flex-direction:column}
- .admin-primary-nav{width:100%;height:auto;flex-direction:row;justify-content:flex-start;gap:8px;padding:8px;overflow-x:auto;overflow-y:hidden;border-right:0;border-bottom:1px solid #334155}
- .admin-primary-nav>button{flex-shrink:0;width:72px;height:58px;margin:0!important;border-radius:10px}
- .admin-primary-nav>button>span{font-size:11px;line-height:1.4}
- .admin-secondary-nav{height:auto;max-height:155px;padding:8px;border-right:0;border-bottom:1px solid #e2e8f0}
- .admin-secondary-nav>div:first-child{display:none}
- .admin-secondary-nav>div:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
- .admin-secondary-nav>div:last-child>button{margin:0;min-height:44px;padding:8px;font-weight:600;font-size:12px}
- .admin-main{height:auto!important;min-height:0;max-width:100%}
+ .admin-workspace .admin-primary-nav{width:100%;height:auto;flex-direction:row;justify-content:flex-start;gap:8px;padding:8px;overflow-x:auto;overflow-y:hidden;border-right:0;border-bottom:1px solid #334155}
+ .admin-workspace .admin-primary-nav>button{flex-shrink:0;width:72px;height:58px;margin:0!important;border-radius:10px}
+ .admin-workspace .admin-primary-nav>button>span{font-size:11px;line-height:1.4}
+ .admin-workspace .admin-secondary-nav{height:auto;max-height:155px;padding:8px;border-right:0;border-bottom:1px solid #e2e8f0}
+ .admin-workspace .admin-secondary-nav>div:first-child{display:none}
+ .admin-workspace .admin-secondary-nav>div:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+ .admin-workspace .admin-secondary-nav>div:last-child>button{margin:0;min-height:44px;padding:8px;font-weight:600;font-size:12px}
+ .admin-workspace .admin-main{height:auto!important;min-height:0;max-width:100%}
  .admin-workspace>header{gap:8px;padding:12px}
  .admin-workspace>header>div{min-width:0;flex-wrap:wrap}
  .admin-workspace>header button,.admin-panel button{min-height:40px}
