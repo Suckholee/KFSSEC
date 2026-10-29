@@ -423,19 +423,11 @@ export default function Header({
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => onOpenAuth && onOpenAuth('login')}
-              aria-label={t('로그인 및 수강 회원가입', 'Log in or sign up')}
-              className="group px-3.5 2xl:px-4 py-1.5 bg-gradient-to-r from-[#15803D] to-[#16A34A] hover:from-[#166534] hover:to-[#15803D] text-white rounded-2xl shadow-xs transition-all cursor-pointer border border-[#4ADE80]/40 flex items-center gap-1.5 min-h-[38px] shrink-0 focus-visible:ring-2 focus-visible:ring-[#15803D] focus-visible:outline-none"
-            >
-              <div className="flex items-center gap-1 text-xs 2xl:text-sm font-black">
-                <span className="text-sm font-mono text-[#F97316]">#</span>
-                <span>{t('로그인', 'LOGIN')}</span>
-              </div>
-              <span className="text-[10px] text-emerald-100 font-bold tracking-wider border-l border-emerald-600 pl-1.5">
-                {t('회원가입', 'JOIN US')}
-              </span>
-            </button>
+            <div className="flex shrink-0 items-center gap-1 rounded-2xl border border-[#4ADE80]/40 bg-[#15803D] px-1 text-white">
+              <button type="button" onClick={() => onOpenAuth && onOpenAuth('login')} className="min-h-[38px] rounded-xl px-2.5 py-1.5 text-xs font-bold hover:bg-white/10">{t('로그인', 'LOGIN')}</button>
+              <span aria-hidden="true" className="h-4 border-l border-white/30" />
+              <button type="button" onClick={() => onOpenAuth && onOpenAuth('signup')} className="min-h-[38px] rounded-xl px-2.5 py-1.5 text-xs font-bold hover:bg-white/10">{t('회원가입', 'JOIN US')}</button>
+            </div>
           )}
 
         </div>
@@ -552,9 +544,10 @@ export default function Header({
                 }}
                 className="px-4 py-2.5 bg-[#2B7752] hover:bg-[#236344] text-white text-xs font-bold rounded-xl min-h-[44px]"
               >
-                {t('로그인 / 회원가입', 'LOGIN / JOIN US')}
+                {t('로그인', 'LOGIN')}
               </button>
             )}
+            {!currentUser && <button type="button" onClick={() => { onOpenAuth('signup'); setMobileMenuOpen(false); }} className="min-h-[44px] rounded-xl border border-emerald-700 px-4 py-2.5 text-xs font-bold text-emerald-800">{t('회원가입', 'JOIN US')}</button>}
           </div>
 
           <div className="space-y-1.5">
