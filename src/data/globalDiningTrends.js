@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5751",
+    "title": "2026 수원주류페스타, 이병철사케(LBC Series) 프리미엄 숙성주의 품격을 선보인다",
+    "summary": "국내외 다양한 주류의 흐름과 새로운 미식 문화를 한자리에서 만나볼 수 있는 「2026 수원주류페스타(The GLASS-SUWON)」...",
+    "author": "글로벌외식정보 : 발행인 안형상대표기자",
+    "date": "2026.11.01",
+    "imageUrl": "/images/trends/trend_5751.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/649a32c98dfe3752999760ef0e8f7a4c4621a9b9.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5751&mcode=m247tk9"
+  },
+  {
     "id": "5693",
     "title": "식당의 벽에 산을 그리면 마음도 고요해질까?",
     "summary": "식당의 벽에 산이 있었다.진짜 산은 아니었다.넓은 벽을 따라 여러 겹의 산 능선이 이어져 있었다. 가까운 산은 짙었고, 먼 산은 흐릿했다. 산과 산 사이에는 ...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5421.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/02563a9f657961f285ee0189430253e0936a0795.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5421&mcode=m247tk9"
-  },
-  {
-    "id": "5404",
-    "title": "한식의 날 첫걸음…K푸드, 이제 ‘음식’을 넘어 대한민국 대표 국가 브랜드로",
-    "summary": "우리 음식 한식이 단순한 전통음식을 넘어 대한민국을 대표하는 문화·산업·관광 자산으로 도약하기 위한 새로운 출발점을 맞는다. 올해 처음으로 ...",
-    "author": "글로벌외식정보",
-    "date": "2026.10.08",
-    "imageUrl": "/images/trends/trend_5404.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/fe541bd22607e78c6fc98ac00c78e4838a3ef613.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5404&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.10.31'
+  lastUpdated: '2026.11.01'
 };
