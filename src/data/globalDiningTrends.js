@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5752",
+    "title": "“김치 추가는 안 됩니다” 음식점 사장은 손님의 요구를 거절할 권리가 있을까?",
+    "summary": "최근 한 닭볶음탕 전문점 운영자가 SNS에 올린 글이 음식점의 서비스 원칙을 둘러싼 논쟁을 불러일으켰다. 손님이 김치를 추가로 요구했지만, 점주가 음식의 ...",
+    "author": "글로벌외식정보",
+    "date": "2026.11.02",
+    "imageUrl": "/images/trends/trend_5752.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/931102366d612eff1bf65423fe3112ef2bbc5d88.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5752&mcode=m247tk9"
+  },
+  {
     "id": "5751",
     "title": "2026 수원주류페스타, 이병철사케(LBC Series) 프리미엄 숙성주의 품격을 선보인다",
     "summary": "국내외 다양한 주류의 흐름과 새로운 미식 문화를 한자리에서 만나볼 수 있는 「2026 수원주류페스타(The GLASS-SUWON)」...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5428.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/f1b28dccc1ac2b88480d95d33f06d297daf58f50.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5428&mcode=m247tk9"
-  },
-  {
-    "id": "5421",
-    "title": "짙어가는 가을, 와인 향에 물드는 특별한 만남 BM’S BIZ SOCIETY 1기 4회차, 와인·발효·문화로 잇는 품격 있는 교류의 장",
-    "summary": "짙어가는 가을의 향기처럼 좋은 사람들의 인연도 한층 깊어졌다. 선릉의 맑은 가을밤, 와인 한 잔에 담긴 이야기와...",
-    "author": "글로벌 외식정보= 발행인 안형상 대표기자",
-    "date": "2026.10.09",
-    "imageUrl": "/images/trends/trend_5421.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/02563a9f657961f285ee0189430253e0936a0795.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5421&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.11.01'
+  lastUpdated: '2026.11.02'
 };
