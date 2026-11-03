@@ -1,4 +1,5 @@
 import React from 'react';
+import BrochurePdfViewer from './BrochurePdfViewer';
 
 const brochureUrl = '/documents/kfssec-2026-master-ceremony.pdf';
 
@@ -15,11 +16,6 @@ export default function CeremonyBrochureReader() {
       </div>
       <p className="text-sm leading-6 text-stone-500">아래에서 PDF를 넘겨 읽을 수 있습니다. 모바일이나 PDF가 표시되지 않는 환경에서는 ‘PDF 전체화면 열기’를 이용해 주세요.</p>
     </div>
-    <iframe
-      src={`${brochureUrl}#view=FitH`}
-      title="2026 명인·명장 선정식 브로슈어 PDF 리더 (13쪽)"
-      className="block w-full border-0 bg-stone-100"
-      style={{ height: '85vh', minHeight: 520 }}
-    />
+    <BrochurePdfViewer url={brochureUrl} />
   </section>;
 }
