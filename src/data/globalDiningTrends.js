@@ -3,6 +3,26 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5791",
+    "title": "월매출 8,000만 원 식당은 왜 직원 월급을 못 줄까?",
+    "summary": "장사가 잘되는 식당의 이상한 사정얼마 전 온라인에서 흥미로운 이야기를 읽었다.어느 식당이 있었다. 장사는 꽤 잘되는 편이었다. 월매출이 8,000만 원 안팎이...",
+    "author": "글로벌외식정보",
+    "date": "2026.11.03",
+    "imageUrl": "/images/trends/trend_5791.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/bf6edb2ff6444d88fd22345831498e36593b7e09.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5791&mcode=m247tk9"
+  },
+  {
+    "id": "5783",
+    "title": "[칼럼] 고물가의 장벽 넘어 진화하는 외식, '자기만족'과 '합리적 미식'의 갈림길에 서다",
+    "summary": "장기화된 고물가와 구조적 불확실성의 그늘 속에서 국내 외식산업은 생존을 위한 극적인 체질 개선을 강요받고 있다. 과거...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.11.03",
+    "imageUrl": "/images/trends/trend_5783.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/40d38381103d8f65df2ec4ca39091e66d1013fec.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5783&mcode=m247tk9"
+  },
+  {
     "id": "5752",
     "title": "“김치 추가는 안 됩니다” 음식점 사장은 손님의 요구를 거절할 권리가 있을까?",
     "summary": "최근 한 닭볶음탕 전문점 운영자가 SNS에 올린 글이 음식점의 서비스 원칙을 둘러싼 논쟁을 불러일으켰다. 손님이 김치를 추가로 요구했지만, 점주가 음식의 ...",
@@ -161,26 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5431.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/396e5e4eb7da189d426cb5c620531dd580dbe73b.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5431&mcode=m247tk9"
-  },
-  {
-    "id": "5430",
-    "title": "옆집이 잘돼서 내가 망한 걸까?",
-    "summary": "장사를 하다 보면 반갑지 않은 이웃이 생길 때가 있다.어느 날 가게 앞에 공사가 시작된다. 처음에는 무엇이 들어오는지 궁...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.10.09",
-    "imageUrl": "/images/trends/trend_5430.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/ad28065c0d247d6d03a0b45f1a70f73f432edb7f.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5430&mcode=m247tk9"
-  },
-  {
-    "id": "5428",
-    "title": "열심히 하는데 왜 장사가 안 될까?",
-    "summary": "1. 하루가 끝났는데 한 일이 보이지 않는다오전 8시 40분.박 사장은 가게 뒷문으로 들어왔다.아직 영업을 시작하려면 시간이 남아 있었다.그는 냉장고를 열어 ...",
-    "author": "글로벌외식정보",
-    "date": "2026.10.09",
-    "imageUrl": "/images/trends/trend_5428.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/f1b28dccc1ac2b88480d95d33f06d297daf58f50.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5428&mcode=m247tk9"
   }
 ];
 
