@@ -1,4 +1,5 @@
 import AdditionalRecords from './AdditionalRecords';
+import GangnamBranchPage from './GangnamBranchPage';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
@@ -219,10 +220,13 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
     });
   };
 
+  if (initialSubTab === 'gangnam') return <GangnamBranchPage />;
+
   return (
     <div className="bg-gray-50 min-h-screen py-8 font-sans text-gray-900">
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-[1520px] mx-auto space-y-12">
         
+        <a href="/partners/gangnam" className="block rounded-2xl border border-green-200 bg-white p-5 text-green-900 font-bold">소상공인연합회 강남구지부 소개 및 활동 소식 →</a>
         {/* Top Header Hero */}
         <ScrollReveal direction="up" delay={0}>
           <div className="relative bg-gradient-to-br from-[#1E5B3C] via-[#2A7550] to-[#388C61] text-white rounded-3xl p-6 sm:p-10 border border-[#85CFAB]/50 shadow-xl overflow-hidden">

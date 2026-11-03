@@ -1,3 +1,5 @@
+import MasterSelectionPage from './MasterSelectionPage';
+import { MASTER_SELECTION_NOTICE } from '../../data/masterSelection';
 import React, { useState, useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { Sparkles, Award, Medal, Edit3, X, Plus } from 'lucide-react';
@@ -10,6 +12,7 @@ import AdminMasters from '../Admin/AdminMasters';
 import { useAdminEdit } from '../../context/AdminEditContext';
 
 const normalizeTab = tab => {
+  if (['selection', 'faq', 'ceremony'].includes(tab)) return tab;
   if (tab === 'directory') return 'directory';
   if (tab === 'profiles') return 'profiles';
   return 'all';
@@ -80,7 +83,7 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
       group: 'master',
       count: masterCount,
       icon: Award,
-      desc: '국가 공인 최고 권위 조리명장',
+      desc: '교육원 선정 분야별 전문기술인',
     },
     {
       id: 'directory',
@@ -93,6 +96,8 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
   ];
 
   const currentItem = masterSubItems.find(item => item.id === activeTab) || masterSubItems[0];
+
+  if (['selection', 'faq', 'ceremony'].includes(activeTab)) return <MasterSelectionPage tab={activeTab} />;
 
   return (
     <div className="bg-[#FAF8F5] min-h-screen py-8 sm:py-12 font-sans text-gray-900">
@@ -148,7 +153,7 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
               <EditableText
                 multiline
                 path="masterHeroSubtitle"
-                value={siteDraft?.masterHeroSubtitle || tr("수십 년간 축적된 조리 비법과 철학으로 대한민국 외식산업의 깊이를 더하는 국가 공인 조리명장과 요리명인 네트워크입니다.")}
+                value={siteDraft?.masterHeroSubtitle || tr("오랜 경험과 전문기술로 외식산업의 가치를 높이는 한국외식창업교육원 명인·명장 네트워크입니다.")}
               />
             </p>
           </div>
@@ -158,6 +163,7 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
           <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#4ADE80]/15 rounded-full blur-2xl pointer-events-none" />
         </header>
 
+        <aside className="bg-amber-50 border border-amber-200 rounded-2xl p-5 leading-8">{MASTER_SELECTION_NOTICE}<div className="flex flex-wrap gap-4 mt-3 font-bold text-green-900"><a href="/master/selection" className="underline">선정 제도 안내</a><a href="/master/faq" className="underline">FAQ 10문항</a><a href="/master/ceremony" className="underline">2026 선정식 자료</a></div></aside>
         {/* Unified Master / Artisan Branch Navigation Tabs */}
         <section aria-label={tr("명장·명인 분류 선택")} className="bg-white rounded-2xl p-2 sm:p-3 border border-stone-200/90 shadow-xs">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">

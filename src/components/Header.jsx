@@ -39,6 +39,9 @@ export default function Header({
       key: 'master',
       defaultSubTab: 'all',
       subItems: [
+        { id: 'selection', title: t('선정 제도 안내', 'Selection Guide'), subTab: 'selection' },
+        { id: 'faq', title: t('명인·명장 FAQ', 'Selection FAQ'), subTab: 'faq' },
+        { id: 'ceremony', title: t('2026 선정식', '2026 Ceremony'), subTab: 'ceremony' },
         { id: 'all', title: t('명장·명인 전체', 'All Masters & Artisans'), subTab: 'all' },
         { id: 'profiles', title: t('대한민국 명장', 'Master Chefs'), subTab: 'profiles' },
         { id: 'directory', title: t('조리 명인', 'Culinary Artisans'), subTab: 'directory' },
@@ -91,6 +94,7 @@ export default function Header({
       defaultSubTab: 'all',
       subItems: [
         { id: 'all', title: t('협력기업 네트워크', 'Partner Network'), subTab: 'all' },
+        { id: 'gangnam', title: t('소상공인연합회 강남구지부', 'Gangnam Small Business Association'), subTab: 'gangnam' },
         { id: 'mou', title: t('MOU 체결 현장', 'MOU Archives'), subTab: 'mou' },
         { id: 'inquiry', title: t('제휴·협력 문의', 'Partnership Inquiry'), subTab: 'inquiry' },
       ],
