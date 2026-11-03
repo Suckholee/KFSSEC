@@ -1,3 +1,4 @@
+import SelectionPoster from './SelectionPoster';
 import MasterSelectionPage from './MasterSelectionPage';
 import { MASTER_SELECTION_NOTICE } from '../../data/masterSelection';
 import React, { useState, useEffect } from 'react';
@@ -163,6 +164,7 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
           <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#4ADE80]/15 rounded-full blur-2xl pointer-events-none" />
         </header>
 
+        <SelectionPoster name="honor-banner" title="대한민국 외식산업을 대표하는 전문인의 영예" width={1536} height={1024} wide />
         <aside className="bg-amber-50 border border-amber-200 rounded-2xl p-5 leading-8">{MASTER_SELECTION_NOTICE}<div className="flex flex-wrap gap-4 mt-3 font-bold text-green-900"><a href="/master/selection" className="underline">선정 제도 안내</a><a href="/master/faq" className="underline">FAQ 10문항</a><a href="/master/ceremony" className="underline">2026 선정식 자료</a></div></aside>
         {/* Unified Master / Artisan Branch Navigation Tabs */}
         <section aria-label={tr("명장·명인 분류 선택")} className="bg-white rounded-2xl p-2 sm:p-3 border border-stone-200/90 shadow-xs">
