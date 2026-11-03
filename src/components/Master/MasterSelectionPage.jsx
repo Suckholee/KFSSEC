@@ -1,3 +1,4 @@
+import CeremonyBrochure2026 from './CeremonyBrochure2026';
 import React from 'react';
 import { MASTER_SELECTION_NOTICE, MASTER_SELECTION_FAQS, MASTER_SELECTION_CRITERIA, CEREMONY_2026_HONOREES } from '../../data/masterSelection';
 
@@ -23,7 +24,7 @@ export default function MasterSelectionPage({ tab = 'selection' }) {
           <a href="/gallery/ceremony" className="inline-block ml-4 text-green-800 underline">시상식 갤러리 보기</a>
         </section>
         <section className="bg-white border rounded-3xl p-6 sm:p-8 space-y-6"><h2 className="text-2xl font-black">2026 선정자</h2>{Object.entries(CEREMONY_2026_HONOREES).map(([group,names]) => <div key={group}><h3 className="font-bold text-green-900 mb-3">{group}</h3><ul className="grid grid-cols-2 sm:grid-cols-3 gap-3">{names.map(name => <li key={name} className="border rounded-xl p-4 text-center">{name}</li>)}</ul></div>)}</section>
-        <img src="/images/master-selection/ceremony-2026.png" alt="2026 대한민국 자랑스런 명인·명장 선정식 브로슈어 표지" className="w-full max-w-lg mx-auto rounded-2xl border" loading="lazy"/>
+        <CeremonyBrochure2026 />
       </> : <>
         <section className="bg-white border rounded-3xl p-6 sm:p-8 space-y-4"><h2 className="text-2xl font-black">대한민국 외식산업의 가치를 높이는 전문인 발굴</h2><p className="leading-8">한국외식창업교육원의 대한민국 외식 명인·명장 제도는 외식산업 각 분야에서 오랜 세월 축적한 전문기술과 경험, 경영 노하우 및 산업 발전에 기여한 전문가를 발굴하고 그 가치를 널리 알리기 위한 독자적인 전문 선정 제도입니다.</p><h3 className="text-xl font-bold pt-3">정부 지정 제도와의 차이</h3><div className="overflow-x-auto"><table className="w-full text-left leading-7"><thead><tr className="border-b"><th className="p-3">구분</th><th className="p-3">운영 주체와 평가 영역</th></tr></thead><tbody><tr className="border-b"><th className="p-3">대한민국식품명인</th><td className="p-3">농림축산식품부 정부 지정 제도 · 전통식품의 제조·가공 및 계승·발전 분야</td></tr><tr><th className="p-3">교육원 명인·명장</th><td className="p-3">한국외식창업교육원 민간 선정 제도 · 조리기술, 제과제빵, 식음료, 외식경영, 식문화, 전문교육 등</td></tr></tbody></table></div></section>
         <section className="space-y-4"><h2 className="text-2xl font-black">선정 기준</h2><p className="leading-8">단순한 경력이나 활동 기간만으로 선정하지 않습니다. 교육원이 정한 신청 자격과 심사 기준에 따라 제출 자료와 전문성, 주요 활동 및 성과를 종합적으로 평가합니다. 세부 자격과 구분은 해당 연도의 운영 규정에 따릅니다.</p><div className="grid sm:grid-cols-2 gap-4">{MASTER_SELECTION_CRITERIA.map(([title,desc]) => <article key={title} className="bg-white border rounded-2xl p-5"><h3 className="font-bold text-green-900">{title}</h3><p className="mt-2 leading-7">{desc}</p></article>)}</div></section>
