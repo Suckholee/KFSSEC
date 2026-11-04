@@ -1,3 +1,4 @@
+import { withCurrentCourseContent } from '../src/data/foodtechCurricula.js';
 import { validateCourse, validateCourseList } from '../src/utils/courseValidation.js';
 import { actualCourses } from '../src/data/actualCourses.js';
 import { requireAdmin } from './_auth.js';
@@ -6,7 +7,7 @@ import { normalizeImages, readContent, writeContent } from './_store.js';
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   try {
-    const courses = await readContent('courses') ?? actualCourses;
+    const courses = withCurrentCourseContent(await readContent('courses') ?? actualCourses);
     if (req.method === 'GET') return res.status(200).json({ success: true, count: courses.length, data: courses });
     if (!['POST', 'PUT', 'DELETE'].includes(req.method)) return res.status(405).json({ success: false });
     if (!await requireAdmin(req, res)) return;

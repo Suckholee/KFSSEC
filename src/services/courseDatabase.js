@@ -1,3 +1,4 @@
+import { withCurrentCourseContent } from '../data/foodtechCurricula.js';
 import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';
 
 let memoryCourses = DEFAULT_COURSES;
@@ -5,7 +6,7 @@ const DB_VERSION = 'v6_official_clean_tuition_20260927';
 
 // Upgrade reused default covers while preserving administrator uploads.
 function withCourseCovers(courses) {
-  return courses.map(course => {
+  return withCurrentCourseContent(courses).map(course => {
     const id = course.qualificationId || (String(course.id || '').includes('foodtech') ? 'foodtech' : String(course.id || '').includes('sommelier') ? 'sommelier' : null);
     if (!['foodtech', 'sommelier'].includes(id) || !['/images/qualifications/advisor.jpg', '/images/qualifications/practice.jpg'].includes(course.image)) return course;
     return { ...course, image: `/images/qualifications/${id}.jpg` };

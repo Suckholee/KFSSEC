@@ -1,4 +1,4 @@
-import { qualifications, specialistQualifications } from './qualifications.js';
+import { foodtechCourseContent } from './foodtechCurricula.js';
 
 // Fully expanded authoritative course list matching KFSSEC official curricula (1급, 2급 and specialized certifications)
 export const actualCourses = [
@@ -144,9 +144,8 @@ export const actualCourses = [
     format: '온·오프라인 병행',
     duration: '6주 (3D 설계 실무)',
 
-    description: 'AI·로봇 조리 자동화, 디지털 운영 동선 설계, 스마트 주방 시스템 도입 기획 및 맞춤형 컨설팅을 총괄합니다.',
+    ...foodtechCourseContent('1급'),
     image: '/images/qualifications/foodtech.jpg',
-    assessment: '푸드테크 개론, 스마트 주방 도면 설계, 디지털 운영 최적화 계획서',
     grades: ['1급: 디지털 운영·주방 동선 설계, 시스템 도입 기획 및 전문 컨설팅 총괄']
   },
   {
@@ -164,9 +163,8 @@ export const actualCourses = [
     format: '온라인',
     duration: '4주 이내',
 
-    description: '스마트 주방 기기 운용, 테이블오더·POS 데이터 관리, 매장 무인화 자동화 시스템의 실무 관리를 수행합니다.',
+    ...foodtechCourseContent('2급'),
     image: '/images/qualifications/foodtech.jpg',
-    assessment: '스마트 주방 기기 운용 및 매장 운영 데이터 관리 실무',
     grades: ['2급: 스마트 주방 운영, POS·주문 시스템 관리, 매장 데이터 관리 실무']
   },
 

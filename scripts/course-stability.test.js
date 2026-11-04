@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { validateCourse, validateCourseList } from '../src/utils/courseValidation.js';
 import { actualCourses } from '../src/data/actualCourses.js';
+import { withCurrentCourseContent } from '../src/data/foodtechCurricula.js';
 test('course writes preserve optional data and reject invalid shapes and duplicate identifiers',()=>{
  assert.equal(validateCourseList(actualCourses).length,actualCourses.length);
  const course={id:'x',title:' 과정명 ',notes:{custom:true},price:'200,000원'};
@@ -11,7 +12,7 @@ test('course writes preserve optional data and reject invalid shapes and duplica
  for(const input of [null,{},[null],[{id:'x',title:' '}],[{id:'x',title:'과정',industry:{}}],[{id:'x',title:'하나'},{id:'x',title:'둘'}]]) assert.throws(()=>validateCourseList(input),{name:'CourseValidationError'});
  assert.deepEqual(validateCourseList([]),[]);
 });
-const src=fs.readFileSync(new URL('../src/services/courseDatabase.js',import.meta.url),'utf8').replace("import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';",`const DEFAULT_COURSES = ${JSON.stringify(actualCourses)};`);
+const src=fs.readFileSync(new URL('../src/services/courseDatabase.js',import.meta.url),'utf8').replace("import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';",`const DEFAULT_COURSES = ${JSON.stringify(actualCourses)};`).replace("'../data/foodtechCurricula.js'", JSON.stringify(new URL('../src/data/foodtechCurricula.js', import.meta.url).href));
 test('blocked, corrupt and full browser storage never break course reads or successful server saves',async()=>{
  const originalStorage=globalThis.localStorage,originalFetch=globalThis.fetch;
  const db=await import(`data:text/javascript,${encodeURIComponent(src)}`);
@@ -31,8 +32,8 @@ test('invalid authorized course saves return a clear error without touching stor
  const writes=[];
  const validationCode=fs.readFileSync(new URL('../src/utils/courseValidation.js',import.meta.url),'utf8').replaceAll('export ','');
  const harness=`${validationCode}\nconst actualCourses=[]; const requireAdmin=async()=>true; const readContent=async()=>[{id:'existing',title:'기존 과정'}]; const writeContent=async(...args)=>writes.push(args); const normalizeImages=async value=>value; ${apiSource}`.replace('export default async function handler','async function handler');
- const create=new Function('writes',`${harness}; return handler;`);
- const handler=create(writes);
+ const create=new Function('writes', 'withCurrentCourseContent', `${harness}; return handler;`);
+ const handler=create(writes, withCurrentCourseContent);
  for(const body of [{courses:null},{courses:[{id:'x',title:' '}]},{courses:[{id:'x',title:'하나'},{id:'x',title:'둘'}]}]) {
   const res={setHeader(){},status(code){this.code=code;return this;},json(value){this.body=value;return this;}};
   await handler({method:'PUT',query:{id:'reorder'},body},res);
@@ -48,4 +49,19 @@ test('course search tolerates blank optional fields and keeps formatted tuition 
  assert.equal(result.data.length,1);assert.equal(result.data[0].priceFormatted,'200,000원');
  assert.equal((await fetchCourses({search:'소믈리에'})).data[0].priceFormatted,'0원');
  assert.equal((await fetchCourses({search:'없는 과정'})).data.length,0);
+});
+
+test('legacy foodtech records receive both curricula while preserving administrator fields', () => {
+ const legacy = actualCourses.filter(c => c.qualificationId === 'foodtech').map(({ curriculum, curriculumRevision, ...course }) => ({ ...course, image: '/uploads/custom.jpg', price: 250000, startDate: '2026-12-01' }));
+ const unrelated = { id: 'other', title: '다른 과정' };
+ const updated = withCurrentCourseContent([...legacy, unrelated]);
+ for (const course of updated.slice(0, 2)) {
+  assert.equal(course.curriculum.length, 7);
+  assert.equal(course.curriculum.flatMap(module => module.topics).length, 14);
+  assert.equal(course.image, '/uploads/custom.jpg');
+  assert.equal(course.price, 250000);
+  assert.equal(course.startDate, '2026-12-01');
+ }
+ assert.equal(updated[2], unrelated);
+ assert.deepEqual(withCurrentCourseContent(updated), updated);
 });

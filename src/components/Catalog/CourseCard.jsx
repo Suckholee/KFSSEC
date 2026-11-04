@@ -1,3 +1,4 @@
+import CourseCover from './CourseCover';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState } from 'react';
 import { Bookmark, MapPin, Clock, Video } from 'lucide-react';
@@ -27,11 +28,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
         className="group bg-white rounded-2xl border border-stone-200/90 hover:border-[#16A34A]/50 p-4 sm:p-5 flex flex-col sm:flex-row gap-5 shadow-xs hover:shadow-md transition-all cursor-pointer"
       >
         <div className="relative w-full sm:w-64 self-start rounded-xl overflow-hidden bg-gray-100 shrink-0">
-          <img
-            src={course.image}
-            alt={tr(course.title)}
-            className="block w-full h-auto object-contain"
-          />
+          <CourseCover course={course}/>
           {course.badge && (
             <span className="absolute top-2.5 left-2.5 px-2.5 py-1 text-[11px] font-black rounded-lg bg-gradient-to-r from-[#EA580C] to-[#F97316] text-white shadow-sm">
               {tr(course.badge)}
@@ -64,7 +61,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
             <div className="flex items-center gap-3 text-xs font-semibold text-gray-500 whitespace-nowrap">
               <div className="flex items-center gap-1">
                 {tr(getFormatIcon(course.format))}
-                <span className="whitespace-nowrap">{tr(course.format)}</span>
+                <span className="break-words">{tr(course.format)}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-[#15803D] shrink-0" />
@@ -91,11 +88,7 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
     >
       {/* Image Container */}
       <div className="relative shrink-0 overflow-hidden bg-gray-100">
-        <img
-          src={course.image}
-          alt={tr(course.title)}
-          className="block w-full h-auto object-contain"
-        />
+        <CourseCover course={course}/>
         
         {course.badge && (
           <div className="absolute top-3 left-3">
@@ -128,11 +121,11 @@ export default function CourseCard({ course, viewMode = 'grid', onClick }) {
         </div>
 
         {/* Footer specs */}
-        <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-gray-500 gap-1.5">
-          <div className="flex items-center gap-2 shrink-0">
+        <div className="pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between text-[11px] sm:text-xs font-semibold text-gray-500 gap-2">
+          <div className="flex flex-wrap items-center gap-2 min-w-0">
             <div className="flex items-center gap-1 shrink-0">
               {tr(getFormatIcon(course.format))}
-              <span className="whitespace-nowrap">{tr(course.format)}</span>
+              <span className="break-words">{tr(course.format)}</span>
             </div>
             <div className="flex items-center gap-1 shrink-0">
               <Clock className="w-3.5 h-3.5 text-[#15803D] shrink-0" />
