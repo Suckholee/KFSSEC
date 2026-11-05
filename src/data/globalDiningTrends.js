@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5792",
+    "title": "[칼럼] 한류의 외연 확장: 미식과 미(美)의 제국으로 가는 길",
+    "summary": "문화 콘텐츠의 파동으로 시작된 한류가 이제 인류의 일상생활 양식을 재정의하는 글로벌 스탠다드로 진화하고 있다. 과거...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.11.05",
+    "imageUrl": "/images/trends/trend_5792.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/5cf13fb22ec29516652d7745f30537ee57a0951a.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5792&mcode=m247tk9"
+  },
+  {
     "id": "5791",
     "title": "월매출 8,000만 원 식당은 왜 직원 월급을 못 줄까?",
     "summary": "장사가 잘되는 식당의 이상한 사정얼마 전 온라인에서 흥미로운 이야기를 읽었다.어느 식당이 있었다. 장사는 꽤 잘되는 편이었다. 월매출이 8,000만 원 안팎이...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5435.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/d068bfed2564ebcbc6ad63b59c5187793f9ee0c2.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5435&mcode=m247tk9"
-  },
-  {
-    "id": "5431",
-    "title": "손님이 많은 동네에서 왜 식당은 망할까?",
-    "summary": "아파트는 많은데 손님은 어디로 갔을까?어느 신도시의 중심상업지역.역에서 나오면 음식점 간판이 줄지어 보인다. 큰길 건...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.10.10",
-    "imageUrl": "/images/trends/trend_5431.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/396e5e4eb7da189d426cb5c620531dd580dbe73b.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5431&mcode=m247tk9"
   }
 ];
 
