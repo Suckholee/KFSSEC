@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState } from 'react';
 import { X, Plus, Trash2, CheckCircle2, GraduationCap, DollarSign, Calendar, BookOpen, ShieldAlert } from 'lucide-react';
 import { maskName, maskPhone, maskEmail } from '../../utils/security';
@@ -53,7 +54,7 @@ export default function StudentCourseModal({ student, isOpen, onClose, onUpdateS
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <ModalPortal><div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       <div className="relative w-full max-w-3xl bg-[#0d1712] rounded-3xl border border-emerald-500/40 p-6 sm:p-8 shadow-2xl space-y-6 text-white max-h-[90vh] overflow-y-auto no-scrollbar">
         
         {/* Close Button */}
@@ -200,6 +201,6 @@ export default function StudentCourseModal({ student, isOpen, onClose, onUpdateS
         </div>
 
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

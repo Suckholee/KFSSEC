@@ -1,3 +1,4 @@
+import ModalPortal from './ModalPortal';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   MessageSquare,
@@ -225,7 +226,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
 
       {/* 2. FULL 3-COLUMN DATA.GO.KR STYLE AI PORTAL MODAL (When Open) */}
       {isOpen && (
-        <div
+        <ModalPortal><div
           role="dialog"
           aria-modal="true"
           aria-label="외식창업 AI 지식 검색 & 컨설팅 포털"
@@ -702,7 +703,7 @@ export default function VisitorChatbotWidget({ onNavigate }) {
 
             </div>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
     </>
   );

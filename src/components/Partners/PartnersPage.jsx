@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import AdditionalRecords from './AdditionalRecords';
 import GangnamBranchPage from './GangnamBranchPage';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -645,7 +646,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
 
       {/* 1. Photo Detail View Modal */}
       {selectedPhoto && (
-        <div
+        <ModalPortal><div
           onClick={() => setSelectedPhoto(null)}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm cursor-pointer animate-fadeIn"
         >
@@ -756,12 +757,12 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
               </button>
             </div>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
       {/* 2. Admin Partner Logos Manager Modal */}
       {isPartnerModalOpen && (
-        <div
+        <ModalPortal><div
           onClick={() => setIsPartnerModalOpen(false)}
           className="fixed inset-0 z-[10000] flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
         >
@@ -813,12 +814,12 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
               </button>
             </div>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
       {/* 3. Admin MOU Signing Photo Upload Modal */}
       {isMouModalOpen && (
-        <div
+        <ModalPortal><div
           onClick={() => setIsMouModalOpen(false)}
           className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
         >
@@ -957,7 +958,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect } from 'react';
 import {
   Megaphone,
@@ -609,7 +610,7 @@ export default function AdminCommunity({
 
       {/* CREATE / EDIT MODAL */}
       {(isWriteModalOpen || editingPost) && (
-        <div
+        <ModalPortal><div
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
           onClick={handleCloseModals}
         >
@@ -750,10 +751,10 @@ export default function AdminCommunity({
 
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
-      {replyingPost && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => setReplyingPost(null)}><form onSubmit={handleSaveReply} onClick={event => event.stopPropagation()} className="w-full max-w-xl space-y-4 rounded-2xl bg-white p-6 shadow-2xl"><h3 className="text-lg font-bold text-gray-900">문의 답변</h3><p className="text-sm font-semibold text-gray-700">{replyingPost.title}</p><p className="max-h-40 overflow-auto whitespace-pre-wrap text-sm text-gray-600">{replyingPost.content}</p><label className="block text-sm font-semibold text-gray-700">답변 내용<textarea value={replyText} onChange={event => setReplyText(event.target.value)} rows={6} required className="mt-2 w-full rounded-xl border border-gray-300 p-3 text-sm" /></label><div className="flex justify-end gap-2"><button type="button" onClick={() => setReplyingPost(null)} className="rounded-lg border px-4 py-2 text-sm">취소</button><button type="submit" disabled={replySaving} className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold text-white disabled:opacity-50">{replySaving ? '저장 중…' : '답변 저장'}</button></div></form></div>}
+      {replyingPost && <ModalPortal><div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={() => setReplyingPost(null)}><form onSubmit={handleSaveReply} onClick={event => event.stopPropagation()} className="w-full max-w-xl space-y-4 rounded-2xl bg-white p-6 shadow-2xl max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain"><h3 className="text-lg font-bold text-gray-900">문의 답변</h3><p className="text-sm font-semibold text-gray-700">{replyingPost.title}</p><p className="max-h-40 overflow-auto whitespace-pre-wrap text-sm text-gray-600">{replyingPost.content}</p><label className="block text-sm font-semibold text-gray-700">답변 내용<textarea value={replyText} onChange={event => setReplyText(event.target.value)} rows={6} required className="mt-2 w-full rounded-xl border border-gray-300 p-3 text-sm" /></label><div className="flex justify-end gap-2"><button type="button" onClick={() => setReplyingPost(null)} className="rounded-lg border px-4 py-2 text-sm">취소</button><button type="submit" disabled={replySaving} className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold text-white disabled:opacity-50">{replySaving ? '저장 중…' : '답변 저장'}</button></div></form></div></ModalPortal>}
     </div>
   );
 }

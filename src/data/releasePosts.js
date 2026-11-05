@@ -12,6 +12,3 @@ export const CEREMONY_2026_ALBUM = {
   ],
   content: '2026년 10월 19일 열린 대한민국 자랑스런 명인명장 선정식 현장입니다. 교육원에서 전달한 단체 기념사진과 이사장 기념사진 원본을 담았습니다.',
 };
-export function adoptReleasePosts(posts = []) {
-  return posts.some(post => post.id === CEREMONY_2026_ALBUM.id) ? posts : [CEREMONY_2026_ALBUM, ...posts];
-}

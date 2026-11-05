@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import SelectionPoster from './SelectionPoster';
 import MasterSelectionPage from './MasterSelectionPage';
 import { MASTER_SELECTION_NOTICE } from '../../data/masterSelection';
@@ -251,7 +252,7 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
 
       {/* Admin Master Management Modal */}
       {isMasterModalOpen && (
-        <div
+        <ModalPortal><div
           onClick={() => {
             setIsMasterModalOpen(false);
             setEditingMasterId(null);
@@ -293,7 +294,7 @@ export default function MasterBusinessPage({ initialSubTab = 'all', initialTab =
               />
             </div>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
     </div>

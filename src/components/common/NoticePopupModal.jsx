@@ -1,3 +1,4 @@
+import ModalPortal from './ModalPortal';
 import { popupStatus, nextKoreaMidnight } from '../../utils/popupSchedule';
 import React, { useState, useEffect } from 'react';
 import { X, ExternalLink, Calendar, CheckSquare, Square } from 'lucide-react';
@@ -111,7 +112,7 @@ export default function NoticePopupModal({ popupData, onNavigate, preview = fals
   const popupWidth = popupData.width ? `${popupData.width}px` : '440px';
 
   return (
-    <div
+    <ModalPortal><div
       role="dialog"
       aria-modal="true"
       aria-label={popupData.title || '공지 팝업 안내'}
@@ -217,6 +218,6 @@ export default function NoticePopupModal({ popupData, onNavigate, preview = fals
           </div>
         </div>
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

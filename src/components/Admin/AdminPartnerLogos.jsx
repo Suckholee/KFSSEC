@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState } from 'react';
 import {
   Handshake,
@@ -353,13 +354,13 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
 
       {/* Modal for Add / Edit */}
       {showAddModal && (
-        <div
+        <ModalPortal><div
           onClick={() => setShowAddModal(false)}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs cursor-pointer"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 border-2 border-[#2B7752] shadow-2xl animate-fadeIn cursor-default"
+            className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 border-2 border-[#2B7752] shadow-2xl animate-fadeIn cursor-default max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain"
           >
             <div className="flex items-center justify-between border-b pb-3">
               <h3 className="text-base font-black text-gray-900 flex items-center gap-2">
@@ -516,7 +517,7 @@ export default function AdminPartnerLogos({ partnerLogos = [], onUpdatePartnerLo
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
     </div>
   );

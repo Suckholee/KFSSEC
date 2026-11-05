@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState, useEffect, useRef } from 'react';
 import SubSidebar from '../common/SubSidebar';
@@ -602,7 +603,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
 
       {/* Complete Institution & 12 Pillars Edit Modal */}
       {isInstitutionModalOpen && (
-        <div
+        <ModalPortal><div
           onClick={() => setIsInstitutionModalOpen(false)}
           className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
         >
@@ -988,7 +989,7 @@ export default function AboutPage({ initialSubTab = 'speech', initialTab = 'spee
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   LogOut,
@@ -1264,8 +1265,8 @@ export default function AdminLayout({
 
               {/* ENROLLEE DETAIL MODAL */}
               {selectedEnrolleeModal && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
-                  <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border-2 border-black shadow-2xl space-y-6">
+                <ModalPortal><div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
+                  <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border-2 border-black shadow-2xl space-y-6 max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain">
                     <div className="border-b border-gray-200 pb-3 flex items-center justify-between">
                       <h4 className="text-lg font-black text-black flex items-center gap-2">
                         <UserCheck className="w-5 h-5 text-emerald-700" />
@@ -1335,7 +1336,7 @@ export default function AdminLayout({
                       </button>
                     </div>
                   </div>
-                </div>
+                </div></ModalPortal>
               )}
 
             </div>

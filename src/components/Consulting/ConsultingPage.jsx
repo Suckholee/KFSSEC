@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
@@ -543,13 +544,13 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
 
       {/* Terms & Conditions Modal */}
       {showTermsModal && (
-        <div
+        <ModalPortal><div
           onClick={() => setShowTermsModal(false)}
           className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 cursor-pointer"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-black shadow-2xl space-y-4 animate-fadeIn cursor-default"
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full border-2 border-black shadow-2xl space-y-4 animate-fadeIn cursor-default max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain"
           >
 
             <div className="flex items-center justify-between border-b border-gray-200 pb-3">
@@ -576,7 +577,7 @@ export default function ConsultingPage({ initialSubTab = 'education', initialTab
               >{tr(" 확인 및 닫기 ")}</button>
             </div>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
     </div>

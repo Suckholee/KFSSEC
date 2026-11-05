@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
@@ -126,7 +127,7 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect,
   if (!isOpen || !master) return null;
 
   return (
-    <div
+    <ModalPortal><div
       onClick={requestClose}
       ref={overlayRef}
       className="master-profile-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md cursor-pointer"
@@ -409,6 +410,6 @@ export default function MasterDetailModal({ isOpen, master, onClose, originRect,
         </div>
 
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

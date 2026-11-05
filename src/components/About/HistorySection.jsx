@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import ScrollReveal from '../common/ScrollReveal';
@@ -374,13 +375,13 @@ export default function HistorySection({ milestones: propMilestones }) {
 
       {/* Add New Milestone Event Modal */}
       {isAddModalOpen && (
-        <div
+        <ModalPortal><div
           onClick={() => setIsAddModalOpen(false)}
           className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl shadow-2xl border border-gray-200 w-full max-w-lg overflow-hidden text-gray-900"
+            className="bg-white rounded-3xl shadow-2xl border border-gray-200 w-full max-w-lg  text-gray-900 max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain"
           >
             <div className="px-6 py-4 bg-gradient-to-r from-[#1B5238] via-[#266847] to-[#34885E] text-white flex items-center justify-between border-b border-[#85CFAB]/40">
               <div className="flex items-center gap-2.5">
@@ -476,7 +477,7 @@ export default function HistorySection({ milestones: propMilestones }) {
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
     </div>
   );

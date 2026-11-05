@@ -1,3 +1,4 @@
+import ModalPortal from '../../common/ModalPortal';
 import React, { useState } from 'react';
 import { useAdminEdit } from '../../../context/AdminEditContext';
 import { saveSharedContent } from '../../../services/contentApi.js';
@@ -62,7 +63,7 @@ export default function AdminDrawer() {
   };
 
   return (
-    <div
+    <ModalPortal><div
       onClick={() => setIsDrawerOpen(false)}
       className="fixed inset-0 z-[10000] bg-slate-950/60 backdrop-blur-sm flex justify-end transition-opacity"
     >
@@ -321,6 +322,6 @@ export default function AdminDrawer() {
           </button>
         </div>
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

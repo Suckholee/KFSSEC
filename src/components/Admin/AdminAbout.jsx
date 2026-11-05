@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import { resolveFaculty, PENDING_PORTRAIT } from '../../data/faculty';
 import React, { useState, useEffect } from 'react';
 import {
@@ -761,12 +762,12 @@ export default function AdminAbout({
 
       {/* EVENT MODAL */}
       {isEventModalOpen && (
-        <div
+        <ModalPortal><div
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
           onClick={() => setIsEventModalOpen(false)}
         >
           <div
-            className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-200 space-y-4"
+            className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-200 space-y-4 max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-gray-200 pb-3">
@@ -846,12 +847,12 @@ export default function AdminAbout({
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
       {/* FACULTY MODAL */}
       {isFacultyModalOpen && (
-        <div
+        <ModalPortal><div
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
           onClick={() => setIsFacultyModalOpen(false)}
         >
@@ -968,7 +969,7 @@ export default function AdminAbout({
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
     </div>

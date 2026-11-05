@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Terminal,
@@ -692,7 +693,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
 
       {/* FULL IMAGE ZOOM MODAL */}
       {previewImageModal && (
-        <div
+        <ModalPortal><div
           className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn"
           onClick={() => setPreviewImageModal(null)}
         >
@@ -716,7 +717,7 @@ export function DevInquiryBoard({ subTab = 'dev_inquiry_list', onSubTabChange })
               <X className="w-4 h-4" />
             </button>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
       {/* Header Title & Top Action Bar */}
@@ -1676,7 +1677,7 @@ function AnnotationEditorModal({ screenshot, onSave, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-3 sm:p-6 backdrop-blur-xs animate-fadeIn">
+    <ModalPortal><div className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-3 sm:p-6 backdrop-blur-xs animate-fadeIn">
       <div className="bg-white w-full max-w-6xl max-h-[95vh] rounded-3xl overflow-hidden shadow-2xl border border-gray-200 flex flex-col">
         {/* Modal Header */}
         <div className="px-6 py-4 border-b border-gray-200 bg-[#2B7752] text-white flex items-center justify-between">
@@ -1843,6 +1844,6 @@ function AnnotationEditorModal({ screenshot, onSave, onClose }) {
           </div>
         </div>
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

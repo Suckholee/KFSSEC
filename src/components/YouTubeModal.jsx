@@ -1,3 +1,4 @@
+import ModalPortal from './common/ModalPortal';
 import { useLanguage } from '../i18n/LanguageContext';
 import React, { useEffect } from 'react';
 import { X, Youtube } from 'lucide-react';
@@ -25,12 +26,12 @@ export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle, vid
 
 
   return (
-    <div
+    <ModalPortal><div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl bg-gray-900 rounded-3xl overflow-hidden shadow-2xl border border-emerald-500/30 flex flex-col"
+        className="relative w-full max-w-4xl bg-gray-900 rounded-3xl  shadow-2xl border border-emerald-500/30 flex flex-col max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -63,6 +64,6 @@ export default function YouTubeModal({ isOpen, onClose, videoId, videoTitle, vid
           />
         </div>
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

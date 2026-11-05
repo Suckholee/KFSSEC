@@ -1,3 +1,4 @@
+import ModalPortal from './common/ModalPortal';
 import EmailLogin from './EmailLogin';
 import React, { useEffect, useState } from 'react';
 
@@ -50,7 +51,7 @@ export default function MemberRegistration({ onComplete, onCancel, editing = fal
   function input(field) {
     return <label key={field.key} className="block text-sm font-bold text-gray-800">{field.label}{field.required ? ' *' : ' (선택)'}<input autoComplete={field.autocomplete} required={field.required} type={field.type || 'text'} maxLength={field.max || 100} list={field.list} value={form[field.key]} onChange={e => setForm(previous => ({ ...previous, [field.key]: e.target.value }))} placeholder={field.placeholder} className="block mt-2 w-full border border-gray-300 rounded-xl p-3 font-normal focus:ring-2 focus:ring-emerald-600 focus:outline-none" /></label>;
   }
-  return <div className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4" onClick={event => { if (event.target === event.currentTarget && !saving) onCancel(); }} role="dialog" aria-modal="true" aria-labelledby="signup-title">
+  return <ModalPortal><div className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4" onClick={event => { if (event.target === event.currentTarget && !saving) onCancel(); }} role="dialog" aria-modal="true" aria-labelledby="signup-title">
     <form onSubmit={submit} className="bg-white rounded-3xl max-w-lg w-full shadow-xl max-h-[90dvh] overflow-hidden flex flex-col">
       <div className="shrink-0 border-b px-6 py-5 flex items-start gap-4"><div className="flex-1"><h2 id="signup-title" className="text-2xl font-black text-gray-900">{editing ? '내 정보 설정' : '회원가입 정보 입력'}</h2><p className="text-sm text-gray-600 mt-2">{editing ? '기본 정보와 추가 정보를 확인하고 수정할 수 있습니다.' : '로그인 인증이 완료됐습니다. 기본 정보를 입력하고 추가 정보는 선택해 주세요.'}</p></div><button type="button" aria-label="창 닫기" disabled={saving} onClick={onCancel} className="shrink-0 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-2xl text-gray-700 disabled:opacity-50">×</button></div>
       <div className="min-h-0 overflow-y-auto overscroll-contain p-6 space-y-5">
@@ -95,5 +96,5 @@ export default function MemberRegistration({ onComplete, onCancel, editing = fal
       <button type="button" disabled={saving} onClick={onCancel} className="w-full text-gray-500 text-sm">{editing ? '닫기' : '가입 취소'}</button>
       </div>
     </form>
-  </div>;
+  </div></ModalPortal>;
 }

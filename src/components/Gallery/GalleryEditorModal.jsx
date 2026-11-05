@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   X,
@@ -469,7 +470,7 @@ export default function GalleryEditorModal({
   if (!isOpen) return null;
 
   return (
-    <div
+    <ModalPortal><div
       onClick={onClose}
       className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
     >
@@ -849,6 +850,6 @@ export default function GalleryEditorModal({
           </div>
         </form>
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

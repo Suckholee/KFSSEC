@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Image as ImageIcon, Save, Upload, Sparkles, Tag, DollarSign, UserCheck, CheckCircle2, Clock } from 'lucide-react';
 import CoursePosterGeneratorModal from './CoursePosterGeneratorModal';
@@ -132,7 +133,7 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fadeIn">
+    <ModalPortal><div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fadeIn">
       <div className="relative w-full max-w-2xl bg-[#F8FAF9] rounded-3xl border border-[#CDE5D7] p-6 sm:p-8 shadow-2xl space-y-6 text-gray-900 max-h-[90vh] overflow-y-auto no-scrollbar">
         
         {/* Close Button */}
@@ -385,6 +386,6 @@ export default function CourseEditModal({ isOpen, course, onClose, onSaveCourse 
         />
 
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

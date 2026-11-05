@@ -1,3 +1,4 @@
+import ModalPortal from './common/ModalPortal';
 import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { CreditCard, CheckCircle2, ShieldCheck, HelpCircle, ArrowRight, X, Percent, RefreshCw, FileText } from 'lucide-react';
@@ -7,7 +8,7 @@ export default function PaymentGuideModal({ isOpen, onClose, onGoToCatalog }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <ModalPortal><div className="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl p-6 sm:p-10 max-w-2xl w-full border-2 border-black shadow-2xl space-y-6 animate-fadeIn max-h-[90vh] overflow-y-auto font-sans text-gray-900">
         
         {/* Header */}
@@ -111,6 +112,6 @@ export default function PaymentGuideModal({ isOpen, onClose, onGoToCatalog }) {
         </div>
 
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

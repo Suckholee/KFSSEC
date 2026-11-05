@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect } from 'react';
 import {
   Briefcase,
@@ -892,8 +893,8 @@ export default function AdminConsulting({ siteData, onUpdateSiteData, subTab = '
       {/* CASE ADD/EDIT MODAL                                                       */}
       {/* ========================================================================= */}
       {isCaseModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-stone-200">
+        <ModalPortal><div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-stone-200 max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain">
             <div className="flex items-center justify-between border-b border-stone-200 pb-4">
               <h3 className="text-lg font-black text-gray-900">
                 {editingCase ? '프랜차이즈 사례 수정' : '신규 프랜차이즈 사례 등록'}
@@ -1014,7 +1015,7 @@ export default function AdminConsulting({ siteData, onUpdateSiteData, subTab = '
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
     </div>
   );

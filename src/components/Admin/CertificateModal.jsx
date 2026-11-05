@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useRef } from 'react';
 import { X, Printer, Download, Award, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
@@ -29,7 +30,7 @@ export default function CertificateModal({
   const isLicense = certData.type === '자격증';
 
   return (
-    <div
+    <ModalPortal><div
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fadeIn cursor-pointer"
     >
@@ -200,6 +201,6 @@ export default function CertificateModal({
         </div>
 
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

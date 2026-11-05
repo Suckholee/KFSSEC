@@ -1,3 +1,4 @@
+import ModalPortal from './common/ModalPortal';
 import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import {
@@ -519,7 +520,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext, onPlayV
 
       {/* YOUTUBE VIDEO LINK & INFO EDIT MODAL */}
       {modalMode && (
-        <div
+        <ModalPortal><div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn"
           onClick={() => setModalMode(null)}
         >
@@ -669,7 +670,7 @@ export default function YouTubeMediaSection({ youtubeData, onScrollNext, onPlayV
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
       {/* Interactive YouTube Video Modal (Visitor Modal) */}

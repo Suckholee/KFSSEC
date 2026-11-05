@@ -1,3 +1,4 @@
+import ModalPortal from './common/ModalPortal';
 import React, { useEffect, useState } from 'react';
 import EmailLogin from './EmailLogin';
 import { X, Mail, ArrowLeft, MessageCircle } from 'lucide-react';
@@ -49,7 +50,7 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
+    <ModalPortal><div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
       <section role="dialog" aria-modal="true" aria-labelledby="member-auth-title" onClick={event => event.stopPropagation()} className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-6 sm:p-8 shadow-2xl">
         <button type="button" aria-label="닫기" onClick={onClose} className="absolute right-4 top-4 rounded-full p-2 text-gray-500 hover:bg-gray-100"><X className="h-5 w-5" /></button>
         <h2 id="member-auth-title" className="text-xl font-bold text-emerald-950">{wording[signingUp ? 1 : 0]}</h2>
@@ -71,6 +72,6 @@ export default function AuthModal({ isOpen = false, initialMode = 'login', onClo
           <button type="button" onClick={() => { setMode(signingUp ? 'login' : 'signup'); setMethod(null); }} className="rounded px-1 py-2 font-bold text-emerald-800 underline underline-offset-4">{wording[signingUp ? 0 : 1]}</button>
         </div>
       </section>
-    </div>
+    </div></ModalPortal>
   );
 }

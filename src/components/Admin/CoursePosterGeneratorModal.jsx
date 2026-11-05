@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   X,
@@ -116,7 +117,7 @@ export default function CoursePosterGeneratorModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md animate-fadeIn font-sans text-gray-900">
+    <ModalPortal><div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md animate-fadeIn font-sans text-gray-900">
       <div className="relative w-full max-w-6xl max-h-[94vh] bg-stone-900 rounded-3xl border border-stone-700 shadow-2xl flex flex-col overflow-hidden text-white">
         
         {/* Header Bar */}
@@ -375,6 +376,6 @@ export default function CoursePosterGeneratorModal({
         </div>
 
       </div>
-    </div>
+    </div></ModalPortal>
   );
 }

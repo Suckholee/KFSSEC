@@ -1,3 +1,4 @@
+import ModalPortal from './common/ModalPortal';
 import { expiredEventPromotion } from '../utils/popupSchedule';
 import { useAdminEdit } from '../context/AdminEditContext';
 import React, { useState, useEffect } from 'react';
@@ -363,7 +364,7 @@ export default function NoticePostSection({
 
       {/* Post Detail Modal */}
       {selectedPost && (
-        <div
+        <ModalPortal><div
           role="dialog"
           aria-modal="true"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn"
@@ -448,7 +449,7 @@ export default function NoticePostSection({
               </div>
             </div>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
     </section>

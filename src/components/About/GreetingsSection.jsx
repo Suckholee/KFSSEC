@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState, useEffect, useRef } from 'react';
 import ScrollReveal from '../common/ScrollReveal';
@@ -667,7 +668,7 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
 
       {/* Complete Speech Edit Modal */}
       {isModalOpen && (
-        <div
+        <ModalPortal><div
           onClick={() => setIsModalOpen(false)}
           className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
         >
@@ -1094,7 +1095,7 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
               </div>
             </form>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
     </section>
   );

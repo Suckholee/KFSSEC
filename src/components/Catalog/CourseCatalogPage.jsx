@@ -1,3 +1,4 @@
+import ModalPortal from '../common/ModalPortal';
 import { useLanguage } from '../../i18n/LanguageContext';
 import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
@@ -144,7 +145,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses', onGoToCon
 
       {/* Admin Courses Management Modal */}
       {isCoursesAdminOpen && (
-        <div
+        <ModalPortal><div
           onClick={() => setIsCoursesAdminOpen(false)}
           className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
         >
@@ -194,7 +195,7 @@ export default function CourseCatalogPage({ initialSubTab = 'courses', onGoToCon
               </button>
             </div>
           </div>
-        </div>
+        </div></ModalPortal>
       )}
 
       <CourseModal
