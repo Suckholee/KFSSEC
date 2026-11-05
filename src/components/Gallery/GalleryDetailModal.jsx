@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import React, { useState, useEffect, useMemo } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { renderRichContent } from '../common/RichContentRenderer';
 
 export default function GalleryDetailModal({ photo, onClose }) {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
 
-  const images = photo?.images && photo.images.length > 0
-    ? photo.images
-    : (photo?.image ? [photo.image] : ['/images/hero_bg.jpg']);
+  const images = useMemo(() => [...new Set([
+    photo?.image, ...(photo?.images || []),
+  ].filter(Boolean))], [photo?.image, photo?.images]);
+
+  useEffect(() => { setActivePhotoIndex(0); }, [photo?.id, photo?.image]);
 
   const currentImage = images[activePhotoIndex] || images[0];
 
   // Keyboard navigation: Escape to close, ArrowLeft / ArrowRight to flip photos
   useEffect(() => {
+    if (!photo) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose?.();
@@ -25,22 +31,28 @@ export default function GalleryDetailModal({ photo, onClose }) {
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [images.length, onClose]);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [photo, images.length, onClose]);
 
   if (!photo) return null;
 
-  return (
+  return createPortal(
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={photo.title}
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm cursor-pointer animate-fadeIn"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-[#85CFAB] cursor-default flex flex-col max-h-[92vh]"
+        className="bg-white rounded-3xl max-w-3xl w-full overflow-y-auto overscroll-contain shadow-2xl border border-[#85CFAB] cursor-default flex flex-col max-h-[calc(100dvh-2rem)]"
       >
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-[#1B5238] via-[#266847] to-[#34885E] text-white p-4 px-6 flex items-center justify-between border-b border-[#85CFAB]/40">
+        <div className="sticky top-0 z-20 shrink-0 bg-gradient-to-r from-[#1B5238] via-[#266847] to-[#34885E] text-white p-4 px-6 flex items-center justify-between border-b border-[#85CFAB]/40">
           <div className="flex items-center gap-2">
             <span className="text-xs font-black text-[#A7F3D0]">
               {photo.categoryLabel}
@@ -61,7 +73,7 @@ export default function GalleryDetailModal({ photo, onClose }) {
         </div>
 
         {/* Modal Main Image & Slide Controls */}
-        <div className="relative aspect-[16/10] bg-stone-950 overflow-hidden flex items-center justify-center select-none group">
+        <div className="relative shrink-0 aspect-[16/10] bg-stone-950 overflow-hidden flex items-center justify-center select-none group">
           <img
             src={currentImage}
             alt={`${photo.title} (${activePhotoIndex + 1})`}
@@ -99,7 +111,7 @@ export default function GalleryDetailModal({ photo, onClose }) {
 
         {/* Multi-photo Thumbnails Filmstrip */}
         {images.length > 1 && (
-          <div className="bg-stone-900/90 px-4 py-2.5 flex items-center gap-2 overflow-x-auto border-t border-stone-800">
+          <div className="shrink-0 bg-stone-900/90 px-4 py-2.5 flex items-center gap-2 overflow-x-auto border-t border-stone-800">
             {images.map((img, i) => (
               <button
                 key={i}
@@ -126,7 +138,7 @@ export default function GalleryDetailModal({ photo, onClose }) {
         )}
 
         {/* Modal Body */}
-        <div className="p-6 space-y-3 overflow-y-auto">
+        <div className="shrink-0 p-6 space-y-3">
           <div className="flex items-center justify-between text-xs text-stone-500 font-bold border-b pb-2">
             <span>{photo.date}</span>
             <span>{photo.location}</span>
@@ -140,7 +152,7 @@ export default function GalleryDetailModal({ photo, onClose }) {
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-stone-50 p-4 border-t border-stone-200 flex justify-end">
+        <div className="shrink-0 bg-stone-50 p-4 border-t border-stone-200 flex justify-end">
           <button
             onClick={onClose}
             className="px-5 py-2 bg-[#2B7752] text-white text-xs font-bold rounded-xl hover:bg-[#236344] transition-colors cursor-pointer"
@@ -150,5 +162,5 @@ export default function GalleryDetailModal({ photo, onClose }) {
         </div>
       </div>
     </div>
-  );
+  , document.body);
 }

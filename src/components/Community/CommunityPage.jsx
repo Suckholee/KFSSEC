@@ -1,4 +1,5 @@
 import { useLanguage } from '../../i18n/LanguageContext';
+import { createPortal } from 'react-dom';
 import React, { useState, useEffect } from 'react';
 import SubSidebar from '../common/SubSidebar';
 import { MessageSquare, Bell, Image, Trophy, HelpCircle, PenSquare, Search, Eye, Calendar, User, ChevronRight, X, Lock, Pin, ShieldCheck, CheckCircle2, Clock, Send, FileText, Bot, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
@@ -28,13 +29,18 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
   // Close post modal on Escape key press
   useEffect(() => {
     if (!selectedPost) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setSelectedPost(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [selectedPost]);
 
 
@@ -498,14 +504,17 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
       </div>
 
       {/* Public Post View Modal (Public View - Clean Answer Card Display) */}
-      {selectedPost && (
+      {selectedPost && createPortal(
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={tr(selectedPost.title)}
           onClick={() => setSelectedPost(null)}
           className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 cursor-pointer"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-5 animate-fadeIn max-h-[90vh] overflow-y-auto cursor-default"
+            className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-black shadow-2xl space-y-5 animate-fadeIn max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain cursor-default"
           >
 
             
@@ -642,7 +651,7 @@ export default function CommunityPage({ initialTab = 'all', onOpenAuth, isUserLo
 
           </div>
         </div>
-      )}
+      , document.body)}
 
     </div>
   );

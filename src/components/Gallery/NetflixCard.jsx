@@ -26,7 +26,7 @@ export default function NetflixCard({
       <img
         src={item.image}
         alt={item.title}
-        className="aspect-video w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+        className={`aspect-video w-full object-center transition-transform duration-500 ${item.imageFit === 'contain' ? 'object-contain' : 'object-cover group-hover:scale-105'}`}
         loading="lazy"
       />
 

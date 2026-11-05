@@ -8,7 +8,9 @@ test('release album preserves existing edits and an administrator-hidden album',
  assert.equal(adoptReleasePosts(list),list);
  assert.equal(adoptReleasePosts(list)[1].visible,false);
  const incoming=[{id:'other'}];
- assert.equal(adoptReleasePosts(incoming)[0].images.length,2);
+ assert.equal(adoptReleasePosts(incoming)[0].images.length,6);
+ assert.equal(CEREMONY_2026_ALBUM.images[0],CEREMONY_2026_ALBUM.coverImage);
+ assert.equal(CEREMONY_2026_ALBUM.imageFit,'contain');
  assert.deepEqual(incoming,[{id:'other'}]);
 });
 test('introduction videos accept explicit video URLs and reject scripts, channels and deceptive hosts',()=>{
