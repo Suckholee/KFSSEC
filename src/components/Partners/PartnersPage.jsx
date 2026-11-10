@@ -135,6 +135,8 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
       date: post.date,
       image: post.image || post.coverImage,
       desc: post.content,
+      documentUrl: post.documentUrl,
+      recordType: post.recordType,
       images: Array.isArray(post.images) && post.images.length > 0 ? post.images : [post.image || post.coverImage],
     }));
 
@@ -441,12 +443,12 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
                 <span>OFFICIAL MOU ARCHIVES</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
-                업무협약(MOU) 공식 체결 현장 기록
+                업무협약(MOU) 협약서 및 체결 현장 기록
               </h2>
             </div>
             <div className="flex items-center gap-2.5">
               <span className="text-xs font-black text-[#1E5D3B] bg-[#EAF6EE] px-3 py-1.5 rounded-xl border border-[#BEDECB]">
-                등록된 협약식 사진 {mouPhotos.length}건
+                등록된 MOU 기록 {mouPhotos.length}건
               </span>
               {isEditMode && (
                 <button
@@ -478,7 +480,7 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3 bg-[#2B7752]/90 text-white text-[10px] font-black px-2.5 py-1 rounded-md">
-                      MOU 협약식
+                      {photo.recordType === 'agreement' ? 'MOU 협약서' : 'MOU 협약식'}
                     </div>
                     {photo.images && photo.images.length > 1 && (
                       <div className="absolute top-3 right-3 bg-stone-900/85 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-xs border border-white/20">
@@ -743,9 +745,14 @@ export default function PartnersPage({ initialSubTab = 'all', partnerLogos = [],
               <h3 className="text-lg sm:text-xl font-black text-gray-900">
                 {selectedPhoto.title}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium whitespace-pre-line">
                 {selectedPhoto.desc}
               </p>
+              {selectedPhoto.documentUrl && (
+                <a href={selectedPhoto.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-bold text-[#2B7752] underline underline-offset-4">
+                  <ExternalLink className="w-4 h-4" />협약서 PDF 원문 보기
+                </a>
+              )}
             </div>
 
             <div className="bg-stone-50 p-4 border-t border-stone-200 flex justify-end">

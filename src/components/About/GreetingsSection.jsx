@@ -209,9 +209,9 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
       subtitle: '40 Years Luxury Hotel Career',
       icon: Briefcase,
       items: [
-        t("풀만 앰버서더 호텔 (특1급) 총괄주방장"),
-        t("웨스틴 조선호텔 조리 실무"),
-        t("리츠칼튼호텔 조리 실무"),
+        t("풀만 앰버서더 호텔"),
+        t("웨스틴 조선호텔"),
+        t("리츠칼튼호텔"),
         t("산피아 후쿠오카 리조트 (일본)"),
         t("쥬레스 가든 컨벤션 & 웨딩 조리 총괄"),
       ],

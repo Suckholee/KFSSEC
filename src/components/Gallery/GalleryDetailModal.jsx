@@ -148,6 +148,11 @@ export default function GalleryDetailModal({ photo, onClose }) {
           </h3>
           <div className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
             {renderRichContent(photo.desc)}
+            {photo.documentUrl && (
+              <a href={photo.documentUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-3 font-bold text-[#2B7752] underline underline-offset-4">
+                협약서 PDF 원문 보기
+              </a>
+            )}
           </div>
         </div>
 

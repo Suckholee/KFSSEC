@@ -92,6 +92,7 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
         imageFit: post.imageFit,
         images: postImages,
         desc: post.content || '',
+        documentUrl: post.documentUrl,
         isPinned: Boolean(post.isPinned),
         rawPost: post,
       };

@@ -1,6 +1,8 @@
+import { MOU_AGREEMENT_POSTS } from './mouAgreements.js';
 import { AWARD_CEREMONY_2026_POSTS } from './awardCeremony2026';
 
 export const DEFAULT_POSTS = [
+  ...MOU_AGREEMENT_POSTS,
   ...AWARD_CEREMONY_2026_POSTS,
   {
     "id": "post-nongahn-20260918",
