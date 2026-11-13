@@ -3,6 +3,26 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5939",
+    "title": "[인물 칼럼] 외식산업의 미래를 여는 사람 중심의 교육, 한국외식창업교육원",
+    "summary": "사단법인 한국외식창업교육원이사장 안형상산업의 미래는 변화에 대응하는 능력에서 비롯되고, 그 변화의 중심에는 언제...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.11.13",
+    "imageUrl": "/images/trends/trend_5939.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/67d1cc005829917a5fb6e8060cd02cca8435b5c8.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5939&mcode=m247tk9"
+  },
+  {
+    "id": "5933",
+    "title": "배달앱 수수료 갈등, 결국 소비자에게 돌아온 부담… 배민·쿠팡에 6,319억 원 과징금, 외식업계 상생은 가능한가",
+    "summary": "1. 배달앱 시장에 내려진 대규모 제재, 무엇이 문제였나2026년 11월 9일 공정거래위원회는 배달의민족 운영사 우아한형제들과 쿠팡을 상대로 시장지배적 지위 ...",
+    "author": "글로벌외식정보",
+    "date": "2026.11.13",
+    "imageUrl": "/images/trends/trend_5933.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/d27d305da5b501ee1578d8c8e5d6b2cb8fba93ad.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5933&mcode=m247tk9"
+  },
+  {
     "id": "5792",
     "title": "[칼럼] 한류의 외연 확장: 미식과 미(美)의 제국으로 가는 길",
     "summary": "문화 콘텐츠의 파동으로 시작된 한류가 이제 인류의 일상생활 양식을 재정의하는 글로벌 스탠다드로 진화하고 있다. 과거...",
@@ -161,26 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5438.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/ccc2fa127daf3d81e41ca3b59413f1368ec2261b.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5438&mcode=m247tk9"
-  },
-  {
-    "id": "5432",
-    "title": "매출은 20% 줄었는데 이익은 90% 사라졌다",
-    "summary": "손님이 조금 줄었을 뿐인데어느 음식점 사장님이 한숨을 쉬었다.\"매출이 좀 줄긴 했어요. 그래도 이 정도면 버틸 줄 알았죠...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.10.11",
-    "imageUrl": "/images/trends/trend_5432.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/f0f47e50dc8f469b837ce707163777827240b7f9.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5432&mcode=m247tk9"
-  },
-  {
-    "id": "5435",
-    "title": "가성비의 종말, 외식산업이 마주한 ‘신뢰비(信賴費)’의 시대",
-    "summary": "수저를 들기 전 지갑을 먼저 열어보게 되는 요즘이다. 환율은 1,500원 선을 위협하고, 식재료비와 에너지 비용은 고공행진을...",
-    "author": "글로벌 외식정보=신충섭 논설위원",
-    "date": "2026.10.10",
-    "imageUrl": "/images/trends/trend_5435.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/d068bfed2564ebcbc6ad63b59c5187793f9ee0c2.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5435&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.11.12'
+  lastUpdated: '2026.11.13'
 };
