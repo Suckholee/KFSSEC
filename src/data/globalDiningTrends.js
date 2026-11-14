@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "5954",
+    "title": "[논설] 반찬 한 접시의 경제학… 한국의 인심은 어디까지 무상이어야 하는가",
+    "summary": "한국의 식당에서 반찬은 주메뉴에 딸린 부수적인 음식이 아니다. 밥상에 여러 가지 반찬을 차려내고, 부족하면 기꺼이 더 ...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.11.13",
+    "imageUrl": "/images/trends/trend_5954.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/61a58a7f1e866c8c53e06d954a57c1eeb72cfa88.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5954&mcode=m247tk9"
+  },
+  {
     "id": "5939",
     "title": "[인물 칼럼] 외식산업의 미래를 여는 사람 중심의 교육, 한국외식창업교육원",
     "summary": "사단법인 한국외식창업교육원이사장 안형상산업의 미래는 변화에 대응하는 능력에서 비롯되고, 그 변화의 중심에는 언제...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5440.jpg",
     "remoteImageUrl": null,
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5440&mcode=m247tk9"
-  },
-  {
-    "id": "5438",
-    "title": "숙성의 미학, 세계의 미각을 사로잡다… 이병철사케, 하노이 넘어 수원으로",
-    "summary": "한 잔의 술에는 원료의 정성과 제조의 철학, 그리고 시간을 견뎌낸 깊이가 담긴다. 일본 사케의 전통적 가치를 바탕으로 독창적...",
-    "author": "글로벌 외식정보=안형상 기자",
-    "date": "2026.10.11",
-    "imageUrl": "/images/trends/trend_5438.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/ccc2fa127daf3d81e41ca3b59413f1368ec2261b.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5438&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.11.13'
+  lastUpdated: '2026.11.14'
 };
