@@ -28,6 +28,7 @@ import {
   FileText,
   ArrowRight,
   Plus,
+  Trash2,
 } from 'lucide-react';
 import EditableText from '../Admin/InlineEditor/EditableText';
 import EditableImage from '../Admin/InlineEditor/EditableImage';
@@ -78,25 +79,33 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
   const [newProfileItems, setNewProfileItems] = useState({});
   const fileInputRef = useRef(null);
 
-  const handleAddProfileItem = (event, cardId) => {
-    event.preventDefault();
-    const text = (newProfileItems[cardId] || '').trim();
-    if (!isEditMode || !text) return;
-    const item = { id: crypto.randomUUID(), text };
+  const updateProfileItems = (cardId, update) => {
     updateSiteDraft(prev => ({
       ...prev,
       speech: {
         ...prev.speech,
         profileAdditionalItems: {
           ...prev.speech?.profileAdditionalItems,
-          [cardId]: [...(prev.speech?.profileAdditionalItems?.[cardId] || []), item],
+          [cardId]: update(prev.speech?.profileAdditionalItems?.[cardId] || []),
         },
       },
     }));
+  };
+
+  const handleAddProfileItem = (event, cardId) => {
+    event.preventDefault();
+    const text = (newProfileItems[cardId] || '').trim();
+    if (!isEditMode || !text) return;
+    const item = { id: crypto.randomUUID(), text };
+    updateProfileItems(cardId, items => [...items, item]);
     setNewProfileItems(prev => ({ ...prev, [cardId]: '' }));
   };
 
-
+  const setProfileItemDeleted = (cardId, itemId, deleted) => {
+    updateProfileItems(cardId, items =>
+      items.map(item => item.id === itemId ? { ...item, deleted } : item)
+    );
+  };
 
   useEffect(() => {
     setFormData({
@@ -561,6 +570,8 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {profileCards.map((card, idx) => {
           const IconComp = card.icon;
+          const additionalItems = currentSpeech.profileAdditionalItems?.[card.id] || [];
+          const deletedItems = additionalItems.filter(item => item.deleted);
           return (
             <ScrollReveal key={card.id} direction="up" delay={100 + idx * 80}>
               <div className="bg-white rounded-3xl p-6 sm:p-7 border border-emerald-100/80 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group h-full">
@@ -591,13 +602,33 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
                         <span>{item}</span>
                       </li>
                     ))}
-                    {(currentSpeech.profileAdditionalItems?.[card.id] || []).map(item => (
+                    {additionalItems.filter(item => !item.deleted).map(item => (
                       <li key={item.id} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 font-semibold leading-relaxed">
                         <BookmarkCheck className="w-4 h-4 text-[#0F5132] shrink-0 mt-0.5" />
-                        <span data-content-key={`chairman-profile.${card.id}.additional.${item.id}`}>{item.text}</span>
+                        <span className="flex-1" data-content-key={`chairman-profile.${card.id}.additional.${item.id}`}>{item.text}</span>
+                        {isEditMode && (
+                          <button type="button" onClick={() => setProfileItemDeleted(card.id, item.id, true)}
+                            aria-label={`세부항목 삭제: ${item.text}`} className="shrink-0 rounded p-1 text-red-700 hover:bg-red-50">
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        )}
                       </li>
                     ))}
                   </ul>
+                  {isEditMode && deletedItems.length > 0 && (
+                    <details className="text-xs text-gray-600">
+                      <summary className="cursor-pointer">삭제한 세부항목 ({deletedItems.length})</summary>
+                      <ul className="mt-2 space-y-2">
+                        {deletedItems.map(item => (
+                          <li key={item.id} className="flex justify-between gap-2">
+                            <span>{item.text}</span>
+                            <button type="button" onClick={() => setProfileItemDeleted(card.id, item.id, false)}
+                              className="shrink-0 font-bold text-emerald-700 underline">복원</button>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
                   {isEditMode && (
                     <form onSubmit={event => handleAddProfileItem(event, card.id)} className="space-y-2 border-t border-emerald-100 pt-4">
                       <label htmlFor={`profile-item-${card.id}`} className="block text-xs font-bold text-emerald-900">세부항목 추가</label>
@@ -613,7 +644,7 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
                         <Plus className="w-4 h-4" />
                         항목 추가
                       </button>
-                      <p className="text-xs text-gray-500">추가 후 상단의 ‘전체 저장’을 눌러 반영하세요.</p>
+                      <p className="text-xs text-gray-500">변경 후 상단의 ‘전체 저장’을 눌러 반영하세요.</p>
                     </form>
                   )}
                 </div>

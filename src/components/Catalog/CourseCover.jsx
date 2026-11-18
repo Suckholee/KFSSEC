@@ -14,6 +14,7 @@ const alternatePhotos = {
   advisor: '/images/course_restaurant.jpg',
   practice: '/images/course_delivery.jpg',
   kfood: '/images/course_menu_dev.jpg',
+  foodtech: '/images/qualifications/foodtech-level-2.webp',
 };
 
 export default function CourseCover({ course, className = '' }) {
