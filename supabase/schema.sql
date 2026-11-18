@@ -24,3 +24,8 @@ insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 values ('site-media', 'site-media', true, 4194304, array['image/png', 'image/jpeg', 'image/webp'])
 on conflict (id) do update set public = true, file_size_limit = 4194304,
 allowed_mime_types = array['image/png', 'image/jpeg', 'image/webp'];
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('gallery-videos', 'gallery-videos', true, 52428800, array['video/mp4', 'video/webm'])
+on conflict (id) do update set public = true, file_size_limit = 52428800,
+allowed_mime_types = array['video/mp4', 'video/webm'];

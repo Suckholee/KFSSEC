@@ -90,3 +90,28 @@
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
 }
+
+.course-cover__ministry {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.4cqw;
+  margin-bottom: 2cqw;
+  font-size: 3.8cqw;
+  font-weight: 700;
+}
+
+.course-cover__ministry span {
+  width: 6cqw;
+  height: 6cqw;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.course-cover__ministry img {
+  width: 22.5cqw;
+  max-width: none;
+  position: relative;
+  left: -2.15cqw;
+  top: -1.7cqw;
+}

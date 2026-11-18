@@ -99,3 +99,15 @@ export async function readImage(pathname) {
   try { return await fs.readFile(path.join(LOCAL_DIR, pathname)); }
   catch (error) { if (error.code === 'ENOENT') return null; throw error; }
 }
+
+export async function createGalleryVideoUpload(type) {
+  const extension = { 'video/mp4': 'mp4', 'video/webm': 'webm' }[type];
+  const pathname = `gallery-videos/${crypto.randomUUID()}.${extension}`;
+  const { url } = config();
+  const response = await supabaseRequest(`/storage/v1/object/upload/sign/${pathname}`, { method: 'POST' });
+  const { url: signedPath } = await response.json();
+  return {
+    uploadUrl: `${url}/storage/v1${signedPath}`,
+    url: `${url}/storage/v1/object/public/${pathname}`,
+  };
+}

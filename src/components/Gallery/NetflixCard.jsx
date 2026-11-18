@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, Calendar, MapPin, Maximize2, Edit3, Trash2 } from 'lucide-react';
+import { Camera, Video, Calendar, MapPin, Maximize2, Edit3, Trash2 } from 'lucide-react';
 
 export default function NetflixCard({
   item,
@@ -23,12 +23,19 @@ export default function NetflixCard({
       className="group relative w-full rounded-xl overflow-hidden bg-stone-900 cursor-pointer transition-all duration-300 ease-out transform hover:scale-105 sm:hover:scale-108 hover:z-30 shadow-sm hover:shadow-2xl hover:shadow-stone-950/30 border border-stone-200 hover:border-[#15803D]"
     >
       {/* 16:9 Full Bleed Cover Image */}
-      <img
+      {item.image ? <img
         src={item.image}
         alt={item.title}
         className={`aspect-video w-full object-center transition-transform duration-500 ${item.imageFit === 'contain' ? 'object-contain' : 'object-cover group-hover:scale-105'}`}
         loading="lazy"
-      />
+      /> : (
+        <div className="aspect-video grid place-items-center bg-stone-800 text-white">
+          <Video aria-hidden="true" />
+        </div>
+      )}
+      {!!item.videos?.length && (
+        <span className="absolute top-2 left-9 z-10 rounded bg-black/75 px-2 py-1 text-xs text-white">동영상</span>
+      )}
 
       {/* Signature KFSSEC Brand Emblem on Top-Left */}
       <div className="absolute top-2 left-2 z-10 select-none pointer-events-none drop-shadow-md">

@@ -1,3 +1,4 @@
+import { uploadGalleryVideo, uploadInlineImage } from '../../services/contentApi';
 import ModalPortal from '../common/ModalPortal';
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -60,6 +61,7 @@ export default function GalleryEditorModal({
           location: initialData.location || '서울 본원 실습실',
           image: initialData.image || existingImages[0] || '',
           images: existingImages,
+          videos: initialData.videos || [],
           content: initialData.content || initialData.desc || '',
         });
       } else {
@@ -83,13 +85,13 @@ export default function GalleryEditorModal({
 
   // Close on Escape key
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || isUploading) return;
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose?.();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, isUploading, onClose]);
 
   // Handle Clipboard Paste (detects copied images)
   const handlePasteEvent = async (e, isContentArea = false) => {
@@ -118,25 +120,7 @@ export default function GalleryEditorModal({
           reader.readAsDataURL(file);
         });
 
-        try {
-          const response = await fetch('/api/upload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              imageBase64: base64Data,
-              fileName: `clipboard_${Date.now()}_${i}.png`,
-            }),
-          });
-          const result = await response.json();
-          if (response.ok && result.success && result.url) {
-            uploadedUrls.push(result.url);
-          } else {
-            uploadedUrls.push(base64Data);
-          }
-        } catch (err) {
-          console.warn('Fallback to base64 for clipboard image:', err);
-          uploadedUrls.push(base64Data);
-        }
+        uploadedUrls.push(await uploadInlineImage(base64Data));
       }
 
       if (uploadedUrls.length === 0) return;
@@ -219,23 +203,7 @@ export default function GalleryEditorModal({
           reader.readAsDataURL(file);
         });
 
-        try {
-          const response = await fetch('/api/upload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ imageBase64: base64Data, fileName: file.name }),
-          });
-
-          const result = await response.json();
-          if (response.ok && result.success && result.url) {
-            uploadedUrls.push(result.url);
-          } else {
-            uploadedUrls.push(base64Data);
-          }
-        } catch (err) {
-          console.warn('Fallback to base64 for image:', file.name, err);
-          uploadedUrls.push(base64Data);
-        }
+        uploadedUrls.push(await uploadInlineImage(base64Data));
       }
 
       setFormData((prev) => {
@@ -312,21 +280,7 @@ export default function GalleryEditorModal({
         reader.readAsDataURL(file);
       });
 
-      let uploadedUrl = base64Data;
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imageBase64: base64Data, fileName: file.name }),
-        });
-        const result = await response.json();
-        if (response.ok && result.success && result.url) {
-          uploadedUrl = result.url;
-        }
-      } catch (err) {
-        console.warn('Fallback to base64:', err);
-      }
-
+      const uploadedUrl = await uploadInlineImage(base64Data);
       const insertMarkdown = `\n![현장 사진](${uploadedUrl})\n`;
       const textarea = textareaRef.current;
       if (textarea) {
@@ -435,8 +389,9 @@ export default function GalleryEditorModal({
   };
 
   // Submit Form
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
+    if (isUploading) return;
     if (!formData.title.trim()) {
       alert('갤러리 제목을 입력해주세요.');
       return;
@@ -447,31 +402,42 @@ export default function GalleryEditorModal({
         ? formData.images
         : (formData.image ? [formData.image] : []);
 
-    if (imagesToSave.length === 0) {
-      alert('갤러리 사진을 최소 1장 이상 등록해주세요 (PC 파일 선택 또는 이미지 링크 추가).');
+    if (!imagesToSave.length && !formData.videos?.length) {
+      alert('갤러리에 사진 또는 동영상을 한 개 이상 등록해 주세요.');
       return;
     }
 
     const coverImageToSave = formData.image || imagesToSave[0];
 
-    onSave?.({
-      title: formData.title.trim(),
-      galleryCategory: formData.category,
-      date: formData.date,
-      location: formData.location.trim(),
-      image: coverImageToSave,
-      images: imagesToSave,
-      content: formData.content.trim(),
-    });
-
-    onClose?.();
+    setIsUploading(true);
+    setUploadError('');
+    setUploadProgressText('게시물 저장 중…');
+    try {
+      await onSave?.({
+        title: formData.title.trim(),
+        galleryCategory: formData.category,
+        date: formData.date,
+        location: formData.location.trim(),
+        image: coverImageToSave || '',
+        coverImage: coverImageToSave || '',
+        videos: formData.videos || [],
+        images: imagesToSave,
+        content: formData.content.trim(),
+      });
+      onClose?.();
+    } catch (error) {
+      setUploadError(`게시물을 저장하지 못했습니다. ${error.message}`);
+    } finally {
+      setIsUploading(false);
+      setUploadProgressText('');
+    }
   };
 
   if (!isOpen) return null;
 
   return (
     <ModalPortal><div
-      onClick={onClose}
+      onClick={isUploading ? undefined : onClose}
       className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn"
     >
       <div
@@ -484,12 +450,12 @@ export default function GalleryEditorModal({
           <div className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
             <h3 className="font-bold text-base text-slate-100">
-              {isEdit ? '갤러리 게시물 수정' : '새 갤러리 사진 등록'}
+              {isEdit ? '갤러리 게시물 수정' : '새 갤러리 게시물 등록'}
             </h3>
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={isUploading ? undefined : onClose}
             className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
@@ -524,6 +490,7 @@ export default function GalleryEditorModal({
                 <option value="ceremony">시상식 & 인증패</option>
                 <option value="consulting">지자체 컨설팅</option>
                 <option value="training">조리 실습 현장</option>
+                <option value="partners">산학협력 &amp; MOU</option>
               </select>
             </div>
 
@@ -569,11 +536,43 @@ export default function GalleryEditorModal({
             </div>
           </div>
 
+          <div className="space-y-2">
+            <label className="block font-bold text-slate-700">
+              동영상 등록 (MP4, WebM · 최대 50MB)
+              <input type="file" accept="video/mp4,video/webm" disabled={isUploading}
+                className="block mt-2 w-full text-xs" onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = '';
+                  if (!file) return;
+                  setIsUploading(true);
+                  setUploadError('');
+                  setUploadProgressText('동영상 업로드 중…');
+                  try {
+                    const url = await uploadGalleryVideo(file);
+                    setFormData(prev => ({ ...prev, videos: [...(prev.videos || []), url] }));
+                  } catch (error) {
+                    setUploadError(error.message);
+                  } finally {
+                    setIsUploading(false);
+                    setUploadProgressText('');
+                  }
+                }} />
+            </label>
+            {formData.videos?.map((url, index) => (
+              <div key={url} className="flex items-center justify-between gap-2">
+                <video src={url} controls preload="metadata" className="w-40 rounded" />
+                <button type="button" onClick={() => setFormData(prev => ({
+                  ...prev, videos: prev.videos.filter((_, videoIndex) => index !== videoIndex),
+                }))}>동영상 삭제</button>
+              </div>
+            ))}
+          </div>
+
           {/* Multi-Photo Upload & Preview Grid */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="block font-bold text-slate-700">
-                갤러리 사진 등록 (여러 장 등록 가능) <span className="text-red-500">*</span>
+                갤러리 사진 등록 (여러 장 등록 가능)
               </label>
               {formData.images && formData.images.length > 0 && (
                 <span className="text-[11px] font-bold text-emerald-700">
@@ -835,17 +834,18 @@ export default function GalleryEditorModal({
           <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-200">
             <button
               type="button"
-              onClick={onClose}
+              onClick={isUploading ? undefined : onClose}
               className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition cursor-pointer"
             >
               취소
             </button>
             <button
               type="submit"
+              disabled={isUploading}
               className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition shadow-md active:scale-95 cursor-pointer flex items-center gap-1.5"
             >
               <CheckCircle2 className="w-4 h-4" />
-              <span>{isEdit ? '수정 완료' : '갤러리 등록 완료'}</span>
+              <span>{isUploading ? uploadProgressText : isEdit ? '수정 완료' : '갤러리 등록 완료'}</span>
             </button>
           </div>
         </form>

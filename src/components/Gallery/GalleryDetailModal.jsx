@@ -73,6 +73,7 @@ export default function GalleryDetailModal({ photo, onClose }) {
         </div>
 
         {/* Modal Main Image & Slide Controls */}
+        {currentImage && (
         <div className="relative shrink-0 aspect-[16/10] bg-stone-950 overflow-hidden flex items-center justify-center select-none group">
           <img
             src={currentImage}
@@ -109,6 +110,8 @@ export default function GalleryDetailModal({ photo, onClose }) {
           )}
         </div>
 
+        )}
+
         {/* Multi-photo Thumbnails Filmstrip */}
         {images.length > 1 && (
           <div className="shrink-0 bg-stone-900/90 px-4 py-2.5 flex items-center gap-2 overflow-x-auto border-t border-stone-800">
@@ -143,6 +146,9 @@ export default function GalleryDetailModal({ photo, onClose }) {
             <span>{photo.date}</span>
             <span>{photo.location}</span>
           </div>
+          {photo.videos?.map(url => (
+            <video key={url} src={url} controls playsInline preload="metadata" className="w-full rounded-lg bg-black" />
+          ))}
           <h3 className="text-lg sm:text-xl font-black text-gray-900">
             {photo.title}
           </h3>

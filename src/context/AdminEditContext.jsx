@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { saveSharedContent, readSharedContent } from '../services/contentApi.js';
 import { updateWithDefaults, sortedSectorIds } from '../content/resourceModel.js';
 
@@ -46,6 +46,7 @@ export function AdminEditProvider({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerTab, setDrawerTab] = useState('inquiry'); // inquiry, info, database
   const [isSaving, setIsSaving] = useState(false);
+  const savingRef = useRef(false);
   const [saveSuccessNotice, setSaveSuccessNotice] = useState(false);
 
   // Left Block TOC Navigator state (expanded by default on desktop)
@@ -199,9 +200,20 @@ export function AdminEditProvider({
     setPendingChanges(prev => ({ ...prev, site: true, count: prev.count + 1 }));
   }, [sectorSettings]);
 
+  useEffect(() => {
+    if (!pendingChanges.count) return;
+    const warn = event => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [pendingChanges.count]);
+
   // Save All Changes to Supabase
   const saveAllChanges = useCallback(async () => {
-    if (!isAdmin) return;
+    if (!isAdmin || savingRef.current) return;
+    savingRef.current = true;
     setIsSaving(true);
     try {
       if (pendingChanges.site || JSON.stringify(siteDraft) !== JSON.stringify(savedSnapshot.site)) {
@@ -222,19 +234,32 @@ export function AdminEditProvider({
       console.error('Failed to save to Supabase:', err);
       alert(`저장에 실패했습니다: ${err.message || '네트워크 오류'}`);
     } finally {
+      savingRef.current = false;
       setIsSaving(false);
     }
   }, [isAdmin, pendingChanges, siteDraft, postsDraft, sectorSettings, savedSnapshot, onUpdateSiteData, onUpdatePostsList]);
 
-  const publishBoardPost = useCallback(async post => {
-    if (!isAdmin) throw new Error('공지사항 작성은 관리자만 가능합니다.');
-    const next = [{ ...post, id: crypto.randomUUID(), category: '공지 사항', categoryType: 'notice', author: '관리자', date: new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }), views: 0, visible: true, isPinned: false }, ...postsDraft];
-    const saved = await saveSharedContent('posts', next);
-    if (onUpdatePostsList) await onUpdatePostsList(saved);
-    setPostsDraft(saved);
-    setSavedSnapshot(prev => ({ ...prev, posts: saved }));
-    setPendingChanges(prev => ({ ...prev, posts: false, count: prev.site ? prev.count : 0 }));
+  const savePostChanges = useCallback(async update => {
+    if (!isAdmin) throw new Error('관리자 로그인이 필요합니다.');
+    if (savingRef.current) throw new Error('다른 저장이 진행 중입니다. 잠시 후 다시 시도해 주세요.');
+    savingRef.current = true;
+    setIsSaving(true);
+    try {
+      const saved = await saveSharedContent('posts', update(postsDraft));
+      await onUpdatePostsList?.(saved);
+      setPostsDraft(saved);
+      setSavedSnapshot(prev => ({ ...prev, posts: saved }));
+      setPendingChanges(prev => ({ ...prev, posts: false, count: prev.site ? prev.count : 0 }));
+    } finally {
+      savingRef.current = false;
+      setIsSaving(false);
+    }
   }, [isAdmin, postsDraft, onUpdatePostsList]);
+
+  const publishBoardPost = useCallback(post => savePostChanges(posts => [
+    { ...post, id: crypto.randomUUID(), category: '공지 사항', categoryType: 'notice', author: '관리자', date: new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }), views: 0, visible: true, isPinned: false },
+    ...posts,
+  ]), [savePostChanges]);
 
   // Revert all changes
   const revertAllChanges = useCallback(() => {
@@ -265,6 +290,7 @@ export function AdminEditProvider({
     moveSector,
     saveAllChanges,
     publishBoardPost,
+    savePostChanges,
     revertAllChanges,
     isDrawerOpen,
     setIsDrawerOpen,
@@ -293,6 +319,7 @@ export function AdminEditProvider({
     moveSector,
     saveAllChanges,
     publishBoardPost,
+    savePostChanges,
     revertAllChanges,
     isDrawerOpen,
     drawerTab,

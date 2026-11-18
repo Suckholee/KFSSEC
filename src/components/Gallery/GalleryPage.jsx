@@ -14,7 +14,7 @@ import { CEREMONY_2026_ALBUM } from '../../data/releasePosts';
 
 export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
   const { t } = useLanguage();
-  const { isEditMode, postsDraft, updatePostsDraft } = useAdminEdit();
+  const { isEditMode, postsDraft, savePostChanges } = useAdminEdit();
 
   const [activeCategory, setActiveCategory] = useState(initialSubTab || 'all');
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -76,7 +76,7 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
           ? post.images
           : post.image
           ? [post.image]
-          : ['/images/course_menu_dev.jpg'];
+          : post.videos?.length ? [] : ['/images/course_menu_dev.jpg'];
       const coverImage = post.coverImage || post.image || postImages[0] || '/images/course_menu_dev.jpg';
       const categoryId = post.galleryCategory || 'training';
       const categoryMeta = galleryCategories.find((item) => item.id === categoryId);
@@ -88,9 +88,10 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
         title: post.title,
         date: post.date || '',
         location: post.location || '',
-        image: coverImage,
+        image: post.videos?.length && !post.image && !post.coverImage && !post.images?.length ? '' : coverImage,
         imageFit: post.imageFit,
         images: postImages,
+        videos: Array.isArray(post.videos) ? post.videos : [],
         desc: post.content || '',
         documentUrl: post.documentUrl,
         isPinned: Boolean(post.isPinned),
@@ -128,29 +129,33 @@ export default function GalleryPage({ initialSubTab = 'all', postsList = [] }) {
   };
 
   // Delete Item
-  const handleDeleteGallery = (e, item) => {
+  const handleDeleteGallery = async (e, item) => {
     e.stopPropagation();
     if (window.confirm(`"${item.title}" 갤러리 게시물을 삭제하시겠습니까?`)) {
-      updatePostsDraft((prev) => prev.flatMap(p => p.id !== item.id ? [p] : item.id === CEREMONY_2026_ALBUM.id ? [{ ...p, visible: false }] : []));
+      try {
+        await savePostChanges(prev => prev.flatMap(p => p.id !== item.id ? [p] : item.id === CEREMONY_2026_ALBUM.id ? [{ ...p, visible: false }] : []));
+      } catch (error) {
+        alert(`삭제하지 못했습니다. ${error.message}`);
+      }
     }
   };
 
   // Save Post (Create / Update)
   const handleSavePost = (postData) => {
     if (editingPostId) {
-      updatePostsDraft((prev) =>
+      return savePostChanges((prev) =>
         prev.map((p) => (p.id === editingPostId ? { ...p, ...postData } : p))
       );
     } else {
       const newPost = {
-        id: 'gal_' + Date.now(),
+        id: crypto.randomUUID(),
         categoryType: 'gallery',
         ...postData,
         views: 0,
         author: 'KFSSEC 관리자',
         createdAt: new Date().toISOString(),
       };
-      updatePostsDraft((prev) => [newPost, ...prev]);
+      return savePostChanges((prev) => [newPost, ...prev]);
     }
   };
 

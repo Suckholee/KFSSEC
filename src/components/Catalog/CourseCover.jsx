@@ -10,6 +10,12 @@ const covers = {
   sommelier: { name: '소믈리에 파티컨설턴트', topics: ['와인·음료 선정과 식음료 페어링', '테이블 코디네이션과 공간 연출', '와인 해설 및 서비스 실무', '고객 응대와 파티 분위기 연출', '프라이빗 파티·기업 행사 기획', '행사 용품·장비 관리 및 배치'] },
 };
 
+const alternatePhotos = {
+  advisor: '/images/course_restaurant.jpg',
+  practice: '/images/course_delivery.jpg',
+  kfood: '/images/course_menu_dev.jpg',
+};
+
 export default function CourseCover({ course, className = '' }) {
   const { tr } = useLanguage();
   const id = course.qualificationId || course.id;
@@ -19,15 +25,22 @@ export default function CourseCover({ course, className = '' }) {
   if (!cover || (course.image && course.image !== defaultImage)) {
     return <img src={course.image} alt={tr(course.title || course.name)} className={`block w-full h-auto object-contain ${className}`}/>;
   }
+  const alternatePhoto = course.grade === '2급' ? alternatePhotos[id] : null;
   const topics = course.curriculum?.map(module => module.title) || cover.topics;
   const label = [course.grade || course.levelLabel, course.courseLabel].filter(Boolean).join(' · ');
   return (
     <div className={`course-cover ${className}`}>
       <div className="course-cover__poster">
-        <div className={`course-cover__photo ${['advisor', 'practice', 'kfood'].includes(id) ? 'course-cover__photo--existing' : ''}`}>
-          <img src={defaultImage} alt="" loading="lazy"/>
+        <div className={`course-cover__photo ${!alternatePhoto && ['advisor', 'practice', 'kfood'].includes(id) ? 'course-cover__photo--existing' : ''}`}>
+          <img src={alternatePhoto || defaultImage} alt="" loading="lazy"/>
         </div>
         <div className="course-cover__content">
+          {alternatePhotos[id] && (
+            <p className="course-cover__ministry">
+              <span aria-hidden="true"><img src="/images/partners/mafra.svg" alt="" /></span>
+              {tr('주무부처 농림축산식품부')}
+            </p>
+          )}
           <p className="course-cover__brand">{tr('사단법인 한국외식창업교육원')}</p>
           <p className="course-cover__title">{tr(cover.name)}</p>
           <p className="course-cover__level">{tr(label || '전문 자격과정')}</p>
