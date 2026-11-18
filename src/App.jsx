@@ -42,6 +42,7 @@ import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
 import { readSharedContent, saveSharedContent } from './services/contentApi';
 import { DEFAULT_POSTS } from './data/defaultPosts';
+import { migrateChairmanCareer } from './data/chairmanCareer';
 import { CEREMONY_2026_ALBUM } from './data/releasePosts';
 import { AWARD_CEREMONY_2026_POPUP } from './data/awardCeremony2026';
 import SectorOrder from './components/Admin/InlineEditor/SectorOrder';
@@ -568,9 +569,9 @@ export default function App() {
     },
   };
 
-  const mergeSiteData = (saved) => {
-    saved = migrateProfileDirectories(saved);
-    if (!saved || typeof saved !== 'object') return DEFAULT_SITE_DATA;
+  const mergeSiteData = (stored) => {
+    if (!stored || typeof stored !== 'object') return DEFAULT_SITE_DATA;
+    const saved = migrateChairmanCareer(migrateProfileDirectories(stored));
 
     // 1. Institution Info: merge with defaults and ensure key contacts are never blank
     const institutionInfo = {

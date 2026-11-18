@@ -22,9 +22,20 @@ export default function CourseCover({ course, className = '' }) {
   const id = course.qualificationId || course.id;
   const cover = covers[id];
   const defaultImage = `/images/qualifications/${id}.jpg`;
-  // Uploaded covers remain exactly as the administrator supplied them.
+  const ministry = (cover || id === 'master') && (
+    <p className="course-cover__ministry">
+      <span aria-hidden="true"><img src="/images/partners/mafra.svg" alt="" /></span>
+      {tr('주무부처 농림축산식품부')}
+    </p>
+  );
+
   if (!cover || (course.image && course.image !== defaultImage)) {
-    return <img src={course.image} alt={tr(course.title || course.name)} className={`block w-full h-auto object-contain ${className}`}/>;
+    return (
+      <div className={`course-cover ${className}`}>
+        <img src={course.image} alt={tr(course.title || course.name)} className="block w-full h-auto object-contain"/>
+        {ministry && <div className="bg-[#102943] p-2 text-white">{ministry}</div>}
+      </div>
+    );
   }
   const alternatePhoto = course.grade === '2급' ? alternatePhotos[id] : null;
   const topics = course.curriculum?.map(module => module.title) || cover.topics;
@@ -36,12 +47,7 @@ export default function CourseCover({ course, className = '' }) {
           <img src={alternatePhoto || defaultImage} alt="" loading="lazy"/>
         </div>
         <div className="course-cover__content">
-          {alternatePhotos[id] && (
-            <p className="course-cover__ministry">
-              <span aria-hidden="true"><img src="/images/partners/mafra.svg" alt="" /></span>
-              {tr('주무부처 농림축산식품부')}
-            </p>
-          )}
+          {ministry}
           <p className="course-cover__brand">{tr('사단법인 한국외식창업교육원')}</p>
           <p className="course-cover__title">{tr(cover.name)}</p>
           <p className="course-cover__level">{tr(label || '전문 자격과정')}</p>

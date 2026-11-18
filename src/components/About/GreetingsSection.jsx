@@ -33,6 +33,7 @@ import {
 import EditableText from '../Admin/InlineEditor/EditableText';
 import EditableImage from '../Admin/InlineEditor/EditableImage';
 import { useAdminEdit } from '../../context/AdminEditContext';
+import { chairmanCareerSections } from '../../data/chairmanCareer';
 
 const DEFAULT_SPEECH = {
   visionBadge: 'GREETINGS & VISION',
@@ -269,23 +270,12 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
         t("서울특별시장상 대상 및 우수상 / 한국국제요리경영대회 금상"),
       ],
     },
-    {
-      id: '06',
-      title: t("학력 & 강의 경력 20년"),
-      subtitle: 'Academic Background & Lectures',
-      icon: GraduationCap,
-      items: [
-        t("한국외식창업교육원 설립자·이사장·민간자격증 전담교수"),
-        t("캐롤라인대학교 외식경영학 박사"),
-        t("동의대학교 대학원 박사수료 (호텔·외식·관광)"),
-        t("강릉원주대학교 대학원 박사수료 (관광·외식)"),
-        t("서정대학교·창원문성대학교 외식조리과 겸임교수"),
-        t("창신대학교·동의대학교·한중대학교 외식산업학과 겸임교수"),
-        t("현) 글로벌외식정보 대표 기자 / (사)경남음식관광협회 전 회장"),
-        t("전) 세계음식문화연구원 부산·경상남도 지회장"),
-        t("전) 한국약선협회 이사·경상남도 지회장"),
-      ],
-    },
+    ...chairmanCareerSections.map((section, index) => ({
+      ...section,
+      title: t(section.title, section.subtitle),
+      icon: [GraduationCap, Briefcase, Presentation][index],
+      items: section.items.map(item => t(item)),
+    })),
   ];
 
   const renderSpeechContent = () => (
@@ -630,7 +620,7 @@ export default function GreetingsSection({ viewMode = 'all', speech, onNavigate 
                     </details>
                   )}
                   {isEditMode && (
-                    <form onSubmit={event => handleAddProfileItem(event, card.id)} className="space-y-2 border-t border-emerald-100 pt-4">
+                    <form data-content-editor-ui onSubmit={event => handleAddProfileItem(event, card.id)} className="space-y-2 border-t border-emerald-100 pt-4">
                       <label htmlFor={`profile-item-${card.id}`} className="block text-xs font-bold text-emerald-900">세부항목 추가</label>
                       <textarea
                         id={`profile-item-${card.id}`}
