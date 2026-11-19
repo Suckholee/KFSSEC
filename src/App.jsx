@@ -10,7 +10,7 @@ import MemberRegistration from './components/MemberRegistration';
 import NetflixCoursesSection from './components/NetflixCoursesSection';
 import CategoryCourseSection from './components/CategoryCourseSection';
 import CategoryFocusSection from './components/CategoryFocusSection';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import PartnerMarqueeSection, { DEFAULT_PARTNER_LOGOS } from './components/Home/PartnerMarqueeSection';
@@ -40,7 +40,7 @@ import PaymentGuideModal from './components/PaymentGuideModal';
 import NoticePopupModal from './components/common/NoticePopupModal';
 import { fetchCoursesFromAPI } from './services/courseDatabase';
 import { ChevronUp } from 'lucide-react';
-import { readSharedContent, saveSharedContent } from './services/contentApi';
+import { readSharedContent, saveSharedContent, inheritContentVersion } from './services/contentApi';
 import { DEFAULT_POSTS } from './data/defaultPosts';
 import { migrateChairmanCareer } from './data/chairmanCareer';
 import { CEREMONY_2026_ALBUM } from './data/releasePosts';
@@ -423,6 +423,8 @@ export default function App() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [registrationRequired, setRegistrationRequired] = useState(false);
   const [adminAuth, setAdminAuth] = useState({ checked: false, authenticated: false, configured: true });
+  const adminSessionRef = useRef(true);
+  adminSessionRef.current = !adminAuth.checked || adminAuth.authenticated;
 
   useEffect(() => {
     fetch('/api/member-auth', { cache: 'no-store' }).then(response => response.json()).then(result => { setCurrentUser(result.user || null); setRegistrationRequired(Boolean(result.registrationRequired)); }).catch(() => setCurrentUser(null));
@@ -443,12 +445,14 @@ export default function App() {
 
   useEffect(() => {
     fetch('/api/auth', { cache: 'no-store' }).then(response => response.json()).then(result => setAdminAuth({ checked: true, authenticated: result.authenticated, configured: result.configured })).catch(() => setAdminAuth({ checked: true, authenticated: false, configured: false }));
-    readSharedContent('site').then(data => { if (data) setSiteData(mergeSiteData(data)); }).catch(error => console.error('Failed to load site data:', error));
-    const refreshPosts = () => readSharedContent('posts').then(data => { if (Array.isArray(data)) setPostsList(data); }).catch(error => console.error('Failed to load posts:', error));
+    readSharedContent('site').then(data => { setSiteData(mergeSiteData(data)); }).catch(error => console.error('Failed to load site data:', error));
+    const refreshPosts = () => readSharedContent('posts').then(data => { if (Array.isArray(data)) setPostsList(data); else if (data === null) setPostsList(inheritContentVersion([CEREMONY_2026_ALBUM, ...DEFAULT_POSTS], null)); }).catch(error => console.error('Failed to load posts:', error));
     refreshPosts();
-    const timer = window.setInterval(() => { if (!document.hidden) refreshPosts(); }, 30000);
-    window.addEventListener('focus', refreshPosts);
-    return () => { window.clearInterval(timer); window.removeEventListener('focus', refreshPosts); };
+    // An open editor must keep the revision it was opened with.
+    const refreshVisitorPosts = () => { if (!adminSessionRef.current && !document.hidden) refreshPosts(); };
+    const timer = window.setInterval(refreshVisitorPosts, 30000);
+    window.addEventListener('focus', refreshVisitorPosts);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', refreshVisitorPosts); };
   }, []);
 
   useEffect(() => {
@@ -570,7 +574,7 @@ export default function App() {
   };
 
   const mergeSiteData = (stored) => {
-    if (!stored || typeof stored !== 'object') return DEFAULT_SITE_DATA;
+    if (!stored || typeof stored !== 'object') return inheritContentVersion({ ...DEFAULT_SITE_DATA }, stored);
     const saved = migrateChairmanCareer(migrateProfileDirectories(stored));
 
     // 1. Institution Info: merge with defaults and ensure key contacts are never blank
@@ -615,7 +619,7 @@ export default function App() {
       ...(saved.jinIkjun || {}),
     };
 
-    return {
+    return inheritContentVersion({
       ...DEFAULT_SITE_DATA,
       ...saved,
       faculty: Array.isArray(saved.faculty) ? saved.faculty : resolveFaculty(),
@@ -626,14 +630,14 @@ export default function App() {
       heroBanners,
       popupNotice,
       jinIkjun,
-    };
+    }, stored);
   };
 
   const [postsList, setPostsList] = useState(() => [CEREMONY_2026_ALBUM, ...DEFAULT_POSTS]);
 
   const handleUpdatePostsList = async (newList) => {
     const resolved = typeof newList === 'function' ? newList(postsList) : newList;
-    try { setPostsList(await saveSharedContent('posts', resolved)); }
+    try { setPostsList(await saveSharedContent('posts', resolved, postsList)); }
     catch (error) { alert(`게시글 저장 실패: ${error.message}`); throw error; }
   };
 
@@ -643,7 +647,7 @@ export default function App() {
   });
 
   const handleUpdateSiteData = async (newSiteData) => {
-    try { setSiteData(mergeSiteData(await saveSharedContent('site', newSiteData))); }
+    try { setSiteData(mergeSiteData(await saveSharedContent('site', newSiteData, siteData))); }
     catch (error) { alert(`사이트 저장 실패: ${error.message}`); throw error; }
   };
 

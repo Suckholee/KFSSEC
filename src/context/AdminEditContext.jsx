@@ -72,29 +72,20 @@ export function AdminEditProvider({
     });
   }, []);
 
-  // Sync when initial props update externally (without clobbering active draft edits)
+  // Keep the revision associated with the draft until that draft is saved or discarded.
+  // Background refreshes must not give old edits permission to overwrite newer data.
   useEffect(() => {
-    if (resolvedSiteData && Object.keys(resolvedSiteData).length > 0) {
+    if (!pendingChanges.site) {
       setSavedSnapshot(prev => ({ ...prev, site: resolvedSiteData }));
-      setPendingChanges(currentPending => {
-        if (!currentPending.site) {
-          setSiteDraft(resolvedSiteData);
-          setSectorSettings(resolvedSiteData?.sectorSettings || {});
-        }
-        return currentPending;
-      });
+      setSiteDraft(resolvedSiteData);
+      setSectorSettings(resolvedSiteData?.sectorSettings || {});
     }
   }, [resolvedSiteData]);
 
   useEffect(() => {
-    if (Array.isArray(resolvedPostsList)) {
+    if (!pendingChanges.posts) {
       setSavedSnapshot(prev => ({ ...prev, posts: resolvedPostsList }));
-      setPendingChanges(currentPending => {
-        if (!currentPending.posts) {
-          setPostsDraft(resolvedPostsList);
-        }
-        return currentPending;
-      });
+      setPostsDraft(resolvedPostsList);
     }
   }, [resolvedPostsList]);
 
@@ -218,14 +209,18 @@ export function AdminEditProvider({
     try {
       if (pendingChanges.site || JSON.stringify(siteDraft) !== JSON.stringify(savedSnapshot.site)) {
         const payload = { ...siteDraft, sectorSettings };
-        const saved = await saveSharedContent('site', payload);
+        const saved = await saveSharedContent('site', payload, savedSnapshot.site);
         if (onUpdateSiteData) await onUpdateSiteData(saved);
+        setSiteDraft(saved);
         setSavedSnapshot(prev => ({ ...prev, site: saved }));
+        setPendingChanges(prev => ({ ...prev, site: false, count: prev.posts ? prev.count : 0 }));
       }
       if (pendingChanges.posts || JSON.stringify(postsDraft) !== JSON.stringify(savedSnapshot.posts)) {
-        const saved = await saveSharedContent('posts', postsDraft);
+        const saved = await saveSharedContent('posts', postsDraft, savedSnapshot.posts);
         if (onUpdatePostsList) await onUpdatePostsList(saved);
+        setPostsDraft(saved);
         setSavedSnapshot(prev => ({ ...prev, posts: saved }));
+        setPendingChanges(prev => ({ ...prev, posts: false, count: prev.site ? prev.count : 0 }));
       }
       setPendingChanges({ site: false, posts: false, count: 0 });
       setSaveSuccessNotice(true);
@@ -239,13 +234,35 @@ export function AdminEditProvider({
     }
   }, [isAdmin, pendingChanges, siteDraft, postsDraft, sectorSettings, savedSnapshot, onUpdateSiteData, onUpdatePostsList]);
 
+  const saveSiteChanges = useCallback(async update => {
+    if (!isAdmin) throw new Error('관리자 로그인이 필요합니다.');
+    if (savingRef.current) throw new Error('다른 저장이 진행 중입니다. 잠시 후 다시 시도해 주세요.');
+    savingRef.current = true;
+    setIsSaving(true);
+    const payload = typeof update === 'function' ? update(siteDraft) : update;
+    // Preserve the submitted values even when the server reports a conflict.
+    setSiteDraft(payload);
+    setPendingChanges(prev => ({ ...prev, site: true, count: prev.count + 1 }));
+    try {
+      const saved = await saveSharedContent('site', payload, savedSnapshot.site);
+      await onUpdateSiteData?.(saved);
+      setSiteDraft(saved);
+      setSectorSettings(saved?.sectorSettings || {});
+      setSavedSnapshot(prev => ({ ...prev, site: saved }));
+      setPendingChanges(prev => ({ ...prev, site: false, count: prev.posts ? prev.count : 0 }));
+    } finally {
+      savingRef.current = false;
+      setIsSaving(false);
+    }
+  }, [isAdmin, siteDraft, savedSnapshot.site, onUpdateSiteData]);
+
   const savePostChanges = useCallback(async update => {
     if (!isAdmin) throw new Error('관리자 로그인이 필요합니다.');
     if (savingRef.current) throw new Error('다른 저장이 진행 중입니다. 잠시 후 다시 시도해 주세요.');
     savingRef.current = true;
     setIsSaving(true);
     try {
-      const saved = await saveSharedContent('posts', update(postsDraft));
+      const saved = await saveSharedContent('posts', update(postsDraft), savedSnapshot.posts);
       await onUpdatePostsList?.(saved);
       setPostsDraft(saved);
       setSavedSnapshot(prev => ({ ...prev, posts: saved }));
@@ -254,7 +271,7 @@ export function AdminEditProvider({
       savingRef.current = false;
       setIsSaving(false);
     }
-  }, [isAdmin, postsDraft, onUpdatePostsList]);
+  }, [isAdmin, postsDraft, savedSnapshot.posts, onUpdatePostsList]);
 
   const publishBoardPost = useCallback(post => savePostChanges(posts => [
     { ...post, id: crypto.randomUUID(), category: '공지 사항', categoryType: 'notice', author: '관리자', date: new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' }), views: 0, visible: true, isPinned: false },
@@ -291,6 +308,7 @@ export function AdminEditProvider({
     saveAllChanges,
     publishBoardPost,
     savePostChanges,
+    saveSiteChanges,
     revertAllChanges,
     isDrawerOpen,
     setIsDrawerOpen,
@@ -320,6 +338,7 @@ export function AdminEditProvider({
     saveAllChanges,
     publishBoardPost,
     savePostChanges,
+    saveSiteChanges,
     revertAllChanges,
     isDrawerOpen,
     drawerTab,

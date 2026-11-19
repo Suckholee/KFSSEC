@@ -28,40 +28,67 @@ async function supabaseRequest(route, options = {}) {
 }
 
 export async function readContent(type) {
-  checkType(type);
-  if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
-    try {
-      const response = await supabaseRequest(`/rest/v1/site_content?key=eq.${type}&select=value`);
-      const val = (await response.json())[0]?.value;
-      if (val !== undefined && val !== null) return val;
-    } catch (e) {
-      console.warn(`[store] Supabase read failed for ${type}, falling back to local file:`, e.message);
-    }
-  }
-  try { return JSON.parse(await fs.readFile(path.join(LOCAL_DIR, `${type}.json`), 'utf8')); }
-  catch (error) { if (error.code === 'ENOENT') return null; throw error; }
+  return (await readContentSnapshot(type)).data;
 }
 
-export async function writeContent(type, value) {
+export class ContentConflictError extends Error {
+  constructor() {
+    super('다른 관리자나 탭에서 먼저 저장했습니다. 작성한 내용은 유지됩니다. 내용을 복사한 뒤 최신 화면을 다시 열어 변경사항을 확인해 주세요.');
+    this.status = 409;
+    this.code = 'CONTENT_CONFLICT';
+  }
+}
+
+const localWrites = new Map();
+const localVersion = data => data === null ? 'missing' : crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
+
+export async function readContentSnapshot(type) {
   checkType(type);
   if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
-    await supabaseRequest('/rest/v1/site_content?on_conflict=key', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' },
-      body: JSON.stringify({ key: type, value }),
+    const response = await supabaseRequest(`/rest/v1/site_content?key=eq.${type}&select=value,updated_at`);
+    const row = (await response.json())[0];
+    return { data: row?.value ?? null, version: row?.updated_at ?? 'missing' };
+  }
+  let data;
+  try { data = JSON.parse(await fs.readFile(path.join(LOCAL_DIR, `${type}.json`), 'utf8')); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; data = null; }
+  return { data, version: localVersion(data) };
+}
+
+export async function writeContent(type, value, expectedVersion) {
+  checkType(type);
+  if (!expectedVersion) throw new ContentConflictError();
+  if (process.env.VERCEL || process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) {
+    const creating = expectedVersion === 'missing';
+    const response = await supabaseRequest(creating
+      ? '/rest/v1/site_content?on_conflict=key'
+      : `/rest/v1/site_content?key=eq.${type}&updated_at=eq.${encodeURIComponent(expectedVersion)}`, {
+      method: creating ? 'POST' : 'PATCH',
+      headers: { 'Content-Type': 'application/json', Prefer: `${creating ? 'resolution=ignore-duplicates,' : ''}return=representation` },
+      body: JSON.stringify(creating ? { key: type, value } : { value }),
     });
-    return;
+    const row = (await response.json())[0];
+    if (!row) throw new ContentConflictError();
+    return { data: row.value, version: row.updated_at };
   }
-  const data = JSON.stringify(value, null, 2);
-  await fs.mkdir(LOCAL_DIR, { recursive: true });
-  const destination = path.join(LOCAL_DIR, `${type}.json`);
-  const temporary = `${destination}.${crypto.randomUUID()}.tmp`;
-  try {
-    await fs.writeFile(temporary, data);
-    await fs.rename(temporary, destination);
-  } finally {
-    await fs.rm(temporary, { force: true });
-  }
+  const previous = localWrites.get(type) || Promise.resolve();
+  const writing = previous.catch(() => {}).then(async () => {
+    if ((await readContentSnapshot(type)).version !== expectedVersion) throw new ContentConflictError();
+    const data = JSON.stringify(value, null, 2);
+    await fs.mkdir(LOCAL_DIR, { recursive: true });
+    const destination = path.join(LOCAL_DIR, `${type}.json`);
+    const temporary = `${destination}.${crypto.randomUUID()}.tmp`;
+    try {
+      await fs.writeFile(temporary, data);
+      await fs.rename(temporary, destination);
+    } finally {
+      await fs.rm(temporary, { force: true });
+    }
+    return { data: value, version: localVersion(value) };
+  });
+  localWrites.set(type, writing);
+  try { return await writing; }
+  finally { if (localWrites.get(type) === writing) localWrites.delete(type); }
 }
 
 export async function storeImage(dataUrl) {

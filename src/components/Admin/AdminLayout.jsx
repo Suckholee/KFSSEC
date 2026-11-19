@@ -321,6 +321,7 @@ export default function AdminLayout({
   const [primaryMenu, setPrimaryMenu] = useState(initialState.menu);
   const [secondarySubTab, setSecondarySubTab] = useState(initialState.subTab);
   const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(initialState.selectedCourse);
+  const [courseEditOriginal, setCourseEditOriginal] = useState(initialState.selectedCourse);
   const [posterModalOpen, setPosterModalOpen] = useState(false);
   const [isSavedNotice, setIsSavedNotice] = useState(false);
 
@@ -389,6 +390,7 @@ export default function AdminLayout({
     setPrimaryMenu(menu);
     setSecondarySubTab(defaultSubTab);
     setSelectedCourseForEdit(effectiveCourse);
+    setCourseEditOriginal(effectiveCourse);
     setSelectedCourseForEnrollees(null);
     updateAdminUrl(menu, defaultSubTab, effectiveCourse ? effectiveCourse.id : null);
   };
@@ -399,6 +401,7 @@ export default function AdminLayout({
       setPrimaryMenu(parsed.menu);
       setSecondarySubTab(parsed.subTab);
       setSelectedCourseForEdit(parsed.selectedCourse);
+      setCourseEditOriginal(parsed.selectedCourse);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -504,7 +507,7 @@ export default function AdminLayout({
     }
 
     try {
-      if (selectedCourseForEdit.id) await updateCourseAPI(selectedCourseForEdit.id, selectedCourseForEdit);
+      if (selectedCourseForEdit.id) await updateCourseAPI(selectedCourseForEdit.id, selectedCourseForEdit, courseEditOriginal);
       else await createCourseAPI(selectedCourseForEdit);
       setCoursesList(await fetchCoursesFromAPI());
       switchPrimaryMenu('courses', 'course_list', null);
@@ -516,7 +519,7 @@ export default function AdminLayout({
   const handleDeleteCourse = async (id) => {
     if (window.confirm('정말 이 교육과정을 리얼 DB에서 삭제하시겠습니까?')) {
       try {
-        await deleteCourseAPI(id);
+        await deleteCourseAPI(id, courseEditOriginal?.id === id ? courseEditOriginal : coursesList.find(course => course.id === id));
         setCoursesList(await fetchCoursesFromAPI());
         switchPrimaryMenu('courses', 'course_list', null);
         triggerSavedNotice();

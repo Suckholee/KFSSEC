@@ -9,6 +9,7 @@ export default function AdminCourses() {
   const [viewMode, setViewMode] = useState('gallery'); // 'gallery' | 'list'
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedCourseForEdit, setSelectedCourseForEdit] = useState(null);
+  const [editBaseCourses, setEditBaseCourses] = useState(null);
 
   // Drag and Drop state
   const [draggedCourseId, setDraggedCourseId] = useState(null);
@@ -38,11 +39,13 @@ export default function AdminCourses() {
 
   const handleOpenAddModal = () => {
     setSelectedCourseForEdit(null);
+    setEditBaseCourses(courses);
     setEditModalOpen(true);
   };
 
   const handleOpenEditModal = (course) => {
     setSelectedCourseForEdit(course);
+    setEditBaseCourses(courses);
     setEditModalOpen(true);
   };
 
@@ -54,12 +57,12 @@ export default function AdminCourses() {
     } else {
       nextCourses = [savedCourse, ...courses];
     }
-    if (!await persistCourses(nextCourses)) throw new Error('교육과정을 저장하지 못했습니다. 입력 내용은 유지됩니다.');
+    if (!await persistCourses(nextCourses, editBaseCourses)) throw new Error('교육과정을 저장하지 못했습니다. 입력 내용은 유지됩니다.');
   };
 
-  const persistCourses = async nextCourses => {
+  const persistCourses = async (nextCourses, base = courses) => {
     try {
-      setCourses(await saveCoursesToDB(nextCourses));
+      setCourses(await saveCoursesToDB(nextCourses, base));
       return true;
     } catch (error) {
       setReorderNotice(`저장 실패: ${error.message}`);

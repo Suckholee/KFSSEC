@@ -1,7 +1,7 @@
 import { profileVideoSource } from '../utils/profileVideo.js';
 import { normalizeProfileImage } from '../utils/profileImage.js';
 import defaults from '../data/masterDirectory.json';
-import { readSharedContent, saveSharedContent } from './contentApi.js';
+import { readSharedContent, saveSharedContent, inheritContentVersion } from './contentApi.js';
 
 export const MASTER_STORAGE_KEY = 'kfssec_master_profiles_v1';
 export const MASTER_UPDATE_EVENT = 'kfssec_masters_updated';
@@ -13,7 +13,7 @@ let cachedProfiles = initialProfiles;
 
 export async function loadMasterProfiles() {
   const remote = await readSharedContent('masters');
-  if (Array.isArray(remote)) cachedProfiles = remote;
+  cachedProfiles = Array.isArray(remote) ? remote : inheritContentVersion([...initialProfiles], remote);
   window.dispatchEvent(new Event(MASTER_UPDATE_EVENT));
   return cachedProfiles;
 }
@@ -65,7 +65,7 @@ export async function deleteMasterProfile(id) {
 }
 
 async function persist(profiles) {
-  cachedProfiles = await saveSharedContent('masters', profiles);
+  cachedProfiles = await saveSharedContent('masters', profiles, cachedProfiles);
   window.dispatchEvent(new Event(MASTER_UPDATE_EVENT));
 }
 

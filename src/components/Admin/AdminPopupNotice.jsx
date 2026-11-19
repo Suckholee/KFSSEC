@@ -130,7 +130,8 @@ export default function AdminPopupNotice({ siteData, onUpdateSiteData }) {
     };
 
     if (onUpdateSiteData) {
-      await onUpdateSiteData(newSiteData);
+      try { await onUpdateSiteData(newSiteData); }
+      catch (error) { alert(`팝업 저장 실패: ${error.message}`); return; }
     }
 
     setSavedSuccess(true);

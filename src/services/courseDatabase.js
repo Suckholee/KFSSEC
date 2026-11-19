@@ -1,7 +1,9 @@
+import { contentVersion, rememberContentVersion } from './contentApi.js';
 import { withCurrentCourseContent } from '../data/foodtechCurricula.js';
 import { actualCourses as DEFAULT_COURSES } from '../data/actualCourses.js';
 
 let memoryCourses = DEFAULT_COURSES;
+let hasServerCourses = false;
 const DB_VERSION = 'v6_official_clean_tuition_20260927';
 
 // Upgrade reused default covers while preserving administrator uploads.
@@ -24,7 +26,7 @@ export async function fetchCoursesFromAPI() {
         const json = await res.json();
         if (json.success && Array.isArray(json.data)) {
           const courses = withCourseCovers(json.data);
-          cacheCourses(courses);
+          cacheCourses(courses, json.version);
           return courses;
         }
       }
@@ -37,6 +39,7 @@ export async function fetchCoursesFromAPI() {
 }
 
 export function getCoursesFromDB() {
+  if (hasServerCourses) return memoryCourses;
   try {
     if (localStorage.getItem('kfssec_courses_version') === DB_VERSION) {
       const parsed = JSON.parse(localStorage.getItem('kfssec_courses_db') || 'null');
@@ -54,7 +57,8 @@ export function resetCoursesToDefault() {
   return DEFAULT_COURSES;
 }
 
-function cacheCourses(courses) {
+function cacheCourses(courses, version) {
+  if (version) { rememberContentVersion(courses, version); hasServerCourses = true; }
   if (!Array.isArray(courses)) return;
   memoryCourses = courses;
   try {
@@ -64,19 +68,20 @@ function cacheCourses(courses) {
   try { window.dispatchEvent(new Event('kfssec_courses_updated')); } catch { /* Non-browser context. */ }
 }
 
-export async function saveCoursesToDB(courses) {
+export async function saveCoursesToDB(courses, base = memoryCourses) {
+  const version = contentVersion(base);
   if (!Array.isArray(courses)) throw new Error('교육 목록 형식이 올바르지 않습니다.');
   const res = await fetch('/api/courses?id=reorder', {
     method: 'PUT',
     credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'If-Match': version },
     body: JSON.stringify({ courses }),
   });
   const json = await res.json();
   if (!res.ok || !json.success || !Array.isArray(json.data)) {
     throw new Error(json.message || '교육 목록 저장에 실패했습니다.');
   }
-  cacheCourses(json.data);
+  cacheCourses(json.data, json.version);
   return json.data;
 }
 
@@ -89,20 +94,28 @@ export async function createCourseAPI(courseData) {
 
     const res = await fetch('/api/courses', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'If-Match': contentVersion(memoryCourses) },
       body: JSON.stringify(newCourse),
     });
   const json = await res.json();
   if (!res.ok || !json.success || !json.data) throw new Error(json.message || '과정 등록 실패');
-  cacheCourses([json.data, ...getCoursesFromDB()]);
+  cacheCourses([json.data, ...getCoursesFromDB()], json.version);
   return json.data;
 }
 
+function assertCurrentCourse(id, expectedCourse) {
+  const current = memoryCourses.find(course => String(course.id) === String(id));
+  if (!expectedCourse || JSON.stringify(current) !== JSON.stringify(expectedCourse)) {
+    throw new Error('다른 화면에서 교육과정이 변경되었습니다. 작성 내용을 복사한 뒤 최신 목록에서 다시 열어 주세요.');
+  }
+}
+
 // REST API PUT Update Course with 100% robust string ID matching
-export async function updateCourseAPI(id, courseData) {
+export async function updateCourseAPI(id, courseData, expectedCourse) {
+  assertCurrentCourse(id, expectedCourse);
     const res = await fetch(`/api/courses?id=${encodeURIComponent(id)}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'If-Match': contentVersion(memoryCourses) },
       body: JSON.stringify(courseData),
     });
   const json = await res.json();
@@ -121,14 +134,16 @@ export async function updateCourseAPI(id, courseData) {
     return c;
   });
 
-  cacheCourses(updated);
+  cacheCourses(updated, json.version);
   return updatedPayload;
 }
 
 // REST API DELETE Course
-export async function deleteCourseAPI(id) {
+export async function deleteCourseAPI(id, expectedCourse) {
+  assertCurrentCourse(id, expectedCourse);
     const res = await fetch(`/api/courses?id=${encodeURIComponent(id)}`, {
       method: 'DELETE',
+      headers: { 'If-Match': contentVersion(memoryCourses) },
     });
   const json = await res.json();
   if (!res.ok || !json.success) throw new Error(json.message || '과정 삭제 실패');
@@ -139,7 +154,7 @@ export async function deleteCourseAPI(id) {
     const cIdStr = String(c.id);
     return !(cIdStr === idStr || cIdStr === `c${idStr}` || `c${cIdStr}` === idStr);
   });
-  cacheCourses(updated);
+  cacheCourses(updated, json.version);
   return true;
 }
 

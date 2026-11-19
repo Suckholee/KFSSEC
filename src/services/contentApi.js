@@ -1,9 +1,30 @@
+const contentVersions = new WeakMap();
+
+export function rememberContentVersion(data, version) {
+  if (data && typeof data === 'object' && typeof version === 'string') contentVersions.set(data, version);
+  return data;
+}
+
+export function inheritContentVersion(data, source) {
+  return rememberContentVersion(data, source == null ? 'missing' : contentVersions.get(source));
+}
+
+export function contentVersion(data) {
+  const version = data && contentVersions.get(data);
+  if (!version) throw new Error('최신 저장본을 확인하지 못했습니다. 작성 내용을 복사한 뒤 화면을 다시 열어 주세요.');
+  return version;
+}
+
 async function readResult(response, fallback) {
   if (response.status === 413) {
     throw new Error('저장할 데이터의 용량이 너무 큽니다. 큰 사진을 줄인 뒤 다시 시도해 주세요.');
   }
   const body = await response.json().catch(() => null);
-  if (!response.ok || !body?.success) throw new Error(body?.message || fallback);
+  if (!response.ok || !body?.success) {
+    const error = new Error(body?.message || fallback);
+    error.code = body?.code;
+    throw error;
+  }
   return body;
 }
 
@@ -47,15 +68,18 @@ async function replaceInlineImages(value, uploads) {
 
 export async function readSharedContent(type) {
   const response = await fetch(`/api/content?type=${encodeURIComponent(type)}`, { cache: 'no-store' });
-  return (await readResult(response, '콘텐츠를 읽지 못했습니다.')).data;
+  const result = await readResult(response, '콘텐츠를 읽지 못했습니다.');
+  return rememberContentVersion(result.data, result.version);
 }
 
-export async function saveSharedContent(type, data) {
+export async function saveSharedContent(type, data, base = data) {
+  const version = contentVersion(base);
   const normalized = await replaceInlineImages(JSON.parse(JSON.stringify(data)), new Map());
   const response = await fetch(`/api/content?type=${encodeURIComponent(type)}`, {
-    method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(normalized),
+    method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'If-Match': version }, body: JSON.stringify(normalized),
   });
-  return (await readResult(response, '콘텐츠를 저장하지 못했습니다.')).data;
+  const result = await readResult(response, '콘텐츠를 저장하지 못했습니다.');
+  return rememberContentVersion(result.data, result.version);
 }
 
 export async function uploadGalleryVideo(file) {

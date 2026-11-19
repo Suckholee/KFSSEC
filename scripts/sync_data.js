@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { writeContent, readContent } from '../api/_store.js';
+import { writeContent, readContent, readContentSnapshot } from '../api/_store.js';
 
 // 1. Courses
 const coursesPath = path.resolve('server/data/content/courses.json');
@@ -274,13 +274,13 @@ async function main() {
   console.log('🚀 Starting sync to Supabase...');
   const datasets = { courses: coursesData, masters: mastersData, chatbot: chatbotData, posts: postsData, site: siteData };
   for (const [type, data] of Object.entries(datasets)) {
-    const existing = await readContent(type);
+    const { data: existing, version } = await readContentSnapshot(type);
     if (existing !== null) {
       console.log(`Skipping ${type}: already exists in Supabase`);
       continue;
     }
     console.log(`Uploading ${type}...`);
-    await writeContent(type, data);
+    await writeContent(type, data, version);
   }
 
   console.log('\n✅ Verification: Reading back from Supabase...');

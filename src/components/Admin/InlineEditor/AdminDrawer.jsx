@@ -1,7 +1,6 @@
 import ModalPortal from '../../common/ModalPortal';
 import React, { useState } from 'react';
 import { useAdminEdit } from '../../../context/AdminEditContext';
-import { saveSharedContent } from '../../../services/contentApi.js';
 import AdminPopupNotice from '../AdminPopupNotice';
 import {
   X,
@@ -30,6 +29,7 @@ export default function AdminDrawer() {
     postsDraft,
     updatePostsDraft,
     saveAllChanges,
+    saveSiteChanges,
   } = useAdminEdit();
 
   const [replyInput, setReplyInput] = useState({});
@@ -294,17 +294,9 @@ export default function AdminDrawer() {
             <div className="space-y-4">
               <AdminPopupNotice
                 siteData={siteDraft}
-                onUpdateSiteData={async (newSiteData) => {
-                  const updatedPopup = newSiteData?.popupNotice;
-                  updateSiteField('popupNotice', updatedPopup);
-                  try {
-                    const payload = { ...siteDraft, popupNotice: updatedPopup };
-                    await saveSharedContent('site', payload);
-                  } catch (e) {
-                    console.warn('Auto-save popup failed:', e);
-                  }
-                  await saveAllChanges();
-                }}
+                onUpdateSiteData={newSiteData => saveSiteChanges(current => ({
+                  ...current, popupNotice: newSiteData.popupNotice,
+                }))}
               />
             </div>
           )}

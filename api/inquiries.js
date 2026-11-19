@@ -1,7 +1,7 @@
 import { memberSessionId } from './_memberSession.js';
 import { getMember } from './_members.js';
 import crypto from 'node:crypto';
-import { readContent, writeContent } from './_store.js';
+import { readContentSnapshot, writeContent } from './_store.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -20,13 +20,16 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false, message: '제목, 내용, 작성자 길이를 확인해 주세요.' });
   }
   try {
-    const posts = await readContent('posts') || [];
     const post = {
       id: crypto.randomUUID(), category: '문의', categoryType: 'inquiry',
       title, content, author, authorId: member.id, isPinned: false, status: 'pending', views: 0,
       date: new Date().toISOString().slice(0, 10).replace(/-/g, '.'),
     };
-    await writeContent('posts', [post, ...posts]);
+    for (let attempt = 0; ; attempt++) {
+      const { data, version } = await readContentSnapshot('posts');
+      try { await writeContent('posts', [post, ...(data || [])], version); break; }
+      catch (error) { if (error.code !== 'CONTENT_CONFLICT' || attempt >= 4) throw error; }
+    }
     return res.status(201).json({ success: true, data: post });
   } catch (error) {
     console.error('Inquiry API error:', error);

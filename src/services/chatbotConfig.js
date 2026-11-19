@@ -1,5 +1,5 @@
 // Central Chatbot & 1:1 AI Inquiry Configuration Store
-import { readSharedContent, saveSharedContent } from './contentApi.js';
+import { readSharedContent, saveSharedContent, inheritContentVersion } from './contentApi.js';
 
 export const CHATBOT_UPDATE_EVENT = 'kfssec_chatbot_config_updated';
 
@@ -265,13 +265,13 @@ export function getChatbotConfig() {
 
 export async function loadChatbotConfig() {
   const remote = await readSharedContent('chatbot');
-  cachedConfig = remote ? { ...DEFAULT_CHATBOT_CONFIG, ...remote } : DEFAULT_CHATBOT_CONFIG;
+  cachedConfig = inheritContentVersion(remote ? { ...DEFAULT_CHATBOT_CONFIG, ...remote } : { ...DEFAULT_CHATBOT_CONFIG }, remote);
   window.dispatchEvent(new CustomEvent(CHATBOT_UPDATE_EVENT, { detail: cachedConfig }));
   return cachedConfig;
 }
 
 export async function saveChatbotConfig(newConfig) {
-  cachedConfig = await saveSharedContent('chatbot', newConfig);
+  cachedConfig = await saveSharedContent('chatbot', newConfig, cachedConfig);
   window.dispatchEvent(new CustomEvent(CHATBOT_UPDATE_EVENT, { detail: cachedConfig }));
   return cachedConfig;
 }
