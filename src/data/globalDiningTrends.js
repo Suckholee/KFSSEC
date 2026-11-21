@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "6050",
+    "title": "[사설] 자영업의 새로운 생존 전략, 릴스(Reels)에 답이 있다",
+    "summary": "대한민국 자영업 시장이 거대한 변화의 갈림길에 서 있다. 고물가와 인건비 상승, 임대료 부담, 소비 위축 등으로 소상공인...",
+    "author": "글로벌 외식정보=신충섭 논설위원",
+    "date": "2026.11.21",
+    "imageUrl": "/images/trends/trend_6050.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/cda608ed4942ae6b12284f479e35a47a08540d4e.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=6050&mcode=m247tk9"
+  },
+  {
     "id": "5954",
     "title": "[논설] 반찬 한 접시의 경제학… 한국의 인심은 어디까지 무상이어야 하는가",
     "summary": "한국의 식당에서 반찬은 주메뉴에 딸린 부수적인 음식이 아니다. 밥상에 여러 가지 반찬을 차려내고, 부족하면 기꺼이 더 ...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5536.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/fdc201c1c5d3b1c4b0e7d258e306d10806a8593a.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5536&mcode=m247tk9"
-  },
-  {
-    "id": "5440",
-    "title": "오르는 먹거리 가격, 소비자도 자영업자도 부담…외식물가 해법",
-    "summary": "먹거리 가격 부담이 소비자와 외식업계 모두의 과제로 떠오르고 있다. 식탁에 오르는 식재료부터 외식 메뉴까지 가격에 대한 관심이 커지면서 소비자는 한 끼 식사 비용을 따져 소비하고, 음식점은 원재...",
-    "author": "글로벌외식정보",
-    "date": "2026.10.12",
-    "imageUrl": "/images/trends/trend_5440.jpg",
-    "remoteImageUrl": null,
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5440&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.11.20'
+  lastUpdated: '2026.11.21'
 };
