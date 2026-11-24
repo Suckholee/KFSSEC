@@ -3,6 +3,16 @@
 
 export const GLOBAL_DINING_TRENDS = [
   {
+    "id": "6074",
+    "title": "불평하지 않는 손님이 더 무섭다… ‘침묵하는 고객’과 서비스 회복의 경제학",
+    "summary": "저녁 영업을 마친 식당, 마감 정리를 하던 사장이 홀 직원에게 물었다. \"오늘 저녁 예약 손님들, 식사는 괜찮으셨대?&rdq...",
+    "author": "글로벌 외식정보=진익준 논설위원",
+    "date": "2026.11.24",
+    "imageUrl": "/images/trends/trend_6074.jpg",
+    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2611/thumb/350x270_100/3bc04376485e95ab1c70bffea5b345b7d97beb8d.jpg",
+    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=6074&mcode=m247tk9"
+  },
+  {
     "id": "6050",
     "title": "[사설] 자영업의 새로운 생존 전략, 릴스(Reels)에 답이 있다",
     "summary": "대한민국 자영업 시장이 거대한 변화의 갈림길에 서 있다. 고물가와 인건비 상승, 임대료 부담, 소비 위축 등으로 소상공인...",
@@ -171,16 +181,6 @@ export const GLOBAL_DINING_TRENDS = [
     "imageUrl": "/images/trends/trend_5585.jpg",
     "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/b39781cdb6f04eff25eb6ba7cede1b0444d3ed1c.jpg",
     "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5585&mcode=m247tk9"
-  },
-  {
-    "id": "5536",
-    "title": "5,000원짜리 밥에 들어 있지 않은 것",
-    "summary": "지방에 한 끼 5,000원짜리 밥을 파는 식당이 있다. 2008년부터 그 가격을 지켜왔다는 이야기다. 반찬은 열 가지가 넘고, 손님...",
-    "author": "글로벌 외식정보=진익준 논설위원",
-    "date": "2026.10.17",
-    "imageUrl": "/images/trends/trend_5536.jpg",
-    "remoteImageUrl": "https://www.hsgdn.co.kr/data/cheditor4/2610/thumb/350x270_100/fdc201c1c5d3b1c4b0e7d258e306d10806a8593a.jpg",
-    "linkUrl": "https://www.hsgdn.co.kr/news/view.php?idx=5536&mcode=m247tk9"
   }
 ];
 
@@ -189,5 +189,5 @@ export const TREND_CATEGORY_INFO = {
   subtitle: '외식업 경영 인사이트 & 푸드 트렌드 칼럼',
   sourceName: '글로벌외식정보',
   sourceUrl: 'https://www.hsgdn.co.kr/news/list.php?mcode=m247tk9&vg=photo',
-  lastUpdated: '2026.11.23'
+  lastUpdated: '2026.11.24'
 };
